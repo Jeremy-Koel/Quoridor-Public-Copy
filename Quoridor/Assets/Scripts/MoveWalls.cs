@@ -23,8 +23,21 @@ public class MoveWalls : MonoBehaviour
         
     }
 
+
+    private void OnMouseOver()
+    {
+       // Debug.Log("TEST");
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Right CLick");
+            transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
+        }
+    }
+
+
     void OnMouseDown()
     {
+        
         screenPoint = Camera.main.WorldToScreenPoint(transform.position);
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
