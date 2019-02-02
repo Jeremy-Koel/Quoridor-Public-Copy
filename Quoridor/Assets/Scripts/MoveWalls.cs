@@ -52,8 +52,8 @@ public class MoveWalls : MonoBehaviour
 
             foreach (Collider hit in hits)
             {
-                diffx = transform.position.x - hit.transform.position.x;
-                diffy = transform.position.x - hit.transform.position.y;
+                diffx = System.Math.Abs(transform.position.x - hit.transform.position.x);
+                diffy = System.Math.Abs(transform.position.y - hit.transform.position.y);
 
                 if (lowestDiffX == 0 && lowestDiffY == 0)
                 {
