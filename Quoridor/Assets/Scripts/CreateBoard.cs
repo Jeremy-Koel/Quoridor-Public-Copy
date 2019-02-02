@@ -9,7 +9,11 @@ public class CreateBoard : MonoBehaviour
 
     public GameObject mousePrefab;
 
+    public GameObject wallColliderPrefab;
+
     public GameObject gameBoardWrapper;
+
+    public GameObject wallColliderWrapper;
 
     // Start is called before the first frame update
     void Start()
@@ -29,17 +33,38 @@ public class CreateBoard : MonoBehaviour
 
                 piece.AddComponent<ClickSquare>();
 
-                //piece.transform.SetParent(gameBoardWrapper.transform);
+                
                 gameBoard[y,x] = piece;
 
                 piece.transform.position = new Vector3((x *3.45f) + 11.25f, (y *-3.45f) + 27f, -0.2f);
 
                 piece.name = y + "," + x;
-                //Debug.Log(piece.transform.position);
-                //Debug.Log(piece.name);
+
+                PlaceWallColliders(piece);
+
+                piece.transform.SetParent(gameBoardWrapper.transform);
+
             }
 
             
+        }
+    }
+
+    void PlaceWallColliders(GameObject piece)
+    {
+        if (piece.name[0] != '0' && piece.name[2] != '8')
+        {
+            Vector3 newPos = new Vector3(piece.transform.position.x + 1.8f, piece.transform.position.y + 1.8f, -0.6f);
+            GameObject wallCollHorizontal = Instantiate(wallColliderPrefab) as GameObject;
+            GameObject wallCollVertical = Instantiate(wallColliderPrefab) as GameObject;
+            wallCollHorizontal.transform.Rotate(new Vector3(0, 0, 90));
+            wallCollHorizontal.transform.position = newPos;
+            wallCollHorizontal.name = piece.name + "v";
+            wallCollVertical.transform.position = newPos;
+            wallCollVertical.name = piece.name + "h";
+
+            wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
+            wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);
         }
     }
 
