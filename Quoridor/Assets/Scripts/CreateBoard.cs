@@ -1,0 +1,76 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CreateBoard : MonoBehaviour
+{
+    public GameObject[,] gameBoard = new GameObject[9,9];
+    public GameObject squarePrefab;
+
+    public GameObject mousePrefab;
+
+    public GameObject gameBoardWrapper;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        generateCubes();
+        generatePlayer();
+        addScriptToWalls();
+    }
+
+    void generateCubes()
+    {
+        for (int y = 0; y < 9; y++)
+        {
+            for (int x = 0; x < 9; x++) 
+            {
+                GameObject piece = Instantiate(squarePrefab) as GameObject;
+
+                piece.AddComponent<ClickSquare>();
+
+                //piece.transform.SetParent(gameBoardWrapper.transform);
+                gameBoard[y,x] = piece;
+
+                piece.transform.position = new Vector3((x *3.45f) + 11.25f, (y *-3.45f) + 27f, -0.2f);
+
+                piece.name = y + "," + x;
+                //Debug.Log(piece.transform.position);
+                //Debug.Log(piece.name);
+            }
+
+            
+        }
+    }
+
+    void generatePlayer()
+    {
+        GameObject player = Instantiate(mousePrefab) as GameObject;
+        player.name = "playerMouse";
+        GameObject startPlace = GameObject.Find("8,4");
+
+        player.transform.position = new Vector3(startPlace.transform.position.x, startPlace.transform.position.y, -.3f);
+    }
+
+    void addScriptToWalls()
+    {
+        GameObject[] p2walls = GameObject.FindGameObjectsWithTag("PlayerTwoWall");
+
+        foreach(GameObject wall in p2walls)
+        {
+            wall.AddComponent<MoveWalls>();
+        }
+
+        GameObject[] p1walls = GameObject.FindGameObjectsWithTag("PlayerOneWall");
+
+        foreach (GameObject wall in p1walls)
+        {
+            wall.AddComponent<MoveWalls>();
+        }
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
