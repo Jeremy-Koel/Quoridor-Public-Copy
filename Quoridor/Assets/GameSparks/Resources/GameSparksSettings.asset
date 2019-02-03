@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GameSparksSettings
   m_EditorClassIdentifier: 
   sdkVersion: 
-  apiKey: J376066dTe6v
+  apiKey: 
   credential: device
-  apiSecret: Rdyn2oMm23Bvv8MRqmb2q2VZ9AatyeNf
+  apiSecret: 
   previewBuild: 1
   debugBuild: 0
