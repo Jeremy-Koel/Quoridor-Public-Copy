@@ -65,29 +65,45 @@ public class MoveWalls : MonoBehaviour
 
             foreach (Collider hit in hits)
             {
-                diffx = System.Math.Abs(transform.position.x - hit.transform.position.x);
-                diffy = System.Math.Abs(transform.position.y - hit.transform.position.y);
+                float colliderRotation = System.Math.Abs(hit.transform.localEulerAngles.z - 180);
+                float wallRotation = System.Math.Abs(transform.localEulerAngles.z);
 
-                if (lowestDiffX == 0 && lowestDiffY == 0)
-                {
-                    lowestDiffX = diffx;
-                    lowestDiffY = diffy;
-                }
 
-                if (closest == null)
+                if (System.Math.Abs(hit.transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hit.transform.localEulerAngles.z -180) >= transform.localEulerAngles.z - 10)
                 {
-                    closest = hit;
-                }
+                    diffx = System.Math.Abs(transform.position.x - hit.transform.position.x);
+                    diffy = System.Math.Abs(transform.position.y - hit.transform.position.y);
 
-                if (diffy < lowestDiffY)
-                {
-                    lowestDiffX = diffx;
-                    lowestDiffY = diffy;
-                    closest = hit;
+                    if (lowestDiffX == 0 && lowestDiffY == 0)
+                    {
+                        lowestDiffX = diffx;
+                        lowestDiffY = diffy;
+                    }
+
+                    if (closest == null)
+                    {
+                        closest = hit;
+                    }
+
+                    if (diffy < lowestDiffY)
+                    {
+                        lowestDiffX = diffx;
+                        lowestDiffY = diffy;
+                        closest = hit;
+                    }
                 }
             }
 
-            transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
+            if(closest == null)
+            {
+                transform.position = startPos;
+            }
+            else
+            {
+                transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
+            }
+
+           
 
             // transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
         }

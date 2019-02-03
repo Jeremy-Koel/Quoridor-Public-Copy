@@ -61,6 +61,7 @@ public class CreateBoard : MonoBehaviour
             wallCollHorizontal.transform.position = newPos;
             wallCollHorizontal.name = piece.name + "v";
             wallCollVertical.transform.position = newPos;
+            //wallCollVertical.transform.Rotate(new Vector3(0, 0, 0));
             wallCollVertical.name = piece.name + "h";
 
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
