@@ -28,10 +28,24 @@ namespace GameCore
             ONE, TWO
         }
 
+        public int GetWhoseTurn()
+        {
+            int currentPlayer = 0;
+            if(whoseTurn == PlayerEnum.ONE)
+            {
+                currentPlayer = 1;
+            }
+            else
+            {
+                currentPlayer = 2;
+            }
+            return currentPlayer;
+        }
+
         public void SetPlayerTurnRandom()
         {
             Random randomNumber = new Random();
-            int oneOrTwo = randomNumber.Next(1, 2);
+            int oneOrTwo = randomNumber.Next(1, 3);
             if (oneOrTwo == 1)
                 whoseTurn = PlayerEnum.ONE;
             else if (oneOrTwo == 2)
@@ -42,7 +56,7 @@ namespace GameCore
         {
             if (instance == null)
             {
-                instance = new GameBoard(PlayerEnum.ONE, "e1","e9");
+                instance = new GameBoard("e1", "e9");
             }
             return instance;
         }
@@ -56,12 +70,12 @@ namespace GameCore
             return instance;
         }
 
-        private GameBoard(PlayerEnum startingPlayer, string playerOneStart, string playerTwoStart)
+        private void InitializeBoard(string playerOneStart, string playerTwoStart)
         {
             gameOver = false;
             playerOneWin = false;
             playerTwoWin = false;
-            whoseTurn = startingPlayer;
+
             playerOneLocation = new PlayerCoordinate(playerOneStart);
             playerTwoLocation = new PlayerCoordinate(playerTwoStart);
 
@@ -81,6 +95,19 @@ namespace GameCore
                     }
                 }
             }
+        }
+
+        private GameBoard(string playerOneStart, string playerTwoStart)
+        {
+            SetPlayerTurnRandom();
+            InitializeBoard(playerOneStart, playerTwoStart);
+        }
+
+
+        private GameBoard(PlayerEnum startingPlayer, string playerOneStart, string playerTwoStart)
+        {
+            whoseTurn = startingPlayer;
+            InitializeBoard(playerOneStart, playerTwoStart);
         }
 
         public void PrintBoard()
