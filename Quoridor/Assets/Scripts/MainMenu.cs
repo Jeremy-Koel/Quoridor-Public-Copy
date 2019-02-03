@@ -19,15 +19,23 @@ public class MainMenu : MonoBehaviour
     public Stack<GameObject> panelOrder;
 
     [SerializeField]
-    private InputField userNameInput;
+    private InputField usernameLoginInput;
     [SerializeField]
-    private InputField passwordInput;
+    private InputField passwordLoginInput;
+    [SerializeField]
+    private InputField displayNameInput;
+    [SerializeField]
+    private InputField usernameRegisterInput;
+    [SerializeField]
+    private InputField passwordRegisterInput;
     [SerializeField]
     private Button loginButton;
     [SerializeField]
     private Button registerButton;
     [SerializeField]
-    private Text errorMessageText;
+    private Text errorMessageLoginText;
+    [SerializeField]
+    private Text errorMessageRegistrationText;
 
     // Start is called before the first frame update
     void Start()
@@ -80,6 +88,7 @@ public class MainMenu : MonoBehaviour
     public void onLoginClick()
     {
         // Try to login using username and password
+        Login();
     }
 
     public void onRegistrationSwitchClick()
@@ -93,6 +102,7 @@ public class MainMenu : MonoBehaviour
     public void onRegistrationClick()
     {
         // Try to register new user account using displayname, username, and password
+        Register();
     }
 
     public void onEasyButtonClick()
@@ -127,8 +137,8 @@ public class MainMenu : MonoBehaviour
     {
         BlockInput();
         AuthenticationRequest request = new AuthenticationRequest();
-        request.SetUserName(userNameInput.text);
-        request.SetPassword(passwordInput.text);
+        request.SetUserName(usernameLoginInput.text);
+        request.SetPassword(passwordLoginInput.text);
         request.Send(OnLoginSuccess, OnLoginError);
     }
 
@@ -141,17 +151,17 @@ public class MainMenu : MonoBehaviour
     private void OnLoginError(AuthenticationResponse response)
     {
         UnblockInput();
-        errorMessageText.color = Color.red;
-        errorMessageText.text = response.Errors.JSON.ToString();
+        errorMessageLoginText.color = Color.red;
+        errorMessageLoginText.text = response.Errors.JSON.ToString();
     }
 
     private void Register()
     {
         BlockInput();
         RegistrationRequest request = new RegistrationRequest();
-        request.SetUserName(userNameInput.text);
-        request.SetDisplayName(userNameInput.text);
-        request.SetPassword(passwordInput.text);
+        request.SetUserName(usernameRegisterInput.text);
+        request.SetDisplayName(displayNameInput.text);
+        request.SetPassword(passwordRegisterInput.text);
         request.Send(OnRegistrationSuccess, OnRegistrationError);
     }
 
@@ -163,22 +173,22 @@ public class MainMenu : MonoBehaviour
     private void OnRegistrationError(RegistrationResponse response)
     {
         UnblockInput();
-        errorMessageText.color = Color.red;
-        errorMessageText.text = response.Errors.JSON.ToString();
+        errorMessageRegistrationText.color = Color.red;
+        errorMessageRegistrationText.text = response.Errors.JSON.ToString();
     }
 
     private void BlockInput()
     {
-        userNameInput.interactable = false;
-        passwordInput.interactable = false;
+        //userNameInput.interactable = false;
+        //passwordInput.interactable = false;
         loginButton.interactable = false;
         registerButton.interactable = false;
     }
 
     private void UnblockInput()
     {
-        userNameInput.interactable = true;
-        passwordInput.interactable = true;
+        //userNameInput.interactable = true;
+        //passwordInput.interactable = true;
         loginButton.interactable = true;
         registerButton.interactable = true;
     }

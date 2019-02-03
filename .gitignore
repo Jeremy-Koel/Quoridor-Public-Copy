@@ -37,3 +37,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.csproj
+Quoridor/Assets/GameCore/GameCore/GameCore.csproj.meta
+Quoridor/Assets/GameCore/GameCore/obj.meta
