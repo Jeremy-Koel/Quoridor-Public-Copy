@@ -4,43 +4,9 @@ using System.Text;
 
 namespace GameCore
 {
-    class Test
+    class CLI
     {
         static void Main(string[] args)
-        {
-            //TestWallPlacement();
-            //TestDiagonalJump();
-            CLI();
-        }
-
-        static void TestWallPlacement()
-        {
-            GameBoard board = GameBoard.GetInstance();
-            board.PlaceWall(GameBoard.PlayerEnum.ONE, new WallCoordinate("a4h"));
-            board.PlaceWall(GameBoard.PlayerEnum.TWO, new WallCoordinate("c4h"));
-            board.PlaceWall(GameBoard.PlayerEnum.ONE, new WallCoordinate("e4h"));
-            board.PlaceWall(GameBoard.PlayerEnum.TWO, new WallCoordinate("e5v"));
-            board.PlaceWall(GameBoard.PlayerEnum.ONE, new WallCoordinate("f5h"));
-            board.PlaceWall(GameBoard.PlayerEnum.TWO, new WallCoordinate("g5v"));
-            board.PlaceWall(GameBoard.PlayerEnum.ONE, new WallCoordinate("h4h")); // This one will not work, and won't be added to board 
-
-            board.PrintBoard();
-            Console.WriteLine();
-            Console.ReadKey();
-        }
-
-        static void TestDiagonalJump()
-        {
-            GameBoard board = GameBoard.GetInstance(GameBoard.PlayerEnum.ONE, "i4", "i5");
-            board.PlaceWall(GameBoard.PlayerEnum.ONE, new WallCoordinate("h3h"));
-            board.MovePiece(GameBoard.PlayerEnum.TWO, new PlayerCoordinate("h4"));
-            
-            board.PrintBoard();
-            Console.WriteLine();
-            Console.ReadKey();
-        }
-
-        static void CLI()
         {
             int currentPlayer = 0, player1walls = 10, player2walls = 10;
             GameBoard board = GameBoard.GetInstance();
@@ -50,9 +16,12 @@ namespace GameCore
             Console.Write("P" + currentPlayer + " 1 for move;  2 for wall;  q for quit:  ");
             input = Console.ReadLine().ToCharArray()[0];
             bool validMove;
-            while (input != 'q') {
-                if (input == '1') {
-                    if (currentPlayer == 1) { 
+            while (input != 'q')
+            {
+                if (input == '1')
+                {
+                    if (currentPlayer == 1)
+                    {
                         do
                         {
                             validMove = true;
@@ -70,7 +39,8 @@ namespace GameCore
                             }
                         } while (validMove == false);
                     }
-                    else if (currentPlayer == 2) {
+                    else if (currentPlayer == 2)
+                    {
                         do
                         {
                             validMove = true;
@@ -89,8 +59,10 @@ namespace GameCore
                         } while (validMove == false);
                     }
                 }
-                else if (input == '2') {
-                    if (currentPlayer == 1 && player1walls > 0) {
+                else if (input == '2')
+                {
+                    if (currentPlayer == 1 && player1walls > 0)
+                    {
                         do
                         {
                             validMove = true;
@@ -108,9 +80,10 @@ namespace GameCore
                                 validMove = false;
                             }
                         } while (validMove == false);
-                        
+
                     }
-                    else if (currentPlayer == 2 && player2walls > 0) {
+                    else if (currentPlayer == 2 && player2walls > 0)
+                    {
                         do
                         {
                             validMove = true;
@@ -131,34 +104,33 @@ namespace GameCore
                     }
                 }
 
-                if (currentPlayer == 1) {
-                    if (player1walls > 0) {
+                if (currentPlayer == 1)
+                {
+                    if (player1walls > 0)
+                    {
                         Console.Write("P1 -- 1 for move;  2 for wall (" + player1walls + ");  q for quit:  ");
                         input = Console.ReadLine().ToCharArray()[0];
                     }
-                    else {
+                    else
+                    {
                         Console.Write("P1 -- 1 for move;  q for quit:  ");
                         input = Console.ReadLine().ToCharArray()[0];
                     }
                 }
-                if (currentPlayer == 2) {
-                    if (player2walls > 0) {
+                if (currentPlayer == 2)
+                {
+                    if (player2walls > 0)
+                    {
                         Console.Write("P2 -- 1 for move;  2 for wall (" + player2walls + ");  q for quit:  ");
                         input = Console.ReadLine().ToCharArray()[0];
                     }
-                    else {
+                    else
+                    {
                         Console.Write("P2 -- 1 for move;  q for quit:  ");
                         input = Console.ReadLine().ToCharArray()[0];
                     }
                 }
             }
         }
-
-
-
-
-
-
-
     }
 }
