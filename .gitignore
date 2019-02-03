@@ -5,6 +5,9 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+Quoridor/Assets/GameCore/GameCore/bin/
+Quoridor/Assets/GameCore/GameCore/obj/
+
 # Visual Studio cache directory
 .vs/
 
@@ -23,6 +26,8 @@ ExportedObj/
 *.svd
 *.pdb
 *.opendb
+*.dll
+*.json
 
 # Unity3D generated meta files
 *.pidb.meta
