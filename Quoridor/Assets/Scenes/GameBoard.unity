@@ -278,7 +278,7 @@ Light:
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 4
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -553,6 +553,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 206327653693800227, guid: debcb2eac1fe53a4c865401fd8edd002,
+        type: 3}
+      propertyPath: m_TagString
+      value: PlayerOneWall
       objectReference: {fileID: 0}
     - target: {fileID: 555651833547019299, guid: debcb2eac1fe53a4c865401fd8edd002,
         type: 3}
@@ -1168,6 +1173,8 @@ MonoBehaviour:
   squarePrefab: {fileID: 1965169440963696845, guid: 17493d3fa448c7b43b23f8c8c135d323,
     type: 3}
   mousePrefab: {fileID: 3055796536910603963, guid: 41f07f1cb3059044194a108e30b6fbd1,
+    type: 3}
+  mousePrefab2: {fileID: 3055796536910603963, guid: 41f07f1cb3059044194a108e30b6fbd1,
     type: 3}
   wallColliderPrefab: {fileID: 1890699698454714318, guid: 19c5a1ae04b3ab944b3a600497e37816,
     type: 3}
@@ -2476,6 +2483,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 206327653693800227, guid: debcb2eac1fe53a4c865401fd8edd002,
+        type: 3}
+      propertyPath: m_TagString
+      value: PlayerTwoWall
       objectReference: {fileID: 0}
     - target: {fileID: 555651833547019299, guid: debcb2eac1fe53a4c865401fd8edd002,
         type: 3}

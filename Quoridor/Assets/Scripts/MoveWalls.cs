@@ -29,7 +29,7 @@ public class MoveWalls : MonoBehaviour
        // Debug.Log("TEST");
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Right CLick");
+           // Debug.Log("Right CLick");
             transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
         }
     }
