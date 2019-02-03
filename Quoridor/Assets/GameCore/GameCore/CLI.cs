@@ -9,11 +9,11 @@ namespace GameCore
         static void Main(string[] args)
         {
             int currentPlayer = 0, player1walls = 10, player2walls = 10;
-            GameBoard board = GameBoard.GetInstance();
+            GameBoard board = new GameBoard("e1", "e9");
             currentPlayer = board.GetWhoseTurn();
             char input;
             string coordinates = "";
-            Console.Write("P" + currentPlayer + " 1 for move;  2 for wall;  q for quit:  ");
+            Console.Write("Player" + currentPlayer + " goes first\n" + "1 for move;  2 for wall;  q for quit:  ");
             input = Console.ReadLine().ToCharArray()[0];
             bool validMove;
             while (input != 'q')

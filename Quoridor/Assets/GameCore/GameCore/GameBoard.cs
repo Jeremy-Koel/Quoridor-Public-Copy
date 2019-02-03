@@ -12,9 +12,7 @@ namespace GameCore
         public static char PLAYER_2 = '2';
         public static int TOTAL_ROWS = 17;
         public static int TOTAL_COLS = 17;
-
-        private static GameBoard instance;
-
+        
         private PlayerCoordinate playerOneLocation;
         private PlayerCoordinate playerTwoLocation;
         private char[,] board;
@@ -52,24 +50,6 @@ namespace GameCore
                 whoseTurn = PlayerEnum.TWO;
         }
 
-        public static GameBoard GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new GameBoard("e1", "e9");
-            }
-            return instance;
-        }
-
-        public static GameBoard GetInstance(PlayerEnum startingPlayer, string playerOneStart, string playerTwoStart)
-        {
-            if (instance == null)
-            {
-                instance = new GameBoard(startingPlayer, playerOneStart, playerTwoStart);
-            }
-            return instance;
-        }
-
         private void InitializeBoard(string playerOneStart, string playerTwoStart)
         {
             gameOver = false;
@@ -97,14 +77,14 @@ namespace GameCore
             }
         }
 
-        private GameBoard(string playerOneStart, string playerTwoStart)
+        public GameBoard(string playerOneStart, string playerTwoStart)
         {
             SetPlayerTurnRandom();
             InitializeBoard(playerOneStart, playerTwoStart);
         }
 
 
-        private GameBoard(PlayerEnum startingPlayer, string playerOneStart, string playerTwoStart)
+        public GameBoard(PlayerEnum startingPlayer, string playerOneStart, string playerTwoStart)
         {
             whoseTurn = startingPlayer;
             InitializeBoard(playerOneStart, playerTwoStart);
