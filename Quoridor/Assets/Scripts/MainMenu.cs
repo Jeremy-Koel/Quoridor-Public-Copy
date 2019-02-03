@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using GameSparks.Api.Requests;
+using GameSparks.Api.Responses;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +17,17 @@ public class MainMenu : MonoBehaviour
     //public GameObject previousPanel;
     //public GameObject currentPanel;
     public Stack<GameObject> panelOrder;
+
+    [SerializeField]
+    private InputField userNameInput;
+    [SerializeField]
+    private InputField passwordInput;
+    [SerializeField]
+    private Button loginButton;
+    [SerializeField]
+    private Button registerButton;
+    [SerializeField]
+    private Text errorMessageText;
 
     // Start is called before the first frame update
     void Start()
@@ -107,5 +120,66 @@ public class MainMenu : MonoBehaviour
 
         disableScreen.SetActive(false);
         enableScreen.SetActive(true);
+    }
+
+    // Login/Registration
+    private void Login()
+    {
+        BlockInput();
+        AuthenticationRequest request = new AuthenticationRequest();
+        request.SetUserName(userNameInput.text);
+        request.SetPassword(passwordInput.text);
+        request.Send(OnLoginSuccess, OnLoginError);
+    }
+
+    private void OnLoginSuccess(AuthenticationResponse response)
+    {
+        UnblockInput();
+        Debug.Log(response.UserId);
+    }
+
+    private void OnLoginError(AuthenticationResponse response)
+    {
+        UnblockInput();
+        errorMessageText.color = Color.red;
+        errorMessageText.text = response.Errors.JSON.ToString();
+    }
+
+    private void Register()
+    {
+        BlockInput();
+        RegistrationRequest request = new RegistrationRequest();
+        request.SetUserName(userNameInput.text);
+        request.SetDisplayName(userNameInput.text);
+        request.SetPassword(passwordInput.text);
+        request.Send(OnRegistrationSuccess, OnRegistrationError);
+    }
+
+    private void OnRegistrationSuccess(RegistrationResponse response)
+    {
+        Login();
+    }
+
+    private void OnRegistrationError(RegistrationResponse response)
+    {
+        UnblockInput();
+        errorMessageText.color = Color.red;
+        errorMessageText.text = response.Errors.JSON.ToString();
+    }
+
+    private void BlockInput()
+    {
+        userNameInput.interactable = false;
+        passwordInput.interactable = false;
+        loginButton.interactable = false;
+        registerButton.interactable = false;
+    }
+
+    private void UnblockInput()
+    {
+        userNameInput.interactable = true;
+        passwordInput.interactable = true;
+        loginButton.interactable = true;
+        registerButton.interactable = true;
     }
 }
