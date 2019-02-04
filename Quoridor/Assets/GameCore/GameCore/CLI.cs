@@ -9,11 +9,13 @@ namespace GameCore
         static void Main(string[] args)
         {
             int currentPlayer = 0, player1walls = 10, player2walls = 10;
-            GameBoard board = new GameBoard("e1", "e9");
+            GameBoard board = new GameBoard("e4", "e5");
             currentPlayer = board.GetWhoseTurn();
             char input;
             string coordinates = "";
-            Console.Write("Player" + currentPlayer + " goes first\n" + "1 for move;  2 for wall;  q for quit:  ");
+            Console.WriteLine("Player " + currentPlayer + " goes first!");
+            board.PrintBoard();
+            Console.Write("1 for move;  2 for wall;  q for quit:  ");
             input = Console.ReadLine().ToCharArray()[0];
             bool validMove;
             while (input != 'q')
@@ -34,7 +36,7 @@ namespace GameCore
                             }
                             else
                             {
-                                Console.Write("Invalid move. Try again;  ");
+                                Console.WriteLine("Invalid move. Try again.  ");
                                 validMove = false;
                             }
                         } while (validMove == false);
@@ -53,7 +55,7 @@ namespace GameCore
                             }
                             else
                             {
-                                Console.Write("Invalid move. Try again;  ");
+                                Console.WriteLine("Invalid move. Try again.  ");
                                 validMove = false;
                             }
                         } while (validMove == false);
@@ -76,7 +78,7 @@ namespace GameCore
                             }
                             else
                             {
-                                Console.Write("Invalid wall. Try again;  ");
+                                Console.WriteLine("Invalid wall. Try again.  ");
                                 validMove = false;
                             }
                         } while (validMove == false);
@@ -97,7 +99,7 @@ namespace GameCore
                             }
                             else
                             {
-                                Console.Write("Invalid wall. Try again;  ");
+                                Console.WriteLine("Invalid wall. Try again.  ");
                                 validMove = false;
                             }
                         } while (validMove == false);

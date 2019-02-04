@@ -174,8 +174,6 @@ namespace GameCore
             }
             gameOver = playerOneWin || playerTwoWin;
 
-            // Mark that this player has taken their turn 
-            // changeTurn();
             return retValue;
         }
 
@@ -254,7 +252,7 @@ namespace GameCore
             }
 
             bool onPlayerSpace = IsMoveOnOpenSpace(player, destination);
-            bool notBlocked = !IsMoveBlocked(start, destination);
+            bool blocked = IsMoveBlocked(start, destination);
             bool canReach = IsDestinationAdjacent(start, destination);
             if (!canReach)
             {
@@ -262,7 +260,7 @@ namespace GameCore
             }
             
             return onPlayerSpace
-                && notBlocked
+                && !blocked
                 && canReach;
         }
 
@@ -294,9 +292,9 @@ namespace GameCore
 
         private bool IsDestinationAdjacent(PlayerCoordinate start, PlayerCoordinate destination)
         {
-            bool diffRow = Math.Abs(destination.Row - start.Row) == 2;
-            bool diffCol = Math.Abs(destination.Col - start.Col) == 2;
-            return diffRow || diffCol; // Only north south east and west are considered adjacent 
+            bool verticalMove = (Math.Abs(destination.Row - start.Row) == 2) && (Math.Abs(destination.Col - start.Col) == 0);
+            bool horizontalMove = (Math.Abs(destination.Col - start.Col) == 2) && (Math.Abs(destination.Row - start.Row) == 0);
+            return verticalMove ^ horizontalMove; // Only north south east west are considered adjacent 
         }
 
         private bool IsMoveBlocked(PlayerCoordinate start, PlayerCoordinate destination)
@@ -350,7 +348,7 @@ namespace GameCore
 
             // Diagonal jump? 
             bool diagonalJump = false;
-            char opponentChar = (player == PlayerEnum.ONE) ? PLAYER_1 : PLAYER_2;   
+            char opponentChar = (player == PlayerEnum.ONE) ? PLAYER_2 : PLAYER_1;
             if (start.Row != destination.Row && start.Col != destination.Col)
             {
                 if (destination.Row == start.Row - 2 && destination.Col == start.Col + 2) // NE
