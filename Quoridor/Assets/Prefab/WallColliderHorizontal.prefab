@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4153233647805862627}
   - component: {fileID: 4887396039289819190}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WallColliderHorizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}

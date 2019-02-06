@@ -57,7 +57,8 @@ public class MoveWalls : MonoBehaviour
     {
         if(hits.Length == 1)
         {
-            if (System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) >= transform.localEulerAngles.z - 10)
+            //if (System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) >= transform.localEulerAngles.z - 10)
+            if(transform.localScale.x == hits[0].transform.localScale.x && transform.localScale.y == hits[0].transform.localScale.y)
             {
                 transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
             }
@@ -76,11 +77,12 @@ public class MoveWalls : MonoBehaviour
 
             foreach (Collider hit in hits)
             {
-                float colliderRotation = System.Math.Abs(hit.transform.localEulerAngles.z - 180);
-                float wallRotation = System.Math.Abs(transform.localEulerAngles.z);
+                //float colliderRotation = System.Math.Abs(hit.transform.localEulerAngles.z - 180);
+                //float wallRotation = System.Math.Abs(transform.localEulerAngles.z);
 
 
-                if (System.Math.Abs(hit.transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hit.transform.localEulerAngles.z -180) >= transform.localEulerAngles.z - 10)
+                //if (System.Math.Abs(hit.transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hit.transform.localEulerAngles.z -180) >= transform.localEulerAngles.z - 10)
+                if (transform.localScale.x == hit.transform.localScale.x && transform.localScale.y == hit.transform.localScale.y)
                 {
                     diffx = System.Math.Abs(transform.position.x - hit.transform.position.x);
                     diffy = System.Math.Abs(transform.position.y - hit.transform.position.y);
