@@ -5,39 +5,66 @@ using UnityEngine;
 public class ClickSquare : MonoBehaviour
 {
     public GameObject mouse;
-    private bool mouseSelected;
-    private ClickMouse test;
+    public GameObject mouse2;
+  
+    private ClickMouse clickMouseScript;
+    private ClickMouse clickMouseScript2;
 
     // Start is called before the first frame update
     void Start()
     {
         //Debug.Log("ADDED");
         mouse = GameObject.Find("playerMouse");
+        mouse2 = GameObject.Find("playerMouse2");
 
-        test = mouse.GetComponent<ClickMouse>();
+        clickMouseScript = mouse.GetComponent<ClickMouse>();
+        clickMouseScript2 = mouse2.GetComponent<ClickMouse>();
 
-        
-        mouseSelected = false;
+       
+
+        // mouseSelected = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(test.mouseSelected)
-        {
-            Debug.Log("Clicked Mouse");
-        }
+       
 
     }
 
     private void OnMouseUp()
     {
-        Debug.Log(this.name);
-        mouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+    
+            //Debug.Log(this.name);
+            if (clickMouseScript.mouseSelected)
+            {
+                if (mouse.transform.position.x != this.transform.position.x || mouse.transform.position.y != this.transform.position.y)
+                {
+                    mouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                    OnClickToggleMouse();
+                }
+            }
+        
+             if (clickMouseScript2.mouseSelected)
+            {
+                if (mouse2.transform.position.x != this.transform.position.x || mouse2.transform.position.y != this.transform.position.y)
+                {
+                    mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                    OnClickToggleMouse2();
+                }
+            }
+        
     }
 
     public void OnClickToggleMouse()
     {
-        mouseSelected = !mouseSelected;
+
+        clickMouseScript.mouseSelected = !clickMouseScript.mouseSelected;
+    }
+
+    public void OnClickToggleMouse2()
+    {
+        clickMouseScript2.mouseSelected = !clickMouseScript2.mouseSelected;
+        
     }
 }
