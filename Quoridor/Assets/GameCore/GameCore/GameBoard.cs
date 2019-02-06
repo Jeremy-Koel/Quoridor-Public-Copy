@@ -348,50 +348,32 @@ namespace GameCore
 
             // Diagonal jump? 
             bool diagonalJump = false;
-            PlayerCoordinate opponent;
-            if (player == PlayerEnum.ONE)
-            {
-                opponent = new PlayerCoordinate(playerTwoLocation.Row, playerTwoLocation.Col);
-            }
-            else
-            {
-                opponent = new PlayerCoordinate(playerOneLocation.Row, playerTwoLocation.Col);
-            }
-
+            char opponentChar = (player == PlayerEnum.ONE) ? PLAYER_2 : PLAYER_1;
             if (start.Row != destination.Row && start.Col != destination.Col)
             {
-                int targetOppRow, targetOppoCol;
                 if (destination.Row == start.Row - 2 && destination.Col == start.Col + 2) // NE
                 {
-                    targetOppRow = start.Row - 2;
-                    targetOppoCol = start.Col + 2;
-                    diagonalJump = 
-                        ((opponent.Row == targetOppRow && opponent.Col == start.Col) || (opponent.Row == start.Row && opponent.Col == targetOppoCol))
+                    diagonalJump =
+                        (board[destination.Row - 2, destination.Col] == opponentChar || board[destination.Row, destination.Col + 2] == opponentChar)
                         && (board[start.Row - 3, start.Col] == WALL || board[start.Row, start.Col + 3] == WALL);
                 }
                 else if (destination.Row == start.Row - 2 && destination.Col == start.Col - 2) // NW
                 {
-                    targetOppRow = start.Row - 2;
-                    targetOppoCol = start.Col - 2;
-                    diagonalJump = 
-                        ((opponent.Row == targetOppRow && opponent.Col == start.Col) || (opponent.Row == start.Row && opponent.Col == targetOppoCol))
+                    diagonalJump =
+                        (board[destination.Row - 2, destination.Col] == opponentChar || board[destination.Row, destination.Col - 2] == opponentChar)
                         && (board[start.Row - 3, start.Col] == WALL || board[start.Row, start.Col - 3] == WALL);
                 }
                 else if (destination.Row == start.Row + 2 && destination.Col == start.Col - 2) // SW
                 {
-                    targetOppRow = start.Row + 2;
-                    targetOppoCol = start.Col - 2;
-                    diagonalJump = 
-                        ((opponent.Row == targetOppRow && opponent.Col == start.Col) || (opponent.Row == start.Row && opponent.Col == targetOppoCol))
-                        && (board[start.Row + 3, start.Col] == WALL || board[start.Row, start.Col - 3] == WALL);
+                    diagonalJump =
+                        (board[destination.Row + 2, destination.Col] == opponentChar || board[destination.Row, destination.Col - 2] == opponentChar)
+                        && (board[start.Row,start.Col-3] == WALL || board[start.Row+3,start.Col] == WALL);
                 }
                 else if (destination.Row == start.Row + 2 && destination.Col == start.Col + 2) // SE 
                 {
-                    targetOppRow = start.Row + 2;
-                    targetOppoCol = start.Col + 2;
                     diagonalJump =
-                        ((opponent.Row == targetOppRow && opponent.Col == start.Col) || (opponent.Row == start.Row && opponent.Col == targetOppoCol))
-                        && (board[start.Row + 3, start.Col] == WALL || board[start.Row, start.Col + 3] == WALL);
+                        (board[destination.Row + 2, destination.Col] == opponentChar || board[destination.Row, destination.Col + 2] == opponentChar)
+                        && (board[start.Row,start.Col+3] == WALL || board[start.Row+3,start.Col] == WALL);
                 }
             }
 
