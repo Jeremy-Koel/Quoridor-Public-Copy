@@ -72,12 +72,14 @@ namespace GameCore
     }
     class MonteCarlo
     {
-        static void Main()
+        static MonteCarlo()
         {
             MonteCarloNode insertTest = new MonteCarloNode(new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9"));
+
             insertTest.InsertChild("e2");
             insertTest.InsertChild("e4h");
             insertTest.InsertChild("e6v");
         }
+
     }
 }
