@@ -30,9 +30,11 @@ public class MoveWalls : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             // Debug.Log("Right CLick");
-           // this.transform.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
-            transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
-            
+            // this.transform.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
+            //transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
+
+
+            transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
         }
     }
 

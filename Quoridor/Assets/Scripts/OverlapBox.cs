@@ -1,4 +1,5 @@
-﻿//Attach this script to your GameObject. This GameObject doesn’t need to have a Collider component
+﻿//https://docs.unity3d.com/ScriptReference/Physics.OverlapBox.html
+//Attach this script to your GameObject. This GameObject doesn’t need to have a Collider component
 //Set the Layer Mask field in the Inspector to the layer you would like to see collisions in (set to Everything if you are unsure).
 //Create a second Gameobject for testing collisions. Make sure your GameObject has a Collider component (if it doesn’t, click on the Add Component button in the GameObject’s Inspector, and go to Physics>Box Collider).
 //Place it so it is overlapping your other GameObject.
@@ -28,16 +29,18 @@ public class OverlapBox : MonoBehaviour
     {
         //Use the OverlapBox to detect if there are any other colliders within this box area.
         //Use the GameObject's centre, half the size (as a radius) and rotation. This creates an invisible box around your GameObject.
-        Collider[] hitColliders = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, Quaternion.identity, m_LayerMask);
-       // int i = 0;
+        Collider[] hitColliders = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, gameObject.transform.rotation, m_LayerMask);
+
+       
+        // int i = 0;
         //Check when there is a new collider coming into contact with the box
-       // while (i < hitColliders.Length)
-       // {
-            //Output all of the collider names
-           // Debug.Log("Hit : " + hitColliders[i].name + i);
-            //Increase the number of Colliders in the array
-           // i++;
-       // }
+        // while (i < hitColliders.Length)
+        // {
+        //Output all of the collider names
+        // Debug.Log("Hit : " + hitColliders[i].name + i);
+        //Increase the number of Colliders in the array
+        // i++;
+        // }
 
         return hitColliders;
     }
@@ -50,6 +53,7 @@ public class OverlapBox : MonoBehaviour
         if (m_Started)
             //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
             Gizmos.DrawWireCube(transform.position, transform.localScale);
+        
     }
 
     private void OnMouseUp()
@@ -57,6 +61,7 @@ public class OverlapBox : MonoBehaviour
         Collider[] hits = MyCollisions();
 
         SendMessage("SnapWallToPlace", hits, SendMessageOptions.DontRequireReceiver);
+
 
     }
 }

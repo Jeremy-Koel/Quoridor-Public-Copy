@@ -11,7 +11,9 @@ public class CreateBoard : MonoBehaviour
 
     public GameObject mousePrefab2;
 
-    public GameObject wallColliderPrefab;
+    public GameObject wallColliderVerticalPrefab;
+
+    public GameObject wallColliderHorizontalPrefab;
 
     public GameObject gameBoardWrapper;
 
@@ -57,14 +59,14 @@ public class CreateBoard : MonoBehaviour
         if (piece.name[0] != '0' && piece.name[2] != '8')
         {
             Vector3 newPos = new Vector3(piece.transform.position.x + 1.8f, piece.transform.position.y + 1.8f, -0.6f);
-            GameObject wallCollHorizontal = Instantiate(wallColliderPrefab) as GameObject;
-            GameObject wallCollVertical = Instantiate(wallColliderPrefab) as GameObject;
-            wallCollHorizontal.transform.Rotate(new Vector3(0, 0, 90));
+            GameObject wallCollHorizontal = Instantiate(wallColliderHorizontalPrefab) as GameObject;
+            GameObject wallCollVertical = Instantiate(wallColliderVerticalPrefab) as GameObject;
+            //wallCollHorizontal.transform.Rotate(new Vector3(0, 0, 90));
             wallCollHorizontal.transform.position = newPos;
-            wallCollHorizontal.name = piece.name + "v";
+            wallCollHorizontal.name = piece.name + "h";
             wallCollVertical.transform.position = newPos;
-            //wallCollVertical.transform.Rotate(new Vector3(0, 0, 0));
-            wallCollVertical.name = piece.name + "h";
+            ////wallCollVertical.transform.Rotate(new Vector3(0, 0, 0));
+            wallCollVertical.name = piece.name + "v";
 
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
             wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);
