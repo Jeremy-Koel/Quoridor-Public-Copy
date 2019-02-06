@@ -98,11 +98,23 @@ public class MoveWalls : MonoBehaviour
                         closest = hit;
                     }
 
-                    if (diffy < lowestDiffY)
+                    if (transform.localScale.x == 0.7f)
                     {
-                        lowestDiffX = diffx;
-                        lowestDiffY = diffy;
-                        closest = hit;
+                        if (diffy < lowestDiffY)
+                        {
+                            lowestDiffX = diffx;
+                            lowestDiffY = diffy;
+                            closest = hit;
+                        }
+                    }
+                    else if(transform.localScale.x == 6f)
+                    {
+                        if(diffx < lowestDiffX)
+                        {
+                            lowestDiffX = diffx;
+                            lowestDiffY = diffy;
+                            closest = hit;
+                        }
                     }
                 }
             }
