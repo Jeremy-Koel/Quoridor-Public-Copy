@@ -29,8 +29,10 @@ public class MoveWalls : MonoBehaviour
        // Debug.Log("TEST");
         if (Input.GetMouseButtonDown(1))
         {
-           // Debug.Log("Right CLick");
+            // Debug.Log("Right CLick");
+           // this.transform.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
             transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
+            
         }
     }
 
@@ -53,7 +55,14 @@ public class MoveWalls : MonoBehaviour
     {
         if(hits.Length == 1)
         {
-            transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
+            if (System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) >= transform.localEulerAngles.z - 10)
+            {
+                transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
+            }
+            else
+            {
+                transform.position = startPos;
+            }
         }
         else if (hits.Length > 1)
         {
