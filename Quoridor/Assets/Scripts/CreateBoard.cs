@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CreateBoard : MonoBehaviour
 {
+    private Controller controller;
+
     public GameObject[,] gameBoard = new GameObject[9,9];
     public GameObject squarePrefab;
 
@@ -22,6 +24,7 @@ public class CreateBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        controller = GameObject.Find("GameController").GetComponent<Controller>();
         generateCubes();
         generatePlayer();
         addScriptToWalls();
@@ -48,6 +51,7 @@ public class CreateBoard : MonoBehaviour
 
                 piece.transform.SetParent(gameBoardWrapper.transform);
 
+                controller.AddSpace(piece);
             }
 
             
