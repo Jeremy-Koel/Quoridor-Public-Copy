@@ -33,4 +33,27 @@ public class Controller : MonoBehaviour
     {
         return gameBoard.MovePiece(player, coordMap[spaceName]);
     }
+
+    public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
+    {
+        string[] strs = spaceName.Split(',');
+        int x = int.Parse(strs[0]) * 2;
+        int y = int.Parse(strs[1][0].ToString()) * 2;
+        char c = strs[1][1];
+        return gameBoard.PlaceWall(player, new WallCoordinate(x, y, c));
+    }
+
+
+
+    public GameBoard.PlayerEnum GetWhoseTurn()
+    {
+        if (gameBoard.GetWhoseTurn() == 1)
+        {
+            return GameBoard.PlayerEnum.ONE;
+        }
+        else
+        {
+            return GameBoard.PlayerEnum.TWO;
+        }
+    }
 }

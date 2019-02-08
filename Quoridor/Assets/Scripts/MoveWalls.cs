@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameCore;
 
 public class MoveWalls : MonoBehaviour
 {
@@ -9,18 +10,41 @@ public class MoveWalls : MonoBehaviour
     private Vector3 screenPoint;
     private Vector3 offset;
     private Vector3 startPos;
+    private Controller controller;
+    private string wallTag;
+    private BoxCollider2D wallCollider;
+    private bool lockPlace;
+   // GameBoard.PlayerEnum player;
 
     // Start is called before the first frame update
     void Start()
     {
+       // GameBoard.PlayerEnum player = controller.GetWhoseTurn();
         playerOne = GameObject.Find("playerMouse");
+        controller = GameObject.Find("GameController").GetComponent<Controller>();
         startPos = transform.position;
+        wallTag = this.tag;
+        wallCollider = GetComponent<BoxCollider2D>();
+        lockPlace = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+        if (player == GameBoard.PlayerEnum.ONE && wallTag == "PlayerOneWall" && !lockPlace) 
+        {
+            wallCollider.enabled = true;
+        }
+        else if(player == GameBoard.PlayerEnum.TWO && wallTag == "PlayerTwoWall" && !lockPlace)
+        {
+            wallCollider.enabled = true;
+        }
+        else
+        {
+            wallCollider.enabled = false;
+        }
+
     }
 
 
@@ -55,12 +79,14 @@ public class MoveWalls : MonoBehaviour
 
     void SnapWallToPlace(Collider[] hits)
     {
-        if(hits.Length == 1)
+        Collider closest = null;
+
+        if (hits.Length == 1)
         {
             //if (System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) >= transform.localEulerAngles.z - 10)
             if(transform.localScale.x == hits[0].transform.localScale.x && transform.localScale.y == hits[0].transform.localScale.y)
             {
-                transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
+                closest = hits[0];
             }
             else
             {
@@ -69,7 +95,7 @@ public class MoveWalls : MonoBehaviour
         }
         else if (hits.Length > 1)
         {
-            Collider closest = null;
+           
             float lowestDiffX = 0;
             float lowestDiffY = 0;
             float diffx = 0;
@@ -119,21 +145,32 @@ public class MoveWalls : MonoBehaviour
                 }
             }
 
-            if(closest == null)
-            {
-                transform.position = startPos;
-            }
-            else
-            {
-                transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
-            }
+            
 
            
 
             // transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
         }
-        else if(hits.Length == 0)
+        //else if(hits.Length == 0)
+        //{
+
+        //    transform.position = startPos;
+        //}
+
+        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+
+        if (closest != null && controller.IsValidWallPlacement(player, closest.name))
         {
+            transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
+            lockPlace = true;
+        }
+        else
+        {
+            if (transform.localScale.x == 6)
+            {
+                transform.localScale = new Vector3(.7f, 6, -.7f);
+            }
+
             transform.position = startPos;
         }
     }
