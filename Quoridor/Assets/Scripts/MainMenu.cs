@@ -1,5 +1,7 @@
-﻿using GameSparks.Api.Requests;
+﻿using GameSparks.Api.Messages;
+using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +16,7 @@ public class MainMenu : MonoBehaviour
     public GameObject settingsPanel;
     public GameObject loginPanel;
     public GameObject registrationPanel;
+    public GameObject lobbyPanel;
     //public GameObject previousPanel;
     //public GameObject currentPanel;
     public Stack<GameObject> panelOrder;
@@ -37,6 +40,17 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Text errorMessageRegistrationText;
 
+    private void Awake()
+    {
+        ChallengeStartedMessage.Listener += OnChallengeStarted;
+        ChallengeIssuedMessage.Listener += OnChallengeIssued;
+    }
+
+    void OnDestroy()
+    {
+        ChallengeStartedMessage.Listener -= OnChallengeStarted;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +60,7 @@ public class MainMenu : MonoBehaviour
         settingsPanel = GameObject.Find("SettingsPanel");
         loginPanel = GameObject.Find("LoginPanel");
         registrationPanel = GameObject.Find("RegistrationPanel");
+        lobbyPanel = GameObject.Find("LobbyPanel");
         // previousPanel = new GameObject();
         //currentPanel = new GameObject();
         panelOrder = new Stack<GameObject>();
@@ -56,6 +71,7 @@ public class MainMenu : MonoBehaviour
         settingsPanel.SetActive(false);
         loginPanel.SetActive(false);
         registrationPanel.SetActive(false);
+        lobbyPanel.SetActive(false);
     }
 
     public void onPlayButtonClick()
@@ -132,6 +148,50 @@ public class MainMenu : MonoBehaviour
         enableScreen.SetActive(true);
     }
 
+    public void onMatchMakingButtonClick()
+    {
+        Debug.Log("Making/sending matchmaking request");
+        MatchmakingRequest request = new MatchmakingRequest();
+        request.SetMatchShortCode("DefaultMatch");
+        request.SetSkill(0);
+        request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+    }
+
+    public void OnMatchmakingSuccess(MatchmakingResponse response)
+    {
+        Debug.Log("Matchmaking Success");
+    }
+
+    public void OnMatchmakingError(MatchmakingResponse response)
+    {
+        Debug.Log("Matchmaking Error");
+    }
+
+    private void OnChallengeIssued(ChallengeIssuedMessage message)
+    {
+        Debug.Log("On Challenge Issued");
+        var challengeInstaceId = message.Challenge.ChallengeId;
+        Debug.Log("This challenge ID: " + challengeInstaceId);
+        if (challengeInstaceId != null)
+        {
+            new AcceptChallengeRequest()
+                .SetChallengeInstanceId(challengeInstaceId)
+                //.SetMessage(message)
+                .Send((response) => {
+                    //string challengeInstanceId = response.ChallengeInstanceId;
+                    //GSData scriptData = response.ScriptData;
+                });
+        }
+    }
+
+    private void OnChallengeStarted(ChallengeStartedMessage message)
+    {
+        Debug.Log("Challenge Started");
+        // Switch to GameBoard Scene connected to opponent
+        SceneManager.LoadScene("GameBoard");
+
+    }
+
     // Login/Registration
     private void Login()
     {
@@ -145,7 +205,18 @@ public class MainMenu : MonoBehaviour
     private void OnLoginSuccess(AuthenticationResponse response)
     {
         UnblockInput();
+        // Set the User's ID to an object for referencing later
         Debug.Log(response.UserId);
+        GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
+        GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
+        gameSparksUserIDScript.myUserID = response.UserId;
+        // Switch to the Lobby Panel
+        //SceneManager.LoadScene("GameBoard");
+        panelOrder.Push(loginPanel);
+        loginPanel.SetActive(false);
+        registrationPanel.SetActive(false);
+        panelOrder.Push(lobbyPanel);
+        lobbyPanel.SetActive(true);
     }
 
     private void OnLoginError(AuthenticationResponse response)
