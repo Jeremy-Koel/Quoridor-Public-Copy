@@ -31,6 +31,20 @@ public class ClickSquare : MonoBehaviour
 
     }
 
+    private void OnMouseEnter()
+    {
+        transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
+        GameObject highlight = transform.GetChild(0).gameObject;
+        highlight.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
+        GameObject highlight = transform.GetChild(0).gameObject;
+        highlight.SetActive(false);
+    }
+
     private void OnMouseUp()
     {
         Controller controller = gameObject.GetComponentInParent<Controller>();

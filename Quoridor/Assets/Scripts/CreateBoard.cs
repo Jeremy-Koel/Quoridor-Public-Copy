@@ -9,6 +9,8 @@ public class CreateBoard : MonoBehaviour
     public GameObject[,] gameBoard = new GameObject[9,9];
     public GameObject squarePrefab;
 
+    public GameObject highlightSquarePrefab;
+
     public GameObject mousePrefab;
 
     public GameObject mousePrefab2;
@@ -52,6 +54,13 @@ public class CreateBoard : MonoBehaviour
                 piece.transform.SetParent(gameBoardWrapper.transform);
 
                 controller.AddSpace(piece);
+
+                GameObject highlightPiece = Instantiate(highlightSquarePrefab) as GameObject;
+
+                
+                highlightPiece.transform.position = new Vector3(piece.transform.position.x, piece.transform.position.y, -.19f);
+                highlightPiece.transform.SetParent(piece.transform);
+                highlightPiece.SetActive(false);
             }
 
             
