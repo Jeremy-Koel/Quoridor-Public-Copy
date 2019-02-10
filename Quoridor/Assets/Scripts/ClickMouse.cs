@@ -6,11 +6,13 @@ public class ClickMouse : MonoBehaviour
 {
 
     public bool mouseSelected;
+    private bool cursorOnMouse;
 
     // Start is called before the first frame update
     void Start()
     {
         mouseSelected = false;
+        cursorOnMouse = false;
     }
 
 
@@ -56,11 +58,27 @@ public class ClickMouse : MonoBehaviour
             }
 
         }
+
+        if(Input.GetMouseButtonUp(0) && !cursorOnMouse)
+        {
+            mouseSelected = false;
+            Debug.Log("Update Mouse");
+        }
     }
 
+    private void OnMouseEnter()
+    {
+        cursorOnMouse = true;
+    }
+
+    private void OnMouseExit()
+    {
+        cursorOnMouse = false;
+    }
     private void OnMouseUp()
     {
-        mouseSelected = !mouseSelected;   
+        mouseSelected = true;
+        Debug.Log("ButtonMouse");
         //gameObject.SendMessage("OnClickToggleMouse", SendMessageOptions.DontRequireReceiver);
     }
 }

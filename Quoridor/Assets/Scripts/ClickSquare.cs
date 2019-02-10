@@ -11,6 +11,8 @@ public class ClickSquare : MonoBehaviour
     private ClickMouse clickMouseScript;
     private ClickMouse clickMouseScript2;
 
+    private Controller controller;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class ClickSquare : MonoBehaviour
         clickMouseScript = mouse.GetComponent<ClickMouse>();
         clickMouseScript2 = mouse2.GetComponent<ClickMouse>();
 
+        controller = gameObject.GetComponentInParent<Controller>();
         // mouseSelected = false;
     }
 
@@ -33,6 +36,8 @@ public class ClickSquare : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        //TODO
+        //controller.IsValidMove...
         transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
         GameObject highlight = transform.GetChild(0).gameObject;
         highlight.SetActive(true);
@@ -47,26 +52,36 @@ public class ClickSquare : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Controller controller = gameObject.GetComponentInParent<Controller>();
+        
         //Debug.Log(this.name);
         if (clickMouseScript.mouseSelected)
         {
-            if ((mouse.transform.position.x != this.transform.position.x || mouse.transform.position.y != this.transform.position.y)
-                && controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
+            if ((mouse.transform.position.x != this.transform.position.x || mouse.transform.position.y != this.transform.position.y))
             {
-                mouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                OnClickToggleMouse();
+                if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
+                {
+                    mouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                }
+
+                //OnClickToggleMouse();
             }
+
+            
         }
         
         if (clickMouseScript2.mouseSelected)
         {
-            if ((mouse2.transform.position.x != this.transform.position.x || mouse2.transform.position.y != this.transform.position.y)
-                && controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
+            if ((mouse2.transform.position.x != this.transform.position.x || mouse2.transform.position.y != this.transform.position.y))
             {
-                mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                OnClickToggleMouse2();
+                if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
+                {
+                    mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                }
+
+               // OnClickToggleMouse2();
             }
+
+            
         }
         
     }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1749,6 +1749,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squarePrefab: {fileID: 1965169440963696845, guid: 17493d3fa448c7b43b23f8c8c135d323,
+    type: 3}
+  highlightSquarePrefab: {fileID: 4797780460185461147, guid: 218004d3e6e464e4a8e6bb2007070354,
     type: 3}
   mousePrefab: {fileID: 3055796536910603963, guid: 41f07f1cb3059044194a108e30b6fbd1,
     type: 3}
