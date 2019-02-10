@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98606ce909f05584d99fd59370db7317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuPanel: {fileID: 0}
+  mainMenuPanel: {fileID: 332104756}
   playModePanel: {fileID: 0}
   difficultyLevelPanel: {fileID: 0}
   settingsPanel: {fileID: 0}

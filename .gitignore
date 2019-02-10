@@ -40,3 +40,4 @@ sysinfo.txt
 *.csproj
 Quoridor/Assets/GameCore/GameCore/GameCore.csproj.meta
 Quoridor/Assets/GameCore/GameCore/obj.meta
+Quoridor/Assets/Scripts/GameSparksUserID.cs.meta
