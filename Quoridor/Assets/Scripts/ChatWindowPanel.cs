@@ -12,11 +12,19 @@ using UnityEngine.UI;
 public class ChatWindowPanel : MonoBehaviour
 {
     private GSEnumerable<GetMyTeamsResponse._Team> teams = null;
+
     GameObject chatInput;
+    GameObject chatMessagesView;
+    GameObject chatMessagesViewContent;
+    List<Text> chatMessages;
+    Text textMessage;
+
 
     private void Awake()
     {
         chatInput = GameObject.Find("ChatInput");
+        chatMessagesView = GameObject.Find("ChatMessagesView");
+        //chatMessagesViewContent = chatMessagesView.GetComponent <>
         TeamChatMessage.Listener += ChatMessageReceived;
     }
 
@@ -25,13 +33,13 @@ public class ChatWindowPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void JoinGlobalTeam()
@@ -74,7 +82,7 @@ public class ChatWindowPanel : MonoBehaviour
 
     void CheckedTeams(GetMyTeamsResponse response)
     {
-        teams = response.Teams;        
+        teams = response.Teams;
         Debug.Log(teams);
         JoinGlobalTeam();
     }
@@ -88,7 +96,7 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             Debug.Log("Joined Global Team");
-        }        
+        }
     }
 
     public void OnChatInputSend()
@@ -123,5 +131,18 @@ public class ChatWindowPanel : MonoBehaviour
     {
         Debug.Log("Team chat message recieved: " + message.Message);
         Debug.Log("Message sent by: " + message.Who);
+        ChatMessagesFull();
+        Text messageText = Instantiate(textMessage) as Text;
+        messageText.text = ("<b>" + message.Who + ":</b> " + message.Message);
+        chatMessages.Add(messageText);
+    }
+
+    private void ChatMessagesFull()
+    {
+        if (chatMessages.Count == 5)
+        {
+            Debug.Log("Deleting earliest chat message");
+            chatMessages.RemoveAt(0);
+        }
     }
 }
