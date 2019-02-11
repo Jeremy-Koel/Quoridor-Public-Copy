@@ -1,18 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameCore;
 
 public class ClickMouse : MonoBehaviour
 {
 
     public bool mouseSelected;
     private bool cursorOnMouse;
+    private SpriteOutline spriteOutline;
+    Controller controller;
 
     // Start is called before the first frame update
     void Start()
     {
         mouseSelected = false;
         cursorOnMouse = false;
+        spriteOutline = GetComponent<SpriteOutline>();
+        spriteOutline.enabled = false;
+        controller = GameObject.Find("GameController").GetComponent<Controller>();
+
     }
 
 
@@ -59,9 +66,11 @@ public class ClickMouse : MonoBehaviour
 
         }
 
+        
         if(Input.GetMouseButtonUp(0) && !cursorOnMouse)
         {
             mouseSelected = false;
+            spriteOutline.enabled = false;
             Debug.Log("Update Mouse");
         }
     }
@@ -77,8 +86,15 @@ public class ClickMouse : MonoBehaviour
     }
     private void OnMouseUp()
     {
-        mouseSelected = true;
-        Debug.Log("ButtonMouse");
+        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+
+        if ((player == GameBoard.PlayerEnum.ONE && name == "playerMouse") || (player == GameBoard.PlayerEnum.TWO && name == "playerMouse2"))
+        {
+
+            mouseSelected = true;
+            spriteOutline.enabled = true;
+            Debug.Log("ButtonMouse");
+        }
         //gameObject.SendMessage("OnClickToggleMouse", SendMessageOptions.DontRequireReceiver);
     }
 }
