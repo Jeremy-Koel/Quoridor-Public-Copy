@@ -1,19 +1,27 @@
 ﻿using GameSparks.Api;
+using GameSparks.Api.Messages;
 using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
 using GameSparks.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.UI;
 
 public class ChatWindowPanel : MonoBehaviour
 {
     private GSEnumerable<GetMyTeamsResponse._Team> teams = null;
+    GameObject chatInput;
 
     private void Awake()
     {
-
+        chatInput = GameObject.Find("ChatInput");
+        TeamChatMessage.Listener += ChatMessageReceived;
     }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,5 +89,39 @@ public class ChatWindowPanel : MonoBehaviour
         {
             Debug.Log("Joined Global Team");
         }        
+    }
+
+    public void OnChatInputSend()
+    {
+        InputField chatInputField = chatInput.GetComponent<InputField>();
+        string message = chatInputField.text;
+        SendChatMessage(message);
+    }
+
+    void SendChatMessage(string message)
+    {
+        Debug.Log("Sending message: " + message);
+        SendTeamChatMessageRequest teamChatMessageRequest = new SendTeamChatMessageRequest();
+        teamChatMessageRequest.SetMessage(message);
+        teamChatMessageRequest.SetTeamId("0");
+        teamChatMessageRequest.Send(ChatMessageResponse);
+    }
+
+    void ChatMessageResponse(SendTeamChatMessageResponse response)
+    {
+        if (response.HasErrors)
+        {
+            Debug.Log("Chat message not sent");
+        }
+        else
+        {
+            Debug.Log("Chat message sent");
+        }
+    }
+
+    private void ChatMessageReceived(TeamChatMessage message)
+    {
+        Debug.Log("Team chat message recieved: " + message.Message);
+        Debug.Log("Message sent by: " + message.Who);
     }
 }
