@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//https://nielson.io/2016/04/2d-sprite-outlines-in-unity/
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class SpriteOutline : MonoBehaviour

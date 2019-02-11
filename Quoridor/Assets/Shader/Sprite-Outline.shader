@@ -1,4 +1,5 @@
-﻿Shader "Sprites/Outline"
+﻿//https://nielson.io/2016/04/2d-sprite-outlines-in-unity/
+Shader "Sprites/Outline"
 {
 	Properties
 	{
