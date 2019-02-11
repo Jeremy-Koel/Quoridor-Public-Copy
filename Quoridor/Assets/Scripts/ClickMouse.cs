@@ -71,7 +71,7 @@ public class ClickMouse : MonoBehaviour
         {
             mouseSelected = false;
             spriteOutline.enabled = false;
-            Debug.Log("Update Mouse");
+            //Debug.Log("Update Mouse");
         }
     }
 
@@ -84,7 +84,7 @@ public class ClickMouse : MonoBehaviour
     {
         cursorOnMouse = false;
     }
-    private void OnMouseUp()
+    private void OnMouseUpAsButton()
     {
         GameBoard.PlayerEnum player = controller.GetWhoseTurn();
 
@@ -93,7 +93,7 @@ public class ClickMouse : MonoBehaviour
 
             mouseSelected = true;
             spriteOutline.enabled = true;
-            Debug.Log("ButtonMouse");
+            //Debug.Log("ButtonMouse");
         }
         //gameObject.SendMessage("OnClickToggleMouse", SendMessageOptions.DontRequireReceiver);
     }

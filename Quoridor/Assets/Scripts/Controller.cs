@@ -56,4 +56,9 @@ public class Controller : MonoBehaviour
             return GameBoard.PlayerEnum.TWO;
         }
     }
+
+    public bool isGameOver()
+    {
+        return gameBoard.IsGameOver();
+    }
 }
