@@ -31,7 +31,8 @@ public class Controller : MonoBehaviour
     // TODO - represent whose turn it is in the GUI, so it can be used here 
     public bool IsValidMove(GameBoard.PlayerEnum player, string spaceName)
     {
-        return gameBoard.MovePiece(player, coordMap[spaceName]);
+        PlayerCoordinate pc = coordMap[spaceName];
+        return gameBoard.MovePiece(player, pc);
     }
 
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
@@ -42,8 +43,7 @@ public class Controller : MonoBehaviour
         char c = strs[1][1];
         return gameBoard.PlaceWall(player, new WallCoordinate(x, y, c));
     }
-
-
+    
 
     public GameBoard.PlayerEnum GetWhoseTurn()
     {
