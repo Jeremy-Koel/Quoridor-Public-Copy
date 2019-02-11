@@ -38,6 +38,5 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *.csproj
-Quoridor/Assets/GameCore/GameCore/GameCore.csproj.meta
-Quoridor/Assets/GameCore/GameCore/obj.meta
-Quoridor/Assets/Scripts/GameSparksUserID.cs.meta
+*.meta
+Quoridor/Quoridor.sln

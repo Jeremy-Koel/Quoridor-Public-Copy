@@ -1246,6 +1246,7 @@ MonoBehaviour:
   loginPanel: {fileID: 0}
   registrationPanel: {fileID: 0}
   lobbyPanel: {fileID: 0}
+  chatWindowPanel: {fileID: 1155412554}
   usernameLoginInput: {fileID: 264065369}
   passwordLoginInput: {fileID: 143730860}
   displayNameInput: {fileID: 394447611}
@@ -3447,6 +3448,7 @@ GameObject:
   - component: {fileID: 1155412555}
   - component: {fileID: 1155412557}
   - component: {fileID: 1155412556}
+  - component: {fileID: 1155412558}
   m_Layer: 5
   m_Name: ChatWindowPanel
   m_TagString: Untagged
@@ -3470,8 +3472,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -265, y: 22}
-  m_SizeDelta: {x: -600, y: -200}
+  m_AnchoredPosition: {x: -277, y: -3}
+  m_SizeDelta: {x: -650, y: -218.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1155412556
 MonoBehaviour:
@@ -3510,6 +3512,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155412554}
   m_CullTransparentMesh: 0
+--- !u!114 &1155412558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1155412554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69856e80f85612c4eae5419cc680ab1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1189496852
 GameObject:
   m_ObjectHideFlags: 0
@@ -7265,7 +7279,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2122183115}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 260e5aabe91599b4db5a304fcc286c36, type: 3}
+  m_Script: {fileID: 11500000, guid: 907637f32c3626e42ab47780a929c296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myUserID: 

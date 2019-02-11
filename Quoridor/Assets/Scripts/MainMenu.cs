@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
     public GameObject loginPanel;
     public GameObject registrationPanel;
     public GameObject lobbyPanel;
+    public GameObject chatWindowPanel;
     //public GameObject previousPanel;
     //public GameObject currentPanel;
     public Stack<GameObject> panelOrder;
@@ -44,6 +45,8 @@ public class MainMenu : MonoBehaviour
     {
         ChallengeStartedMessage.Listener += OnChallengeStarted;
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
+        chatWindowPanel = GameObject.Find("ChatWindowPanel");
+
     }
 
     void OnDestroy()
@@ -210,8 +213,11 @@ public class MainMenu : MonoBehaviour
         GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
         GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
         gameSparksUserIDScript.myUserID = response.UserId;
+        // Setup ChatWindowPanel
+        ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
+        chatWindowPanelScript.CheckTeams();
+
         // Switch to the Lobby Panel
-        //SceneManager.LoadScene("GameBoard");
         panelOrder.Push(loginPanel);
         loginPanel.SetActive(false);
         registrationPanel.SetActive(false);
