@@ -67,6 +67,7 @@ public class MainMenu : MonoBehaviour
         // previousPanel = new GameObject();
         //currentPanel = new GameObject();
         panelOrder = new Stack<GameObject>();
+        panelOrder.Push(mainMenuPanel);
 
         mainMenuPanel.SetActive(true);
         playModePanel.SetActive(false);
