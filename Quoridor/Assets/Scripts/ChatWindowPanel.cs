@@ -15,16 +15,17 @@ public class ChatWindowPanel : MonoBehaviour
 
     GameObject chatInput;
     GameObject chatMessagesView;
-    GameObject chatMessagesViewContent;
-    List<Text> chatMessages;
-    Text textMessage;
+    //public Transform chatMessagesViewContent;
+    public RectTransform chatMessagesViewContent;
+    public List<GameObject> chatMessages;
+    public GameObject textMessagePrefab;
 
 
     private void Awake()
     {
         chatInput = GameObject.Find("ChatInput");
         chatMessagesView = GameObject.Find("ChatMessagesView");
-        //chatMessagesViewContent = chatMessagesView.GetComponent <>
+        //  chatMessagesViewContent = chatMessagesView.GetComponent<>();
         TeamChatMessage.Listener += ChatMessageReceived;
     }
 
@@ -131,11 +132,37 @@ public class ChatWindowPanel : MonoBehaviour
     {
         Debug.Log("Team chat message recieved: " + message.Message);
         Debug.Log("Message sent by: " + message.Who);
-        ChatMessagesFull();
-        Text messageText = Instantiate(textMessage) as Text;
-        messageText.text = ("<b>" + message.Who + ":</b> " + message.Message);
-        chatMessages.Add(messageText);
+
+        //ChatMessagesFull();
+
+        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
+        //GameObject messageTextObjectBuffer = Instantiate(textMessagePrefab) as GameObject;
+        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
+        Text playerText = messageTextObjectChildrenText[0];
+        Text messageText = messageTextObjectChildrenText[1];
+        //GameObject messageTextObject = GameObject.Find("Label");
+
+        //Text messageText = messageTextObject.GetComponent<Text>();
+        //messageText.text = ("<b>" + message.Who + ":</b> " + message.Message);
+        playerText.text = ("<b>" + message.Who + ":</b>");
+        messageText.text = (message.Message);
+
+        //messageTextObject.SetActive(false);
+
+        messageTextObject.transform.SetParent(chatMessagesViewContent);
+        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+        
+
+        //messageTextObjectBuffer.transform.SetParent(chatMessagesViewContent);
+        //Vector2 values = messageTextObject.GetComponent<RectTransform>().anchoredPosition;
+
+        //SetRect(chatMessagesViewContent, 0f, -(values.y / 2), 0f, 0f);
+
+        chatMessages.Add(messageTextObject);
+        //messageTextObject.SetActive(true);
+
     }
+    
 
     private void ChatMessagesFull()
     {
@@ -144,5 +171,11 @@ public class ChatWindowPanel : MonoBehaviour
             Debug.Log("Deleting earliest chat message");
             chatMessages.RemoveAt(0);
         }
+    }
+
+    public static void SetRect(RectTransform trs, float left, float top, float right, float bottom)
+    {
+        trs.offsetMin = new Vector2(left, bottom);
+        trs.offsetMax = new Vector2(-right, -top) + trs.offsetMax;
     }
 }
