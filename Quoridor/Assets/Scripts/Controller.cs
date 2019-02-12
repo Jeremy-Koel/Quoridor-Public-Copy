@@ -6,18 +6,39 @@ public class Controller : MonoBehaviour
 {
     private GameBoard gameBoard;
     private Dictionary<string, PlayerCoordinate> coordMap;
+    private bool localPlayerTurn;
     
     // Start is called before the first frame update
     void Start()
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         coordMap = new Dictionary<string, PlayerCoordinate>();
+        localPlayerTurn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!localPlayerTurn)
+        {
+            MakeComputerMove();
+        }
+    }
+
+    private void MakeComputerMove()
+    {
+        GameObject mouse2 = GameObject.Find("playerMouse2");
+        while (true)
+        {
+            PlayerCoordinate pc = new PlayerCoordinate(BoardUtil.GetRandomPlayerPieceMove());
+            if (gameBoard.MovePiece(GameBoard.PlayerEnum.ONE, pc))
+            {
+                int x = pc.Row / 2;
+                int y = pc.Col / 2;
+                mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                break;
+            }
+        }
     }
 
     public void AddSpace(GameObject obj)

@@ -75,6 +75,8 @@ public class ClickSquare : MonoBehaviour
             {
                 if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
                 {
+                    float x = this.transform.position.x;
+                    float y = this.transform.position.y;
                     mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                 }
 
