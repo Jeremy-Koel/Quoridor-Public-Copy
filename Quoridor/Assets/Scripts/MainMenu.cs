@@ -22,6 +22,8 @@ public class MainMenu : MonoBehaviour
     //public GameObject currentPanel;
     public Stack<GameObject> panelOrder;
 
+    public GameObject challengeManager;
+
     [SerializeField]
     private InputField usernameLoginInput;
     [SerializeField]
@@ -46,7 +48,7 @@ public class MainMenu : MonoBehaviour
         ChallengeStartedMessage.Listener += OnChallengeStarted;
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
-
+        challengeManager = GameObject.Find("ChallengeManager");
     }
 
     void OnDestroy()
@@ -217,6 +219,9 @@ public class MainMenu : MonoBehaviour
         // Setup ChatWindowPanel
         ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
         chatWindowPanelScript.CheckTeams();
+        // Setup ChallengeManager
+        ChallengeManager challengeManagerScript = challengeManager.GetComponent<ChallengeManager>();
+        challengeManagerScript.SetupChallengeListeners();
 
         // Switch to the Lobby Panel
         panelOrder.Push(loginPanel);

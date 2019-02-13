@@ -60,11 +60,16 @@ public class Controller : MonoBehaviour
         // Get return value for network
         bool validMove = gameBoard.MovePiece(player, pc);
         // If validMove send "move" across network
-        lastValidMove = spaceName;
-        // Get ChallengeManager to send move
-        GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-        ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-        challengeManagerScript.GetLastValidMove();
+        if (validMove)
+        {
+            Debug.Log("Is a valid move");
+            lastValidMove = spaceName;
+            // Get ChallengeManager to send move
+            Debug.Log("Finding ChallengeManager");
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            challengeManagerScript.GetLastValidMove(this);
+        }
 
         return validMove;
     }

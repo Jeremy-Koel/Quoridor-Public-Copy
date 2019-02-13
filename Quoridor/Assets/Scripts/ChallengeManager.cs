@@ -27,24 +27,17 @@ public class ChallengeManager : MonoBehaviour
 
     public string CurrentPlayerName { get; private set; }
 
-    public string challengeID { get; private set; }
+    public string ChallengeID { get; private set; }
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-        ChallengeStartedMessage.Listener += OnChallengeStarted;
-        Debug.Log("ChallengeStartedMessage Listener set");
-        ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
-        Debug.Log("ChallengeTurnTakenMessage Listener set");
+        DontDestroyOnLoad(this);        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //ChallengeStartedMessage.Listener += OnChallengeStarted;
-        //ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
-        //ChallengeWonMessage.Listener += OnChallengeWon;
-        //ChallengeLostMessage.Listener += OnChallengeLost;
+
     }
 
     // Update is called once per frame
@@ -53,58 +46,64 @@ public class ChallengeManager : MonoBehaviour
         
     }
 
+    public void SetupChallengeListeners()
+    {
+        ChallengeStartedMessage.Listener += OnChallengeStarted;
+        Debug.Log("ChallengeStartedMessage Listener set");
+        ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
+        Debug.Log("ChallengeTurnTakenMessage Listener set");
+    }
+
     void OnChallengeStarted(ChallengeStartedMessage message)
     {
+        Debug.Log("ChallengeStarted");
         IsChallengeActive = true;
-        challengeID = message.Challenge.ChallengeId;
+        ChallengeID = message.Challenge.ChallengeId;
         HostsPlayerName = message.Challenge.Challenger.Name;
         HostsPlayerID = message.Challenge.Challenger.Id;
         ChallengersPlayerName = message.Challenge.Challenged.First().Name;
         ChallengersPlayerID = message.Challenge.Challenged.First().Id;
         CurrentPlayerName = message.Challenge.NextPlayer == HostsPlayerID ? HostsPlayerName : ChallengersPlayerName;
 
+        Debug.Log("ChallengeID: " + ChallengeID);
+        Debug.Log("HostsPlayerName: " + HostsPlayerName);
+        Debug.Log("ChallengersPlayerName: " + ChallengersPlayerName);
+
         ChallengeStarted.Invoke();
     }
 
     void OnChallengeTurnTaken(ChallengeTurnTakenMessage message)
     {
-        // Get current player ID
-        var playerIDObject = GameObject.FindWithTag("PlayerID");
-        GameSparksUserID playerIDComponent = playerIDObject.GetComponent<GameSparksUserID>();
-        var myCurrentPlayerID = playerIDComponent.myUserID;
+        Debug.Log("Challenge Turn Taken");
+        // Get current player's ID
+        GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
+        GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
+        string gameSparksUserID = gameSparksUserIDScript.myUserID;
+        Debug.Log("My Player ID: " + gameSparksUserID);
 
         var scriptData = message.Challenge.ScriptData.BaseData;
-        Debug.Log("My Player ID: " + myCurrentPlayerID);
-        Debug.Log("Player ID Used: " + scriptData["PlayerIDUsed"].ToString());
-        if (myCurrentPlayerID != scriptData["PlayerIDUsed"].ToString())
+        Debug.Log("Player ID Used for move: " + scriptData["PlayerIDUsed"].ToString());
+        if (gameSparksUserID != scriptData["PlayerIDUsed"].ToString())
         {
             string scriptDataAction = scriptData["ActionUsed"].ToString();
             Debug.Log("Action Received: " + scriptDataAction);
-
-
-            ////GamePanel.Instance.ReceiveMove(scriptDataX);
-            //// Get GamePanel
-            //var gameBoardObject = GameObject.Find("GameBoard");
-            //GamePanel gamePanelComponent = gamePanelObject.GetComponent<GamePanel>();
-            //gamePanelComponent.ReceiveMove(scriptDataAction);
-
+            // Notify controller that a move was received
         }
-        //ChallengeTurnTaken.Invoke(); UnityEvent
+        ChallengeTurnTaken.Invoke();
     }
 
-    public void GetLastValidMove()
+    public void GetLastValidMove(Controller gameControllerScript)
     {
-        // Might be bad performance looking for the GameController repeatedly
-        GameObject gameControllerObject = GameObject.Find("GameController");
-        Controller gameControllerScript = gameControllerObject.GetComponent<Controller>();
+        Debug.Log("Getting last valid move");
         string move = gameControllerScript.lastValidMove;
         Move(move);
     }
 
     public void Move(string action)
-    {        
+    {
+        Debug.Log("Sending move to GS");
         LogChallengeEventRequest request = new LogChallengeEventRequest();
-        request.SetChallengeInstanceId(challengeID);
+        request.SetChallengeInstanceId(ChallengeID);
         request.SetEventKey("Move");
         request.SetEventAttribute("Action", action);
         request.Send(OnMoveSuccess, OnMoveError);
