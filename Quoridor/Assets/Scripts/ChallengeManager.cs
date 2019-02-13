@@ -87,16 +87,11 @@ public class ChallengeManager : MonoBehaviour
         {
             string scriptDataAction = scriptData["ActionUsed"].ToString();
             Debug.Log("Action Received: " + scriptDataAction);
+            
             // Notify controller that a move was received
+
         }
         ChallengeTurnTaken.Invoke();
-    }
-
-    public void GetLastValidMove(Controller gameControllerScript)
-    {
-        Debug.Log("Getting last valid move");
-        string move = gameControllerScript.lastValidMove;
-        Move(move);
     }
 
     public void Move(string action)

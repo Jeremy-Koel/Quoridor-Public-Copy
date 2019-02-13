@@ -6,9 +6,9 @@ public class Controller : MonoBehaviour
 {
     private GameBoard gameBoard;
     private Dictionary<string, PlayerCoordinate> coordMap;
+    private ChallengeManager challengeManagerScript;
     private bool localPlayerTurn;
-    // Temporary solution for networking, save last validMove
-    public string lastValidMove;
+    private bool isMultiplayerGame;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +16,14 @@ public class Controller : MonoBehaviour
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         coordMap = new Dictionary<string, PlayerCoordinate>();
         localPlayerTurn = true;
+
+        Debug.Log("Finding ChallengeManager");
+        GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+        if (challengeManagerObject != null)
+        {
+            ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            isMultiplayerGame = challengeManagerScript.IsChallengeActive;
+        }
     }
 
     // Update is called once per frame
@@ -24,7 +32,7 @@ public class Controller : MonoBehaviour
         if (!localPlayerTurn)
         {
             // Get move from AI or network 
-            GetOpponentMove();
+            string str = GetOpponentMove();
             
             // Decide if the opponent placed a wall or piece, and call appropriate method 
 
@@ -32,9 +40,26 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void GetOpponentMove()
+    private string GetOpponentMove()
     {
-        Debug.Log("Getting oppoent move!");
+        if (isMultiplayerGame)
+        {
+            return GetMoveFromNetwork();
+        }
+        else
+        {
+            return GetMoveFromAI();
+        }
+    }
+
+    private string GetMoveFromNetwork()
+    {
+        return "";
+    }
+
+    private string GetMoveFromAI()
+    {
+        return "";
     }
 
     public void FlipTurn()
@@ -60,15 +85,9 @@ public class Controller : MonoBehaviour
         if (validMove)
         {
             Debug.Log("Is a valid move");
-            lastValidMove = spaceName;
-            // Get ChallengeManager to send move
-            Debug.Log("Finding ChallengeManager");
-            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            if (challengeManagerObject != null)
-            {
-                ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-                challengeManagerScript.GetLastValidMove(this);
-            }
+
+            // Send move via ChallengeManager
+            challengeManagerScript.Move(spaceName);
         }
 
         return validMove;
