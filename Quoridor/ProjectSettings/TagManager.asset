@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerOneWall
   - PlayerTwoWall
+  - PlayerID
   layers:
   - Default
   - TransparentFX

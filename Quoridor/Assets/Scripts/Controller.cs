@@ -7,7 +7,11 @@ public class Controller : MonoBehaviour
     private GameBoard gameBoard;
     private Dictionary<string, PlayerCoordinate> coordMap;
     private bool localPlayerTurn;
-    
+    // Temporary solution for networking, save last validMove
+    public string lastValidMove;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,8 +57,18 @@ public class Controller : MonoBehaviour
     public bool IsValidMove(GameBoard.PlayerEnum player, string spaceName)
     {
         PlayerCoordinate pc = coordMap[spaceName];
-        return gameBoard.MovePiece(player, pc);
+        // Get return value for network
+        bool validMove = gameBoard.MovePiece(player, pc);
+        // If validMove send "move" across network
+        lastValidMove = spaceName;
+        // Get ChallengeManager to send move
+        GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+        ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+        challengeManagerScript.GetLastValidMove();
+
+        return validMove;
     }
+
 
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
