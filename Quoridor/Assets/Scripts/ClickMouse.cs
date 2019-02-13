@@ -19,9 +19,7 @@ public class ClickMouse : MonoBehaviour
         spriteOutline = GetComponent<SpriteOutline>();
         spriteOutline.enabled = false;
         controller = GameObject.Find("GameController").GetComponent<Controller>();
-
     }
-
 
     //https://answers.unity.com/questions/587637/replacing-onmouseenterexitdownetc-with-raycasting.html
     // Update is called once per frame
@@ -65,7 +63,6 @@ public class ClickMouse : MonoBehaviour
             }
 
         }
-
         
         if(Input.GetMouseButtonUp(0) && !cursorOnMouse)
         {
@@ -88,9 +85,8 @@ public class ClickMouse : MonoBehaviour
     {
         GameBoard.PlayerEnum player = controller.GetWhoseTurn();
 
-        if ((player == GameBoard.PlayerEnum.ONE && name == "playerMouse") || (player == GameBoard.PlayerEnum.TWO && name == "playerMouse2"))
+        if ((player == GameBoard.PlayerEnum.ONE && name == "playerMouse") || (player == GameBoard.PlayerEnum.TWO && name == "opponentMouse"))
         {
-
             mouseSelected = true;
             spriteOutline.enabled = true;
             //Debug.Log("ButtonMouse");

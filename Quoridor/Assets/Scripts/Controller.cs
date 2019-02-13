@@ -10,8 +10,6 @@ public class Controller : MonoBehaviour
     // Temporary solution for networking, save last validMove
     public string lastValidMove;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -25,24 +23,23 @@ public class Controller : MonoBehaviour
     {
         if (!localPlayerTurn)
         {
-            MakeComputerMove();
+            // Get move from AI or network 
+            GetOpponentMove();
+            
+            // Decide if the opponent placed a wall or piece, and call appropriate method 
+
+            FlipTurn();
         }
     }
 
-    private void MakeComputerMove()
+    private void GetOpponentMove()
     {
-        GameObject mouse2 = GameObject.Find("playerMouse2");
-        while (true)
-        {
-            PlayerCoordinate pc = new PlayerCoordinate(BoardUtil.GetRandomPlayerPieceMove());
-            if (gameBoard.MovePiece(GameBoard.PlayerEnum.ONE, pc))
-            {
-                int x = pc.Row / 2;
-                int y = pc.Col / 2;
-                mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                break;
-            }
-        }
+        Debug.Log("Getting oppoent move!");
+    }
+
+    public void FlipTurn()
+    {
+        localPlayerTurn = !localPlayerTurn;
     }
 
     public void AddSpace(GameObject obj)
@@ -66,9 +63,9 @@ public class Controller : MonoBehaviour
             lastValidMove = spaceName;
             // Get ChallengeManager to send move
             Debug.Log("Finding ChallengeManager");
-            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-            challengeManagerScript.GetLastValidMove(this);
+            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            //ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            //challengeManagerScript.GetLastValidMove(this);
         }
 
         return validMove;
@@ -97,8 +94,40 @@ public class Controller : MonoBehaviour
         }
     }
 
-    public bool isGameOver()
+    public bool IsGameOver()
     {
         return gameBoard.IsGameOver();
+    }
+    
+    private void MoveOpponentPiece(int guiRow, int guiCol)
+    {
+        GameObject opponentMouse = GameObject.Find("opponentMouse");
+        GameObject targetSquare = GameObject.Find(guiRow + "," + guiCol);
+        opponentMouse.transform.position = new Vector3(targetSquare.transform.position.x, targetSquare.transform.position.y, -0.5f);
+    }
+
+    private void MoveOpponentWall()
+    {
+        GameObject wall = GetUnusedOpponentWall();
+        if (wall != null)
+        {
+            Debug.Log("Opponent tried to place a wall");
+        }
+        else
+        {
+            throw new System.Exception("Opponent is out of walls!");
+        }
+    }
+
+    private GameObject GetUnusedOpponentWall()
+    {
+        foreach (GameObject wall in GameObject.FindGameObjectsWithTag("PlayerTwoWall"))
+        {
+            if (!wall.GetComponent<MoveWalls>().IsOnBoard())
+            {
+                return wall;
+            }
+        }
+        return null;
     }
 }

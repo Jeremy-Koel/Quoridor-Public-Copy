@@ -36,7 +36,7 @@ public class MoveWalls : MonoBehaviour
         {
             wallCollider.enabled = true;
         }
-        else if(player == GameBoard.PlayerEnum.TWO && wallTag == "PlayerTwoWall" && !lockPlace)
+        else if (player == GameBoard.PlayerEnum.TWO && wallTag == "PlayerTwoWall" && !lockPlace)
         {
             wallCollider.enabled = true;
         }
@@ -45,6 +45,11 @@ public class MoveWalls : MonoBehaviour
             wallCollider.enabled = false;
         }
 
+    }
+
+    public bool IsOnBoard()
+    {
+        return lockPlace;
     }
 
 

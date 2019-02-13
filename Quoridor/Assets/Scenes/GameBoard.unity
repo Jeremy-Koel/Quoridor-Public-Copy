@@ -261,7 +261,7 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -486,6 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cdb4501ae35c464f9cb105fc912d258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastValidMove: 
 --- !u!4 &216155953
 Transform:
   m_ObjectHideFlags: 0
@@ -2221,7 +2222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1600706630}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c947d0753b2e1514ab70bb263bc70a42, type: 3}
+  m_Script: {fileID: 11500000, guid: b6f4e46709c7c4a47a7ae6197c63e522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1719985139 stripped

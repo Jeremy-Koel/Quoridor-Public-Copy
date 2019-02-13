@@ -21,7 +21,7 @@ public class WinnerScreen : MonoBehaviour
     void Update()
     {
        
-        if(controller.isGameOver())
+        if(controller.IsGameOver())
         {
             winPanel.transform.position = new Vector3(winPanel.transform.position.x, winPanel.transform.position.y, -2);
             winText.text = "Game Over!";

@@ -5,11 +5,11 @@ using GameCore;
 
 public class ClickSquare : MonoBehaviour
 {
-    public GameObject mouse;
-    public GameObject mouse2;
+    public GameObject playerMouse;
+    public GameObject opponentMouse;
   
-    private ClickMouse clickMouseScript;
-    private ClickMouse clickMouseScript2;
+    private ClickMouse playerClickMouseScript;
+    private ClickMouse opponentClickMouseScript;
 
     private Controller controller;
 
@@ -17,11 +17,11 @@ public class ClickSquare : MonoBehaviour
     void Start()
     {
         //Debug.Log("ADDED");
-        mouse = GameObject.Find("playerMouse");
-        mouse2 = GameObject.Find("playerMouse2");
+        playerMouse = GameObject.Find("playerMouse");
+        opponentMouse = GameObject.Find("opponentMouse");
 
-        clickMouseScript = mouse.GetComponent<ClickMouse>();
-        clickMouseScript2 = mouse2.GetComponent<ClickMouse>();
+        playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
+        opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
 
         controller = gameObject.GetComponentInParent<Controller>();
         // mouseSelected = false;
@@ -31,7 +31,6 @@ public class ClickSquare : MonoBehaviour
     void Update()
     {
        
-
     }
 
     private void OnMouseEnter()
@@ -52,52 +51,44 @@ public class ClickSquare : MonoBehaviour
 
     private void OnMouseUp()
     {
-        
         //Debug.Log(this.name);
-        if (clickMouseScript.mouseSelected)
+        if (playerClickMouseScript.mouseSelected)
         {
-            if ((mouse.transform.position.x != this.transform.position.x || mouse.transform.position.y != this.transform.position.y))
+            if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y))
             {
                 if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
                 {
-                    mouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                    playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                    controller.FlipTurn();
                 }
-
+                
                 //OnClickToggleMouse();
             }
-
-            
         }
-        
-        if (clickMouseScript2.mouseSelected)
+
+        if (opponentClickMouseScript.mouseSelected)
         {
-            if ((mouse2.transform.position.x != this.transform.position.x || mouse2.transform.position.y != this.transform.position.y))
+            if ((opponentMouse.transform.position.x != this.transform.position.x || opponentMouse.transform.position.y != this.transform.position.y))
             {
                 if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
                 {
-                    float x = this.transform.position.x;
-                    float y = this.transform.position.y;
-                    mouse2.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                    opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                 }
 
-               // OnClickToggleMouse2();
+                // OnClickToggleMouse2();
             }
-
-            
         }
-
-        
     }
 
     public void OnClickToggleMouse()
     {
 
-        clickMouseScript.mouseSelected = !clickMouseScript.mouseSelected;
+        playerClickMouseScript.mouseSelected = !playerClickMouseScript.mouseSelected;
     }
 
     public void OnClickToggleMouse2()
     {
-        clickMouseScript2.mouseSelected = !clickMouseScript2.mouseSelected;
+        opponentClickMouseScript.mouseSelected = !opponentClickMouseScript.mouseSelected;
         
     }
 }

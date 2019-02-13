@@ -94,11 +94,11 @@ public class CreateBoard : MonoBehaviour
 
         player.transform.position = new Vector3(startPlace.transform.position.x, startPlace.transform.position.y, -.3f);
 
-        GameObject player2 = Instantiate(mousePrefab2) as GameObject;
-        player2.name = "playerMouse2";
+        GameObject opponent = Instantiate(mousePrefab2) as GameObject;
+        opponent.name = "opponentMouse";
         GameObject startPlace2 = GameObject.Find("0,4");
 
-        player2.transform.position = new Vector3(startPlace2.transform.position.x, startPlace2.transform.position.y, -.3f);
+        opponent.transform.position = new Vector3(startPlace2.transform.position.x, startPlace2.transform.position.y, -.3f);
     }
 
     void addScriptToWalls()
