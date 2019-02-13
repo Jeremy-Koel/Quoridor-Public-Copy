@@ -63,9 +63,12 @@ public class Controller : MonoBehaviour
             lastValidMove = spaceName;
             // Get ChallengeManager to send move
             Debug.Log("Finding ChallengeManager");
-            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            //ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-            //challengeManagerScript.GetLastValidMove(this);
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            if (challengeManagerObject != null)
+            {
+                ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+                challengeManagerScript.GetLastValidMove(this);
+            }
         }
 
         return validMove;
