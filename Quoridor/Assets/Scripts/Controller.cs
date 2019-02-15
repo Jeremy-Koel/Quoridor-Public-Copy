@@ -9,6 +9,15 @@ public class Controller : MonoBehaviour
     private ChallengeManager challengeManagerScript;
     private bool localPlayerTurn;
     private bool isMultiplayerGame;
+    private State state;
+
+    private enum State
+    {
+        PlayerMoving,
+        PlayerMoved,
+        OpponentMoving,
+        OpponentMoved
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -17,11 +26,10 @@ public class Controller : MonoBehaviour
         coordMap = new Dictionary<string, PlayerCoordinate>();
         localPlayerTurn = true;
 
-        Debug.Log("Finding ChallengeManager");
         GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
         if (challengeManagerObject != null)
         {
-            ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
             isMultiplayerGame = challengeManagerScript.IsChallengeActive;
         }
     }
@@ -29,18 +37,48 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        switch (state)
+        {
+            case State.PlayerMoving:
+                break;
+            case State.PlayerMoved:
+                state = State.OpponentMoving;
+                break;
+            case State.OpponentMoving:
+                //OpponentMove();
+                state = State.OpponentMoved;
+                break;
+            case State.OpponentMoved:
+                state = State.PlayerMoving;
+                break;
+        }
+    }
+
+    public void OpponentMove()
+    {
         if (!localPlayerTurn)
         {
             // Get move from AI or network 
-            string str = GetOpponentMove();
+            string moveString = GetOpponentMoveString();
+            
+            int col = BoardUtil.GetInternalPlayerCol(moveString[0]) / 2;
+            int row = int.Parse(moveString[1].ToString()) - 1;
             
             // Decide if the opponent placed a wall or piece, and call appropriate method 
+            if (moveString.Length == 2)
+            {
+                MoveOpponentPiece(row, col);
+            }
+            else if (moveString.Length == 3)
+            {
+                WallCoordinate wc = new WallCoordinate(moveString);
+            }
 
             FlipTurn();
         }
     }
 
-    private string GetOpponentMove()
+    private string GetOpponentMoveString()
     {
         if (isMultiplayerGame)
         {
@@ -59,10 +97,17 @@ public class Controller : MonoBehaviour
 
     private string GetMoveFromAI()
     {
-        return "";
+        MonteCarlo tree = new MonteCarlo(gameBoard);
+        return tree.MonteCarloTreeSearch();
     }
 
-    public void FlipTurn()
+    public void MarkPlayerMoved()
+    {
+        state = State.PlayerMoved;
+        FlipTurn();
+    }
+
+    private void FlipTurn()
     {
         localPlayerTurn = !localPlayerTurn;
     }
@@ -79,17 +124,17 @@ public class Controller : MonoBehaviour
     public bool IsValidMove(GameBoard.PlayerEnum player, string spaceName)
     {
         PlayerCoordinate pc = coordMap[spaceName];
-        // Get return value for network
         bool validMove = gameBoard.MovePiece(player, pc);
-        // If validMove send "move" across network
+
+        // If validMove send move across network
         if (validMove)
         {
-            Debug.Log("Is a valid move");
-
             // Send move via ChallengeManager
-            challengeManagerScript.Move(spaceName);
+            if (isMultiplayerGame)
+            {
+                challengeManagerScript.Move(spaceName);
+            }
         }
-
         return validMove;
     }
 
@@ -125,7 +170,8 @@ public class Controller : MonoBehaviour
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
         GameObject targetSquare = GameObject.Find(guiRow + "," + guiCol);
-        opponentMouse.transform.position = new Vector3(targetSquare.transform.position.x, targetSquare.transform.position.y, -0.5f);
+        ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
+        opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f); 
     }
 
     private void MoveOpponentWall()
@@ -133,7 +179,7 @@ public class Controller : MonoBehaviour
         GameObject wall = GetUnusedOpponentWall();
         if (wall != null)
         {
-            Debug.Log("Opponent tried to place a wall");
+            Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
         }
         else
         {

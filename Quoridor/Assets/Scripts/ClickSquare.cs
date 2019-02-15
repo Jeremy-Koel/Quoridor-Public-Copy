@@ -59,7 +59,7 @@ public class ClickSquare : MonoBehaviour
                 if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
                 {
                     playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                    controller.FlipTurn();
+                    controller.MarkPlayerMoved();
                 }
                 
                 //OnClickToggleMouse();
