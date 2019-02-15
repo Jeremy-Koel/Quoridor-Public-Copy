@@ -9,6 +9,7 @@ public class WinnerScreen : MonoBehaviour
     private GameObject winPanel;
     private Text winText;
     private Controller controller;
+    public GameObject menuScreen;
     void Start()
     {
         winPanel = GameObject.Find("WinScreen");
@@ -21,7 +22,7 @@ public class WinnerScreen : MonoBehaviour
     void Update()
     {
        
-        if(controller.IsGameOver())
+        if(controller.IsGameOver() && !menuScreen.active)
         {
             winPanel.transform.position = new Vector3(winPanel.transform.position.x, winPanel.transform.position.y, -2);
             winText.text = "Game Over!";
