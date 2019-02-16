@@ -45,7 +45,7 @@ public class Controller : MonoBehaviour
                 state = State.OpponentMoving;
                 break;
             case State.OpponentMoving:
-                //OpponentMove();
+                OpponentMove();
                 state = State.OpponentMoved;
                 break;
             case State.OpponentMoved:
@@ -62,16 +62,21 @@ public class Controller : MonoBehaviour
             string moveString = GetOpponentMoveString();
             
             int col = BoardUtil.GetInternalPlayerCol(moveString[0]) / 2;
-            int row = int.Parse(moveString[1].ToString()) - 1;
+            int row = BoardUtil.GetInteralPlayerRow(moveString[1]) / 2;
             
             // Decide if the opponent placed a wall or piece, and call appropriate method 
             if (moveString.Length == 2)
             {
-                MoveOpponentPiece(row, col);
+                string spaceName = row + "," + col;
+                if (IsValidMove(GameBoard.PlayerEnum.TWO, spaceName))
+                {
+                    MoveOpponentPiece(row, col);
+                }
             }
             else if (moveString.Length == 3)
             {
                 WallCoordinate wc = new WallCoordinate(moveString);
+                MoveOpponentWall();
             }
 
             FlipTurn();
@@ -142,10 +147,10 @@ public class Controller : MonoBehaviour
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
         string[] strs = spaceName.Split(',');
-        int x = int.Parse(strs[0]) * 2;
-        int y = int.Parse(strs[1][0].ToString()) * 2;
+        int row = int.Parse(strs[0]) * 2;
+        int col = int.Parse(strs[1][0].ToString()) * 2;
         char c = strs[1][1];
-        return gameBoard.PlaceWall(player, new WallCoordinate(x, y, c));
+        return gameBoard.PlaceWall(player, new WallCoordinate(row, col, c));
     }
     
 
@@ -171,7 +176,8 @@ public class Controller : MonoBehaviour
         GameObject opponentMouse = GameObject.Find("opponentMouse");
         GameObject targetSquare = GameObject.Find(guiRow + "," + guiCol);
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
-        opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f); 
+        opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
+
     }
 
     private void MoveOpponentWall()
@@ -180,10 +186,6 @@ public class Controller : MonoBehaviour
         if (wall != null)
         {
             Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
-        }
-        else
-        {
-            throw new System.Exception("Opponent is out of walls!");
         }
     }
 
