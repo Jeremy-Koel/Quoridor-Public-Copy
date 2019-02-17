@@ -17,17 +17,19 @@ public class ChallengeManager : MonoBehaviour
 
     public bool IsChallengeActive { get; private set; }
 
-    public string HostsPlayerName { get; private set; }
+    public string FirstPlayerName { get; private set; }
 
-    public string HostsPlayerID { get; private set; }
+    public string FirstPlayerID { get; private set; }
 
-    public string ChallengersPlayerName { get; private set; }
+    public string SecondPlayerName { get; private set; }
 
-    public string ChallengersPlayerID { get; private set; }
+    public string SecondPlayerID { get; private set; }
 
     public string CurrentPlayerName { get; private set; }
 
     public string ChallengeID { get; private set; }
+
+    public string LastOpponentMove { get; private set; }
 
     private void Awake()
     {
@@ -59,15 +61,15 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("ChallengeStarted");
         IsChallengeActive = true;
         ChallengeID = message.Challenge.ChallengeId;
-        HostsPlayerName = message.Challenge.Challenger.Name;
-        HostsPlayerID = message.Challenge.Challenger.Id;
-        ChallengersPlayerName = message.Challenge.Challenged.First().Name;
-        ChallengersPlayerID = message.Challenge.Challenged.First().Id;
-        CurrentPlayerName = message.Challenge.NextPlayer == HostsPlayerID ? HostsPlayerName : ChallengersPlayerName;
+        FirstPlayerName = message.Challenge.Challenger.Name;
+        FirstPlayerID = message.Challenge.Challenger.Id;
+        SecondPlayerName = message.Challenge.Challenged.First().Name;
+        SecondPlayerID = message.Challenge.Challenged.First().Id;
+        CurrentPlayerName = message.Challenge.NextPlayer == FirstPlayerID ? FirstPlayerName : SecondPlayerName;
 
         Debug.Log("ChallengeID: " + ChallengeID);
-        Debug.Log("HostsPlayerName: " + HostsPlayerName);
-        Debug.Log("ChallengersPlayerName: " + ChallengersPlayerName);
+        Debug.Log("HostsPlayerName: " + FirstPlayerName);
+        Debug.Log("ChallengersPlayerName: " + SecondPlayerName);
 
         ChallengeStarted.Invoke();
     }
@@ -87,8 +89,9 @@ public class ChallengeManager : MonoBehaviour
         {
             string scriptDataAction = scriptData["ActionUsed"].ToString();
             Debug.Log("Action Received: " + scriptDataAction);
-            
+
             // Notify controller that a move was received
+            LastOpponentMove = scriptDataAction;
 
         }
         ChallengeTurnTaken.Invoke();

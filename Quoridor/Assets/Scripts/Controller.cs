@@ -90,7 +90,13 @@ public class Controller : MonoBehaviour
 
     private string GetMoveFromNetwork()
     {
-        return "";
+        string mirroredMove = "";
+        // Temporary solution if move is not there
+        if (challengeManagerScript.LastOpponentMove != null)
+        {
+            mirroredMove = BoardUtil.MirrorMove(challengeManagerScript.LastOpponentMove);
+        }
+        return mirroredMove;
     }
 
     private string GetMoveFromAI()
