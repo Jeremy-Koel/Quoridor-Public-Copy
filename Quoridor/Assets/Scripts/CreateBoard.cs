@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class CreateBoard : MonoBehaviour
@@ -34,26 +35,26 @@ public class CreateBoard : MonoBehaviour
 
     void generateCubes()
     {
-        for (int y = 0; y < 9; y++)
+        for (int row = 0; row < 9; row++)
         {
-            for (int x = 0; x < 9; x++) 
+            for (int col = 0; col < 9; col++) 
             {
                 GameObject piece = Instantiate(squarePrefab) as GameObject;
 
                 piece.AddComponent<ClickSquare>();
 
                 
-                gameBoard[y,x] = piece;
+                gameBoard[row,col] = piece;
 
-                piece.transform.position = new Vector3((x *3.45f) + 11.25f, (y *-3.45f) + 27f, -0.2f);
-
-                piece.name = y + "," + x;
+                piece.transform.position = new Vector3((col *3.45f) + 11.25f, (row *-3.45f) + 27f, -0.2f);
+                
+                piece.name = GetSpaceStringName(row, col);
 
                 PlaceWallColliders(piece);
 
                 piece.transform.SetParent(gameBoardWrapper.transform);
 
-                controller.AddSpace(piece);
+                controller.AddToSpaceMap(piece);
 
                 GameObject highlightPiece = Instantiate(highlightSquarePrefab) as GameObject;
 
@@ -69,20 +70,23 @@ public class CreateBoard : MonoBehaviour
 
     void PlaceWallColliders(GameObject piece)
     {
-        if (piece.name[0] != '0' && piece.name[2] != '8')
+        if (piece.name[0] != 'i' && piece.name[1] != '9')
         {
             Vector3 newPos = new Vector3(piece.transform.position.x + 1.8f, piece.transform.position.y + 1.8f, -0.6f);
             GameObject wallCollHorizontal = Instantiate(wallColliderHorizontalPrefab) as GameObject;
             GameObject wallCollVertical = Instantiate(wallColliderVerticalPrefab) as GameObject;
-            //wallCollHorizontal.transform.Rotate(new Vector3(0, 0, 90));
+
             wallCollHorizontal.transform.position = newPos;
             wallCollHorizontal.name = piece.name + "h";
+
             wallCollVertical.transform.position = newPos;
-            ////wallCollVertical.transform.Rotate(new Vector3(0, 0, 0));
             wallCollVertical.name = piece.name + "v";
 
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
             wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);
+
+            controller.AddToWallMap(wallCollHorizontal);
+            controller.AddToWallMap(wallCollVertical);
         }
     }
 
@@ -90,13 +94,13 @@ public class CreateBoard : MonoBehaviour
     {
         GameObject player = Instantiate(mousePrefab) as GameObject;
         player.name = "playerMouse";
-        GameObject startPlace = GameObject.Find("8,4");
+        GameObject startPlace = GameObject.Find("e1");
 
         player.transform.position = new Vector3(startPlace.transform.position.x, startPlace.transform.position.y, -.3f);
 
         GameObject opponent = Instantiate(mousePrefab2) as GameObject;
         opponent.name = "opponentMouse";
-        GameObject startPlace2 = GameObject.Find("0,4");
+        GameObject startPlace2 = GameObject.Find("e9");
 
         opponent.transform.position = new Vector3(startPlace2.transform.position.x, startPlace2.transform.position.y, -.3f);
     }
@@ -117,9 +121,24 @@ public class CreateBoard : MonoBehaviour
             wall.AddComponent<MoveWalls>();
         }
     }
+
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private string GetSpaceStringName(int row, int col)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(System.Convert.ToChar('a' + col));
+        for (int i = 0; i < 9; ++i)
+        {
+            if (i == row)
+            {
+                sb.Append(9 - row);
+            }
+        }
+        return sb.ToString();
     }
 }

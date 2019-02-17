@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class Controller : MonoBehaviour
 {
     private GameBoard gameBoard;
-    private Dictionary<string, PlayerCoordinate> coordMap;
+    private Dictionary<string, PlayerCoordinate> spaceCoordMap;
+    private Dictionary<string, WallCoordinate> wallCoordMap;
     private ChallengeManager challengeManagerScript;
     private bool localPlayerTurn;
     private bool isMultiplayerGame;
@@ -23,7 +24,7 @@ public class Controller : MonoBehaviour
     void Start()
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
-        coordMap = new Dictionary<string, PlayerCoordinate>();
+        spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         localPlayerTurn = true;
 
         GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
@@ -60,23 +61,15 @@ public class Controller : MonoBehaviour
         {
             // Get move from AI or network 
             string moveString = GetOpponentMoveString();
-            
-            int col = BoardUtil.GetInternalPlayerCol(moveString[0]) / 2;
-            int row = BoardUtil.GetInteralPlayerRow(moveString[1]) / 2;
-            
+
             // Decide if the opponent placed a wall or piece, and call appropriate method 
-            if (moveString.Length == 2)
+            if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
             {
-                string spaceName = row + "," + col;
-                if (IsValidMove(GameBoard.PlayerEnum.TWO, spaceName))
-                {
-                    MoveOpponentPiece(row, col);
-                }
+                MoveOpponentPieceInGUI(moveString);
             }
-            else if (moveString.Length == 3)
+            else if (moveString.Length == 3 && IsValidWallPlacement(GameBoard.PlayerEnum.TWO, moveString))
             {
-                WallCoordinate wc = new WallCoordinate(moveString);
-                MoveOpponentWall();
+                MoveOpponentWallInGUI(moveString);
             }
 
             FlipTurn();
@@ -117,28 +110,27 @@ public class Controller : MonoBehaviour
         localPlayerTurn = !localPlayerTurn;
     }
 
-    public void AddSpace(GameObject obj)
+    public void AddToSpaceMap(GameObject obj)
     {
-        string[] strs = obj.name.Split(',');
-        int x = int.Parse(strs[0]) * 2;
-        int y = int.Parse(strs[1]) * 2;
-        coordMap.Add(obj.name, new PlayerCoordinate(x,y));
+        spaceCoordMap.Add(obj.name, new PlayerCoordinate(obj.name));
+    }
+
+    public void AddToWallMap(GameObject collider)
+    {
+        
     }
 
     // TODO - represent whose turn it is in the GUI, so it can be used here 
     public bool IsValidMove(GameBoard.PlayerEnum player, string spaceName)
     {
-        PlayerCoordinate pc = coordMap[spaceName];
+        PlayerCoordinate pc = spaceCoordMap[spaceName];
         bool validMove = gameBoard.MovePiece(player, pc);
 
         // If validMove send move across network
-        if (validMove)
+        if (validMove && isMultiplayerGame)
         {
             // Send move via ChallengeManager
-            if (isMultiplayerGame)
-            {
-                challengeManagerScript.Move(spaceName);
-            }
+            challengeManagerScript.Move(spaceName);
         }
         return validMove;
     }
@@ -146,11 +138,7 @@ public class Controller : MonoBehaviour
 
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
-        string[] strs = spaceName.Split(',');
-        int row = int.Parse(strs[0]) * 2;
-        int col = int.Parse(strs[1][0].ToString()) * 2;
-        char c = strs[1][1];
-        return gameBoard.PlaceWall(player, new WallCoordinate(row, col, c));
+        return gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
     }
     
 
@@ -171,19 +159,20 @@ public class Controller : MonoBehaviour
         return gameBoard.IsGameOver();
     }
     
-    private void MoveOpponentPiece(int guiRow, int guiCol)
+    private void MoveOpponentPieceInGUI(string guiSpaceName)
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
-        GameObject targetSquare = GameObject.Find(guiRow + "," + guiCol);
+        GameObject targetSquare = GameObject.Find(guiSpaceName);
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
         opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
 
     }
 
-    private void MoveOpponentWall()
+    private void MoveOpponentWallInGUI(string colliderName)
     {
         GameObject wall = GetUnusedOpponentWall();
-        if (wall != null)
+        Collider collider = GetCollider();
+        if (wall != null && collider != null)
         {
             Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
         }
@@ -199,5 +188,12 @@ public class Controller : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private Collider GetCollider()
+    {
+        Collider collider = null;
+
+        return collider;
     }
 }

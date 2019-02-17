@@ -51,7 +51,6 @@ public class ClickSquare : MonoBehaviour
 
     private void OnMouseUp()
     {
-        //Debug.Log(this.name);
         if (playerClickMouseScript.mouseSelected)
         {
             if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y))

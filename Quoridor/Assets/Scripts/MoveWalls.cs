@@ -14,12 +14,10 @@ public class MoveWalls : MonoBehaviour
     private string wallTag;
     private BoxCollider2D wallCollider;
     private bool lockPlace;
-   // GameBoard.PlayerEnum player;
 
     // Start is called before the first frame update
     void Start()
     {
-       // GameBoard.PlayerEnum player = controller.GetWhoseTurn();
         playerOne = GameObject.Find("playerMouse");
         controller = GameObject.Find("GameController").GetComponent<Controller>();
         startPos = transform.position;
@@ -55,14 +53,8 @@ public class MoveWalls : MonoBehaviour
 
     private void OnMouseOver()
     {
-       // Debug.Log("TEST");
         if (Input.GetMouseButtonDown(1))
         {
-            // Debug.Log("Right CLick");
-            // this.transform.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
-            //transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 89.5f);
-
-
             transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
         }
     }
@@ -70,7 +62,6 @@ public class MoveWalls : MonoBehaviour
 
     void OnMouseDown()
     {
-        
         screenPoint = Camera.main.WorldToScreenPoint(transform.position);
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
@@ -88,7 +79,6 @@ public class MoveWalls : MonoBehaviour
 
         if (hits.Length == 1)
         {
-            //if (System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hits[0].transform.localEulerAngles.z - 180) >= transform.localEulerAngles.z - 10)
             if(transform.localScale.x == hits[0].transform.localScale.x && transform.localScale.y == hits[0].transform.localScale.y)
             {
                 closest = hits[0];
@@ -108,11 +98,6 @@ public class MoveWalls : MonoBehaviour
 
             foreach (Collider hit in hits)
             {
-                //float colliderRotation = System.Math.Abs(hit.transform.localEulerAngles.z - 180);
-                //float wallRotation = System.Math.Abs(transform.localEulerAngles.z);
-
-
-                //if (System.Math.Abs(hit.transform.localEulerAngles.z - 180) <= System.Math.Abs(transform.localEulerAngles.z + 10) && System.Math.Abs(hit.transform.localEulerAngles.z -180) >= transform.localEulerAngles.z - 10)
                 if (transform.localScale.x == hit.transform.localScale.x && transform.localScale.y == hit.transform.localScale.y)
                 {
                     diffx = System.Math.Abs(transform.position.x - hit.transform.position.x);
@@ -149,18 +134,7 @@ public class MoveWalls : MonoBehaviour
                     }
                 }
             }
-
-            
-
-           
-
-            // transform.position = new Vector3(hits[0].transform.position.x, hits[0].transform.position.y, -.7f);
         }
-        //else if(hits.Length == 0)
-        //{
-
-        //    transform.position = startPos;
-        //}
 
         GameBoard.PlayerEnum player = controller.GetWhoseTurn();
 
@@ -168,6 +142,7 @@ public class MoveWalls : MonoBehaviour
         {
             transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
             lockPlace = true;
+
         }
         else
         {
