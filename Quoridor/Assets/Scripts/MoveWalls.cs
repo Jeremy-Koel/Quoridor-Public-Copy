@@ -146,7 +146,7 @@ public class MoveWalls : MonoBehaviour
         {
             transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
             lockPlace = true;
-
+            controller.MarkPlayerMoved();
         }
         else
         {
