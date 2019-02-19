@@ -25,6 +25,7 @@ public class Controller : MonoBehaviour
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
+        wallCoordMap = new Dictionary<string, WallCoordinate>();
         localPlayerTurn = true;
 
         GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
@@ -182,6 +183,7 @@ public class Controller : MonoBehaviour
         {
             wall.transform.localScale = collider.transform.localScale;
             wall.transform.position = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
+            wall.GetComponent<MoveWalls>().SetLockPlace(true);
             //Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
         }
     }

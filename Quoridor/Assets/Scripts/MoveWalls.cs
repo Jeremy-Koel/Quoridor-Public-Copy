@@ -50,6 +50,10 @@ public class MoveWalls : MonoBehaviour
         return lockPlace;
     }
 
+    public void SetLockPlace(bool setValue)
+    {
+        lockPlace = setValue;
+    }
 
     private void OnMouseOver()
     {
