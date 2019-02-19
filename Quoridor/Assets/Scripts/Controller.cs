@@ -177,10 +177,12 @@ public class Controller : MonoBehaviour
     private void MoveOpponentWallInGUI(string colliderName)
     {
         GameObject wall = GetUnusedOpponentWall();
-        Collider collider = GetCollider();
+        Collider collider = GetCollider(colliderName);
         if (wall != null && collider != null)
         {
-            Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
+            wall.transform.localScale = collider.transform.localScale;
+            wall.transform.position = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
+            //Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
         }
     }
 
@@ -196,9 +198,9 @@ public class Controller : MonoBehaviour
         return null;
     }
 
-    private Collider GetCollider()
+    private Collider GetCollider(string colliderName)
     {
-        Collider collider = null;
+        Collider collider = GameObject.Find(colliderName).GetComponent<Collider>();
 
         return collider;
     }
