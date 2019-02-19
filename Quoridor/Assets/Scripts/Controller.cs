@@ -123,7 +123,7 @@ public class Controller : MonoBehaviour
 
     public void AddToWallMap(GameObject collider)
     {
-        
+        wallCoordMap.Add(collider.name, new WallCoordinate(collider.name));   
     }
 
     // TODO - represent whose turn it is in the GUI, so it can be used here 
