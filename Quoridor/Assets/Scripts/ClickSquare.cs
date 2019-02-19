@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameCore;
+using UnityEngine.EventSystems;
 
 public class ClickSquare : MonoBehaviour
 {
@@ -35,46 +36,55 @@ public class ClickSquare : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        //TODO
-        //controller.IsValidMove...
-        transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
-        GameObject highlight = transform.GetChild(0).gameObject;
-        highlight.SetActive(true);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            //TODO
+            //controller.IsValidMove...
+            transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
+            GameObject highlight = transform.GetChild(0).gameObject;
+            highlight.SetActive(true);
+        }
     }
 
     private void OnMouseExit()
     {
-        transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
-        GameObject highlight = transform.GetChild(0).gameObject;
-        highlight.SetActive(false);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
+            GameObject highlight = transform.GetChild(0).gameObject;
+            highlight.SetActive(false);
+        }
     }
 
     private void OnMouseUp()
     {
-        if (playerClickMouseScript.mouseSelected)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y))
+            if (playerClickMouseScript.mouseSelected)
             {
-                if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
+                if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y))
                 {
-                    playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                    controller.MarkPlayerMoved();
+                    if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
+                    {
+                        playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                        controller.MarkPlayerMoved();
+                    }
+
+                    //OnClickToggleMouse();
                 }
-                
-                //OnClickToggleMouse();
             }
-        }
 
-        if (opponentClickMouseScript.mouseSelected)
-        {
-            if ((opponentMouse.transform.position.x != this.transform.position.x || opponentMouse.transform.position.y != this.transform.position.y))
+            if (opponentClickMouseScript.mouseSelected)
             {
-                if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
+                if ((opponentMouse.transform.position.x != this.transform.position.x || opponentMouse.transform.position.y != this.transform.position.y))
                 {
-                    opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                }
+                    if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
+                    {
+                        opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                    }
 
-                // OnClickToggleMouse2();
+                    // OnClickToggleMouse2();
+                }
             }
         }
     }

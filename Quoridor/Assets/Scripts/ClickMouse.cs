@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameCore;
+using UnityEngine.EventSystems;
 
 public class ClickMouse : MonoBehaviour
 {
@@ -74,7 +75,10 @@ public class ClickMouse : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        cursorOnMouse = true;
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            cursorOnMouse = true;
+        }
     }
 
     private void OnMouseExit()
@@ -83,13 +87,16 @@ public class ClickMouse : MonoBehaviour
     }
     private void OnMouseUpAsButton()
     {
-        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
-
-        if ((player == GameBoard.PlayerEnum.ONE && name == "playerMouse") || (player == GameBoard.PlayerEnum.TWO && name == "opponentMouse"))
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            mouseSelected = true;
-            spriteOutline.enabled = true;
-            //Debug.Log("ButtonMouse");
+            GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+
+            if ((player == GameBoard.PlayerEnum.ONE && name == "playerMouse") || (player == GameBoard.PlayerEnum.TWO && name == "opponentMouse"))
+            {
+                mouseSelected = true;
+                spriteOutline.enabled = true;
+                //Debug.Log("ButtonMouse");
+            }
         }
         //gameObject.SendMessage("OnClickToggleMouse", SendMessageOptions.DontRequireReceiver);
     }

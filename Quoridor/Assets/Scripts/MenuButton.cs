@@ -21,15 +21,16 @@ public class MenuButton : MonoBehaviour
 
     public void onMenuButtonClick()
     {
-        if (winScreen.transform.position.z == -2)
+        if (winScreen.activeSelf)
         {
-            winScreen.transform.position = new Vector3(winScreen.transform.position.x, winScreen.transform.position.y, 2);
+            //winScreen.transform.position = new Vector3(winScreen.transform.position.x, winScreen.transform.position.y, 2);
+            winScreen.SetActive(false);
             menuScreen.SetActive(true);
             returnToGameButton.SetActive(false);
         }
-        else if (winScreen.transform.position.z == 2)
+        else if (!winScreen.activeSelf)
         {
-            winScreen.transform.position = new Vector3(winScreen.transform.position.x, winScreen.transform.position.y, 2);
+            //winScreen.transform.position = new Vector3(winScreen.transform.position.x, winScreen.transform.position.y, 2);
             menuScreen.SetActive(true);
             returnToGameButton.SetActive(true);
         }

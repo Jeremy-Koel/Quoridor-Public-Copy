@@ -11,6 +11,8 @@ public class Controller : MonoBehaviour
     private bool localPlayerTurn;
     private bool isMultiplayerGame;
     private State state;
+    private GameObject winPanel;
+    private GameObject menuPanel;
 
     private enum State
     {
@@ -27,6 +29,9 @@ public class Controller : MonoBehaviour
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
         localPlayerTurn = true;
+        winPanel = GameObject.Find("WinScreen");
+        winPanel.SetActive(false);
+        menuPanel = GameObject.Find("MenuOptions");
 
         GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
         if (challengeManagerObject != null)
@@ -53,6 +58,11 @@ public class Controller : MonoBehaviour
             case State.OpponentMoved:
                 state = State.PlayerMoving;
                 break;
+        }
+
+        if(IsGameOver() && !menuPanel.activeSelf)
+        {
+            winPanel.SetActive(true);
         }
     }
 
