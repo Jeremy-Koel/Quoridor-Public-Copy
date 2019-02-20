@@ -9,14 +9,18 @@ public class WinnerScreen : MonoBehaviour
     //private GameObject winPanel;
     private Text winText;
     private Controller controller;
+    private Text gameOverText;
 
     void Start()
     {
+        controller = GameObject.Find("GameController").GetComponent<Controller>();
         //winPanel = GameObject.Find("WinScreen");
         winText = GameObject.Find("WinnerText").GetComponent<Text>();
-        winText.text = "Game Over!";
+        winText.text = getWhoWon();
+        gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
+        gameOverText.text = "Game Over!";
         //winPanel.transform.position = new Vector3(winPanel.transform.position.x, winPanel.transform.position.y, 2);
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
+
     }
 
     // Update is called once per frame
@@ -29,5 +33,10 @@ public class WinnerScreen : MonoBehaviour
         //    winText.text = "Game Over!";
            
         //}
+    }
+
+    private string getWhoWon()
+    {
+        return controller.WhoWon();
     }
 }

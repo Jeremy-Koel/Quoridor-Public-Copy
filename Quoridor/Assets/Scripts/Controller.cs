@@ -176,6 +176,18 @@ public class Controller : MonoBehaviour
         return gameBoard.IsGameOver();
     }
     
+    public string WhoWon()
+    {
+        if(gameBoard.PlayerOneWin())
+        {
+            return "Player One Wins!";
+        }
+        else
+        {
+            return "Player Two Wins!";
+        }
+    }
+
     private void MoveOpponentPieceInGUI(string guiSpaceName)
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
