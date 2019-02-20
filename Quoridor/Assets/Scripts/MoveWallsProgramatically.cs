@@ -6,7 +6,7 @@ public class MoveWallsProgramatically : MonoBehaviour
 {
     public bool moveWall;
     public Vector3 target;
-    public float speed = 8.0f;
+    public float speed = 12.0f;
 
     // Start is called before the first frame update
     void Start()
