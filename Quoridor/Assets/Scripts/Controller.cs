@@ -207,7 +207,11 @@ public class Controller : MonoBehaviour
         if (wall != null && collider != null)
         {
             wall.transform.localScale = collider.transform.localScale;
-            wall.transform.position = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
+            //wall.transform.position = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
+            MoveWallsProgramatically moveWallScript = wall.GetComponent<MoveWallsProgramatically>();
+            moveWallScript.target = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
+            moveWallScript.moveWall = true;
+
             wall.GetComponent<MoveWalls>().SetLockPlace(true);
             //Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
         }

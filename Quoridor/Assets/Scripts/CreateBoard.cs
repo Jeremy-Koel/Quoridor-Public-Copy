@@ -112,6 +112,7 @@ public class CreateBoard : MonoBehaviour
         foreach(GameObject wall in p2walls)
         {
             wall.AddComponent<MoveWalls>();
+            wall.AddComponent<MoveWallsProgramatically>();
         }
 
         GameObject[] p1walls = GameObject.FindGameObjectsWithTag("PlayerOneWall");
