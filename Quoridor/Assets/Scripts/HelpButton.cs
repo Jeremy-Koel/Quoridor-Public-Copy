@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReturnToGameButton : MonoBehaviour
+public class HelpButton : MonoBehaviour
 {
-    public GameObject menuScreen;
     private GameObject helpScreen;
     // Start is called before the first frame update
     void Start()
@@ -18,9 +17,8 @@ public class ReturnToGameButton : MonoBehaviour
         
     }
 
-    public void onClickReturnToGameButton()
+    public void onHelpButtonClick()
     {
-        menuScreen.SetActive(false);
-        helpScreen.SetActive(false);
+        helpScreen.SetActive(true);
     }
 }

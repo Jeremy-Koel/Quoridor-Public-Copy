@@ -13,6 +13,7 @@ public class Controller : MonoBehaviour
     private State state;
     private GameObject winPanel;
     private GameObject menuPanel;
+    private GameObject helpScreen;
 
     private enum State
     {
@@ -32,6 +33,8 @@ public class Controller : MonoBehaviour
         winPanel = GameObject.Find("WinScreen");
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
+        helpScreen = GameObject.Find("HelpMenu");
+        helpScreen.SetActive(false);
 
         GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
         if (challengeManagerObject != null)
