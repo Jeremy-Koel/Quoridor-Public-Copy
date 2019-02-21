@@ -2959,7 +2959,7 @@ MonoBehaviour:
     type: 3}
   mousePrefab: {fileID: 3055796536910603963, guid: 41f07f1cb3059044194a108e30b6fbd1,
     type: 3}
-  mousePrefab2: {fileID: 3055796536910603963, guid: 41f07f1cb3059044194a108e30b6fbd1,
+  mousePrefab2: {fileID: 307015620295830308, guid: 8e4318420d157be4a9017b2e914fef4a,
     type: 3}
   wallColliderVerticalPrefab: {fileID: 1890699698454714318, guid: 19c5a1ae04b3ab944b3a600497e37816,
     type: 3}
