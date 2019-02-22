@@ -10,6 +10,8 @@ public class PlayerBoxUpdate : MonoBehaviour
     const string OTHERPLAYERTEXT = "Waiting on other player...";
     private Text playerOneTurn;
     private Text playerTwoTurn;
+    private Text playerOneWallCount;
+    private Text playerTwoWallCount;
     private Controller controller;
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,10 @@ public class PlayerBoxUpdate : MonoBehaviour
         playerOneTurn.text = YOURTURNTEXT;
         playerTwoTurn = GameObject.Find("PlayerTwoTurn").GetComponent<Text>();
         playerTwoTurn.text = OTHERPLAYERTEXT;
+        playerOneWallCount = GameObject.Find("PlayerOneWallsLeft").GetComponent<Text>();
+        playerOneWallCount.text = "10";
+        playerTwoWallCount = GameObject.Find("PlayerTwoWallsLeft").GetComponent<Text>();
+        playerTwoWallCount.text = "10";
         controller = controller = GameObject.Find("GameController").GetComponent<Controller>();
     }
 
@@ -41,5 +47,8 @@ public class PlayerBoxUpdate : MonoBehaviour
             playerOneTurn.fontStyle = FontStyle.Italic;
         }
 
+        playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
+        playerTwoWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.TWO).ToString();
+        
     }
 }

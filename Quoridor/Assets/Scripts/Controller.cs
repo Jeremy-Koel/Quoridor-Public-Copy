@@ -180,6 +180,7 @@ public class Controller : MonoBehaviour
 
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
+        
         return gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
     }
     
@@ -211,6 +212,11 @@ public class Controller : MonoBehaviour
         {
             return "Player Two Wins!";
         }
+    }
+
+    public int GetPlayerWallCount(GameBoard.PlayerEnum player)
+    {
+        return gameBoard.GetPlayerWallCount(player);
     }
 
     private void MoveOpponentPieceInGUI(string guiSpaceName)
@@ -319,5 +325,7 @@ public class Controller : MonoBehaviour
 
         return playerID;
     }
+
+    
 
 }
