@@ -37,7 +37,7 @@ public class Controller : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
-        helpScreen.SetActive(false);
+        //helpScreen.SetActive(false);
         playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 

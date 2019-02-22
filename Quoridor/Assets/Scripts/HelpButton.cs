@@ -9,6 +9,7 @@ public class HelpButton : MonoBehaviour
     void Start()
     {
         helpScreen = GameObject.Find("HelpMenu");
+        helpScreen.SetActive(false);
     }
 
     // Update is called once per frame
