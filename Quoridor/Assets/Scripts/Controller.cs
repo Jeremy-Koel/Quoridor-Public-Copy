@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GameCore;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class Controller : MonoBehaviour
@@ -14,6 +15,8 @@ public class Controller : MonoBehaviour
     private GameObject winPanel;
     private GameObject menuPanel;
     private GameObject helpScreen;
+    private Text playerOneText;
+    private Text playerTwoText;
 
     private enum State
     {
@@ -35,12 +38,31 @@ public class Controller : MonoBehaviour
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
         helpScreen.SetActive(false);
+        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
         GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
         if (challengeManagerObject != null)
         {
+            // clean up this mess later
             challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
             isMultiplayerGame = challengeManagerScript.IsChallengeActive;
+            PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerNumber);
+            string startingPos = "";
+            string opposingPos = "";
+            if (playerInfo.PlayerNumber == 1)
+            {
+                startingPos = "e1";
+                opposingPos = "e9";
+            }
+            else if (playerInfo.PlayerNumber == 2)
+            {
+                startingPos = "e9";
+                opposingPos = "e1";
+            }
+            gameBoard = new GameBoard(playerInfo.PlayerEnum, startingPos, opposingPos);
+            playerOneText.text = challengeManagerScript.FirstPlayerInfo.PlayerDisplayName;
+            playerTwoText.text = challengeManagerScript.SecondPlayerInfo.PlayerDisplayName;
         }
     }
 
@@ -235,4 +257,67 @@ public class Controller : MonoBehaviour
 
         return collider;
     }
+
+    private PlayerInfo GetPlayerInfo(int playerNumber = 0)
+    {
+        PlayerInfo playerInfo = new PlayerInfo();
+        if (challengeManagerScript)
+        {
+            string playerDisplayName = "";
+            string playerID = "";
+            
+            playerDisplayName = GetPlayerName(playerNumber);
+            playerID = GetPlayerID(playerNumber);
+
+            playerInfo.PlayerDisplayName = playerDisplayName;
+            playerInfo.PlayerID = playerID;
+            
+        }
+        else
+        {
+            Debug.Log("challengeManager not active (not a multiplayer game)");
+        }
+        return playerInfo;
+    }
+
+    private string GetPlayerName(int playerNumber = 0)
+    {
+        string playerDisplayName = "";
+        
+        if (playerNumber == 1)
+        {
+            playerDisplayName = challengeManagerScript.FirstPlayerName;
+        }
+        else if (playerNumber == 2)
+        {
+            playerDisplayName = challengeManagerScript.SecondPlayerName;
+        }
+        else
+        {
+            Debug.Log("Invalid playerNumber, use 1 or 2");
+        }
+        
+        return playerDisplayName;
+    }
+
+    private string GetPlayerID(int playerNumber = 0)
+    {
+        string playerID = "";
+
+        if (playerNumber == 1)
+        {
+            playerID = challengeManagerScript.FirstPlayerID;
+        }
+        else if (playerNumber == 2)
+        {
+            playerID = challengeManagerScript.SecondPlayerID;
+        }
+        else
+        {
+            Debug.Log("Invalid playerNumber, use 1 or 2");
+        }
+
+        return playerID;
+    }
+
 }
