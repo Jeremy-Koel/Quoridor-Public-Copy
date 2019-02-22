@@ -52,8 +52,11 @@ public class ChallengeManager : MonoBehaviour
     {
         GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
         GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
-        CurrentPlayerInfo.PlayerID = gameSparksUserIDScript.myUserID;
-        CurrentPlayerID = gameSparksUserIDScript.myUserID;
+        if (gameSparksUserIDScript.myUserID != null && gameSparksUserIDScript.myUserID.Length > 0)
+        {
+            CurrentPlayerInfo.PlayerID = gameSparksUserIDScript.myUserID;
+            CurrentPlayerID = gameSparksUserIDScript.myUserID;
+        }
     }
 
     // Update is called once per frame
