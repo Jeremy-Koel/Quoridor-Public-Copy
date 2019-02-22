@@ -6,7 +6,7 @@ using GameCore;
 
 public class PlayerBoxUpdate : MonoBehaviour
 {
-    const string YOURTURNTEXT = "Your Turn";
+    const string YOURTURNTEXT = "Moving...";
     const string OTHERPLAYERTEXT = "Waiting on other player...";
     private Text playerOneTurn;
     private Text playerTwoTurn;
@@ -18,8 +18,10 @@ public class PlayerBoxUpdate : MonoBehaviour
     {
         playerOneTurn = GameObject.Find("PlayerOneTurn").GetComponent<Text>();
         playerOneTurn.text = YOURTURNTEXT;
+        playerOneTurn.fontStyle = FontStyle.Italic;
         playerTwoTurn = GameObject.Find("PlayerTwoTurn").GetComponent<Text>();
         playerTwoTurn.text = OTHERPLAYERTEXT;
+        playerTwoTurn.fontStyle = FontStyle.Italic;
         playerOneWallCount = GameObject.Find("PlayerOneWallsLeft").GetComponent<Text>();
         playerOneWallCount.text = "10";
         playerTwoWallCount = GameObject.Find("PlayerTwoWallsLeft").GetComponent<Text>();
@@ -35,16 +37,16 @@ public class PlayerBoxUpdate : MonoBehaviour
         if(player == GameBoard.PlayerEnum.ONE)
         {
             playerOneTurn.text = YOURTURNTEXT;
-            playerOneTurn.fontStyle = FontStyle.Normal;
+            //playerOneTurn.fontStyle = FontStyle.Normal;
             playerTwoTurn.text = OTHERPLAYERTEXT;
-            playerTwoTurn.fontStyle = FontStyle.Italic;
+            //playerTwoTurn.fontStyle = FontStyle.Italic;
         }
         else if(player == GameBoard.PlayerEnum.TWO)
         {
             playerTwoTurn.text = YOURTURNTEXT;
-            playerTwoTurn.fontStyle = FontStyle.Normal;
+            //playerTwoTurn.fontStyle = FontStyle.Normal;
             playerOneTurn.text = OTHERPLAYERTEXT;
-            playerOneTurn.fontStyle = FontStyle.Italic;
+            //playerOneTurn.fontStyle = FontStyle.Italic;
         }
 
         playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
