@@ -9,44 +9,32 @@ public class Controller : MonoBehaviour
     private Dictionary<string, PlayerCoordinate> spaceCoordMap;
     private Dictionary<string, WallCoordinate> wallCoordMap;
     private ChallengeManager challengeManagerScript;
-    private bool localPlayerTurn;
-    private bool isMultiplayerGame;
-    private State state;
     private GameObject winPanel;
     private GameObject menuPanel;
     private GameObject helpScreen;
     private Text playerOneText;
     private Text playerTwoText;
-
-    private enum State
-    {
-        PlayerMoving,
-        PlayerMoved,
-        OpponentMoving,
-        OpponentMoved
-    }
+    private bool opponentTurn;
 
     // Start is called before the first frame update
     void Start()
     {
+        opponentTurn = false;
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
-        localPlayerTurn = true;
         winPanel = GameObject.Find("WinScreen");
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
-        //helpScreen.SetActive(false);
         playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
-
-        GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-        if (challengeManagerObject != null)
+        
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             // clean up this mess later
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
             challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-            isMultiplayerGame = challengeManagerScript.IsChallengeActive;
             PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerNumber);
             string startingPos = "";
             string opposingPos = "";
@@ -64,57 +52,58 @@ public class Controller : MonoBehaviour
             playerOneText.text = challengeManagerScript.FirstPlayerInfo.PlayerDisplayName;
             playerTwoText.text = challengeManagerScript.SecondPlayerInfo.PlayerDisplayName;
         }
+        else
+        {
+            opponentTurn = false;
+        }
+
+        // start watching for moves 
+        InvokeRepeating("WatchForMoves", 1.0f, 0.5f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        switch (state)
-        {
-            case State.PlayerMoving:
-                break;
-            case State.PlayerMoved:
-                state = State.OpponentMoving;
-                break;
-            case State.OpponentMoving:
-                OpponentMove();
-                state = State.OpponentMoved;
-                break;
-            case State.OpponentMoved:
-                state = State.PlayerMoving;
-                break;
-        }
-
         if(IsGameOver() && !menuPanel.activeSelf)
         {
             winPanel.SetActive(true);
         }
     }
 
-    public void OpponentMove()
+    private void WatchForMoves()
     {
-        if (!localPlayerTurn)
+        if (opponentTurn)
         {
-            // Get move from AI or network 
-            string moveString = GetOpponentMoveString();
-
-            // Decide if the opponent placed a wall or piece, and call appropriate method 
-            if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
-            {
-                MoveOpponentPieceInGUI(moveString);
-            }
-            else if (moveString.Length == 3 && IsValidWallPlacement(GameBoard.PlayerEnum.TWO, moveString))
-            {
-                MoveOpponentWallInGUI(moveString);
-            }
-
-            FlipTurn();
+            MakeOpponentMove();
         }
+    }
+
+    public void MarkLocalPlayerMove()
+    {
+        opponentTurn = true;
+    }
+
+    public void MakeOpponentMove()
+    {
+        // Get move from AI or network 
+        string moveString = GetOpponentMoveString();
+
+        // Decide if the opponent placed a wall or piece, and call appropriate method 
+        if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
+        {
+            MoveOpponentPieceInGUI(moveString);
+        }
+        else if (moveString.Length == 3 && IsValidWallPlacement(GameBoard.PlayerEnum.TWO, moveString))
+        {
+            MoveOpponentWallInGUI(moveString);
+        }
+
+        opponentTurn = false;
     }
 
     private string GetOpponentMoveString()
     {
-        if (isMultiplayerGame)
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             return GetMoveFromNetwork();
         }
@@ -141,17 +130,6 @@ public class Controller : MonoBehaviour
         return tree.MonteCarloTreeSearch();
     }
 
-    public void MarkPlayerMoved()
-    {
-        state = State.PlayerMoved;
-        FlipTurn();
-    }
-
-    private void FlipTurn()
-    {
-        localPlayerTurn = !localPlayerTurn;
-    }
-
     public void AddToSpaceMap(GameObject obj)
     {
         spaceCoordMap.Add(obj.name, new PlayerCoordinate(obj.name));
@@ -161,30 +139,27 @@ public class Controller : MonoBehaviour
     {
         wallCoordMap.Add(collider.name, new WallCoordinate(collider.name));   
     }
-
-    // TODO - represent whose turn it is in the GUI, so it can be used here 
+    
     public bool IsValidMove(GameBoard.PlayerEnum player, string spaceName)
     {
         PlayerCoordinate pc = spaceCoordMap[spaceName];
         bool validMove = gameBoard.MovePiece(player, pc);
 
         // If validMove send move across network
-        if (validMove && isMultiplayerGame)
+        if (validMove && GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             // Send move via ChallengeManager
             challengeManagerScript.Move(spaceName);
         }
         return validMove;
     }
-
-
+    
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
         
         return gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
     }
     
-
     public GameBoard.PlayerEnum GetWhoseTurn()
     {
         if (gameBoard.GetWhoseTurn() == 1)
@@ -225,7 +200,6 @@ public class Controller : MonoBehaviour
         GameObject targetSquare = GameObject.Find(guiSpaceName);
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
         opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
-
     }
 
     private void MoveOpponentWallInGUI(string colliderName)
@@ -235,13 +209,11 @@ public class Controller : MonoBehaviour
         if (wall != null && collider != null)
         {
             wall.transform.localScale = collider.transform.localScale;
-            //wall.transform.position = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
             MoveWallsProgramatically moveWallScript = wall.GetComponent<MoveWallsProgramatically>();
             moveWallScript.target = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
             moveWallScript.moveWall = true;
 
             wall.GetComponent<MoveWalls>().SetLockPlace(true);
-            //Debug.Log("Opponent tried to place a wall"); // TODO - move wall 
         }
     }
 
@@ -325,7 +297,5 @@ public class Controller : MonoBehaviour
 
         return playerID;
     }
-
     
-
 }

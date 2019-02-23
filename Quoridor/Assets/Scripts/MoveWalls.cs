@@ -66,7 +66,6 @@ public class MoveWalls : MonoBehaviour
         }
     }
 
-
     void OnMouseDown()
     {
         screenPoint = Camera.main.WorldToScreenPoint(transform.position);
@@ -79,8 +78,6 @@ public class MoveWalls : MonoBehaviour
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         transform.position = curPosition;
     }
-
-
 
     void SnapWallToPlace(Collider[] hits)
     {
@@ -151,7 +148,7 @@ public class MoveWalls : MonoBehaviour
         {
             transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
             lockPlace = true;
-            controller.MarkPlayerMoved();
+            controller.MarkLocalPlayerMove();
         }
         else
         {
