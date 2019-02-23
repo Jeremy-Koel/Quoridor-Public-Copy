@@ -14,6 +14,8 @@ public class ClickSquare : MonoBehaviour
 
     private Controller controller;
 
+    private InvalidMovePopup invalidPopup;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,8 @@ public class ClickSquare : MonoBehaviour
         opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
 
         controller = gameObject.GetComponentInParent<Controller>();
+
+        invalidPopup = controller.GetComponent<InvalidMovePopup>();
         // mouseSelected = false;
     }
 
@@ -69,6 +73,10 @@ public class ClickSquare : MonoBehaviour
                         playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                         controller.MarkPlayerMoved();
                     }
+                    else
+                    {
+                        invalidPopup.isPoppedUp = true;
+                    }
 
                     //OnClickToggleMouse();
                 }
@@ -82,7 +90,10 @@ public class ClickSquare : MonoBehaviour
                     {
                         opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                     }
-
+                     else
+                    {
+                        invalidPopup.isPoppedUp = true;
+                    }
                     // OnClickToggleMouse2();
                 }
             }

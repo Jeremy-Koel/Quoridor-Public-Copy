@@ -14,7 +14,8 @@ public class MoveWalls : MonoBehaviour
     private string wallTag;
     private BoxCollider2D wallCollider;
     private bool lockPlace;
-
+    private InvalidMovePopup invalidPopup;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,8 @@ public class MoveWalls : MonoBehaviour
         wallTag = this.tag;
         wallCollider = GetComponent<BoxCollider2D>();
         lockPlace = false;
+        invalidPopup = controller.GetComponent<InvalidMovePopup>();
+        
     }
 
     // Update is called once per frame
@@ -76,6 +79,8 @@ public class MoveWalls : MonoBehaviour
         Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
         transform.position = curPosition;
     }
+
+
 
     void SnapWallToPlace(Collider[] hits)
     {
@@ -157,6 +162,9 @@ public class MoveWalls : MonoBehaviour
             }
 
             transform.position = startPos;
+
+            invalidPopup.isPoppedUp = true;
+            
         }
     }
 
