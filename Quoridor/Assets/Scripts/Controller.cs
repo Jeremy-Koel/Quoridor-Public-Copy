@@ -58,7 +58,7 @@ public class Controller : MonoBehaviour
         }
 
         // start watching for moves 
-        InvokeRepeating("WatchForMoves", 1.0f, 0.5f);
+        InvokeRepeating("WatchForMoves", 1.0f, 0.1f);
     }
 
     // Update is called once per frame
