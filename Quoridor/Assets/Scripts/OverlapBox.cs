@@ -8,6 +8,7 @@
 //This script uses the OverlapBox that creates an invisible Box Collider that detects multiple collisions with other colliders. The OverlapBox in this case is the same size and position as the GameObject you attach it to (acting as a replacement for the BoxCollider component).
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class OverlapBox : MonoBehaviour
 {
@@ -58,10 +59,12 @@ public class OverlapBox : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Collider[] hits = MyCollisions();
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            Collider[] hits = MyCollisions();
 
-        SendMessage("SnapWallToPlace", hits, SendMessageOptions.DontRequireReceiver);
-
+            SendMessage("SnapWallToPlace", hits, SendMessageOptions.DontRequireReceiver);
+        }
 
     }
 }

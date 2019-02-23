@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameCore;
+using UnityEngine.EventSystems;
 
 public class MoveWalls : MonoBehaviour
 {
@@ -60,23 +61,33 @@ public class MoveWalls : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
+            if (Input.GetMouseButtonDown(1))
+            {
+                transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
+            }
         }
     }
 
     void OnMouseDown()
     {
-        screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+            offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        }
+
     }
 
     void OnMouseDrag()
     {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        transform.position = curPosition;
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+            transform.position = curPosition;
+        }
     }
 
     void SnapWallToPlace(Collider[] hits)
