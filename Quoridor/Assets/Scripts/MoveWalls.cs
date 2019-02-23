@@ -154,14 +154,11 @@ public class MoveWalls : MonoBehaviour
         {
             if (transform.localScale.x == 6)
             {
-                //transform.localScale = new Vector3(.7f, 6, -.7f);
                 transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
             }
 
             transform.position = startPos;
-
             invalidPopup.isPoppedUp = true;
-            
         }
     }
 

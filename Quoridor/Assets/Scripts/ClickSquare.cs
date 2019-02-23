@@ -19,7 +19,6 @@ public class ClickSquare : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Debug.Log("ADDED");
         playerMouse = GameObject.Find("playerMouse");
         opponentMouse = GameObject.Find("opponentMouse");
 
@@ -29,7 +28,6 @@ public class ClickSquare : MonoBehaviour
         controller = gameObject.GetComponentInParent<Controller>();
 
         invalidPopup = controller.GetComponent<InvalidMovePopup>();
-        // mouseSelected = false;
     }
 
     // Update is called once per frame
@@ -77,8 +75,6 @@ public class ClickSquare : MonoBehaviour
                     {
                         invalidPopup.isPoppedUp = true;
                     }
-
-                    //OnClickToggleMouse();
                 }
             }
 
@@ -94,7 +90,6 @@ public class ClickSquare : MonoBehaviour
                     {
                         invalidPopup.isPoppedUp = true;
                     }
-                    // OnClickToggleMouse2();
                 }
             }
         }
