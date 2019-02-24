@@ -27,6 +27,8 @@ public class ChallengeManager : MonoBehaviour
 
     public string LastOpponentMove { get; private set; }
 
+    public string LastMoveUserID { get; private set; }
+
     public bool GameBoardReady { get; set; }
 
 
@@ -46,7 +48,6 @@ public class ChallengeManager : MonoBehaviour
         }
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-        //scriptMessageQueue = new Queue<ScriptMessage>();
 
         FirstPlayerInfo = new PlayerInfo();
         SecondPlayerInfo = new PlayerInfo();
@@ -83,22 +84,26 @@ public class ChallengeManager : MonoBehaviour
     void OnChallengeTurnTaken(ChallengeTurnTakenMessage message)
     {
         Debug.Log("Challenge Turn Taken");
-        
-        string gameSparksUserID = gameSparksUserIDScript.myUserID;
-        Debug.Log("My Player ID: " + gameSparksUserID);
-
-        var scriptData = message.Challenge.ScriptData.BaseData;
-        Debug.Log("Player ID Used for move: " + scriptData["PlayerIDUsed"].ToString());
-        if (gameSparksUserID != scriptData["PlayerIDUsed"].ToString())
+        if (message.Challenge.ScriptData.BaseData.ContainsKey("PlayerIDUsed"))
         {
-            string scriptDataAction = scriptData["ActionUsed"].ToString();
-            Debug.Log("Action Received: " + scriptDataAction);
+            string gameSparksUserID = gameSparksUserIDScript.myUserID;
+            Debug.Log("My Player ID: " + gameSparksUserID);
 
-            // Notify controller that a move was received
-            LastOpponentMove = scriptDataAction;
+            var scriptData = message.Challenge.ScriptData.BaseData;
+            Debug.Log("Player ID Used for move: " + scriptData["PlayerIDUsed"].ToString());
+            LastMoveUserID = scriptData["PlayerIDUsed"].ToString();
+            if (gameSparksUserID != scriptData["PlayerIDUsed"].ToString())
+            {
+                string scriptDataAction = scriptData["ActionUsed"].ToString();
+                Debug.Log("Action Received: " + scriptDataAction);
 
-        }
-        eventManager.InvokeChallengeTurnTaken();
+                // Notify controller that a move was received
+                LastOpponentMove = scriptDataAction;
+                messageQueue.EnqueueOpponentMoveQueue(scriptDataAction);
+                eventManager.InvokeMoveReceived();
+            }
+            eventManager.InvokeChallengeTurnTaken();
+        }       
     }
 
     public void GeneralChallengeMessage(ScriptMessage message)
@@ -221,6 +226,16 @@ public class ChallengeManager : MonoBehaviour
             Debug.Log("Invalid player number, use 1 or 2");
         }
         return playerInfo;
+    }
+
+    public bool IsItMyTurn()
+    {
+        bool myTurn = false;
+        if (LastMoveUserID != CurrentPlayerInfo.PlayerID)
+        {
+            myTurn = true;
+        }
+        return myTurn;
     }
 
 }

@@ -11,6 +11,7 @@ public class Controller : MonoBehaviour
     private Dictionary<string, WallCoordinate> wallCoordMap;
     private ChallengeManager challengeManagerScript;
     private EventManager eventManager;
+    private MessageQueue messageQueue;
     private GameObject winPanel;
     private GameObject menuPanel;
     private GameObject helpScreen;
@@ -21,12 +22,18 @@ public class Controller : MonoBehaviour
     private void Awake()
     {
         Debug.Log("Awake Controller");
-        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+
+        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
+            eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
             challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
+            eventManager.ListenToMoveReceived(MakeOpponentMove);
             eventManager.InvokeGameBoardReady();
         }
     }
@@ -36,7 +43,7 @@ public class Controller : MonoBehaviour
     void Start()
     {
         opponentTurn = false;
-        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        //gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
         winPanel = GameObject.Find("WinScreen");
@@ -50,11 +57,11 @@ public class Controller : MonoBehaviour
         }
         else
         {
+            // start watching for moves 
+            InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
             opponentTurn = false;
         }
-
-        // start watching for moves 
-        InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
+        
     }
 
     // Update is called once per frame
@@ -83,8 +90,9 @@ public class Controller : MonoBehaviour
     public async void MakeOpponentMove()
     {
         // Get move from AI or network 
-        string moveString = await Task.Run(() => GetOpponentMoveString());
-        
+        //string moveString = await Task.Run(() => GetOpponentMoveString());
+        string moveString = GetOpponentMoveString();
+        Debug.Log("MakeOpponentMove, moveString: " + moveString);
         // Decide if the opponent placed a wall or piece, and call appropriate method 
         if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
         {
@@ -111,11 +119,16 @@ public class Controller : MonoBehaviour
     private string GetMoveFromNetwork()
     {
         string mirroredMove = "";
-        // Temporary solution if move is not there
-        if (challengeManagerScript.LastOpponentMove != null)
+        while (messageQueue.IsQueueEmpty("opponentMoveQueue"))
         {
-            mirroredMove = BoardUtil.MirrorMove(challengeManagerScript.LastOpponentMove);
+            
         }
+        mirroredMove = BoardUtil.MirrorMove(messageQueue.DequeueOpponentMoveQueue());
+        //// Temporary solution if move is not there
+        //if (challengeManagerScript.LastOpponentMove != null)
+        //{
+        //    mirroredMove = BoardUtil.MirrorMove(challengeManagerScript.LastOpponentMove);
+        //}
         return mirroredMove;
     }
 
@@ -143,8 +156,12 @@ public class Controller : MonoBehaviour
         // If validMove send move across network
         if (validMove && GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            // Send move via ChallengeManager
-            challengeManagerScript.Move(spaceName);
+            if (challengeManagerScript.IsItMyTurn())
+            {
+                MarkLocalPlayerMove();
+                // Send move via ChallengeManager
+                challengeManagerScript.Move(spaceName);
+            }
         }
         return validMove;
     }
@@ -249,19 +266,26 @@ public class Controller : MonoBehaviour
     {
         Debug.Log("Setting up multiplayer game in controller");
         PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
-        string startingPos = "";
-        string opposingPos = "";
         if (playerInfo.PlayerNumber == 1)
         {
-            startingPos = "e1";
-            opposingPos = "e9";
+            opponentTurn = false;
+            // Set player's turn in GameBoard
+            gameBoard.SetPlayerTurnRandom();
+            while (gameBoard.GetWhoseTurn() != 1)
+            {
+                gameBoard.SetPlayerTurnRandom();
+            }
         }
         else if (playerInfo.PlayerNumber == 2)
         {
-            startingPos = "e9";
-            opposingPos = "e1";
+            opponentTurn = true;
+            // Set player's turn in GameBoard
+            gameBoard.SetPlayerTurnRandom();
+            while (gameBoard.GetWhoseTurn() != 2)
+            {
+                gameBoard.SetPlayerTurnRandom();
+            }
         }
-        gameBoard = new GameBoard(playerInfo.PlayerEnum, startingPos, opposingPos);
 
         playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();

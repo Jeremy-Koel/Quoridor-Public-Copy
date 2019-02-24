@@ -117,7 +117,7 @@ public class EventManager : MonoBehaviour
         MoveSent.Invoke();
     }
 
-    public void ListToMoveReceived(UnityAction action)
+    public void ListenToMoveReceived(UnityAction action)
     {
         Debug.Log("Move Received Listener Added");
         MoveReceived.AddListener(action);
