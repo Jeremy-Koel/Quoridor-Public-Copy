@@ -10,11 +10,6 @@ using UnityEngine.Events;
 public class ChallengeManager : MonoBehaviour
 {
     public EventManager eventManager;
-    public UnityEvent ChallengeStarted;
-    public UnityEvent ChallengeTurnTaken;
-    public UnityEvent ChallengeStartingPlayerSet;
-    //public UnityEvent ChallengeWon;
-    //public UnityEvent ChallengeLost;
 
     public Queue<ScriptMessage> scriptMessageQueue;
 
@@ -78,18 +73,10 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("ChallengeStarted");
         IsChallengeActive = true;
         ChallengeID = message.Challenge.ChallengeId;
-        //FirstPlayerName = message.Challenge.Challenger.Name;
-        //FirstPlayerID = message.Challenge.Challenger.Id;
-        //SecondPlayerName = message.Challenge.Challenged.First().Name;
-        //SecondPlayerID = message.Challenge.Challenged.First().Id;
-        //CurrentPlayerName = message.Challenge.NextPlayer == FirstPlayerID ? FirstPlayerName : SecondPlayerName;
 
         Debug.Log("ChallengeID: " + ChallengeID);
-        //Debug.Log("HostsPlayerName: " + FirstPlayerName);
-        //Debug.Log("ChallengersPlayerName: " + SecondPlayerName);
 
         eventManager.InvokeChallengeStarted();
-        //ChallengeStarted.Invoke();
     }
 
     void OnChallengeTurnTaken(ChallengeTurnTakenMessage message)
@@ -98,8 +85,6 @@ public class ChallengeManager : MonoBehaviour
         
         string gameSparksUserID = gameSparksUserIDScript.myUserID;
         Debug.Log("My Player ID: " + gameSparksUserID);
-
-        CurrentPlayerInfo.PlayerDisplayName = message.Challenge.NextPlayer == FirstPlayerInfo.PlayerID ? FirstPlayerInfo.PlayerDisplayName : SecondPlayerInfo.PlayerDisplayName;
 
         var scriptData = message.Challenge.ScriptData.BaseData;
         Debug.Log("Player ID Used for move: " + scriptData["PlayerIDUsed"].ToString());
@@ -112,7 +97,7 @@ public class ChallengeManager : MonoBehaviour
             LastOpponentMove = scriptDataAction;
 
         }
-        ChallengeTurnTaken.Invoke();
+        eventManager.InvokeChallengeTurnTaken();
     }
 
     public void GeneralChallengeMessage(ScriptMessage message)
@@ -121,40 +106,8 @@ public class ChallengeManager : MonoBehaviour
         if (message.ExtCode == "ChallengeStartingPlayerMessage")
         {
             scriptMessageQueue.Enqueue(message);
-            //InvokeRepeating("SetupPlayerInfoCoroutine", 0.0f, 0.5f);
-            //Debug.Log("SetupPlayerInfoCoroutine Done");
-            //SetupPlayerInfo(message);
         }
     }
-
-    //IEnumerator GeneralChallengeMessage(ScriptMessage message)
-    //{
-    //    Debug.Log("ScriptMessage recieved: " + message.ExtCode);
-    //    if (message.ExtCode == "ChallengeStartingPlayerMessage")
-    //    {
-    //        yield return StartCoroutine(SetupPlayerInfoCoroutine());
-    //        Debug.Log("SetupPlayerInfoCoroutine Done");
-    //        SetupPlayerInfo(message);
-    //    }
-    //}
-
-    //public void SetupPlayerInfoCoroutine(ScriptMessage message)
-    //{
-    //    Debug.Log("Checking if GameBoard is ready");
-        
-    //    if (GameBoardReady)
-    //    {
-    //        CancelInvoke("SetupPlayerInfoCoroutine");
-    //        Debug.Log("GameBoard ready");
-    //        SetupPlayerInfo(message);            
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("GameBoard not ready, waiting one half second...");
-    //        //yield return new WaitForSeconds(5);
-    //        //SetupPlayerInfoCoroutine();
-    //    }        
-    //}
 
     public void SetupPlayerInfo()
     {
@@ -203,8 +156,7 @@ public class ChallengeManager : MonoBehaviour
 
     private void OnSetStartingPlayerSuccess(LogChallengeEventResponse response)
     {
-        //ChallengeStartingPlayerSet.Invoke();
-        //eventManager.InvokeChallengeStartingPlayerSet();
+
     }
 
     private void OnSetStartingPlayerError(LogChallengeEventResponse response)
