@@ -11,7 +11,7 @@ public class ChallengeManager : MonoBehaviour
 {
     public EventManager eventManager;
 
-    public Queue<ScriptMessage> scriptMessageQueue;
+    public MessageQueue messageQueue;
 
     GameSparksUserID gameSparksUserIDScript;
 
@@ -45,7 +45,8 @@ public class ChallengeManager : MonoBehaviour
             CurrentPlayerInfo.PlayerID = gameSparksUserIDScript.myUserID;
         }
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        scriptMessageQueue = new Queue<ScriptMessage>();
+        messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+        //scriptMessageQueue = new Queue<ScriptMessage>();
 
         FirstPlayerInfo = new PlayerInfo();
         SecondPlayerInfo = new PlayerInfo();
@@ -105,14 +106,14 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("ScriptMessage recieved: " + message.ExtCode);
         if (message.ExtCode == "ChallengeStartingPlayerMessage")
         {
-            scriptMessageQueue.Enqueue(message);
+            messageQueue.EnqueueStartingPlayerSetQueue(message);
         }
     }
 
     public void SetupPlayerInfo()
     {
         Debug.Log("Challenge Starting Player");
-        ScriptMessage message = scriptMessageQueue.Dequeue();
+        ScriptMessage message = messageQueue.DequeueStartingPlayerSetQueue();
         IDictionary<string, object> messageData = message.Data.BaseData;
         Debug.Log("Starting Player ID: " + messageData["startingPlayer"].ToString());
         string startingPlayerID = messageData["startingPlayer"].ToString();
