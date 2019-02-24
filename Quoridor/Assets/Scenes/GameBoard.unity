@@ -4397,7 +4397,6 @@ GameObject:
   - component: {fileID: 1164243498}
   - component: {fileID: 1164243497}
   - component: {fileID: 1164243496}
-  - component: {fileID: 1164243495}
   m_Layer: 0
   m_Name: GameBoardOutline
   m_TagString: Untagged
@@ -4419,32 +4418,6 @@ Transform:
   m_Father: {fileID: 216155953}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &1164243495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1164243493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55dcabae2246453478138d25698aae20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  squarePrefab: {fileID: 1965169440963696845, guid: 17493d3fa448c7b43b23f8c8c135d323,
-    type: 3}
-  highlightSquarePrefab: {fileID: 4797780460185461147, guid: 218004d3e6e464e4a8e6bb2007070354,
-    type: 3}
-  mousePrefab: {fileID: 3055796536910603963, guid: 41f07f1cb3059044194a108e30b6fbd1,
-    type: 3}
-  mousePrefab2: {fileID: 307015620295830308, guid: 8e4318420d157be4a9017b2e914fef4a,
-    type: 3}
-  wallColliderVerticalPrefab: {fileID: 1890699698454714318, guid: 19c5a1ae04b3ab944b3a600497e37816,
-    type: 3}
-  wallColliderHorizontalPrefab: {fileID: 3810086717544855366, guid: 54c58031a8397c0479796cf2a7fe253d,
-    type: 3}
-  gameBoardWrapper: {fileID: 1164243493}
-  wallColliderWrapper: {fileID: 1346763600}
 --- !u!64 &1164243496
 MeshCollider:
   m_ObjectHideFlags: 0
