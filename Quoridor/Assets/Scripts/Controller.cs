@@ -94,13 +94,29 @@ public class Controller : MonoBehaviour
         string moveString = GetOpponentMoveString();
         Debug.Log("MakeOpponentMove, moveString: " + moveString);
         // Decide if the opponent placed a wall or piece, and call appropriate method 
-        if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            MoveOpponentPieceInGUI(moveString);
+            if (moveString.Length == 2)
+            {
+                ReceiveMove(GameBoard.PlayerEnum.TWO, moveString);
+                MoveOpponentPieceInGUI(moveString);
+            }
+            else if (moveString.Length == 3)
+            {
+                ReceiveMove(GameBoard.PlayerEnum.TWO, moveString);
+                MoveOpponentPieceInGUI(moveString);
+            }
         }
-        else if (moveString.Length == 3 && IsValidWallPlacement(GameBoard.PlayerEnum.TWO, moveString))
+        else
         {
-            MoveOpponentWallInGUI(moveString);
+            if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
+            {
+                MoveOpponentPieceInGUI(moveString);
+            }
+            else if (moveString.Length == 3 && IsValidWallPlacement(GameBoard.PlayerEnum.TWO, moveString))
+            {
+                MoveOpponentWallInGUI(moveString);
+            }
         }
     }
 
@@ -166,6 +182,12 @@ public class Controller : MonoBehaviour
             }
         }
         return validMove;
+    }
+
+    public void ReceiveMove(GameBoard.PlayerEnum player, string spaceName)
+    {
+        PlayerCoordinate pc = spaceCoordMap[spaceName];
+        bool validMove = gameBoard.MovePiece(player, pc);
     }
     
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
