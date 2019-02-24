@@ -2,6 +2,7 @@
 using GameCore;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class Controller : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class Controller : MonoBehaviour
         }
 
         // start watching for moves 
-        InvokeRepeating("WatchForMoves", 1.0f, 0.1f);
+        InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
     }
 
     // Update is called once per frame
@@ -74,6 +75,7 @@ public class Controller : MonoBehaviour
     {
         if (opponentTurn)
         {
+            opponentTurn = false; // changing this here so MakeOpponentMove() is not called again while it is running in background 
             MakeOpponentMove();
         }
     }
@@ -83,11 +85,11 @@ public class Controller : MonoBehaviour
         opponentTurn = true;
     }
 
-    public void MakeOpponentMove()
+    public async void MakeOpponentMove()
     {
         // Get move from AI or network 
-        string moveString = GetOpponentMoveString();
-
+        string moveString = await Task.Run(() => GetOpponentMoveString());
+        
         // Decide if the opponent placed a wall or piece, and call appropriate method 
         if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
         {
@@ -97,8 +99,6 @@ public class Controller : MonoBehaviour
         {
             MoveOpponentWallInGUI(moveString);
         }
-
-        opponentTurn = false;
     }
 
     private string GetOpponentMoveString()
