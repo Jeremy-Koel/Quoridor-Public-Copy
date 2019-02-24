@@ -248,7 +248,7 @@ public class Controller : MonoBehaviour
     public void SetupMultiplayerGame()
     {
         Debug.Log("Setting up multiplayer game in controller");
-        PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerNumber);
+        PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
         string startingPos = "";
         string opposingPos = "";
         if (playerInfo.PlayerNumber == 1)

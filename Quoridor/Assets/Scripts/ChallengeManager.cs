@@ -23,23 +23,11 @@ public class ChallengeManager : MonoBehaviour
     public bool IsChallengeActive { get; private set; }
 
     public PlayerInfo FirstPlayerInfo { get; private set; }
-
-    public string FirstPlayerName { get; private set; }
-
-    public string FirstPlayerID { get; private set; }
-
-    public PlayerInfo SecondPlayerInfo { get; private set; }
-    public string SecondPlayerName { get; private set; }
-
-    public string SecondPlayerID { get; private set; }
-    public PlayerInfo CurrentPlayerInfo { get; private set; }
-
-    public string CurrentPlayerName { get; private set; }
     
-    public string CurrentPlayerID { get; private set; }
-
-    public int CurrentPlayerNumber { get; private set; }
-
+    public PlayerInfo SecondPlayerInfo { get; private set; }
+    
+    public PlayerInfo CurrentPlayerInfo { get; private set; }
+    
     public string ChallengeID { get; private set; }
 
     public string LastOpponentMove { get; private set; }
@@ -60,7 +48,6 @@ public class ChallengeManager : MonoBehaviour
         if (gameSparksUserIDScript.myUserID != null && gameSparksUserIDScript.myUserID.Length > 0)
         {
             CurrentPlayerInfo.PlayerID = gameSparksUserIDScript.myUserID;
-            CurrentPlayerID = gameSparksUserIDScript.myUserID;
         }
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         scriptMessageQueue = new Queue<ScriptMessage>();
@@ -112,7 +99,7 @@ public class ChallengeManager : MonoBehaviour
         string gameSparksUserID = gameSparksUserIDScript.myUserID;
         Debug.Log("My Player ID: " + gameSparksUserID);
 
-        CurrentPlayerName = message.Challenge.NextPlayer == FirstPlayerID ? FirstPlayerName : SecondPlayerName;
+        CurrentPlayerInfo.PlayerDisplayName = message.Challenge.NextPlayer == FirstPlayerInfo.PlayerID ? FirstPlayerInfo.PlayerDisplayName : SecondPlayerInfo.PlayerDisplayName;
 
         var scriptData = message.Challenge.ScriptData.BaseData;
         Debug.Log("Player ID Used for move: " + scriptData["PlayerIDUsed"].ToString());
@@ -184,8 +171,6 @@ public class ChallengeManager : MonoBehaviour
         FirstPlayerInfo.PlayerDisplayName = messageData["startingPlayerName"].ToString();
         FirstPlayerInfo.PlayerNumber = 1;
         FirstPlayerInfo.PlayerEnum = GameCore.GameBoard.PlayerEnum.ONE;
-        FirstPlayerID = startingPlayerID;
-        FirstPlayerName = messageData["startingPlayerName"].ToString();
 
         Debug.Log(FirstPlayerInfo.ToString());
         
@@ -195,13 +180,10 @@ public class ChallengeManager : MonoBehaviour
         SecondPlayerInfo.PlayerDisplayName = messageData["secondPlayerName"].ToString();
         SecondPlayerInfo.PlayerNumber = 2;
         SecondPlayerInfo.PlayerEnum = GameCore.GameBoard.PlayerEnum.TWO;
-        SecondPlayerID = messageData["secondPlayer"].ToString();
-        SecondPlayerName = messageData["secondPlayerName"].ToString();
 
         Debug.Log(SecondPlayerInfo.ToString());
 
         CurrentPlayerInfo.PlayerID = gameSparksUserIDScript.myUserID;
-        CurrentPlayerID = gameSparksUserIDScript.myUserID;
 
         WhichPlayerNumberAmI();
 
@@ -255,18 +237,16 @@ public class ChallengeManager : MonoBehaviour
     {
         int playerNumber = 0;
         GameCore.GameBoard.PlayerEnum playerEnum = GameCore.GameBoard.PlayerEnum.ONE;
-        if (CurrentPlayerID == FirstPlayerID)
+        if (CurrentPlayerInfo.PlayerID == FirstPlayerInfo.PlayerID)
         {
             playerNumber = 1;
-            //playerEnum = GameCore.GameBoard.PlayerEnum.ONE;
         }
-        else if (CurrentPlayerID == SecondPlayerID)
+        else if (CurrentPlayerInfo.PlayerID == SecondPlayerInfo.PlayerID)
         {
             playerNumber = 2;
             playerEnum = GameCore.GameBoard.PlayerEnum.TWO;
         }
         CurrentPlayerInfo.PlayerNumber = playerNumber;
-        CurrentPlayerNumber = playerNumber;
         CurrentPlayerInfo.PlayerEnum = playerEnum;
         Debug.Log(CurrentPlayerInfo.ToString());
         return playerNumber; 
