@@ -98,11 +98,13 @@ public class Controller : MonoBehaviour
         {
             if (moveString.Length == 2)
             {
+                moveString = BoardUtil.MirrorMove(moveString);
                 ReceiveMove(GameBoard.PlayerEnum.TWO, moveString);
                 MoveOpponentPieceInGUI(moveString);
             }
             else if (moveString.Length == 3)
             {
+                moveString = BoardUtil.MirrorWall(moveString);
                 ReceiveWall(GameBoard.PlayerEnum.TWO, moveString);
                 MoveOpponentWallInGUI(moveString);
             }
@@ -139,12 +141,14 @@ public class Controller : MonoBehaviour
         {
             
         }
-        mirroredMove = BoardUtil.MirrorMove(messageQueue.DequeueOpponentMoveQueue());
-        //// Temporary solution if move is not there
-        //if (challengeManagerScript.LastOpponentMove != null)
-        //{
-        //    mirroredMove = BoardUtil.MirrorMove(challengeManagerScript.LastOpponentMove);
-        //}
+        if (!messageQueue.IsQueueEmpty("opponentMoveQueue"))
+        {
+            mirroredMove = messageQueue.DequeueOpponentMoveQueue();
+        }
+        else
+        {
+
+        }
         return mirroredMove;
     }
 

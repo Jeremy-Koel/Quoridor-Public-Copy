@@ -118,6 +118,10 @@ public class ChallengeManager : MonoBehaviour
     public void SetupPlayerInfo()
     {
         Debug.Log("Challenge Starting Player");
+        while (messageQueue.IsQueueEmpty("startingPlayerSetQueue"))
+        {
+
+        }
         ScriptMessage message = messageQueue.DequeueStartingPlayerSetQueue();
         IDictionary<string, object> messageData = message.Data.BaseData;
         Debug.Log("Starting Player ID: " + messageData["startingPlayer"].ToString());
