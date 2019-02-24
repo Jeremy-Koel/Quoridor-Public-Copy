@@ -103,8 +103,8 @@ public class Controller : MonoBehaviour
             }
             else if (moveString.Length == 3)
             {
-                ReceiveMove(GameBoard.PlayerEnum.TWO, moveString);
-                MoveOpponentPieceInGUI(moveString);
+                ReceiveWall(GameBoard.PlayerEnum.TWO, moveString);
+                MoveOpponentWallInGUI(moveString);
             }
         }
         else
@@ -189,11 +189,31 @@ public class Controller : MonoBehaviour
         PlayerCoordinate pc = spaceCoordMap[spaceName];
         bool validMove = gameBoard.MovePiece(player, pc);
     }
+
+    public void ReceiveWall(GameBoard.PlayerEnum player, string spaceName)
+    {
+        Debug.Log("ReceiveWall, spaceName given: " + spaceName);
+        bool validWall = gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
+    }
     
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
+        bool validWallPlacement = false;
+        validWallPlacement = gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
+        // If validMove send move across network
+        if (validWallPlacement && GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            Debug.Log("Valid Multiplayer Move");
+            if (challengeManagerScript.IsItMyTurn())
+            {
+                Debug.Log("Making the move");
+                MarkLocalPlayerMove();
+                // Send move via ChallengeManager
+                challengeManagerScript.Move(spaceName);
+            }
+        }
         
-        return gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
+        return validWallPlacement;
     }
     
     public GameBoard.PlayerEnum GetWhoseTurn()
