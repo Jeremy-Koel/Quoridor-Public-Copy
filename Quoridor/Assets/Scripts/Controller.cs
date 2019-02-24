@@ -43,8 +43,6 @@ public class Controller : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
-        //playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-        //playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
         
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
@@ -238,15 +236,6 @@ public class Controller : MonoBehaviour
         PlayerInfo playerInfo = new PlayerInfo();
         if (challengeManagerScript)
         {
-            //string playerDisplayName = "";
-            //string playerID = "";
-
-            //playerDisplayName = GetPlayerName(playerNumber);
-            //playerID = GetPlayerID(playerNumber);
-
-            //playerInfo.PlayerDisplayName = playerDisplayName;
-            //playerInfo.PlayerID = playerID;
-
             playerInfo = challengeManagerScript.GetPlayerInfo(playerNumber);
         }
         else

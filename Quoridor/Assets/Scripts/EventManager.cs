@@ -11,11 +11,11 @@ using GameSparks.Api.Messages;
 public class EventManager : MonoBehaviour
 {
     
-    public UnityEvent ChallengeStarted;
-    public UnityEvent ChallengeTurnTaken;
-    public UnityEvent ChallengeStartingPlayerSet;
+    public UnityEvent ChallengeStarted = new UnityEvent();
+    public UnityEvent ChallengeTurnTaken = new UnityEvent();
+    public UnityEvent ChallengeStartingPlayerSet = new UnityEvent();
 
-    public UnityEvent GameBoardReady;
+    public UnityEvent GameBoardReady = new UnityEvent();
 
     private void Awake()
     {
@@ -24,30 +24,7 @@ public class EventManager : MonoBehaviour
 
     void Start()
     {
-        // Refactor into a list of events
-        if (ChallengeStarted == null)
-        {
-            ChallengeStarted = new UnityEvent();
-        }
-        if (ChallengeTurnTaken == null)
-        {
-            ChallengeTurnTaken = new UnityEvent();
-        }
-        if (ChallengeStartingPlayerSet == null)
-        {
-            ChallengeStartingPlayerSet = new UnityEvent();
-            DebugListenerSet("ChallengeStartingPlayerSet");
-        }
-        if (GameBoardReady == null)
-        {
-            GameBoardReady = new UnityEvent();
-        }
         
-    }
-
-    public void DebugListenerSet(string eventType)
-    {
-        Debug.Log("Logging Listener activated for " + eventType);
     }
 
     public void ListenToChallengeStarted(UnityAction action)
