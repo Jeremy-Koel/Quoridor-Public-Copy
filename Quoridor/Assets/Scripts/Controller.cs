@@ -156,8 +156,10 @@ public class Controller : MonoBehaviour
         // If validMove send move across network
         if (validMove && GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
+            Debug.Log("Valid Multiplayer Move");
             if (challengeManagerScript.IsItMyTurn())
             {
+                Debug.Log("Making the move");
                 MarkLocalPlayerMove();
                 // Send move via ChallengeManager
                 challengeManagerScript.Move(spaceName);

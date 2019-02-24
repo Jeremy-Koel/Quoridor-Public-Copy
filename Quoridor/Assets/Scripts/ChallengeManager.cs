@@ -231,6 +231,7 @@ public class ChallengeManager : MonoBehaviour
     public bool IsItMyTurn()
     {
         bool myTurn = false;
+        Debug.Log("Checking if it is my turn. LastMoveID: " + LastMoveUserID + ". CurrentPlayerID: " + CurrentPlayerInfo.PlayerID);
         if (LastMoveUserID != CurrentPlayerInfo.PlayerID)
         {
             myTurn = true;
