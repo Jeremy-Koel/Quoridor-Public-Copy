@@ -141,13 +141,14 @@ public class Controller : MonoBehaviour
         {
             
         }
-        //mirroredMove = BoardUtil.MirrorMove(messageQueue.DequeueOpponentMoveQueue());
-        mirroredMove = messageQueue.DequeueOpponentMoveQueue();
-        //// Temporary solution if move is not there
-        //if (challengeManagerScript.LastOpponentMove != null)
-        //{
-        //    mirroredMove = BoardUtil.MirrorMove(challengeManagerScript.LastOpponentMove);
-        //}
+        if (!messageQueue.IsQueueEmpty("opponentMoveQueue"))
+        {
+            mirroredMove = messageQueue.DequeueOpponentMoveQueue();
+        }
+        else
+        {
+
+        }
         return mirroredMove;
     }
 
