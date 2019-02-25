@@ -58,8 +58,8 @@ public class Controller : MonoBehaviour
         else
         {
             // start watching for moves 
-            InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
             opponentTurn = false;
+            InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
         }
         
     }
@@ -87,15 +87,14 @@ public class Controller : MonoBehaviour
         opponentTurn = true;
     }
 
+    // Get move from AI or network 
     public async void MakeOpponentMove()
     {
-        // Get move from AI or network 
-        //string moveString = await Task.Run(() => GetOpponentMoveString());
-        string moveString = GetOpponentMoveString();
-        Debug.Log("MakeOpponentMove, moveString: " + moveString);
         // Decide if the opponent placed a wall or piece, and call appropriate method 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
+            string moveString = GetOpponentMoveString();
+            Debug.Log("MakeOpponentMove, moveString: " + moveString);
             if (moveString.Length == 2)
             {
                 moveString = BoardUtil.MirrorMove(moveString);
@@ -111,6 +110,8 @@ public class Controller : MonoBehaviour
         }
         else
         {
+            string moveString = await Task.Run(() => GetOpponentMoveString());
+            Debug.Log("MakeOpponentMove, moveString: " + moveString);
             if (moveString.Length == 2 && IsValidMove(GameBoard.PlayerEnum.TWO, moveString))
             {
                 MoveOpponentPieceInGUI(moveString);
