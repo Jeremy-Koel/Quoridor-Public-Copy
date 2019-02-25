@@ -16,7 +16,7 @@ public class MoveWalls : MonoBehaviour
     private BoxCollider2D wallCollider;
     private bool lockPlace;
     private InvalidMovePopup invalidPopup;
-   
+    private bool mouseHeldDownOnWall = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +48,13 @@ public class MoveWalls : MonoBehaviour
             wallCollider.enabled = false;
         }
 
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            if (Input.GetMouseButtonDown(1) && mouseHeldDownOnWall)
+            {
+                transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
+            }
+        }
     }
 
     public bool IsOnBoard()
@@ -62,25 +69,33 @@ public class MoveWalls : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
-            }
-        }
+        //if (!EventSystem.current.IsPointerOverGameObject())
+        //{
+        //    if (Input.GetMouseButtonDown(1))
+        //    {
+        //        transform.localScale = new Vector3(transform.localScale.y, transform.localScale.x, transform.localScale.z);
+        //    }
+        //}
+
+        //Debug.Log("MoveWalls.OnMouseOver");
     }
 
     void OnMouseDown()
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
+            mouseHeldDownOnWall = true;
             screenPoint = Camera.main.WorldToScreenPoint(transform.position);
             offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
         }
-
+        //Debug.Log("MoveWalls.OnMouseDown");
     }
 
+    private void OnMouseUp()
+    {
+        mouseHeldDownOnWall = false;
+        //Debug.Log("MoveWalls.OnMouseUp");
+    }
     void OnMouseDrag()
     {
         if (!EventSystem.current.IsPointerOverGameObject())
