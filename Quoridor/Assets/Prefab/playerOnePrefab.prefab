@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2133523439767844005}
   - component: {fileID: 5429392703956912110}
   m_Layer: 0
-  m_Name: clipart630550
+  m_Name: playerOnePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,5 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab0679cf9454124f93fd5539ad2088c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 0.7880776, b: 1, a: 1}
+  color: {r: 0.6320754, g: 0.15205587, b: 0.15205587, a: 1}
   outlineSize: 14
