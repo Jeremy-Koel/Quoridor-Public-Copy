@@ -64,14 +64,15 @@ public class ClickSquare : MonoBehaviour
         {
             if (playerClickMouseScript.mouseSelected)
             {
-                if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y))
+                MoveMouse moveMouseScript = playerMouse.GetComponent<MoveMouse>();
+                if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y) && !moveMouseScript.moveMouse)
                 {
                     if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
                     {
-                        //MoveMouse moveMouseScript = playerMouse.GetComponent<MoveMouse>();
-                        //moveMouseScript.target = new Vector3(transform.position.x, transform.position.y, -0.5f);
-                        //moveMouseScript.moveMouse = true;
-                        playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+                        
+                        moveMouseScript.target = new Vector3(transform.position.x, transform.position.y, -0.5f);
+                        moveMouseScript.moveMouse = true;
+                        //playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                         controller.MarkLocalPlayerMove();
                     }
                     else
