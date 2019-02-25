@@ -8,6 +8,7 @@ public class MoveWalls : MonoBehaviour
 {
 
     public GameObject playerOne;
+    public bool mouseHeldDownOnWall = false;
     private Vector3 screenPoint;
     private Vector3 offset;
     private Vector3 startPos;
@@ -16,7 +17,7 @@ public class MoveWalls : MonoBehaviour
     private BoxCollider2D wallCollider;
     private bool lockPlace;
     private InvalidMovePopup invalidPopup;
-    private bool mouseHeldDownOnWall = false;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -98,7 +99,7 @@ public class MoveWalls : MonoBehaviour
     }
     void OnMouseDrag()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject() || mouseHeldDownOnWall)
         {
             Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
             Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;

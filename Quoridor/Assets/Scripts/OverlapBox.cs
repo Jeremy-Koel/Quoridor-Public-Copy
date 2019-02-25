@@ -19,6 +19,7 @@ public class OverlapBox : MonoBehaviour
     {
         //Use this to ensure that the Gizmos are being drawn when in Play Mode.
         m_Started = true;
+        
     }
 
     void FixedUpdate()
@@ -59,7 +60,8 @@ public class OverlapBox : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        MoveWalls moveWalls = GetComponent<MoveWalls>();
+        if (!EventSystem.current.IsPointerOverGameObject() || moveWalls.mouseHeldDownOnWall)
         {
             Collider[] hits = MyCollisions();
 
