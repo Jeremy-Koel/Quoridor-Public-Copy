@@ -78,20 +78,21 @@ public class ClickSquare : MonoBehaviour
                 }
             }
 
-            if (opponentClickMouseScript.mouseSelected)
-            {
-                if ((opponentMouse.transform.position.x != this.transform.position.x || opponentMouse.transform.position.y != this.transform.position.y))
-                {
-                    if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
-                    {
-                        opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                    }
-                     else
-                    {
-                        invalidPopup.isPoppedUp = true;
-                    }
-                }
-            }
+            // This was commented out on 2/24 to prevent local player from being able to move opponent's mouse 
+            //if (opponentClickMouseScript.mouseSelected)
+            //{
+            //    if ((opponentMouse.transform.position.x != this.transform.position.x || opponentMouse.transform.position.y != this.transform.position.y))
+            //    {
+            //        if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
+            //        {
+            //            opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
+            //        }
+            //         else
+            //        {
+            //            invalidPopup.isPoppedUp = true;
+            //        }
+            //    }
+            //}
         }
     }
 

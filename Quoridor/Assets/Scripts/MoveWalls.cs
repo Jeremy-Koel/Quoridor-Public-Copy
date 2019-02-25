@@ -38,10 +38,11 @@ public class MoveWalls : MonoBehaviour
         {
             wallCollider.enabled = true;
         }
-        else if (player == GameBoard.PlayerEnum.TWO && wallTag == "PlayerTwoWall" && !lockPlace)
-        {
-            wallCollider.enabled = true;
-        }
+        // This was commented out on 2/24 to prevent local player from being able to move opponent's walls 
+        //else if (player == GameBoard.PlayerEnum.TWO && wallTag == "PlayerTwoWall" && !lockPlace)
+        //{
+        //    wallCollider.enabled = true;
+        //}
         else
         {
             wallCollider.enabled = false;
