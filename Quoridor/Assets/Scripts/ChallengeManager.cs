@@ -198,18 +198,22 @@ public class ChallengeManager : MonoBehaviour
     public int WhichPlayerNumberAmI()
     {
         int playerNumber = 0;
+        string playerDisplayName = "";
         GameCore.GameBoard.PlayerEnum playerEnum = GameCore.GameBoard.PlayerEnum.ONE;
         if (CurrentPlayerInfo.PlayerID == FirstPlayerInfo.PlayerID)
         {
             playerNumber = 1;
+            playerDisplayName = FirstPlayerInfo.PlayerDisplayName;
         }
         else if (CurrentPlayerInfo.PlayerID == SecondPlayerInfo.PlayerID)
         {
             playerNumber = 2;
+            playerDisplayName = SecondPlayerInfo.PlayerDisplayName;
             playerEnum = GameCore.GameBoard.PlayerEnum.TWO;
         }
         CurrentPlayerInfo.PlayerNumber = playerNumber;
         CurrentPlayerInfo.PlayerEnum = playerEnum;
+        CurrentPlayerInfo.PlayerDisplayName = playerDisplayName;
         Debug.Log(CurrentPlayerInfo.ToString());
         return playerNumber; 
     }

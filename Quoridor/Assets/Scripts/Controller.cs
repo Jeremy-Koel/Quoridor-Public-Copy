@@ -240,13 +240,34 @@ public class Controller : MonoBehaviour
     
     public string WhoWon()
     {
-        if(gameBoard.PlayerOneWin())
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            return "Player One Wins!";
+            if (gameBoard.PlayerTwoWin())
+            {
+                if (challengeManagerScript.CurrentPlayerInfo.PlayerID == challengeManagerScript.SecondPlayerInfo.PlayerID)
+                {
+                    return challengeManagerScript.FirstPlayerInfo.PlayerDisplayName + " Wins!";
+                }
+                else
+                {
+                    return challengeManagerScript.SecondPlayerInfo.PlayerDisplayName + " Wins!";
+                }
+            }
+            else
+            {
+                return challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName + " Wins!";
+            }
         }
         else
         {
-            return "Player Two Wins!";
+            if (gameBoard.PlayerOneWin())
+            {
+                return "Player One Wins!";
+            }
+            else
+            {
+                return "Player Two Wins!";
+            }
         }
     }
 
