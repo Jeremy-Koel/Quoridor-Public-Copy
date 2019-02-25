@@ -278,7 +278,7 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_LineSpacing: 1.25
   m_Text: This is a player's message
 --- !u!114 &8935485544994026969
 MonoBehaviour:

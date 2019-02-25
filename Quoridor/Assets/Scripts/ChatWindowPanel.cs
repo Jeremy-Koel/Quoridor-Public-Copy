@@ -139,7 +139,7 @@ public class ChatWindowPanel : MonoBehaviour
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
 
-        playerText.text = ("<b>" + message.Who + ":</b>");
+        playerText.text = ("<b>" + message.Who.Substring(0, 10) + ":</b>");
         messageText.text = (message.Message);
 
         messageTextObject.transform.SetParent(chatMessagesViewContent);
@@ -161,8 +161,8 @@ public class ChatWindowPanel : MonoBehaviour
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-        playerText.text = "____________________";
-        messageText.text = "____________________";
+        playerText.text = "________________________________________";
+        messageText.text = "";
 
         messageTextObject.transform.SetParent(chatMessagesViewContent);
         messageTextObject.transform.localScale = new Vector3(1, 1, 1);
