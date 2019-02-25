@@ -17,6 +17,7 @@ public class ChatWindowPanel : MonoBehaviour
     GameObject chatMessagesView;
     //public Transform chatMessagesViewContent;
     public RectTransform chatMessagesViewContent;
+    public VerticalLayoutGroup chatMessagesLayoutGroup;
     public List<GameObject> chatMessages;
     public GameObject textMessagePrefab;
 
@@ -25,6 +26,7 @@ public class ChatWindowPanel : MonoBehaviour
     {
         chatInput = GameObject.Find("ChatInput");
         chatMessagesView = GameObject.Find("ChatMessagesView");
+        chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
         //  chatMessagesViewContent = chatMessagesView.GetComponent<>();
         TeamChatMessage.Listener += ChatMessageReceived;
     }
@@ -159,8 +161,31 @@ public class ChatWindowPanel : MonoBehaviour
         //SetRect(chatMessagesViewContent, 0f, -(values.y / 2), 0f, 0f);
 
         chatMessages.Add(messageTextObject);
+
+        //LayoutRebuilder.MarkLayoutForRebuild(chatMessagesViewContent);
+        //LayoutRebuilder.MarkLayoutForRebuild(chatMessagesView.GetComponent<RectTransform>());
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+
+        //AddSpacingMessage();
+
         //messageTextObject.SetActive(true);
 
+    }
+
+    private void AddSpacingMessage()
+    {
+        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
+        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
+        Text playerText = messageTextObjectChildrenText[0];
+        Text messageText = messageTextObjectChildrenText[1];
+        playerText.text = "";
+        messageText.text = "";
+
+        messageTextObject.transform.SetParent(chatMessagesViewContent);
+        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+
+        chatMessages.Add(messageTextObject);
     }
     
 
