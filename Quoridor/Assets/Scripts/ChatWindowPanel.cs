@@ -15,7 +15,6 @@ public class ChatWindowPanel : MonoBehaviour
 
     GameObject chatInput;
     GameObject chatMessagesView;
-    //public Transform chatMessagesViewContent;
     public RectTransform chatMessagesViewContent;
     public VerticalLayoutGroup chatMessagesLayoutGroup;
     public List<GameObject> chatMessages;
@@ -27,7 +26,6 @@ public class ChatWindowPanel : MonoBehaviour
         chatInput = GameObject.Find("ChatInput");
         chatMessagesView = GameObject.Find("ChatMessagesView");
         chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
-        //  chatMessagesViewContent = chatMessagesView.GetComponent<>();
         TeamChatMessage.Listener += ChatMessageReceived;
     }
 
@@ -135,41 +133,21 @@ public class ChatWindowPanel : MonoBehaviour
         Debug.Log("Team chat message recieved: " + message.Message);
         Debug.Log("Message sent by: " + message.Who);
 
-        //ChatMessagesFull();
-
         GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
-        //GameObject messageTextObjectBuffer = Instantiate(textMessagePrefab) as GameObject;
+
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-        //GameObject messageTextObject = GameObject.Find("Label");
 
-        //Text messageText = messageTextObject.GetComponent<Text>();
-        //messageText.text = ("<b>" + message.Who + ":</b> " + message.Message);
         playerText.text = ("<b>" + message.Who + ":</b>");
         messageText.text = (message.Message);
 
-        //messageTextObject.SetActive(false);
-
         messageTextObject.transform.SetParent(chatMessagesViewContent);
         messageTextObject.transform.localScale = new Vector3(1, 1, 1);
-        
-
-        //messageTextObjectBuffer.transform.SetParent(chatMessagesViewContent);
-        //Vector2 values = messageTextObject.GetComponent<RectTransform>().anchoredPosition;
-
-        //SetRect(chatMessagesViewContent, 0f, -(values.y / 2), 0f, 0f);
 
         chatMessages.Add(messageTextObject);
-
-        //LayoutRebuilder.MarkLayoutForRebuild(chatMessagesViewContent);
-        //LayoutRebuilder.MarkLayoutForRebuild(chatMessagesView.GetComponent<RectTransform>());
         
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-
-        //AddSpacingMessage();
-
-        //messageTextObject.SetActive(true);
 
     }
 
