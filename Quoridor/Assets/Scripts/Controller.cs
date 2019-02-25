@@ -48,7 +48,7 @@ public class Controller : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
-        
+
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
 
@@ -61,17 +61,17 @@ public class Controller : MonoBehaviour
             {
                 gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
             }
-            
+
             // start watching for moves 
             InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
         }
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(IsGameOver() && !menuPanel.activeSelf)
+        if (IsGameOver() && !menuPanel.activeSelf)
         {
             winPanel.SetActive(true);
         }
@@ -146,7 +146,7 @@ public class Controller : MonoBehaviour
         string mirroredMove = "";
         while (messageQueue.IsQueueEmpty("opponentMoveQueue"))
         {
-            
+
         }
         if (!messageQueue.IsQueueEmpty("opponentMoveQueue"))
         {
@@ -172,9 +172,9 @@ public class Controller : MonoBehaviour
 
     public void AddToWallMap(GameObject collider)
     {
-        wallCoordMap.Add(collider.name, new WallCoordinate(collider.name));   
+        wallCoordMap.Add(collider.name, new WallCoordinate(collider.name));
     }
-    
+
     public bool IsValidMove(GameBoard.PlayerEnum player, string spaceName)
     {
         PlayerCoordinate pc = spaceCoordMap[spaceName];
@@ -206,7 +206,7 @@ public class Controller : MonoBehaviour
         Debug.Log("ReceiveWall, spaceName given: " + spaceName);
         bool validWall = gameBoard.PlaceWall(player, new WallCoordinate(spaceName));
     }
-    
+
     public bool IsValidWallPlacement(GameBoard.PlayerEnum player, string spaceName)
     {
         bool validWallPlacement = false;
@@ -223,10 +223,10 @@ public class Controller : MonoBehaviour
                 challengeManagerScript.Move(spaceName);
             }
         }
-        
+
         return validWallPlacement;
     }
-    
+
     public GameBoard.PlayerEnum GetWhoseTurn()
     {
         if (gameBoard.GetWhoseTurn() == 1)
@@ -243,7 +243,7 @@ public class Controller : MonoBehaviour
     {
         return gameBoard.IsGameOver();
     }
-    
+
     public string WhoWon()
     {
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
@@ -287,7 +287,10 @@ public class Controller : MonoBehaviour
         GameObject opponentMouse = GameObject.Find("opponentMouse");
         GameObject targetSquare = GameObject.Find(guiSpaceName);
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
-        opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
+        //opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
+        MoveMouse moveMouseScript = opponentMouse.GetComponent<MoveMouse>();
+        moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
+        moveMouseScript.moveMouse = true;
     }
 
     private void MoveOpponentWallInGUI(string colliderName)
@@ -374,7 +377,7 @@ public class Controller : MonoBehaviour
         {
             playerTwoText.text = challengeManagerScript.SecondPlayerInfo.PlayerDisplayName;
         }
-        
+
     }
 
 }

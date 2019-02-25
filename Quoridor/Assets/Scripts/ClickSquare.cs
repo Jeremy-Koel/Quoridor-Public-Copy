@@ -8,7 +8,7 @@ public class ClickSquare : MonoBehaviour
 {
     public GameObject playerMouse;
     public GameObject opponentMouse;
-  
+
     private ClickMouse playerClickMouseScript;
     private ClickMouse opponentClickMouseScript;
 
@@ -33,7 +33,7 @@ public class ClickSquare : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     private void OnMouseEnter()
@@ -42,7 +42,7 @@ public class ClickSquare : MonoBehaviour
         {
             //TODO
             //controller.IsValidMove...
-           // transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
+            // transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
             GameObject highlight = transform.GetChild(0).gameObject;
             highlight.SetActive(true);
         }
@@ -52,7 +52,7 @@ public class ClickSquare : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-           // transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
+            // transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
             GameObject highlight = transform.GetChild(0).gameObject;
             highlight.SetActive(false);
         }
@@ -68,6 +68,9 @@ public class ClickSquare : MonoBehaviour
                 {
                     if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
                     {
+                        //MoveMouse moveMouseScript = playerMouse.GetComponent<MoveMouse>();
+                        //moveMouseScript.target = new Vector3(transform.position.x, transform.position.y, -0.5f);
+                        //moveMouseScript.moveMouse = true;
                         playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                         controller.MarkLocalPlayerMove();
                     }
@@ -105,6 +108,6 @@ public class ClickSquare : MonoBehaviour
     public void OnClickToggleMouse2()
     {
         opponentClickMouseScript.mouseSelected = !opponentClickMouseScript.mouseSelected;
-        
+
     }
 }

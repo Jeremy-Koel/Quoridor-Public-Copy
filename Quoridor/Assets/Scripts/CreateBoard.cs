@@ -7,7 +7,7 @@ public class CreateBoard : MonoBehaviour
 {
     private Controller controller;
 
-    public GameObject[,] gameBoard = new GameObject[9,9];
+    public GameObject[,] gameBoard = new GameObject[9, 9];
     public GameObject squarePrefab;
 
     public GameObject highlightSquarePrefab;
@@ -37,17 +37,17 @@ public class CreateBoard : MonoBehaviour
     {
         for (int row = 0; row < 9; row++)
         {
-            for (int col = 0; col < 9; col++) 
+            for (int col = 0; col < 9; col++)
             {
                 GameObject piece = Instantiate(squarePrefab) as GameObject;
 
                 piece.AddComponent<ClickSquare>();
 
-                
-                gameBoard[row,col] = piece;
 
-                piece.transform.position = new Vector3((col *3.45f) + 11.25f, (row *-3.45f) + 27f, -0.2f);
-                
+                gameBoard[row, col] = piece;
+
+                piece.transform.position = new Vector3((col * 3.45f) + 11.25f, (row * -3.45f) + 27f, -0.2f);
+
                 piece.name = GetSpaceStringName(row, col);
 
                 PlaceWallColliders(piece);
@@ -58,13 +58,13 @@ public class CreateBoard : MonoBehaviour
 
                 GameObject highlightPiece = Instantiate(highlightSquarePrefab) as GameObject;
 
-                
+
                 highlightPiece.transform.position = new Vector3(piece.transform.position.x, piece.transform.position.y, -.19f);
                 highlightPiece.transform.SetParent(piece.transform);
                 highlightPiece.SetActive(false);
             }
 
-            
+
         }
     }
 
@@ -94,12 +94,14 @@ public class CreateBoard : MonoBehaviour
     {
         GameObject player = Instantiate(mousePrefab) as GameObject;
         player.name = "playerMouse";
+        player.AddComponent<MoveMouse>();
         GameObject startPlace = GameObject.Find("e1");
 
         player.transform.position = new Vector3(startPlace.transform.position.x, startPlace.transform.position.y, -.3f);
 
         GameObject opponent = Instantiate(mousePrefab2) as GameObject;
         opponent.name = "opponentMouse";
+        opponent.AddComponent<MoveMouse>();
         GameObject startPlace2 = GameObject.Find("e9");
 
         opponent.transform.position = new Vector3(startPlace2.transform.position.x, startPlace2.transform.position.y, -.3f);
@@ -109,7 +111,7 @@ public class CreateBoard : MonoBehaviour
     {
         GameObject[] p2walls = GameObject.FindGameObjectsWithTag("PlayerTwoWall");
 
-        foreach(GameObject wall in p2walls)
+        foreach (GameObject wall in p2walls)
         {
             wall.AddComponent<MoveWalls>();
             wall.AddComponent<MoveWallsProgramatically>();
@@ -126,7 +128,7 @@ public class CreateBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private string GetSpaceStringName(int row, int col)
