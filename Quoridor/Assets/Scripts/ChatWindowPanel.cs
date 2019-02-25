@@ -161,8 +161,8 @@ public class ChatWindowPanel : MonoBehaviour
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-        playerText.text = "";
-        messageText.text = "";
+        playerText.text = "____________________";
+        messageText.text = "____________________";
 
         messageTextObject.transform.SetParent(chatMessagesViewContent);
         messageTextObject.transform.localScale = new Vector3(1, 1, 1);
