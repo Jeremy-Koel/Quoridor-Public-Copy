@@ -42,8 +42,6 @@ public class Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        opponentTurn = false;
-        //gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
         winPanel = GameObject.Find("WinScreen");
@@ -57,8 +55,14 @@ public class Controller : MonoBehaviour
         }
         else
         {
+            // randomize first player 
+            opponentTurn = new System.Random().NextDouble() >= .5;
+            if (opponentTurn)
+            {
+                gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
+            }
+            
             // start watching for moves 
-            opponentTurn = false;
             InvokeRepeating("WatchForMoves", 0.1f, 0.1f);
         }
         
@@ -90,6 +94,8 @@ public class Controller : MonoBehaviour
     // Get move from AI or network 
     public async void MakeOpponentMove()
     {
+        Debug.Log("Making move");
+
         // Decide if the opponent placed a wall or piece, and call appropriate method 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
