@@ -149,6 +149,10 @@ public class ChatWindowPanel : MonoBehaviour
         
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
+        AddSpacingMessage();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+
     }
 
     private void AddSpacingMessage()
