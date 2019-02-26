@@ -40,6 +40,20 @@ public class EventManager : MonoBehaviour
         
     }
 
+    public void RemoveAllListeners()
+    {
+        ChallengeStarted.RemoveAllListeners();
+        ChallengeTurnTaken.RemoveAllListeners();
+        ChallengeStartingPlayerSet.RemoveAllListeners();
+        ChallengeWon.RemoveAllListeners();
+        ChallengeLost.RemoveAllListeners();
+        GameBoardReady.RemoveAllListeners();
+        MoveSent.RemoveAllListeners();
+        MoveReceived.RemoveAllListeners();
+        GameOver.RemoveAllListeners();
+        TurnTaken.RemoveAllListeners();
+    }
+
     public void ListenToChallengeStarted(UnityAction action)
     {
         Debug.Log("Challenge Started Listener Added");

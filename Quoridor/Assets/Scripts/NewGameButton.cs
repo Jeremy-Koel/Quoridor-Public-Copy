@@ -64,9 +64,11 @@ public class NewGameButton : MonoBehaviour
         {
             // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
             ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+            challengeManager.RemoveAllChallengeListeners();
             challengeManager = new ChallengeManager();
             
             EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            eventManager.RemoveAllListeners();
             eventManager = new EventManager();
 
             MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();

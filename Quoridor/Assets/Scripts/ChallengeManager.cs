@@ -78,6 +78,13 @@ public class ChallengeManager : MonoBehaviour
         eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
     }
 
+    public void RemoveAllChallengeListeners()
+    {
+        ChallengeStartedMessage.Listener -= OnChallengeStarted;
+        ChallengeTurnTakenMessage.Listener -= OnChallengeTurnTaken;
+        ScriptMessage.Listener -= GeneralChallengeMessage;
+    }
+
     void OnChallengeStarted(ChallengeStartedMessage message)
     {
         Debug.Log("ChallengeStarted");
