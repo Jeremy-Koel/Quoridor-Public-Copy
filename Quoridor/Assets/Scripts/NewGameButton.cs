@@ -73,6 +73,9 @@ public class NewGameButton : MonoBehaviour
 
             MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             messageQueue = new MessageQueue();
+
+            PlayerTurnPopup playerTurnPopup = GameObject.Find("PlayerTurnBox").GetComponent<PlayerTurnPopup>();
+            playerTurnPopup = new PlayerTurnPopup();
             
             SceneManager.LoadScene("GameBoard");
         }
