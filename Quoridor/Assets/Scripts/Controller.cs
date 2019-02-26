@@ -380,4 +380,36 @@ public class Controller : MonoBehaviour
 
     }
 
+    public string GetPlayerNameForTurn()
+    {
+        string playerDisplayName = "";
+
+        playerDisplayName = challengeManagerScript.PlayerNameForTurn;
+
+        //PlayerInfo playerInfo = challengeManagerScript.CurrentPlayerInfo;
+        //bool isItMyTurn = challengeManagerScript.IsItMyTurn();
+        //Debug.Log("IsItMyTurn returned: " + isItMyTurn.ToString());
+        ////if (challengeManagerScript.IsItMyTurn())
+        //if (isItMyTurn)
+        //{
+        //    // Get my display name
+        //    playerDisplayName = playerInfo.PlayerDisplayName;
+        //    Debug.Log("It Is My Turn: " + playerDisplayName);
+        //}
+        //else
+        //{
+        //    if (playerInfo.PlayerID == challengeManagerScript.FirstPlayerInfo.PlayerID)
+        //    {
+        //        playerDisplayName = challengeManagerScript.SecondPlayerInfo.PlayerDisplayName;
+        //        Debug.Log("It Is Not My Turn, it is: " + playerDisplayName + "'s turn");
+        //    }
+        //    else
+        //    {
+        //        playerDisplayName = challengeManagerScript.FirstPlayerInfo.PlayerDisplayName;
+        //        Debug.Log("It Is Not My Turn, it is: " + playerDisplayName + "'s turn");
+        //    }
+        //}
+        return playerDisplayName;
+    }
+
 }

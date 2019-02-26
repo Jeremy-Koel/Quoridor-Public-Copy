@@ -29,6 +29,8 @@ public class ChallengeManager : MonoBehaviour
 
     public string LastMoveUserID { get; private set; }
 
+    public string PlayerNameForTurn { get; private set; }
+
     public bool GameBoardReady { get; set; }
 
 
@@ -68,6 +70,7 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("ChallengeTurnTakenMessage Listener set");
         ScriptMessage.Listener += GeneralChallengeMessage;
         eventManager.ListenToGameBoardReady(SetupPlayerInfo);
+        eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
     }
 
     void OnChallengeStarted(ChallengeStartedMessage message)
@@ -149,6 +152,7 @@ public class ChallengeManager : MonoBehaviour
         CurrentPlayerInfo.PlayerID = gameSparksUserIDScript.myUserID;
 
         WhichPlayerNumberAmI();
+        PlayerNameForTurn = FirstPlayerInfo.PlayerDisplayName;
 
         // Tell the server to set the starting player
         eventManager.InvokeChallengeStartingPlayerSet();
@@ -242,9 +246,24 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("Checking if it is my turn. LastMoveID: " + LastMoveUserID + ". CurrentPlayerID: " + CurrentPlayerInfo.PlayerID);
         if (LastMoveUserID != CurrentPlayerInfo.PlayerID)
         {
+            //Debug.Log("It Is My Turn");
             myTurn = true;
         }
         return myTurn;
+    }
+
+    public void SetPlayerNameForTurn()
+    {
+        //if (PlayerNameForTurn == "")
+        //{
+        //    PlayerNameForTurn = FirstPlayerInfo.PlayerDisplayName;
+        //}
+        //else
+        //{
+            PlayerNameForTurn = PlayerNameForTurn == FirstPlayerInfo.PlayerDisplayName ? 
+                SecondPlayerInfo.PlayerDisplayName : FirstPlayerInfo.PlayerDisplayName;
+        //}
+        Debug.Log("Player Name For Turn: " + PlayerNameForTurn);
     }
 
 }
