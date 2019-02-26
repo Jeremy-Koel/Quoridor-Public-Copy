@@ -9,7 +9,7 @@ public class PlayerTurnPopup : MonoBehaviour
     public EventManager eventManager;
     public Controller controller; 
 
-    private float popupTime = 5f;
+    private float popupTime = 2f;
     //how long should we turn for.
 
     public bool isPoppedUp = false;
@@ -54,7 +54,7 @@ public class PlayerTurnPopup : MonoBehaviour
 
     public void UpdateTurnPopup()
     {
-        if (!isPoppedUp)
+        //if (!isPoppedUp)
         {
             isPoppedUp = true;
             playerTurnPopup.SetActive(true);
