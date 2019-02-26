@@ -18,18 +18,32 @@ public class PlayerTurnPopup : MonoBehaviour
 
     private GameObject playerTurnPopup;
     private GameObject playerTurnPopupText;
+    private Text turnText;
+
     //private bool initialInactive;
+
+    private string PLAYERNAME = "Player";
+    private string COMPUTERNAME = "Computer";
+    private string YOURTURNTEXT = "Player's turn";
+    private string OTHERPLAYERTEXT = "Computer's turn";
 
     private void Awake()
     {
         playerTurnPopup = GameObject.Find("PlayerTurnBox");
         playerTurnPopupText = GameObject.Find("PlayerTurnBoxText");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        controller = GameObject.Find("GameController").GetComponent<Controller>();
+        turnText = playerTurnPopupText.GetComponent<Text>();
+
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            eventManager.ListenToChallengeTurnTaken(UpdateTurnPopup);
-            controller = GameObject.Find("GameController").GetComponent<Controller>();
+            eventManager.ListenToChallengeTurnTaken(UpdateTurnPopup);            
         }
+        else
+        {
+            eventManager.ListenToTurnTaken(UpdateTurnPopup);
+        }
+
     }
 
     private void Start()
@@ -39,6 +53,21 @@ public class PlayerTurnPopup : MonoBehaviour
         {
             UpdateTurnPopup();
         }
+        else
+        {
+            Text playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+            Debug.Log("(PlayerTurnPopup) PlayerOneText value is: " + playerOneText.text);
+            if (playerOneText.text == PLAYERNAME)
+            {
+                turnText.text = YOURTURNTEXT;
+            }
+            else
+            {
+                turnText.text = OTHERPLAYERTEXT;
+            }
+            playerTurnPopup.SetActive(true);
+            StartCoroutine(PopUp());
+        }        
     }
 
     void Update()
@@ -58,9 +87,19 @@ public class PlayerTurnPopup : MonoBehaviour
         {
             isPoppedUp = true;
             playerTurnPopup.SetActive(true);
+            
+            
             // Get info from ChallengeManager/Controller
-            Text turnText = playerTurnPopupText.GetComponent<Text>();
-            turnText.text = controller.GetPlayerNameForTurn() + "'s Turn!";
+            if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+            {
+                turnText.text = controller.GetPlayerNameForTurn() + "'s Turn!";
+            }
+            else
+            {
+                turnText.text = turnText.text == YOURTURNTEXT ?
+                    OTHERPLAYERTEXT : YOURTURNTEXT;
+            }
+            
             Debug.Log("turnText value: " + turnText.text);
             StartCoroutine(PopUp());
         }
