@@ -42,6 +42,8 @@ public class MainMenu : MonoBehaviour
     private Text errorMessageLoginText;
     [SerializeField]
     private Text errorMessageRegistrationText;
+    [SerializeField]
+    private Button matchmakingButton;
 
     private void Awake()
     {
@@ -49,6 +51,7 @@ public class MainMenu : MonoBehaviour
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         challengeManager = GameObject.Find("ChallengeManager");
+        matchmakingButton = GameObject.Find("MatchmakingSearchButton").GetComponent<Button>();
     }
 
     void OnDestroy()
@@ -165,6 +168,7 @@ public class MainMenu : MonoBehaviour
 
     public void onMatchMakingButtonClick()
     {
+        BlockInput();
         Debug.Log("Making/sending matchmaking request");
         MatchmakingRequest request = new MatchmakingRequest();
         request.SetMatchShortCode("DefaultMatch");
@@ -174,11 +178,13 @@ public class MainMenu : MonoBehaviour
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
     {
+        //UnblockInput();
         Debug.Log("Matchmaking Success");
     }
 
     public void OnMatchmakingError(MatchmakingResponse response)
     {
+        //UnblockInput();
         Debug.Log("Matchmaking Error");
     }
 
@@ -201,6 +207,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnChallengeStarted(ChallengeStartedMessage message)
     {
+        UnblockInput();
         Debug.Log("Challenge Started");
         // Switch to GameBoard Scene connected to opponent
         SceneManager.LoadScene("GameBoard");
@@ -277,6 +284,7 @@ public class MainMenu : MonoBehaviour
         //passwordInput.interactable = false;
         loginButton.interactable = false;
         registerButton.interactable = false;
+        matchmakingButton.interactable = false;
     }
 
     private void UnblockInput()
@@ -285,5 +293,6 @@ public class MainMenu : MonoBehaviour
         //passwordInput.interactable = true;
         loginButton.interactable = true;
         registerButton.interactable = true;
+        matchmakingButton.interactable = true;
     }
 }
