@@ -57,25 +57,27 @@ public class NewGameButton : MonoBehaviour
     {
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            // For now just do a matchmaking request again (and the two players will match if they are the only two searching)
-            onMatchMakingButtonClick();
-        }
-        else
-        {
             // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
             ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
             challengeManager.RemoveAllChallengeListeners();
             challengeManager = new ChallengeManager();
-            
-            EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-            eventManager.RemoveAllListeners();
-            eventManager = new EventManager();
 
             MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             messageQueue = new MessageQueue();
 
             PlayerTurnPopup playerTurnPopup = GameObject.Find("PlayerTurnBox").GetComponent<PlayerTurnPopup>();
             playerTurnPopup = new PlayerTurnPopup();
+
+            // For now just do a matchmaking request again (and the two players will match if they are the only two searching)
+            onMatchMakingButtonClick();
+        }
+        else
+        {
+
+            // Get EventManager DontDestroyOnLoad Object and reset
+            EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            eventManager.RemoveAllListeners();
+            eventManager = new EventManager();
             
             SceneManager.LoadScene("GameBoard");
         }
