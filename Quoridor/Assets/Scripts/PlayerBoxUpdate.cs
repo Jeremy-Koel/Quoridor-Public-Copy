@@ -13,6 +13,8 @@ public class PlayerBoxUpdate : MonoBehaviour
     private Text playerOneWallCount;
     private Text playerTwoWallCount;
     private Controller controller;
+    private EventManager eventManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,30 +29,58 @@ public class PlayerBoxUpdate : MonoBehaviour
         playerTwoWallCount = GameObject.Find("PlayerTwoWallsLeft").GetComponent<Text>();
         playerTwoWallCount.text = "10";
         controller = controller = GameObject.Find("GameController").GetComponent<Controller>();
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            eventManager.ListenToChallengeTurnTaken(UpdatePlayerBoxes);
+            
+        }
+        else
+        {
+
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
-
-        if(player == GameBoard.PlayerEnum.ONE)
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            playerOneTurn.text = YOURTURNTEXT;
-            //playerOneTurn.fontStyle = FontStyle.Normal;
-            playerTwoTurn.text = OTHERPLAYERTEXT;
-            //playerTwoTurn.fontStyle = FontStyle.Italic;
-        }
-        else if(player == GameBoard.PlayerEnum.TWO)
-        {
-            playerTwoTurn.text = YOURTURNTEXT;
-            //playerTwoTurn.fontStyle = FontStyle.Normal;
-            playerOneTurn.text = OTHERPLAYERTEXT;
-            //playerOneTurn.fontStyle = FontStyle.Italic;
-        }
 
+        }
+        else
+        {
+            GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+
+            if (player == GameBoard.PlayerEnum.ONE)
+            {
+                playerOneTurn.text = YOURTURNTEXT;
+                //playerOneTurn.fontStyle = FontStyle.Normal;
+                playerTwoTurn.text = OTHERPLAYERTEXT;
+                //playerTwoTurn.fontStyle = FontStyle.Italic;
+            }
+            else if (player == GameBoard.PlayerEnum.TWO)
+            {
+                playerTwoTurn.text = YOURTURNTEXT;
+                //playerTwoTurn.fontStyle = FontStyle.Normal;
+                playerOneTurn.text = OTHERPLAYERTEXT;
+                //playerOneTurn.fontStyle = FontStyle.Italic;
+            }
+
+            playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
+            playerTwoWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.TWO).ToString();
+
+        }
+    }
+
+    public void UpdatePlayerBoxes()
+    {
+        playerOneTurn.text = playerOneTurn.text == YOURTURNTEXT ?
+            OTHERPLAYERTEXT : YOURTURNTEXT;
+        playerTwoTurn.text = playerTwoTurn.text == YOURTURNTEXT ?
+            OTHERPLAYERTEXT : YOURTURNTEXT;
         playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
         playerTwoWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.TWO).ToString();
-        
     }
+
 }
