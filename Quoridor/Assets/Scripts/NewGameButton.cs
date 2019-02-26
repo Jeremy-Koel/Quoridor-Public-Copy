@@ -9,16 +9,33 @@ using UnityEngine.UI;
 
 public class NewGameButton : MonoBehaviour
 {
-    private Button newGameButton;
+    private Button newGameWinButton;
+    private Button newGameMenuButton;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (GameObject.Find("NewGameButton") != null)
+        {
+            newGameMenuButton = GameObject.Find("NewGameButton").GetComponent<Button>();
+            newGameMenuButton.interactable = false;
+            if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+            {
+                newGameMenuButton.interactable = true;
+            }
+        }
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            newGameButton = GameObject.Find("NewGameButton").GetComponent<Button>();
-            ChallengeStartedMessage.Listener += OnChallengeStarted;
-            ChallengeIssuedMessage.Listener += OnChallengeIssued;
+            if (GameObject.Find("WinScreenNewGameButton") != null)
+            {
+                newGameWinButton = GameObject.Find("WinScreenNewGameButton").GetComponent<Button>();      
+                ChallengeStartedMessage.Listener += OnChallengeStarted;
+                ChallengeIssuedMessage.Listener += OnChallengeIssued;
+            }
+        }
+        else
+        {
+
         }
     }
 
@@ -100,11 +117,11 @@ public class NewGameButton : MonoBehaviour
 
     private void BlockInput()
     {
-        newGameButton.interactable = false;
+        newGameWinButton.interactable = false;
     }
 
     private void UnblockInput()
     {
-        newGameButton.interactable = true;
+        newGameWinButton.interactable = true;
     }
 }

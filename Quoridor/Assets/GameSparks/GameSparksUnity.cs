@@ -13,9 +13,9 @@ using GameSparks.Platforms.Native;
 /// </summary>
 public class GameSparksUnity : MonoBehaviour
 {
-	/// <summary>
-	/// You can override which connection settings GameSparks uses to connect to the backend with this member.
-	/// </summary>
+    /// <summary>
+    /// You can override which connection settings GameSparks uses to connect to the backend with this member.
+    /// </summary>
     public GameSparksSettings settings;
 
 #if UNITY_SWITCH && !UNITY_EDITOR

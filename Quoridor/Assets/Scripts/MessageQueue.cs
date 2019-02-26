@@ -10,6 +10,11 @@ public class MessageQueue : MonoBehaviour
     
     private void Awake()
     {
+        int numberOfActiveThises = FindObjectsOfType<MessageQueue>().Length;
+        if (numberOfActiveThises != 1)
+        {
+            Destroy(this.gameObject);
+        }
         DontDestroyOnLoad(this);
     }
 

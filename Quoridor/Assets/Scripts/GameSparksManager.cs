@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSparksUserID : MonoBehaviour
+public class GameSparksManager : MonoBehaviour
 {
-    public string myUserID;
-
     private void Awake()
     {
-        int numberOfActiveThises = FindObjectsOfType<GameSparksUserID>().Length;
+        int numberOfActiveThises = FindObjectsOfType<GameSparksManager>().Length;
         if (numberOfActiveThises != 1)
         {
             Destroy(this.gameObject);
         }
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this);
     }
 
     // Start is called before the first frame update
@@ -27,5 +25,4 @@ public class GameSparksUserID : MonoBehaviour
     {
         
     }
-
 }

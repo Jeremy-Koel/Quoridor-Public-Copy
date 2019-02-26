@@ -36,6 +36,11 @@ public class ChallengeManager : MonoBehaviour
 
     private void Awake()
     {
+        int numberOfActiveThises = FindObjectsOfType<ChallengeManager>().Length;
+        if (numberOfActiveThises != 1)
+        {
+            Destroy(this.gameObject);
+        }
         DontDestroyOnLoad(this);
     }
 
