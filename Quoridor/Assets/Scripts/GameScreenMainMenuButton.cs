@@ -34,8 +34,8 @@ public class GameScreenMainMenuButton : MonoBehaviour
         eventManager.RemoveAllListeners();
         eventManager = new EventManager();
 
-        PlayerTurnPopup playerTurnPopup = GameObject.Find("PlayerTurnBox").GetComponent<PlayerTurnPopup>();
-        playerTurnPopup = new PlayerTurnPopup();
+        //PlayerTurnPopup playerTurnPopup = GameObject.Find("PlayerTurnBox").GetComponent<PlayerTurnPopup>();
+        //playerTurnPopup = new PlayerTurnPopup();
 
         SceneManager.LoadScene("MainMenu"); 
     }
