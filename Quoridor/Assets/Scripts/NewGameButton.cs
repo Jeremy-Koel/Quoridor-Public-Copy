@@ -55,16 +55,17 @@ public class NewGameButton : MonoBehaviour
 
     public void onNewGameButtonClick()
     {
+        // Get EventManager DontDestroyOnLoad Object and reset
+        EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        eventManager.RemoveAllListeners();
+        eventManager = new EventManager();
+
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
             ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
             challengeManager.RemoveAllChallengeListeners();
             challengeManager = new ChallengeManager();
-
-            EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-            eventManager.RemoveAllListeners();
-            eventManager = new EventManager();
 
             MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             messageQueue = new MessageQueue();
@@ -73,15 +74,10 @@ public class NewGameButton : MonoBehaviour
             onMatchMakingButtonClick();
         }
         else
-        {
-
-            // Get EventManager DontDestroyOnLoad Object and reset
-            EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-            eventManager.RemoveAllListeners();
-            eventManager = new EventManager();
+        {            
             
-            SceneManager.LoadScene("GameBoard");
         }
+        SceneManager.LoadScene("GameBoard");
     }
 
     public void onMatchMakingButtonClick()
