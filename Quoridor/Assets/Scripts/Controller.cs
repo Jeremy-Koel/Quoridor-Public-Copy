@@ -24,10 +24,11 @@ public class Controller : MonoBehaviour
         Debug.Log("Awake Controller");
 
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
             messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
             challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
@@ -48,6 +49,8 @@ public class Controller : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
+        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
@@ -59,7 +62,14 @@ public class Controller : MonoBehaviour
             opponentTurn = new System.Random().NextDouble() >= .5;
             if (opponentTurn)
             {
+                playerOneText.text = "Computer";
+                playerTwoText.text = "Player";
                 gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
+            }
+            else
+            {
+                playerOneText.text = "Player";
+                playerTwoText.text = "Computer";
             }
 
             // start watching for moves 
@@ -192,6 +202,10 @@ public class Controller : MonoBehaviour
                 challengeManagerScript.Move(spaceName);
             }
         }
+        else if (validMove && GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        {
+            eventManager.InvokeTurnTaken();
+        }
         return validMove;
     }
 
@@ -223,7 +237,10 @@ public class Controller : MonoBehaviour
                 challengeManagerScript.Move(spaceName);
             }
         }
-
+        else if (validWallPlacement && GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        {
+            eventManager.InvokeTurnTaken();
+        }
         return validWallPlacement;
     }
 

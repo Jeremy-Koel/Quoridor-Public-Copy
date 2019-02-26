@@ -37,40 +37,41 @@ public class PlayerBoxUpdate : MonoBehaviour
         }
         else
         {
-
+            eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            eventManager.ListenToTurnTaken(UpdatePlayerBoxes);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
-        {
+        //if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        //{
 
-        }
-        else
-        {
-            GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+        //}
+        //else
+        //{
+        //    GameBoard.PlayerEnum player = controller.GetWhoseTurn();
 
-            if (player == GameBoard.PlayerEnum.ONE)
-            {
-                playerOneTurn.text = YOURTURNTEXT;
-                //playerOneTurn.fontStyle = FontStyle.Normal;
-                playerTwoTurn.text = OTHERPLAYERTEXT;
-                //playerTwoTurn.fontStyle = FontStyle.Italic;
-            }
-            else if (player == GameBoard.PlayerEnum.TWO)
-            {
-                playerTwoTurn.text = YOURTURNTEXT;
-                //playerTwoTurn.fontStyle = FontStyle.Normal;
-                playerOneTurn.text = OTHERPLAYERTEXT;
-                //playerOneTurn.fontStyle = FontStyle.Italic;
-            }
+        //    if (player == GameBoard.PlayerEnum.ONE)
+        //    {
+        //        playerOneTurn.text = YOURTURNTEXT;
+        //        //playerOneTurn.fontStyle = FontStyle.Normal;
+        //        playerTwoTurn.text = OTHERPLAYERTEXT;
+        //        //playerTwoTurn.fontStyle = FontStyle.Italic;
+        //    }
+        //    else if (player == GameBoard.PlayerEnum.TWO)
+        //    {
+        //        playerTwoTurn.text = YOURTURNTEXT;
+        //        //playerTwoTurn.fontStyle = FontStyle.Normal;
+        //        playerOneTurn.text = OTHERPLAYERTEXT;
+        //        //playerOneTurn.fontStyle = FontStyle.Italic;
+        //    }
 
-            playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
-            playerTwoWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.TWO).ToString();
+        //    playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
+        //    playerTwoWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.TWO).ToString();
 
-        }
+        //}
     }
 
     public void UpdatePlayerBoxes()

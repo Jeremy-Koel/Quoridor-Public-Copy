@@ -22,6 +22,8 @@ public class EventManager : MonoBehaviour
     public UnityEvent MoveSent = new UnityEvent();
     public UnityEvent MoveReceived = new UnityEvent();
     public UnityEvent GameOver = new UnityEvent();
+    // For AI Game
+    public UnityEvent TurnTaken = new UnityEvent();
 
     private void Awake()
     {
@@ -144,6 +146,18 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Game Over Invoked");
         GameOver.Invoke();
+    }
+
+    public void ListenToTurnTaken(UnityAction action)
+    {
+        Debug.Log("Turn Taken Listener Added");
+        TurnTaken.AddListener(action);
+    }
+
+    public void InvokeTurnTaken()
+    {
+        Debug.Log("Turn Taken Invoked");
+        TurnTaken.Invoke();
     }
 
 }
