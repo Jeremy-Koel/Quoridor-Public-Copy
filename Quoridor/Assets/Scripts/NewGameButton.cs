@@ -62,11 +62,12 @@ public class NewGameButton : MonoBehaviour
             challengeManager.RemoveAllChallengeListeners();
             challengeManager = new ChallengeManager();
 
+            EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            eventManager.RemoveAllListeners();
+            eventManager = new EventManager();
+
             MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             messageQueue = new MessageQueue();
-
-            PlayerTurnPopup playerTurnPopup = GameObject.Find("PlayerTurnBox").GetComponent<PlayerTurnPopup>();
-            playerTurnPopup = new PlayerTurnPopup();
 
             // For now just do a matchmaking request again (and the two players will match if they are the only two searching)
             onMatchMakingButtonClick();
