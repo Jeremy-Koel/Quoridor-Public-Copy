@@ -27,12 +27,14 @@ public class EventManager : MonoBehaviour
 
     private void Awake()
     {
-        int numberOfActiveThises = FindObjectsOfType<EventManager>().Length;
+
+        int numberOfActiveThises = FindObjectsOfType(this.GetType()).Length;
         if (numberOfActiveThises != 1)
         {
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this);
+        ListenToGameOver(ResetEventManager);
     }
 
     void Start()
@@ -42,6 +44,7 @@ public class EventManager : MonoBehaviour
 
     public void RemoveAllListeners()
     {
+        Debug.Log("Removing all unityEvent listeners");
         ChallengeStarted.RemoveAllListeners();
         ChallengeTurnTaken.RemoveAllListeners();
         ChallengeStartingPlayerSet.RemoveAllListeners();
@@ -50,9 +53,26 @@ public class EventManager : MonoBehaviour
         GameBoardReady.RemoveAllListeners();
         MoveSent.RemoveAllListeners();
         MoveReceived.RemoveAllListeners();
-        GameOver.RemoveAllListeners();
+        //GameOver.RemoveAllListeners();
         TurnTaken.RemoveAllListeners();
     }
+
+    public void ResetEventManager()
+    {
+        ChallengeStarted = new UnityEvent();
+        ChallengeTurnTaken = new UnityEvent();
+        ChallengeStartingPlayerSet = new UnityEvent();
+        ChallengeWon = new UnityEvent();
+        ChallengeLost = new UnityEvent();
+
+        GameBoardReady = new UnityEvent();
+
+        MoveSent = new UnityEvent();
+        MoveReceived = new UnityEvent();
+        GameOver = new UnityEvent();
+        // For AI Game
+        TurnTaken = new UnityEvent();
+}
 
     public void ListenToChallengeStarted(UnityAction action)
     {

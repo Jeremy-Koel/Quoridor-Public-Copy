@@ -35,6 +35,7 @@ public class Controller : MonoBehaviour
 
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
             eventManager.ListenToMoveReceived(MakeOpponentMove);
+            eventManager.ListenToGameOver(ResetController);
             eventManager.InvokeGameBoardReady();
         }
     }
@@ -85,6 +86,47 @@ public class Controller : MonoBehaviour
         {
             winPanel.SetActive(true);
         }
+    }
+
+    public void ResetController()
+    {
+        gameBoard = null;
+        spaceCoordMap = null;
+        wallCoordMap = null;
+        //challengeManagerScript;
+        //eventManager;
+        //messageQueue;
+        winPanel = null;
+        menuPanel = null;
+        helpScreen = null;
+        playerOneText = null;
+        playerTwoText = null;
+        opponentTurn = false;
+
+        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+
+            eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
+            eventManager.ListenToMoveReceived(MakeOpponentMove);
+            eventManager.InvokeGameBoardReady();
+        }
+
+        //spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
+        //wallCoordMap = new Dictionary<string, WallCoordinate>();
+        //winPanel = GameObject.Find("WinScreen");
+        //winPanel.SetActive(false);
+        //menuPanel = GameObject.Find("MenuOptions");
+        //helpScreen = GameObject.Find("HelpMenu");
+        //playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+        //playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
+
     }
 
     private void WatchForMoves()

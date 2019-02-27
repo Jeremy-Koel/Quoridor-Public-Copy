@@ -47,6 +47,10 @@ public class ChallengeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FirstPlayerInfo = new PlayerInfo();
+        SecondPlayerInfo = new PlayerInfo();
+        CurrentPlayerInfo = new PlayerInfo();
+
         GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
         gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
         if (gameSparksUserIDScript.myUserID != null && gameSparksUserIDScript.myUserID.Length > 0)
@@ -55,16 +59,25 @@ public class ChallengeManager : MonoBehaviour
         }
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-
-        FirstPlayerInfo = new PlayerInfo();
-        SecondPlayerInfo = new PlayerInfo();
-        CurrentPlayerInfo = new PlayerInfo();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void ResetChallengeManager()
+    {
+        IsChallengeActive = false;
+        FirstPlayerInfo = new PlayerInfo();
+        SecondPlayerInfo = new PlayerInfo();
+        CurrentPlayerInfo = new PlayerInfo();
+        ChallengeID = "";
+        LastOpponentMove = "";
+        LastMoveUserID = "";
+        PlayerNameForTurn = "";
+        GameBoardReady = false;
     }
 
     public void SetupChallengeListeners()
@@ -76,10 +89,13 @@ public class ChallengeManager : MonoBehaviour
         ScriptMessage.Listener += GeneralChallengeMessage;
         eventManager.ListenToGameBoardReady(SetupPlayerInfo);
         eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
+        eventManager.ListenToGameOver(ResetChallengeManager);
+        eventManager.ListenToGameOver(SetupChallengeListeners);
     }
 
     public void RemoveAllChallengeListeners()
     {
+        Debug.Log("Removing all challenge listeners");
         ChallengeStartedMessage.Listener -= OnChallengeStarted;
         ChallengeTurnTakenMessage.Listener -= OnChallengeTurnTaken;
         ScriptMessage.Listener -= GeneralChallengeMessage;

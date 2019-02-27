@@ -211,7 +211,6 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Challenge Started");
         // Switch to GameBoard Scene connected to opponent
         SceneManager.LoadScene("GameBoard");
-
     }
 
     // Login/Registration

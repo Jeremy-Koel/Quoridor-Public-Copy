@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1344,6 +1344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67b019be2d4312349a1ffe4b175e4d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  challengeManagerPrefab: {fileID: 7541792500974902584, guid: 3beabb22597cd884cad24f3606f4e6b7,
+    type: 3}
+  messageQueuePrefab: {fileID: 7610529058789331148, guid: 538518e868dfd7448a9929bdbe42c57e,
+    type: 3}
 --- !u!114 &246699511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5084,6 +5088,75 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1015730958}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1041039692
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2589672317888112254, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_Name
+      value: EventManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.4946613
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7496992
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.27917525
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589672317888112252, guid: 2f9b836a19755bc499e1ba0b45dcd2b1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2f9b836a19755bc499e1ba0b45dcd2b1, type: 3}
 --- !u!1 &1042323083
 GameObject:
   m_ObjectHideFlags: 0
@@ -6312,99 +6385,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1307303535}
   m_CullTransparentMesh: 0
---- !u!1 &1314939434
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1314939436}
-  - component: {fileID: 1314939435}
-  m_Layer: 0
-  m_Name: EventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1314939435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314939434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0982a2a8aaf8e0c489357062a6e2ad2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChallengeStarted:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  ChallengeTurnTaken:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  ChallengeStartingPlayerSet:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  ChallengeWon:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  ChallengeLost:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  GameBoardReady:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  MoveSent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  MoveReceived:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  GameOver:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  TurnTaken:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!4 &1314939436
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314939434}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.4946613, y: 0.7496992, z: -0.27917525}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1326469512
 GameObject:
   m_ObjectHideFlags: 0
@@ -8254,6 +8234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67b019be2d4312349a1ffe4b175e4d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  challengeManagerPrefab: {fileID: 7541792500974902584, guid: 3beabb22597cd884cad24f3606f4e6b7,
+    type: 3}
+  messageQueuePrefab: {fileID: 0}
 --- !u!114 &1860941796
 MonoBehaviour:
   m_ObjectHideFlags: 0

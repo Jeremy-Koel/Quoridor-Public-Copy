@@ -11,6 +11,10 @@ public class NewGameButton : MonoBehaviour
 {
     private Button newGameWinButton;
     private Button newGameMenuButton;
+    [SerializeField]
+    public GameObject challengeManagerPrefab;
+    [SerializeField]
+    public GameObject messageQueuePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +33,7 @@ public class NewGameButton : MonoBehaviour
             if (GameObject.Find("WinScreenNewGameButton") != null)
             {
                 newGameWinButton = GameObject.Find("WinScreenNewGameButton").GetComponent<Button>();      
-                ChallengeStartedMessage.Listener += OnChallengeStarted;
+                //ChallengeStartedMessage.Listener += OnChallengeStarted;
                 ChallengeIssuedMessage.Listener += OnChallengeIssued;
             }
         }
@@ -49,35 +53,50 @@ public class NewGameButton : MonoBehaviour
     {
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            ChallengeStartedMessage.Listener -= OnChallengeStarted;
+            //ChallengeStartedMessage.Listener -= OnChallengeStarted;
         }        
     }
 
     public void onNewGameButtonClick()
     {
         // Get EventManager DontDestroyOnLoad Object and reset
-        EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        eventManager.RemoveAllListeners();
-        eventManager = new EventManager();
+        GameObject eventManagerObject = GameObject.Find("EventManager");
+        EventManager eventManagerScript = eventManagerObject.GetComponent<EventManager>();
+        eventManagerScript.RemoveAllListeners();
+        //Destroy(eventManagerScript);
+        //eventManagerScript = eventManagerObject.AddComponent<EventManager>() as EventManager;
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
-            ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-            challengeManager.RemoveAllChallengeListeners();
-            challengeManager = new ChallengeManager();
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            challengeManagerScript.RemoveAllChallengeListeners();
+            ////challengeManagerScript = new ChallengeManager();
+            ////Destroy(challengeManagerScript);
+            //Destroy(challengeManagerObject);
+            ////challengeManagerScript = challengeManagerObject.AddComponent<ChallengeManager>() as ChallengeManager;
+            //challengeManagerObject = Instantiate(challengeManagerPrefab, this.transform);
+            //challengeManagerObject.transform.parent = this.transform;
 
-            MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-            messageQueue = new MessageQueue();
+            //GameObject messageQueueObject = GameObject.Find("MessageQueue");
+            //MessageQueue messageQueueScript = messageQueueObject.GetComponent<MessageQueue>();
+            ////messageQueueScript = new MessageQueue();
+            //Destroy(messageQueueScript);
+
+            //messageQueueScript = messageQueueObject.AddComponent<MessageQueue>() as MessageQueue;
+            //messageQueueObject = Instantiate(messageQueuePrefab, this.transform);
+            //messageQueueObject.transform.parent = this.transform;
+
+            eventManagerScript.InvokeGameOver();
 
             // For now just do a matchmaking request again (and the two players will match if they are the only two searching)
             onMatchMakingButtonClick();
         }
         else
-        {            
-            
+        {
+            SceneManager.LoadScene("GameBoard");
         }
-        SceneManager.LoadScene("GameBoard");
     }
 
     public void onMatchMakingButtonClick()
@@ -118,16 +137,18 @@ public class NewGameButton : MonoBehaviour
                     //GSData scriptData = response.ScriptData;
                 });
         }
-    }
-
-    private void OnChallengeStarted(ChallengeStartedMessage message)
-    {
         UnblockInput();
-        Debug.Log("Challenge Started");
-        // Switch to GameBoard Scene connected to opponent
         SceneManager.LoadScene("GameBoard");
-
     }
+
+    //private void OnChallengeStarted(ChallengeStartedMessage message)
+    //{
+    //    UnblockInput();
+    //    Debug.Log("Challenge Started");
+    //    // Switch to GameBoard Scene connected to opponent
+    //    //SceneManager.LoadScene("GameBoard");
+
+    //}
 
     private void BlockInput()
     {
