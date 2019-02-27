@@ -285,12 +285,24 @@ public class Controller : MonoBehaviour
         {
             if (gameBoard.PlayerOneWin())
             {
-                return "Player One Wins!";
+                return "You Win!";
             }
             else
             {
-                return "Player Two Wins!";
+                return "AI Wins!";
             }
+        }
+    }
+
+    public string GetLocalPlayerName()
+    {
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            return challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName;
+        }
+        else
+        {
+            return "";
         }
     }
 

@@ -14,13 +14,22 @@ public class WinnerScreen : MonoBehaviour
     void Start()
     {
         controller = GameObject.Find("GameController").GetComponent<Controller>();
-        //winPanel = GameObject.Find("WinScreen");
         winText = GameObject.Find("WinnerText").GetComponent<Text>();
         winText.text = getWhoWon();
         gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
         gameOverText.text = "Game Over!";
-        //winPanel.transform.position = new Vector3(winPanel.transform.position.x, winPanel.transform.position.y, 2);
 
+        SoundEffectController soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        if (winText.text == "You Win!" || winText.text == controller.GetLocalPlayerName()+" Wins!")
+        {
+            Debug.Log("playing win sound");
+            soundEffectController.PlayWinSound();
+        }
+        else
+        {
+            Debug.Log("playing lose sound");
+            soundEffectController.PlayLoseSound();
+        }
     }
 
     // Update is called once per frame
