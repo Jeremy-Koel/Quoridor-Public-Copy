@@ -25,8 +25,10 @@ public class ChatWindowPanel : MonoBehaviour
     {
         chatInput = GameObject.Find("ChatInput");
         chatMessagesView = GameObject.Find("ChatMessagesView");
+        chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
         chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
         TeamChatMessage.Listener += ChatMessageReceived;
+        Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
     }
 
 
@@ -130,18 +132,30 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void ChatMessageReceived(TeamChatMessage message)
     {
-        Debug.Log("Team chat message recieved: " + message.Message);
-        Debug.Log("Message sent by: " + message.Who);
+        string messageWho = message.Who.ToString();
+        string messageMessage = message.Message.ToString();
+        Debug.Log("Team chat message recieved: " + messageMessage);
+        Debug.Log("Message sent by: " + messageWho);
+        
 
         GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
 
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
+        if (messageWho.Length >= 10)
+        {
+            playerText.text = ("<b>" + messageWho.Substring(0, 10) + ":</b>");
+        }
+        else
+        {
+            playerText.text = ("<b>" + messageWho + ":</b>");
+        }
+        
+        //playerText.text = ("<b>" + messageWho + ":</b>");
+        messageText.text = (messageMessage);
 
-        playerText.text = ("<b>" + message.Who.Substring(0, 10) + ":</b>");
-        messageText.text = (message.Message);
-
+        Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
         messageTextObject.transform.SetParent(chatMessagesViewContent);
         messageTextObject.transform.localScale = new Vector3(1, 1, 1);
 
