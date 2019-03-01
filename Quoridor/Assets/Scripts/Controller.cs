@@ -29,7 +29,6 @@ public class Controller : MonoBehaviour
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
             messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
             challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
@@ -54,11 +53,7 @@ public class Controller : MonoBehaviour
         playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
-        {
-
-        }
-        else
+        if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
             // randomize first player 
             opponentTurn = new System.Random().NextDouble() >= .5;
@@ -94,9 +89,6 @@ public class Controller : MonoBehaviour
         gameBoard = null;
         spaceCoordMap = null;
         wallCoordMap = null;
-        //challengeManagerScript;
-        //eventManager;
-        //messageQueue;
         winPanel = null;
         menuPanel = null;
         helpScreen = null;
@@ -109,7 +101,6 @@ public class Controller : MonoBehaviour
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
             messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
             challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
@@ -118,15 +109,6 @@ public class Controller : MonoBehaviour
             eventManager.ListenToMoveReceived(MakeOpponentMove);
             eventManager.InvokeGameBoardReady();
         }
-
-        //spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
-        //wallCoordMap = new Dictionary<string, WallCoordinate>();
-        //winPanel = GameObject.Find("WinScreen");
-        //winPanel.SetActive(false);
-        //menuPanel = GameObject.Find("MenuOptions");
-        //helpScreen = GameObject.Find("HelpMenu");
-        //playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-        //playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
     }
 
@@ -359,7 +341,6 @@ public class Controller : MonoBehaviour
         GameObject opponentMouse = GameObject.Find("opponentMouse");
         GameObject targetSquare = GameObject.Find(guiSpaceName);
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
-        //opponentMouse.transform.position = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
         MoveMouse moveMouseScript = opponentMouse.GetComponent<MoveMouse>();
         moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
         moveMouseScript.moveMouse = true;
@@ -456,32 +437,7 @@ public class Controller : MonoBehaviour
     public string GetPlayerNameForTurn()
     {
         string playerDisplayName = "";
-
         playerDisplayName = challengeManagerScript.PlayerNameForTurn;
-
-        //PlayerInfo playerInfo = challengeManagerScript.CurrentPlayerInfo;
-        //bool isItMyTurn = challengeManagerScript.IsItMyTurn();
-        //Debug.Log("IsItMyTurn returned: " + isItMyTurn.ToString());
-        ////if (challengeManagerScript.IsItMyTurn())
-        //if (isItMyTurn)
-        //{
-        //    // Get my display name
-        //    playerDisplayName = playerInfo.PlayerDisplayName;
-        //    Debug.Log("It Is My Turn: " + playerDisplayName);
-        //}
-        //else
-        //{
-        //    if (playerInfo.PlayerID == challengeManagerScript.FirstPlayerInfo.PlayerID)
-        //    {
-        //        playerDisplayName = challengeManagerScript.SecondPlayerInfo.PlayerDisplayName;
-        //        Debug.Log("It Is Not My Turn, it is: " + playerDisplayName + "'s turn");
-        //    }
-        //    else
-        //    {
-        //        playerDisplayName = challengeManagerScript.FirstPlayerInfo.PlayerDisplayName;
-        //        Debug.Log("It Is Not My Turn, it is: " + playerDisplayName + "'s turn");
-        //    }
-        //}
         return playerDisplayName;
     }
 
