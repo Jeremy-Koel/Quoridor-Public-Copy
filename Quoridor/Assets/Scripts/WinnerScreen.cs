@@ -10,6 +10,7 @@ public class WinnerScreen : MonoBehaviour
     private Text winText;
     private Controller controller;
     private Text gameOverText;
+    private SoundEffectController soundEffectController;
 
     void Start()
     {
@@ -19,7 +20,7 @@ public class WinnerScreen : MonoBehaviour
         gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
         gameOverText.text = "Game Over!";
 
-        SoundEffectController soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         if (winText.text == "You Win!" || winText.text == controller.GetLocalPlayerName()+" Wins!")
         {
             Debug.Log("playing win sound");

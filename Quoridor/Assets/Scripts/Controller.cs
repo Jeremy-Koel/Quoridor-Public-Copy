@@ -18,6 +18,7 @@ public class Controller : MonoBehaviour
     private Text playerOneText;
     private Text playerTwoText;
     private bool opponentTurn;
+    private SoundEffectController soundEffectController;
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class Controller : MonoBehaviour
 
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
@@ -362,6 +363,7 @@ public class Controller : MonoBehaviour
         MoveMouse moveMouseScript = opponentMouse.GetComponent<MoveMouse>();
         moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
         moveMouseScript.moveMouse = true;
+        soundEffectController.PlaySqueakSound();
     }
 
     private void MoveOpponentWallInGUI(string colliderName)

@@ -4,7 +4,8 @@ using UnityEngine;
 
 class InvalidMovePopup : MonoBehaviour
 {
-    
+    // script for playing sound effects 
+    private SoundEffectController soundEffectController;
 
     private float popupTime = 1f;
     //how long should we turn for.
@@ -20,6 +21,7 @@ class InvalidMovePopup : MonoBehaviour
         invalidMovePopup = GameObject.Find("InvalidMoveBox");
         //invalidMovePopup.SetActive(false);
         initialInactive = true;
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
     }
 
     
@@ -36,8 +38,8 @@ class InvalidMovePopup : MonoBehaviour
 
     IEnumerator PopUp()
     {
-
         invalidMovePopup.SetActive(true);
+        soundEffectController.PlayErrorSound();
         float time = 0;
         
         while (time < popupTime)

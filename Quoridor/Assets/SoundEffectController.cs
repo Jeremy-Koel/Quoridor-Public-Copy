@@ -4,20 +4,33 @@ using UnityEngine;
 
 public class SoundEffectController : MonoBehaviour
 {
-    public AudioSource gameOverSoundSource;
+    public AudioSource source;
     public AudioClip winClip;
     public AudioClip loseClip;
+    public AudioClip errorClip;
+    public AudioClip squeakClip;
 
     public void PlayWinSound()
     {
-        gameOverSoundSource.clip = winClip;
-        gameOverSoundSource.Play();
+        source.clip = winClip;
+        source.Play();
     }
 
     public void PlayLoseSound()
     {
-        gameOverSoundSource.clip = loseClip;
-        gameOverSoundSource.Play();
+        source.clip = loseClip;
+        source.Play();
     }
 
+    public void PlayErrorSound()
+    {
+        source.clip = errorClip;
+        source.Play();
+    }
+
+    public void PlaySqueakSound()
+    {
+        source.clip = squeakClip;
+        source.Play();
+    }
 }

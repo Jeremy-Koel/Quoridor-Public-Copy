@@ -16,6 +16,9 @@ public class ClickSquare : MonoBehaviour
 
     private InvalidMovePopup invalidPopup;
 
+    // script for playing sound effects 
+    private SoundEffectController soundEffectController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,8 @@ public class ClickSquare : MonoBehaviour
         controller = gameObject.GetComponentInParent<Controller>();
 
         invalidPopup = controller.GetComponent<InvalidMovePopup>();
+
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
     }
 
     // Update is called once per frame
@@ -74,6 +79,7 @@ public class ClickSquare : MonoBehaviour
                         moveMouseScript.moveMouse = true;
                         //playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                         controller.MarkLocalPlayerMove();
+                        soundEffectController.PlaySqueakSound();
                     }
                     else
                     {
