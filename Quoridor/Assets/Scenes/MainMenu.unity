@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -478,7 +478,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 64645060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50a770fddb0e0be428103ba01c59397d, type: 3}
+  m_Script: {fileID: 11500000, guid: f1daaf6bb43bbf24ab55e4ff412094f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 3b32fa668c0482b4990e4bf098390c79, type: 2}
@@ -530,7 +530,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 64645062}
-        m_MethodName: SetLevel
+        m_MethodName: SetBackgroundLevel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3535,7 +3535,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 911080502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce4cfa2cd618c874a9a38e8261bb4efa, type: 3}
+  m_Script: {fileID: 11500000, guid: f1daaf6bb43bbf24ab55e4ff412094f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 3b32fa668c0482b4990e4bf098390c79, type: 2}
@@ -3587,7 +3587,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 911080504}
-        m_MethodName: SetLevel
+        m_MethodName: SetMasterLevel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4903,7 +4903,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1309066033}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 716e78a2d31c0a041957140ef2013825, type: 3}
+  m_Script: {fileID: 11500000, guid: f1daaf6bb43bbf24ab55e4ff412094f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 3b32fa668c0482b4990e4bf098390c79, type: 2}
@@ -4955,7 +4955,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1309066035}
-        m_MethodName: SetLevel
+        m_MethodName: SetEffectsLevel
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6344,6 +6344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1543677492}
   - component: {fileID: 1543677491}
+  - component: {fileID: 1543677493}
   m_Layer: 0
   m_Name: MusicPlayer
   m_TagString: Untagged
@@ -6462,6 +6463,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1543677493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543677490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd332ae9b5020ad46b32ef8a08c5088a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 3b32fa668c0482b4990e4bf098390c79, type: 2}
 --- !u!1 &1554551178
 GameObject:
   m_ObjectHideFlags: 0
@@ -7984,6 +7998,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChatMessagesView
       objectReference: {fileID: 0}
+    - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8093,11 +8112,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3650439703472560083, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
