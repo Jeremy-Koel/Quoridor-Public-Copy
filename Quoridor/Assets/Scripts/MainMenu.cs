@@ -105,9 +105,18 @@ public class MainMenu : MonoBehaviour
     public void onMultiplayerClick()
     {
         playModePanel.SetActive(false);
-
-        loginPanel.SetActive(true);
-        panelOrder.Push(loginPanel);
+        
+        if (LoggedIn())
+        {
+            lobbyPanel.SetActive(true);
+            panelOrder.Push(lobbyPanel);
+        }
+        else
+        {
+            loginPanel.SetActive(true);
+            panelOrder.Push(loginPanel);
+        }        
+        
     }
 
     public void onLoginClick()
@@ -253,6 +262,17 @@ public class MainMenu : MonoBehaviour
         UnblockInput();
         errorMessageLoginText.color = Color.red;
         errorMessageLoginText.text = response.Errors.BaseData["DETAILS"].ToString();
+    }
+
+    private bool LoggedIn()
+    {
+        bool loggedIn = false;
+        GameSparksUserID gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+        if (gameSparksUserID.myUserID != "")
+        {
+            loggedIn = true;
+        }
+        return loggedIn;
     }
 
     private void Register()
