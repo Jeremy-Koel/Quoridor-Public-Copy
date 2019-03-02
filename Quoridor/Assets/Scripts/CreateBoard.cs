@@ -20,6 +20,10 @@ public class CreateBoard : MonoBehaviour
 
     public GameObject wallColliderHorizontalPrefab;
 
+    public GameObject wallPlacementOutlineVerticalPrefab;
+
+    public GameObject wallPlacementOutlineHorizontalPrefab;
+
     public GameObject gameBoardWrapper;
 
     public GameObject wallColliderWrapper;
@@ -72,15 +76,22 @@ public class CreateBoard : MonoBehaviour
     {
         if (piece.name[0] != 'i' && piece.name[1] != '9')
         {
-            Vector3 newPos = new Vector3(piece.transform.position.x + 1.8f, piece.transform.position.y + 1.8f, -0.6f);
+            Vector3 newVerticalPos = new Vector3(piece.transform.position.x + 1.8f, piece.transform.position.y + 3.5f, -0.6f);
+            Vector3 newHorizontalPos = new Vector3(piece.transform.position.x, piece.transform.position.y + 1.8f, -0.6f);
             GameObject wallCollHorizontal = Instantiate(wallColliderHorizontalPrefab) as GameObject;
             GameObject wallCollVertical = Instantiate(wallColliderVerticalPrefab) as GameObject;
+            GameObject wallOutlineHorizontal = Instantiate(wallPlacementOutlineHorizontalPrefab) as GameObject;
+            GameObject wallOutlineVertical = Instantiate(wallPlacementOutlineVerticalPrefab) as GameObject;
 
-            wallCollHorizontal.transform.position = newPos;
+            wallCollHorizontal.transform.position = newHorizontalPos;
             wallCollHorizontal.name = piece.name + "h";
+            wallOutlineHorizontal.transform.position = new Vector3(newHorizontalPos.x + 1.5f, newHorizontalPos.y, newHorizontalPos.z) ;
+            wallOutlineHorizontal.transform.SetParent(wallCollHorizontal.transform);
 
-            wallCollVertical.transform.position = newPos;
+            wallCollVertical.transform.position = newVerticalPos;
             wallCollVertical.name = piece.name + "v";
+            wallOutlineVertical.transform.position = new Vector3(newVerticalPos.x, newVerticalPos.y - 1.5f, newVerticalPos.z);
+            wallOutlineVertical.transform.SetParent(wallCollVertical.transform);
 
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
             wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);

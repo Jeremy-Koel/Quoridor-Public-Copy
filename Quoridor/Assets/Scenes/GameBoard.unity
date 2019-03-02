@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5436,6 +5436,10 @@ MonoBehaviour:
   wallColliderVerticalPrefab: {fileID: 1890699698454714318, guid: 19c5a1ae04b3ab944b3a600497e37816,
     type: 3}
   wallColliderHorizontalPrefab: {fileID: 3810086717544855366, guid: 54c58031a8397c0479796cf2a7fe253d,
+    type: 3}
+  wallPlacementOutlineVerticalPrefab: {fileID: 8922587488420839231, guid: 62abadb5ab545db4fabb6239a2589f57,
+    type: 3}
+  wallPlacementOutlineHorizontalPrefab: {fileID: 7631615384187881162, guid: f9eab7c51eaae214397248d54efcb50d,
     type: 3}
   gameBoardWrapper: {fileID: 1108978327}
   wallColliderWrapper: {fileID: 1346763600}
