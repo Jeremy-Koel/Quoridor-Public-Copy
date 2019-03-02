@@ -11,19 +11,19 @@ using GameSparks.Api.Messages;
 public class EventManager : MonoBehaviour
 {
     
-    public UnityEvent ChallengeStarted = new UnityEvent();
-    public UnityEvent ChallengeTurnTaken = new UnityEvent();
-    public UnityEvent ChallengeStartingPlayerSet = new UnityEvent();
-    public UnityEvent ChallengeWon = new UnityEvent();
-    public UnityEvent ChallengeLost = new UnityEvent();
+    private UnityEvent ChallengeStarted = new UnityEvent();
+    private UnityEvent ChallengeTurnTaken = new UnityEvent();
+    private UnityEvent ChallengeStartingPlayerSet = new UnityEvent();
+    private UnityEvent ChallengeWon = new UnityEvent();
+    private UnityEvent ChallengeLost = new UnityEvent();
 
-    public UnityEvent GameBoardReady = new UnityEvent();
+    private UnityEvent GameBoardReady = new UnityEvent();
 
-    public UnityEvent MoveSent = new UnityEvent();
-    public UnityEvent MoveReceived = new UnityEvent();
-    public UnityEvent GameOver = new UnityEvent();
+    private UnityEvent MoveSent = new UnityEvent();
+    private UnityEvent MoveReceived = new UnityEvent();
+    private UnityEvent GameOver = new UnityEvent();
     // For AI Game
-    public UnityEvent TurnTaken = new UnityEvent();
+    private UnityEvent TurnTaken = new UnityEvent();
 
     private void Awake()
     {
