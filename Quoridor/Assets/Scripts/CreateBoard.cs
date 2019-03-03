@@ -87,11 +87,13 @@ public class CreateBoard : MonoBehaviour
             wallCollHorizontal.name = piece.name + "h";
             wallOutlineHorizontal.transform.position = new Vector3(newHorizontalPos.x + 1.5f, newHorizontalPos.y, newHorizontalPos.z) ;
             wallOutlineHorizontal.transform.SetParent(wallCollHorizontal.transform);
+            wallOutlineHorizontal.GetComponent<SpriteRenderer>().color = Color.clear;
 
             wallCollVertical.transform.position = newVerticalPos;
             wallCollVertical.name = piece.name + "v";
             wallOutlineVertical.transform.position = new Vector3(newVerticalPos.x, newVerticalPos.y - 1.5f, newVerticalPos.z);
             wallOutlineVertical.transform.SetParent(wallCollVertical.transform);
+            wallOutlineVertical.GetComponent<SpriteRenderer>().color = Color.clear;
 
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
             wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);
