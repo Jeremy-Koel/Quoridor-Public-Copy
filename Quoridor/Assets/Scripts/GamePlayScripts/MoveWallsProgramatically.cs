@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameCore;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +7,25 @@ public class MoveWallsProgramatically : MonoBehaviour
 {
     public bool moveWall;
     public Vector3 target;
-    public float speed = 12.0f;
+   // public float speed = 12.0f;
     private bool isOnBoard = false;
+    private GameObject scientistArmOne;
+    private GameObject scientistArmTwo;
+    private MoveArms moveArmsOne;
+    private MoveArms moveArmsTwo;
+    private Controller controller;
+    private Vector3 armOneOrgPos;
+    private Vector3 armTwoOrgPos;
     // Start is called before the first frame update
     void Start()
     {
-
+        scientistArmOne = GameObject.Find("ScientistArmOne");
+        scientistArmTwo = GameObject.Find("ScientistArmTwo");
+        moveArmsOne = scientistArmOne.GetComponent<MoveArms>();
+        moveArmsTwo = scientistArmTwo.GetComponent<MoveArms>();
+        armOneOrgPos = scientistArmOne.transform.position;
+        armTwoOrgPos = scientistArmTwo.transform.position;
+        controller = GameObject.Find("GameController").GetComponent<Controller>();
         moveWall = false;
         target = transform.position;
     }
@@ -19,15 +33,55 @@ public class MoveWallsProgramatically : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if(moveWall)
+        //{
+        //    float step = speed * Time.deltaTime; // calculate distance to move
+        //    transform.position = Vector3.MoveTowards(transform.position, target, step);
+
+        //    if(transform.position == target)
+        //    {
+        //        moveWall = false;
+        //    }
+        //}
+
         if(moveWall)
         {
-            float step = speed * Time.deltaTime; // calculate distance to move
-            transform.position = Vector3.MoveTowards(transform.position, target, step);
-
-            if(transform.position == target)
+            if(tag == "PlayerOneWall")
             {
-                moveWall = false;
+                
+                    Vector3 newTarget = new Vector3(target.x, target.y - 23, target.z);
+                    moveArmsOne.target = newTarget;
+                    moveArmsOne.moveArm = true;
+
+                if(!moveArmsOne.moveArm)
+                {
+                    transform.position = target;
+                    moveWall = false;
+                    moveArmsOne.target = armOneOrgPos;
+                   // moveArmsOne.armReachedTarget = false;
+                    moveArmsOne.moveArm = true;
+                }
+
             }
+            else
+            {
+               
+                    Vector3 newTarget = new Vector3(target.x, target.y + 23, target.z);
+                    moveArmsTwo.target = newTarget;
+                    //moveArmsTwo.armReachedTarget = false;
+                    moveArmsTwo.moveArm = true;
+                
+                if (!moveArmsTwo.moveArm)
+                {
+                    transform.position = target;
+                    moveWall = false;
+                    moveArmsTwo.target = armTwoOrgPos;
+                   // moveArmsTwo.armReachedTarget = false;
+                    moveArmsTwo.moveArm = true;
+                }
+            }
+            
+
         }
     }
 
