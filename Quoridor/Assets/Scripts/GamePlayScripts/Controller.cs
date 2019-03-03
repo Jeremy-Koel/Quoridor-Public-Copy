@@ -357,8 +357,8 @@ public class Controller : MonoBehaviour
             wall.transform.localScale = moveWallScript.GetWallSize(collider.transform.localScale);
             moveWallScript.SetTarget(new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z), collider.transform.localScale);
             moveWallScript.moveWall = true;
-
             moveWallScript.SetIsOnBoard(true);
+            collider.GetComponent<WallPlacement>().SetWallPlacedHere(true);
         }
     }
 

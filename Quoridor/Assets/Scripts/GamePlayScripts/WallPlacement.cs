@@ -8,7 +8,7 @@ public class WallPlacement : MonoBehaviour
 
     private GameObject wallHighlight;
     private Controller controller;
-
+    private bool wallPlacedHere =false;
     private InvalidMovePopup invalidPopup;
 
     //private GameObject horizontalWallHighlight;
@@ -37,7 +37,7 @@ public class WallPlacement : MonoBehaviour
     private void OnMouseEnter()
     {
         //Debug.Log("Entered Collider");
-        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
         {
             wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
         }
@@ -45,7 +45,7 @@ public class WallPlacement : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
         {
             wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
         }
@@ -58,7 +58,7 @@ public class WallPlacement : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
         {
             TryToPlaceAWall();
         }
@@ -90,6 +90,7 @@ public class WallPlacement : MonoBehaviour
             moveWallsProgramatically.moveWall = true;
             moveWallsProgramatically.SetIsOnBoard(true);
             controller.MarkLocalPlayerMove();
+            wallPlacedHere = true;
         }
         else
         {
@@ -97,5 +98,9 @@ public class WallPlacement : MonoBehaviour
         }
     }
 
+    public void SetWallPlacedHere(bool setValue)
+    {
+        wallPlacedHere = setValue;
+    }
     
 }
