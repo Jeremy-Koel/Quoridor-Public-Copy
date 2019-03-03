@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour
 
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
             eventManager.ListenToMoveReceived(MakeOpponentMove);
-            eventManager.ListenToGameOver(ResetController);
+            eventManager.ListenToNewGame(RestartGame);
             eventManager.InvokeGameBoardReady();
         }
     }
@@ -84,29 +84,22 @@ public class Controller : MonoBehaviour
         }
     }
 
-    public void ResetController()
+    public void RestartGame()
     {
         gameBoard = null;
-        spaceCoordMap = null;
-        wallCoordMap = null;
-        winPanel = null;
-        menuPanel = null;
-        helpScreen = null;
-        playerOneText = null;
-        playerTwoText = null;
         opponentTurn = false;
 
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
-        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            //messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            //challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
 
-            eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
-            eventManager.ListenToMoveReceived(MakeOpponentMove);
+            //eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
+            //eventManager.ListenToMoveReceived(MakeOpponentMove);
             eventManager.InvokeGameBoardReady();
         }
 
@@ -219,7 +212,7 @@ public class Controller : MonoBehaviour
         if (validMove && GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             Debug.Log("Valid Multiplayer Move");
-            if (challengeManagerScript.IsItMyTurn())
+            //if (challengeManagerScript.IsItMyTurn())
             {
                 Debug.Log("Making the move");
                 MarkLocalPlayerMove();
@@ -254,7 +247,7 @@ public class Controller : MonoBehaviour
         if (validWallPlacement && GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             Debug.Log("Valid Multiplayer Move");
-            if (challengeManagerScript.IsItMyTurn())
+            //if (challengeManagerScript.IsItMyTurn())
             {
                 Debug.Log("Making the move");
                 MarkLocalPlayerMove();

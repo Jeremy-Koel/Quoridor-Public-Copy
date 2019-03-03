@@ -33,7 +33,7 @@ public class NewGameButton : MonoBehaviour
             if (GameObject.Find("WinScreenNewGameButton") != null)
             {
                 newGameWinButton = GameObject.Find("WinScreenNewGameButton").GetComponent<Button>();      
-                //ChallengeStartedMessage.Listener += OnChallengeStarted;
+                ChallengeStartedMessage.Listener += OnChallengeStarted;
                 ChallengeIssuedMessage.Listener += OnChallengeIssued;
             }
         }
@@ -60,18 +60,20 @@ public class NewGameButton : MonoBehaviour
     public void onNewGameButtonClick()
     {
         // Get EventManager DontDestroyOnLoad Object and reset
-        GameObject eventManagerObject = GameObject.Find("EventManager");
-        EventManager eventManagerScript = eventManagerObject.GetComponent<EventManager>();
-        eventManagerScript.RemoveAllListeners();
+        //GameObject eventManagerObject = GameObject.Find("EventManager");
+        //EventManager eventManagerScript = eventManagerObject.GetComponent<EventManager>();
+        //eventManagerScript.RemoveAllListeners();
+        
         //Destroy(eventManagerScript);
         //eventManagerScript = eventManagerObject.AddComponent<EventManager>() as EventManager;
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
-            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-            challengeManagerScript.RemoveAllChallengeListeners();
+            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            //ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+            //challengeManagerScript.RemoveAllChallengeListeners();
+
             ////challengeManagerScript = new ChallengeManager();
             ////Destroy(challengeManagerScript);
             //Destroy(challengeManagerObject);
@@ -88,7 +90,7 @@ public class NewGameButton : MonoBehaviour
             //messageQueueObject = Instantiate(messageQueuePrefab, this.transform);
             //messageQueueObject.transform.parent = this.transform;
 
-            eventManagerScript.InvokeGameOver();
+            //eventManagerScript.InvokeGameOver();
 
             // For now just do a matchmaking request again (and the two players will match if they are the only two searching)
             onMatchMakingButtonClick();
@@ -137,18 +139,19 @@ public class NewGameButton : MonoBehaviour
                     //GSData scriptData = response.ScriptData;
                 });
         }
-        UnblockInput();
-        SceneManager.LoadScene("GameBoard");
+        //UnblockInput();
+        //SceneManager.LoadScene("GameBoard");
     }
 
-    //private void OnChallengeStarted(ChallengeStartedMessage message)
-    //{
-    //    UnblockInput();
-    //    Debug.Log("Challenge Started");
-    //    // Switch to GameBoard Scene connected to opponent
-    //    //SceneManager.LoadScene("GameBoard");
-
-    //}
+    private void OnChallengeStarted(ChallengeStartedMessage message)
+    {
+        UnblockInput();
+        Debug.Log("Challenge Started");
+        // Switch to GameBoard Scene connected to opponent
+        SceneManager.LoadScene("GameBoard");
+        EventManager eventManager = GameObject.Find("EventManger").GetComponent<EventManager>();
+        eventManager.InvokeNewGame();
+    }
 
     private void BlockInput()
     {

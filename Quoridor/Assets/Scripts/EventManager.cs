@@ -22,6 +22,8 @@ public class EventManager : MonoBehaviour
     private UnityEvent MoveSent = new UnityEvent();
     private UnityEvent MoveReceived = new UnityEvent();
     private UnityEvent GameOver = new UnityEvent();
+    private UnityEvent NewGame = new UnityEvent();
+
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
 
@@ -53,7 +55,7 @@ public class EventManager : MonoBehaviour
         GameBoardReady.RemoveAllListeners();
         MoveSent.RemoveAllListeners();
         MoveReceived.RemoveAllListeners();
-        //GameOver.RemoveAllListeners();
+        GameOver.RemoveAllListeners();
         TurnTaken.RemoveAllListeners();
     }
 
@@ -180,6 +182,18 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Game Over Invoked");
         GameOver.Invoke();
+    }
+
+    public void ListenToNewGame(UnityAction action)
+    {
+        Debug.Log("New Game Listener Added");
+        NewGame.AddListener(action);
+    }
+
+    public void InvokeNewGame()
+    {
+        Debug.Log("New Game Invoked");
+        NewGame.Invoke();
     }
 
     public void ListenToTurnTaken(UnityAction action)
