@@ -126,7 +126,7 @@ public class CreateBoard : MonoBehaviour
 
         foreach (GameObject wall in p2walls)
         {
-            wall.AddComponent<MoveWalls>();
+           // wall.AddComponent<MoveWalls>();
             wall.AddComponent<MoveWallsProgramatically>();
         }
 
@@ -134,7 +134,7 @@ public class CreateBoard : MonoBehaviour
 
         foreach (GameObject wall in p1walls)
         {
-            wall.AddComponent<MoveWalls>();
+            wall.AddComponent<MoveWallsProgramatically>();
         }
     }
 

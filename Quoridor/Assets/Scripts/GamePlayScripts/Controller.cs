@@ -353,12 +353,12 @@ public class Controller : MonoBehaviour
         Collider collider = GetCollider(colliderName);
         if (wall != null && collider != null)
         {
-            wall.transform.localScale = collider.transform.localScale;
             MoveWallsProgramatically moveWallScript = wall.GetComponent<MoveWallsProgramatically>();
-            moveWallScript.target = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
+            wall.transform.localScale = moveWallScript.GetWallSize(collider.transform.localScale);
+            moveWallScript.SetTarget(new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z), collider.transform.localScale);
             moveWallScript.moveWall = true;
 
-            wall.GetComponent<MoveWalls>().SetLockPlace(true);
+            moveWallScript.SetIsOnBoard(true);
         }
     }
 
@@ -366,7 +366,7 @@ public class Controller : MonoBehaviour
     {
         foreach (GameObject wall in GameObject.FindGameObjectsWithTag("PlayerTwoWall"))
         {
-            if (!wall.GetComponent<MoveWalls>().IsOnBoard())
+            if (!wall.GetComponent<MoveWallsProgramatically>().IsOnBoard())
             {
                 return wall;
             }
