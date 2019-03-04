@@ -89,7 +89,7 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("ChallengeStartedMessage Listener set");
         ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
         Debug.Log("ChallengeTurnTakenMessage Listener set");
-        ScriptMessage.Listener += GeneralChallengeMessage;
+        ScriptMessage.Listener += GeneralChallengeMessageRouter;
         eventManager.ListenToGameBoardReady(SetupPlayerInfo);
         eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
         //eventManager.ListenToGameOver(ResetChallengeManager);        
@@ -100,7 +100,7 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("Removing all challenge listeners");
         ChallengeStartedMessage.Listener -= OnChallengeStarted;
         ChallengeTurnTakenMessage.Listener -= OnChallengeTurnTaken;
-        ScriptMessage.Listener -= GeneralChallengeMessage;
+        ScriptMessage.Listener -= GeneralChallengeMessageRouter;
     }
 
     void OnChallengeStarted(ChallengeStartedMessage message)
@@ -139,7 +139,7 @@ public class ChallengeManager : MonoBehaviour
         }       
     }
 
-    public void GeneralChallengeMessage(ScriptMessage message)
+    public void GeneralChallengeMessageRouter(ScriptMessage message)
     {
         Debug.Log("ScriptMessage recieved: " + message.ExtCode);
         if (message.ExtCode == "ChallengeStartingPlayerMessage")
