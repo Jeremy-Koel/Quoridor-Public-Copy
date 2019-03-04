@@ -6,6 +6,7 @@ using UnityEngine;
 public class MessageQueue : MonoBehaviour
 {
     public Queue<ScriptMessage> startingPlayerSetQueue = new Queue<ScriptMessage>();
+    public Queue<ScriptMessage> matchmakingGroupNumberQueue = new Queue<ScriptMessage>();
     public Queue<string> opponentMoveQueue = new Queue<string>();
     
     private void Awake()
@@ -27,6 +28,15 @@ public class MessageQueue : MonoBehaviour
         return startingPlayerSetQueue.Dequeue();
     }
 
+    public void EnqueueMatchmakingGroupNumber(ScriptMessage message)
+    {
+        matchmakingGroupNumberQueue.Enqueue(message);
+    }
+    public ScriptMessage DequeueMatchmakingGroupNumber()
+    {
+        return matchmakingGroupNumberQueue.Dequeue();
+    }
+
     public void EnqueueOpponentMoveQueue(string move)
     {
         opponentMoveQueue.Enqueue(move);
@@ -42,6 +52,13 @@ public class MessageQueue : MonoBehaviour
         if (queueName == "startingPlayerSetQueue")
         {
             if (startingPlayerSetQueue.Count != 0)
+            {
+                empty = false;
+            }
+        }
+        else if (queueName == "matchmakingGroupNumberQueue")
+        {
+            if (matchmakingGroupNumberQueue.Count != 0)
             {
                 empty = false;
             }

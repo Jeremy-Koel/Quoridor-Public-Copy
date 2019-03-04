@@ -11,10 +11,6 @@ public class NewGameButton : MonoBehaviour
 {
     private Button newGameWinButton;
     private Button newGameMenuButton;
-    [SerializeField]
-    public GameObject challengeManagerPrefab;
-    [SerializeField]
-    public GameObject messageQueuePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -51,48 +47,17 @@ public class NewGameButton : MonoBehaviour
 
     void OnDestroy()
     {
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
-        {
-            //ChallengeStartedMessage.Listener -= OnChallengeStarted;
-        }        
+
     }
 
     public void onNewGameButtonClick()
     {
-        // Get EventManager DontDestroyOnLoad Object and reset
-        //GameObject eventManagerObject = GameObject.Find("EventManager");
-        //EventManager eventManagerScript = eventManagerObject.GetComponent<EventManager>();
-        //eventManagerScript.RemoveAllListeners();
-        
-        //Destroy(eventManagerScript);
-        //eventManagerScript = eventManagerObject.AddComponent<EventManager>() as EventManager;
-
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
-            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            //ChallengeManager challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
-            //challengeManagerScript.RemoveAllChallengeListeners();
 
-            ////challengeManagerScript = new ChallengeManager();
-            ////Destroy(challengeManagerScript);
-            //Destroy(challengeManagerObject);
-            ////challengeManagerScript = challengeManagerObject.AddComponent<ChallengeManager>() as ChallengeManager;
-            //challengeManagerObject = Instantiate(challengeManagerPrefab, this.transform);
-            //challengeManagerObject.transform.parent = this.transform;
+            EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+            eventManager.InvokePlayAgain();
 
-            //GameObject messageQueueObject = GameObject.Find("MessageQueue");
-            //MessageQueue messageQueueScript = messageQueueObject.GetComponent<MessageQueue>();
-            ////messageQueueScript = new MessageQueue();
-            //Destroy(messageQueueScript);
-
-            //messageQueueScript = messageQueueObject.AddComponent<MessageQueue>() as MessageQueue;
-            //messageQueueObject = Instantiate(messageQueuePrefab, this.transform);
-            //messageQueueObject.transform.parent = this.transform;
-
-            //eventManagerScript.InvokeGameOver();
-
-            // For now just do a matchmaking request again (and the two players will match if they are the only two searching)
             onMatchMakingButtonClick();
         }
         else
@@ -108,9 +73,24 @@ public class NewGameButton : MonoBehaviour
         MatchmakingRequest request = new MatchmakingRequest();
         request.SetMatchShortCode("DefaultMatch");
         request.SetSkill(0);
+        //string matchGroupNumber = GetMatchmakingGroupNumber();
+        //request.SetMatchGroup(matchGroupNumber);
         request.Send(OnMatchmakingSuccess, OnMatchmakingError);
     }
 
+    private string GetMatchmakingGroupNumber()
+    {
+        MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+        while (messageQueue.IsQueueEmpty("matchmakingGroupNumberQueue"))
+        {
+
+        }
+        ScriptMessage message = messageQueue.DequeueMatchmakingGroupNumber();
+        IDictionary<string, object> messageData = message.Data.BaseData;
+        Debug.Log("Matchmaking Group Number: " + messageData["matchGroupNumber"].ToString());
+        var matchGroupNumber = messageData["matchGroupNumber"];
+        return matchGroupNumber.ToString();
+    }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
     {
@@ -139,8 +119,6 @@ public class NewGameButton : MonoBehaviour
                     //GSData scriptData = response.ScriptData;
                 });
         }
-        //UnblockInput();
-        //SceneManager.LoadScene("GameBoard");
     }
 
     private void OnChallengeStarted(ChallengeStartedMessage message)

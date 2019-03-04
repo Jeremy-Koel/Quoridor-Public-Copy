@@ -23,6 +23,7 @@ public class EventManager : MonoBehaviour
     private UnityEvent MoveReceived = new UnityEvent();
     private UnityEvent GameOver = new UnityEvent();
     private UnityEvent NewGame = new UnityEvent();
+    private UnityEvent PlayAgain = new UnityEvent();
 
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
@@ -72,6 +73,8 @@ public class EventManager : MonoBehaviour
         MoveSent = new UnityEvent();
         MoveReceived = new UnityEvent();
         GameOver = new UnityEvent();
+        NewGame = new UnityEvent();
+        PlayAgain = new UnityEvent();
         // For AI Game
         TurnTaken = new UnityEvent();
 }
@@ -194,6 +197,18 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("New Game Invoked");
         NewGame.Invoke();
+    }
+
+    public void ListenToPlayAgain(UnityAction action)
+    {
+        Debug.Log("Play Again Listener Added");
+        PlayAgain.AddListener(action);
+    }
+
+    public void InvokePlayAgain()
+    {
+        Debug.Log("Play Again Invoked");
+        PlayAgain.Invoke();
     }
 
     public void ListenToTurnTaken(UnityAction action)

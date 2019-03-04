@@ -60,6 +60,7 @@ public class ChallengeManager : MonoBehaviour
         }
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+        eventManager.ListenToPlayAgain(PlayAgain);
         eventManager.ListenToGameOver(SetupChallengeListeners);
     }
 
@@ -145,6 +146,10 @@ public class ChallengeManager : MonoBehaviour
         {
             messageQueue.EnqueueStartingPlayerSetQueue(message);
         }
+        if (message.ExtCode == "MatchmakingGroupNumber")
+        {
+            messageQueue.EnqueueMatchmakingGroupNumber(message);
+        }
     }
 
     public void SetupPlayerInfo()
@@ -223,6 +228,25 @@ public class ChallengeManager : MonoBehaviour
     }
 
     private void OnMoveError(LogChallengeEventResponse response)
+    {
+        print(response.Errors.JSON.ToString());
+    }
+
+    public void PlayAgain()
+    {
+        Debug.Log("Sending playAgain event to GS");
+        LogChallengeEventRequest request = new LogChallengeEventRequest();
+        request.SetChallengeInstanceId(ChallengeID);
+        request.SetEventKey("PlayAgain");        
+        request.Send(OnPlayAgainSuccess, OnPlayAgainError);
+    }
+
+    private void OnPlayAgainSuccess(LogChallengeEventResponse response)
+    {
+        print(response.JSONString);
+    }
+
+    private void OnPlayAgainError(LogChallengeEventResponse response)
     {
         print(response.Errors.JSON.ToString());
     }
