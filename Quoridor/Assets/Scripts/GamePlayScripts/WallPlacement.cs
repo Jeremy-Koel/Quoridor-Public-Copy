@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class WallPlacement : MonoBehaviour
 {
@@ -36,18 +37,24 @@ public class WallPlacement : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        //Debug.Log("Entered Collider");
-        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
+            //Debug.Log("Entered Collider");
+            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            {
+                wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
+            }
         }
     }
 
     private void OnMouseOver()
     {
-        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
+            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            {
+                wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
+            }
         }
     }
     private void OnMouseExit()
@@ -58,9 +65,12 @@ public class WallPlacement : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            TryToPlaceAWall();
+            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            {
+                TryToPlaceAWall();
+            }
         }
     }
 
