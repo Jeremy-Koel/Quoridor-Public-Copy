@@ -68,7 +68,7 @@ public class MoveWallsProgramatically : MonoBehaviour
         {
             newSize = new Vector3(colliderSize.x, colliderSize.y * 2, colliderSize.z);
         }
-        else if (colliderSize.x == 3f)
+        else if (colliderSize.x == 3.5f)
         {
             newSize = new Vector3(colliderSize.x * 2, colliderSize.y, colliderSize.z);
         }
@@ -82,7 +82,7 @@ public class MoveWallsProgramatically : MonoBehaviour
         {
             pos = new Vector3(pos.x, pos.y - (colliderSize.y/2) - .25f, -0.7f);
         }
-        else if (colliderSize.x == 3f)
+        else if (colliderSize.x == 3.5f)
         {
             pos = new Vector3(pos.x + (colliderSize.x/2) + .25f, pos.y, -0.7f);
         }
