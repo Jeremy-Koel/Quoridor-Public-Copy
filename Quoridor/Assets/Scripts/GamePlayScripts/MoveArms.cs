@@ -8,9 +8,6 @@ public class MoveArms : MonoBehaviour
     public Vector3 target;
     public float speed = 12.0f;
     private Vector3 origPos;
-    private GameObject parent;
-
-   // public bool armReachedTarget = false;
     
     // Start is called before the first frame update
     void Start()
@@ -18,7 +15,6 @@ public class MoveArms : MonoBehaviour
         origPos = transform.position;
         moveArm = false;
         target = transform.position;
-        //parent = this.transform.parent.gameObject;
     }
 
     // Update is called once per frame
@@ -26,14 +22,11 @@ public class MoveArms : MonoBehaviour
     {
         if (moveArm)
         {
-            //armReachedTarget = false;
             float step = speed * Time.deltaTime; // calculate distance to move
             transform.position = Vector3.MoveTowards(transform.position, target, step);
 
             if (transform.position == target && target != origPos)
             {
-                //armReachedTarget = true;
-                //moveArm = false;
                 target = origPos;
             }
             else if(transform.position == target)

@@ -13,9 +13,7 @@ public class MoveWallsProgramatically : MonoBehaviour
     private GameObject scientistArmTwo;
     private MoveArms moveArmsOne;
     private MoveArms moveArmsTwo;
-    private Controller controller;
-    private Vector3 armOneOrgPos;
-    private Vector3 armTwoOrgPos;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +21,6 @@ public class MoveWallsProgramatically : MonoBehaviour
         scientistArmTwo = GameObject.Find("ScientistArmTwo");
         moveArmsOne = scientistArmOne.GetComponent<MoveArms>();
         moveArmsTwo = scientistArmTwo.GetComponent<MoveArms>();
-        armOneOrgPos = scientistArmOne.transform.position;
-        armTwoOrgPos = scientistArmTwo.transform.position;
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
         moveWall = false;
         target = transform.position;
     }
@@ -54,45 +49,6 @@ public class MoveWallsProgramatically : MonoBehaviour
             }
         }
 
-        //if(moveWall)
-        //{
-        //    if(tag == "PlayerOneWall")
-        //    {
-
-        //            Vector3 newTarget = new Vector3(target.x, target.y - 23, target.z);
-        //            moveArmsOne.target = newTarget;
-        //            moveArmsOne.moveArm = true;
-
-        //        if(!moveArmsOne.moveArm)
-        //        {
-        //            transform.position = target;
-        //            moveWall = false;
-        //            moveArmsOne.target = armOneOrgPos;
-        //           // moveArmsOne.armReachedTarget = false;
-        //            moveArmsOne.moveArm = true;
-        //        }
-
-        //    }
-        //    else
-        //    {
-
-        //            Vector3 newTarget = new Vector3(target.x, target.y + 23, target.z);
-        //            moveArmsTwo.target = newTarget;
-        //            //moveArmsTwo.armReachedTarget = false;
-        //            moveArmsTwo.moveArm = true;
-
-        //        if (!moveArmsTwo.moveArm)
-        //        {
-        //            transform.position = target;
-        //            moveWall = false;
-        //            moveArmsTwo.target = armTwoOrgPos;
-        //           // moveArmsTwo.armReachedTarget = false;
-        //            moveArmsTwo.moveArm = true;
-        //        }
-        //    }
-
-
-        //}
     }
 
     public bool IsOnBoard()
