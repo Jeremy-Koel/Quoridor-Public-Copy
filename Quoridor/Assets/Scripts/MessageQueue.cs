@@ -7,6 +7,7 @@ public class MessageQueue : MonoBehaviour
 {
     public Queue<ScriptMessage> startingPlayerSetQueue = new Queue<ScriptMessage>();
     public Queue<ScriptMessage> matchmakingGroupNumberQueue = new Queue<ScriptMessage>();
+    public Queue<ScriptMessage> challengeMoveQueue = new Queue<ScriptMessage>();
     public Queue<string> opponentMoveQueue = new Queue<string>();
     
     private void Awake()
@@ -37,6 +38,16 @@ public class MessageQueue : MonoBehaviour
         return matchmakingGroupNumberQueue.Dequeue();
     }
 
+    public void EnqueueChallengeMove(ScriptMessage message)
+    {
+        challengeMoveQueue.Enqueue(message);
+    }
+    public ScriptMessage DequeueChallengeMove()
+    {
+        return challengeMoveQueue.Dequeue();
+    }
+
+
     public void EnqueueOpponentMoveQueue(string move)
     {
         opponentMoveQueue.Enqueue(move);
@@ -66,6 +77,13 @@ public class MessageQueue : MonoBehaviour
         else if (queueName == "opponentMoveQueue")
         {
             if (opponentMoveQueue.Count != 0)
+            {
+                empty = false;
+            }
+        }
+        else if (queueName == "ChallengeMove")
+        {
+            if (challengeMoveQueue.Count != 0)
             {
                 empty = false;
             }

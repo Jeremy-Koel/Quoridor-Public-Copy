@@ -87,11 +87,12 @@ public class ChallengeManager : MonoBehaviour
     {
         ChallengeStartedMessage.Listener += OnChallengeStarted;
         Debug.Log("ChallengeStartedMessage Listener set");
-        ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
-        Debug.Log("ChallengeTurnTakenMessage Listener set");
+        //ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
+        //Debug.Log("ChallengeTurnTakenMessage Listener set");
         ScriptMessage.Listener += GeneralChallengeMessageRouter;
         eventManager.ListenToGameBoardReady(SetupPlayerInfo);
         eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
+        eventManager.ListenToChallengeMove(OnMoveReceived);
         //eventManager.ListenToGameOver(ResetChallengeManager);        
     }
 
@@ -99,7 +100,7 @@ public class ChallengeManager : MonoBehaviour
     {
         Debug.Log("Removing all challenge listeners");
         ChallengeStartedMessage.Listener -= OnChallengeStarted;
-        ChallengeTurnTakenMessage.Listener -= OnChallengeTurnTaken;
+        //ChallengeTurnTakenMessage.Listener -= OnChallengeTurnTaken;
         ScriptMessage.Listener -= GeneralChallengeMessageRouter;
     }
 
@@ -136,7 +137,36 @@ public class ChallengeManager : MonoBehaviour
                 eventManager.InvokeMoveReceived();
             }
             eventManager.InvokeChallengeTurnTaken();
-        }       
+        }
+    }
+
+    void OnMoveReceived()
+    {
+        Debug.Log("Challenge Move Received");
+        while (messageQueue.IsQueueEmpty("ChallengeMove"))
+        {
+
+        }
+        ScriptMessage message = messageQueue.DequeueChallengeMove();
+        IDictionary<string, object> messageData = message.Data.BaseData;
+
+        string gameSparksUserID = gameSparksUserIDScript.myUserID;
+        Debug.Log("My Player ID: " + gameSparksUserID);
+
+        //var scriptData = message.ScriptData.BaseData;
+        Debug.Log("Player ID Used for move: " + messageData["PlayerIDUsed"].ToString());
+        LastMoveUserID = messageData["PlayerIDUsed"].ToString();
+        if (gameSparksUserID != messageData["PlayerIDUsed"].ToString())
+        {
+            string scriptDataAction = messageData["Action"].ToString();
+            Debug.Log("Action Received: " + scriptDataAction);
+
+            // Notify controller that a move was received
+            LastOpponentMove = scriptDataAction;
+            messageQueue.EnqueueOpponentMoveQueue(scriptDataAction);
+            eventManager.InvokeMoveReceived();
+        }
+        eventManager.InvokeChallengeTurnTaken();
     }
 
     public void GeneralChallengeMessageRouter(ScriptMessage message)
@@ -146,9 +176,14 @@ public class ChallengeManager : MonoBehaviour
         {
             messageQueue.EnqueueStartingPlayerSetQueue(message);
         }
-        if (message.ExtCode == "MatchmakingGroupNumber")
+        else if (message.ExtCode == "MatchmakingGroupNumber")
         {
             messageQueue.EnqueueMatchmakingGroupNumber(message);
+        }
+        else if (message.ExtCode == "ChallengeMove")
+        {
+            messageQueue.EnqueueChallengeMove(message);
+            eventManager.InvokeChallengeMove();
         }
     }
 

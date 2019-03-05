@@ -88,6 +88,38 @@ namespace GameSparks.Api.Requests{
 		}
 	}
 	
+	public class LogEventRequest_PlayAgain : GSTypedRequest<LogEventRequest_PlayAgain, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_PlayAgain() : base("LogEventRequest"){
+			request.AddString("eventKey", "PlayAgain");
+		}
+	}
+	
+	public class LogChallengeEventRequest_PlayAgain : GSTypedRequest<LogChallengeEventRequest_PlayAgain, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_PlayAgain() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "PlayAgain");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_PlayAgain SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+	}
+	
 	public class LogEventRequest_SetStartingPlayer : GSTypedRequest<LogEventRequest_SetStartingPlayer, LogEventResponse>
 	{
 	
@@ -179,6 +211,32 @@ namespace GameSparks.Api.Requests{
 
 namespace GameSparks.Api.Messages {
 
+		public class ScriptMessage_ChallengeMove : ScriptMessage {
+		
+			public new static Action<ScriptMessage_ChallengeMove> Listener;
+	
+			public ScriptMessage_ChallengeMove(GSData data) : base(data){}
+	
+			private static ScriptMessage_ChallengeMove Create(GSData data)
+			{
+				ScriptMessage_ChallengeMove message = new ScriptMessage_ChallengeMove (data);
+				return message;
+			}
+	
+			static ScriptMessage_ChallengeMove()
+			{
+				handlers.Add (".ScriptMessage_ChallengeMove", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
 		public class ScriptMessage_ChallengeStartingPlayerMessage : ScriptMessage {
 		
 			public new static Action<ScriptMessage_ChallengeStartingPlayerMessage> Listener;
@@ -194,6 +252,32 @@ namespace GameSparks.Api.Messages {
 			static ScriptMessage_ChallengeStartingPlayerMessage()
 			{
 				handlers.Add (".ScriptMessage_ChallengeStartingPlayerMessage", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
+		public class ScriptMessage_MatchmakingGroupNumber : ScriptMessage {
+		
+			public new static Action<ScriptMessage_MatchmakingGroupNumber> Listener;
+	
+			public ScriptMessage_MatchmakingGroupNumber(GSData data) : base(data){}
+	
+			private static ScriptMessage_MatchmakingGroupNumber Create(GSData data)
+			{
+				ScriptMessage_MatchmakingGroupNumber message = new ScriptMessage_MatchmakingGroupNumber (data);
+				return message;
+			}
+	
+			static ScriptMessage_MatchmakingGroupNumber()
+			{
+				handlers.Add (".ScriptMessage_MatchmakingGroupNumber", Create);
 	
 			}
 			

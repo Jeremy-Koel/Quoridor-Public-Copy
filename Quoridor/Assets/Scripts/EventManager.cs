@@ -16,6 +16,7 @@ public class EventManager : MonoBehaviour
     private UnityEvent ChallengeStartingPlayerSet = new UnityEvent();
     private UnityEvent ChallengeWon = new UnityEvent();
     private UnityEvent ChallengeLost = new UnityEvent();
+    private UnityEvent ChallengeMove = new UnityEvent();
 
     private UnityEvent GameBoardReady = new UnityEvent();
 
@@ -24,6 +25,7 @@ public class EventManager : MonoBehaviour
     private UnityEvent GameOver = new UnityEvent();
     private UnityEvent NewGame = new UnityEvent();
     private UnityEvent PlayAgain = new UnityEvent();
+
 
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
@@ -67,6 +69,7 @@ public class EventManager : MonoBehaviour
         ChallengeStartingPlayerSet = new UnityEvent();
         ChallengeWon = new UnityEvent();
         ChallengeLost = new UnityEvent();
+        ChallengeMove = new UnityEvent();
 
         GameBoardReady = new UnityEvent();
 
@@ -136,6 +139,18 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Challenge Lost Invoked");
         ChallengeLost.Invoke();
+    }
+
+    public void ListenToChallengeMove(UnityAction action)
+    {
+        Debug.Log("Challenge Move Listener Added");
+        ChallengeMove.AddListener(action);
+    }
+
+    public void InvokeChallengeMove()
+    {
+        Debug.Log("Challenge Move Invoked");
+        ChallengeMove.Invoke();
     }
 
 
