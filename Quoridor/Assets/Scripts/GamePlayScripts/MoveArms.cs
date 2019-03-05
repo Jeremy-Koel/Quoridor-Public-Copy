@@ -6,7 +6,7 @@ public class MoveArms : MonoBehaviour
 {
     public bool moveArm;
     public Vector3 target;
-    public float speed = 12.0f;
+    private float speed = 20.0f;
     private Vector3 origPos;
     
     // Start is called before the first frame update
@@ -33,6 +33,8 @@ public class MoveArms : MonoBehaviour
             {
                 moveArm = false;
             }
+
+
         }
     }
 
