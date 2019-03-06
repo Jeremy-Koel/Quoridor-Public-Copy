@@ -23,14 +23,7 @@ public class InterfaceController : MonoBehaviour
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            //messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            //challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
 
-            //eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
-            //eventManager.ListenToMoveReceived(MakeOpponentMove);
-            //eventManager.ListenToNewGame(RestartGame);
-            //eventManager.InvokeGameBoardReady();
         }
     }
 
@@ -45,14 +38,8 @@ public class InterfaceController : MonoBehaviour
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void MoveOpponentPieceInGUI(string guiSpaceName)
+    
+    public void MoveOpponentPieceInGUI(string guiSpaceName)
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
         GameObject targetSquare = GameObject.Find(guiSpaceName);
@@ -63,7 +50,7 @@ public class InterfaceController : MonoBehaviour
         soundEffectController.PlaySqueakSound();
     }
 
-    private void MoveOpponentWallInGUI(string colliderName)
+    public void MoveOpponentWallInGUI(string colliderName)
     {
         GameObject wall = GetUnusedOpponentWall();
         Collider collider = GetCollider(colliderName);
@@ -97,48 +84,20 @@ public class InterfaceController : MonoBehaviour
         return collider;
     }
 
-    //public void SetupMultiplayerGame()
-    //{
-    //    PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
+    public void SetPlayerOneText(string str)
+    {
+        if (playerOneText != null)
+        {
+            playerOneText.text = str;
+        }
+    }
 
-    //    // set player in gameboard 
-    //    gameCoreController.SetPlayerTurn(playerInfo.PlayerNumber);
-        
-    //    // set gui text 
-    //    playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-    //    playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
-    //    if (playerOneText != null)
-    //    {
-    //        playerOneText.text = networkGameController.GetPlayerOneDisplayName();
-    //    }
-    //    if (playerTwoText != null)
-    //    {
-    //        playerTwoText.text = networkGameController.GetPlayerTwoDisplayName();
-    //    }
-    //}
-
-    //private PlayerInfo GetPlayerInfo(int playerNumber = 0)
-    //{
-    //    PlayerInfo playerInfo = new PlayerInfo();
-    //    if (challengeManagerScript)
-    //    {
-    //        playerInfo = challengeManagerScript.GetPlayerInfo(playerNumber);
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("challengeManager not active (not a multiplayer game)");
-    //    }
-    //    return playerInfo;
-    //}
-
-    //public void RestartGame()
-    //{
-    //    gameCoreController.ResetGameBoard();
-
-    //    if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
-    //    {
-    //        eventManager.InvokeGameBoardReady();
-    //    }
-    //}
+    public void SetPlayerTwoText(string str)
+    {
+        if (playerTwoText != null)
+        { 
+            playerTwoText.text = str;
+        }
+    }
 
 }

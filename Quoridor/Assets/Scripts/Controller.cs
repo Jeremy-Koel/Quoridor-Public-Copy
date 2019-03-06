@@ -23,10 +23,7 @@ public class Controller : MonoBehaviour
     private void Awake()
     {
         Debug.Log("Awake Controller");
-
-        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
@@ -52,6 +49,8 @@ public class Controller : MonoBehaviour
         helpScreen = GameObject.Find("HelpMenu");
         playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
+        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
 
         if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {

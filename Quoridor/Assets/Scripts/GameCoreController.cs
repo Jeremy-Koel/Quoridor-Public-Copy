@@ -10,18 +10,22 @@ public class GameCoreController : MonoBehaviour
     private Dictionary<string, PlayerCoordinate> spaceCoordMap;
     private Dictionary<string, WallCoordinate> wallCoordMap;
     private bool opponentTurn;
+    private EventManager eventManager;
+
+    private void Awake()
+    {
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            eventManager.ListenToNewGame(ResetGameBoard);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void AddToSpaceMap(GameObject obj)
@@ -37,41 +41,10 @@ public class GameCoreController : MonoBehaviour
     public void ResetGameBoard()
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
-    }
 
-    public void SetPlayerTurn(int n)
-    {
-        if (n == 1)
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            opponentTurn = false;
-            // Set player's turn in GameBoard
-            gameBoard.SetPlayerTurnRandom();
-            while (gameBoard.GetWhoseTurn() != 1)
-            {
-                gameBoard.SetPlayerTurnRandom();
-            }
-        }
-        else if (n == 2)
-        {
-            opponentTurn = true;
-            // Set player's turn in GameBoard
-            gameBoard.SetPlayerTurnRandom();
-            while (gameBoard.GetWhoseTurn() != 2)
-            {
-                gameBoard.SetPlayerTurnRandom();
-            }
-        }
-    }
-
-    public GameBoard.PlayerEnum GetWhoseTurn()
-    {
-        if (gameBoard.GetWhoseTurn() == 1)
-        {
-            return GameBoard.PlayerEnum.ONE;
-        }
-        else
-        {
-            return GameBoard.PlayerEnum.TWO;
+            eventManager.InvokeGameBoardReady();
         }
     }
 
@@ -112,5 +85,29 @@ public class GameCoreController : MonoBehaviour
     {
         MonteCarlo tree = new MonteCarlo(gameBoard);
         return Task.Run(() => tree.MonteCarloTreeSearch());
+    }
+
+    public void SetupMultiplayerGame(int playerNumber)
+    {
+        if (playerNumber == 1)
+        {
+            opponentTurn = false;
+            // Set player's turn in GameBoard
+            gameBoard.SetPlayerTurnRandom();
+            while (gameBoard.GetWhoseTurn() != 1)
+            {
+                gameBoard.SetPlayerTurnRandom();
+            }
+        }
+        else if (playerNumber == 2)
+        {
+            opponentTurn = true;
+            // Set player's turn in GameBoard
+            gameBoard.SetPlayerTurnRandom();
+            while (gameBoard.GetWhoseTurn() != 2)
+            {
+                gameBoard.SetPlayerTurnRandom();
+            }
+        }
     }
 }

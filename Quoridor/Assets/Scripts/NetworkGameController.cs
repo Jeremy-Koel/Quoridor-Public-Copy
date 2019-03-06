@@ -5,23 +5,35 @@ using UnityEngine;
 public class NetworkGameController : MonoBehaviour
 {
     private ChallengeManager challengeManagerScript;
+    private EventManager eventManager;
     private MessageQueue messageQueue;
+    private bool opponentTurn;
+    private InterfaceController interfaceController;
+    private GameCoreController gameCoreController;
+    private SoundEffectController soundEffectController;
 
     private void Awake()
     {
+        Debug.Log("Awake network controller");
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
+            GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
+            challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
 
+            eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
+            eventManager.ListenToMoveReceived(MakeNetworkOpponentMove);
+            eventManager.InvokeGameBoardReady();
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
     }
 
     public string GetPlayerOneDisplayName()
@@ -32,6 +44,75 @@ public class NetworkGameController : MonoBehaviour
     public string GetPlayerTwoDisplayName()
     {
         return challengeManagerScript.SecondPlayerInfo.PlayerDisplayName;
+    }
+
+    public void SetupMultiplayerGame()
+    {
+        Debug.Log("Setting up multiplayer game in network controller");
+        PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
+
+        // Set appropriate turn in game core 
+        gameCoreController.SetupMultiplayerGame(playerInfo.PlayerNumber);
+
+        // Set player names in GUI
+        interfaceController.SetPlayerOneText(challengeManagerScript.FirstPlayerInfo.PlayerDisplayName);
+        interfaceController.SetPlayerTwoText(challengeManagerScript.SecondPlayerInfo.PlayerDisplayName);
+    }
+
+    private PlayerInfo GetPlayerInfo(int playerNumber = 0)
+    {
+        PlayerInfo playerInfo = new PlayerInfo();
+        if (challengeManagerScript)
+        {
+            playerInfo = challengeManagerScript.GetPlayerInfo(playerNumber);
+        }
+        else
+        {
+            Debug.Log("challengeManager not active (not a multiplayer game)");
+        }
+        return playerInfo;
+    }
+
+    public void MakeNetworkOpponentMove()
+    {
+        Debug.Log("Getting move from network");
+
+        // Decide if the opponent placed a wall or piece, and call appropriate method 
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            string moveString = GetMoveFromNetwork();
+            Debug.Log("MakeOpponentMove, moveString: " + moveString);
+            if (moveString.Length == 2)
+            {
+                moveString = GameCore.BoardUtil.MirrorMove(moveString);
+                if (gameCoreController.RecordOpponentMove(moveString))
+                {
+                    interfaceController.MoveOpponentPieceInGUI(moveString);
+                }
+            }
+            else if (moveString.Length == 3)
+            {
+                moveString = GameCore.BoardUtil.MirrorWall(moveString);
+                if (gameCoreController.RecordOpponentMove(moveString))
+                {
+                    interfaceController.MoveOpponentWallInGUI(moveString);
+                }
+            }
+        }
+    }
+
+    private string GetMoveFromNetwork()
+    {
+        string mirroredMove = "";
+        while (messageQueue.IsQueueEmpty("opponentMoveQueue"))
+        {
+
+        }
+        if (!messageQueue.IsQueueEmpty("opponentMoveQueue"))
+        {
+            mirroredMove = messageQueue.DequeueOpponentMoveQueue();
+        }
+        return mirroredMove;
     }
 
 }
