@@ -60,13 +60,13 @@ public class OverlapBox : MonoBehaviour
 
     private void OnMouseUp()
     {
-        //MoveWalls moveWalls = GetComponent<MoveWalls>();
-        //if (!EventSystem.current.IsPointerOverGameObject() || moveWalls.mouseHeldDownOnWall)
-        //{
-        //    Collider[] hits = MyCollisions();
+        MoveWalls moveWalls = GetComponent<MoveWalls>();
+        if (!EventSystem.current.IsPointerOverGameObject() || moveWalls.mouseHeldDownOnWall)
+        {
+            Collider[] hits = MyCollisions();
 
-        //    SendMessage("SnapWallToPlace", hits, SendMessageOptions.DontRequireReceiver);
-        //}
+            SendMessage("SnapWallToPlace", hits, SendMessageOptions.DontRequireReceiver);
+        }
 
     }
 }

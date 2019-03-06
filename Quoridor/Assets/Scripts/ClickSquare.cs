@@ -48,11 +48,8 @@ public class ClickSquare : MonoBehaviour
             //TODO
             //controller.IsValidMove...
             // transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
-            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
-            {
-                GameObject highlight = transform.GetChild(0).gameObject;
-                highlight.SetActive(true);
-            }
+            GameObject highlight = transform.GetChild(0).gameObject;
+            highlight.SetActive(true);
         }
     }
 

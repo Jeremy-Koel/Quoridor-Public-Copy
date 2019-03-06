@@ -20,10 +20,6 @@ public class CreateBoard : MonoBehaviour
 
     public GameObject wallColliderHorizontalPrefab;
 
-    public GameObject wallPlacementOutlineVerticalPrefab;
-
-    public GameObject wallPlacementOutlineHorizontalPrefab;
-
     public GameObject gameBoardWrapper;
 
     public GameObject wallColliderWrapper;
@@ -50,7 +46,7 @@ public class CreateBoard : MonoBehaviour
 
                 gameBoard[row, col] = piece;
 
-                piece.transform.position = new Vector3((col * 4.15f) + 7f, (row * -4.15f) + 29.75f, -0.2f);
+                piece.transform.position = new Vector3((col * 3.45f) + 11.25f, (row * -3.45f) + 27f, -0.2f);
 
                 piece.name = GetSpaceStringName(row, col);
 
@@ -76,24 +72,15 @@ public class CreateBoard : MonoBehaviour
     {
         if (piece.name[0] != 'i' && piece.name[1] != '9')
         {
-            Vector3 newVerticalPos = new Vector3(piece.transform.position.x + 2.09f, piece.transform.position.y + 4.1f, -0.6f);
-            Vector3 newHorizontalPos = new Vector3(piece.transform.position.x, piece.transform.position.y + 2.1f, -0.6f);
+            Vector3 newPos = new Vector3(piece.transform.position.x + 1.8f, piece.transform.position.y + 1.8f, -0.6f);
             GameObject wallCollHorizontal = Instantiate(wallColliderHorizontalPrefab) as GameObject;
             GameObject wallCollVertical = Instantiate(wallColliderVerticalPrefab) as GameObject;
-            GameObject wallOutlineHorizontal = Instantiate(wallPlacementOutlineHorizontalPrefab) as GameObject;
-            GameObject wallOutlineVertical = Instantiate(wallPlacementOutlineVerticalPrefab) as GameObject;
 
-            wallCollHorizontal.transform.position = newHorizontalPos;
+            wallCollHorizontal.transform.position = newPos;
             wallCollHorizontal.name = piece.name + "h";
-            wallOutlineHorizontal.transform.position = new Vector3(newHorizontalPos.x + 2f, newHorizontalPos.y, newHorizontalPos.z) ;
-            wallOutlineHorizontal.transform.SetParent(wallCollHorizontal.transform);
-            wallOutlineHorizontal.GetComponent<SpriteRenderer>().color = Color.clear;
 
-            wallCollVertical.transform.position = newVerticalPos;
+            wallCollVertical.transform.position = newPos;
             wallCollVertical.name = piece.name + "v";
-            wallOutlineVertical.transform.position = new Vector3(newVerticalPos.x, newVerticalPos.y - 2f, newVerticalPos.z);
-            wallOutlineVertical.transform.SetParent(wallCollVertical.transform);
-            wallOutlineVertical.GetComponent<SpriteRenderer>().color = Color.clear;
 
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
             wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);
@@ -126,7 +113,7 @@ public class CreateBoard : MonoBehaviour
 
         foreach (GameObject wall in p2walls)
         {
-           // wall.AddComponent<MoveWalls>();
+            wall.AddComponent<MoveWalls>();
             wall.AddComponent<MoveWallsProgramatically>();
         }
 
@@ -134,7 +121,7 @@ public class CreateBoard : MonoBehaviour
 
         foreach (GameObject wall in p1walls)
         {
-            wall.AddComponent<MoveWallsProgramatically>();
+            wall.AddComponent<MoveWalls>();
         }
     }
 
