@@ -8,20 +8,20 @@ public class WinnerScreen : MonoBehaviour
     // Start is called before the first frame update
     //private GameObject winPanel;
     private Text winText;
-    private Controller controller;
+    public InterfaceController interfaceController;
     private Text gameOverText;
     private SoundEffectController soundEffectController;
 
     void Start()
     {
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         winText = GameObject.Find("WinnerText").GetComponent<Text>();
         winText.text = getWhoWon();
         gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
         gameOverText.text = "Game Over!";
 
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
-        if (winText.text == "You Win!" || winText.text == controller.GetLocalPlayerName()+" Wins!")
+        if (winText.text == "You Win!" || winText.text == interfaceController.GetLocalPlayerName()+" Wins!")
         {
             Debug.Log("playing win sound");
             soundEffectController.PlayWinSound();
@@ -47,6 +47,6 @@ public class WinnerScreen : MonoBehaviour
 
     private string getWhoWon()
     {
-        return controller.WhoWon();
+        return interfaceController.WhoWon();
     }
 }

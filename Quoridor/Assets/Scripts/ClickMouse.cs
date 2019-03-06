@@ -10,7 +10,7 @@ public class ClickMouse : MonoBehaviour
     public bool mouseSelected;
     private bool cursorOnMouse;
     private SpriteOutline spriteOutline;
-    Controller controller;
+    public InterfaceController interfaceController;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +19,7 @@ public class ClickMouse : MonoBehaviour
         cursorOnMouse = false;
         spriteOutline = GetComponent<SpriteOutline>();
         spriteOutline.enabled = false;
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
     }
 
     //https://answers.unity.com/questions/587637/replacing-onmouseenterexitdownetc-with-raycasting.html
@@ -89,7 +89,7 @@ public class ClickMouse : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+            GameBoard.PlayerEnum player = interfaceController.GetWhoseTurn();
 
             if ((player == GameBoard.PlayerEnum.ONE && name == "playerMouse") || (player == GameBoard.PlayerEnum.TWO && name == "opponentMouse"))
             {

@@ -9,8 +9,8 @@ public class GameCoreController : MonoBehaviour
     private GameBoard gameBoard;
     private Dictionary<string, PlayerCoordinate> spaceCoordMap;
     private Dictionary<string, WallCoordinate> wallCoordMap;
-    private bool opponentTurn;
     private EventManager eventManager;
+    private InterfaceController interfaceController;
 
     private void Awake()
     {
@@ -18,30 +18,52 @@ public class GameCoreController : MonoBehaviour
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager.ListenToNewGame(ResetGameBoard);
+            eventManager.InvokeGameBoardReady();
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
+
+        if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        {
+            // Randomize player turn 
+            bool opponentTurn = new System.Random().NextDouble() >= .5;
+            if (opponentTurn)
+            {
+                interfaceController.SetPlayerOneText("Computer");
+                interfaceController.SetPlayerTwoText("Player");
+                gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
+                eventManager.InvokeLocalPlayerMoved();
+            }
+            else
+            {
+                interfaceController.SetPlayerOneText("Player");
+                interfaceController.SetPlayerTwoText("Computer");
+            }
+        }
+
     }
 
-    public void AddToSpaceMap(GameObject obj)
+    public void AddToSpaceMap(string name)
     {
-        spaceCoordMap.Add(obj.name, new PlayerCoordinate(obj.name));
+        spaceCoordMap.Add(name, new PlayerCoordinate(name));
     }
 
-    public void AddToWallMap(GameObject collider)
+    public void AddToWallMap(string name)
     {
-        wallCoordMap.Add(collider.name, new WallCoordinate(collider.name));
+        wallCoordMap.Add(name, new WallCoordinate(name));
     }
 
     public void ResetGameBoard()
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
-
+        
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager.InvokeGameBoardReady();
@@ -91,7 +113,6 @@ public class GameCoreController : MonoBehaviour
     {
         if (playerNumber == 1)
         {
-            opponentTurn = false;
             // Set player's turn in GameBoard
             gameBoard.SetPlayerTurnRandom();
             while (gameBoard.GetWhoseTurn() != 1)
@@ -101,13 +122,34 @@ public class GameCoreController : MonoBehaviour
         }
         else if (playerNumber == 2)
         {
-            opponentTurn = true;
             // Set player's turn in GameBoard
             gameBoard.SetPlayerTurnRandom();
             while (gameBoard.GetWhoseTurn() != 2)
             {
                 gameBoard.SetPlayerTurnRandom();
             }
+        }
+    }
+
+    public int GetPlayerOneWallCount()
+    {
+        return gameBoard.GetPlayerWallCount(GameBoard.PlayerEnum.ONE);
+    }
+
+    public int GetPlayerTwoWallCount()
+    {
+        return gameBoard.GetPlayerWallCount(GameBoard.PlayerEnum.TWO);
+    }
+
+    public GameBoard.PlayerEnum GetWhoseTurn()
+    {
+        if (gameBoard.GetWhoseTurn() == 1)
+        {
+            return GameBoard.PlayerEnum.ONE;
+        }
+        else
+        {
+            return GameBoard.PlayerEnum.TWO;
         }
     }
 }

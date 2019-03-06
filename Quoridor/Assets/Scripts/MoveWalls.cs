@@ -12,7 +12,7 @@ public class MoveWalls : MonoBehaviour
     private Vector3 screenPoint;
     private Vector3 offset;
     private Vector3 startPos;
-    private Controller controller;
+    public InterfaceController interfaceController;
     private string wallTag;
     private BoxCollider2D wallCollider;
     private bool lockPlace;
@@ -22,19 +22,19 @@ public class MoveWalls : MonoBehaviour
     void Start()
     {
         playerOne = GameObject.Find("playerMouse");
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         startPos = transform.position;
         wallTag = this.tag;
         wallCollider = GetComponent<BoxCollider2D>();
         lockPlace = false;
-        invalidPopup = controller.GetComponent<InvalidMovePopup>();
+        invalidPopup = interfaceController.GetComponent<InvalidMovePopup>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+        GameBoard.PlayerEnum player = interfaceController.GetWhoseTurn();
         if (player == GameBoard.PlayerEnum.ONE && wallTag == "PlayerOneWall" && !lockPlace) 
         {
             wallCollider.enabled = true;
@@ -170,13 +170,12 @@ public class MoveWalls : MonoBehaviour
             }
         }
 
-        GameBoard.PlayerEnum player = controller.GetWhoseTurn();
+        GameBoard.PlayerEnum player = interfaceController.GetWhoseTurn();
 
-        if (closest != null && controller.IsValidWallPlacement(player, closest.name))
+        if (closest != null && interfaceController.RecordLocalPlayerMove(closest.name))
         {
             transform.position = new Vector3(closest.transform.position.x, closest.transform.position.y, -.7f);
             lockPlace = true;
-            controller.MarkLocalPlayerMove();
         }
         else
         {

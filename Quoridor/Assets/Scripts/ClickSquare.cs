@@ -8,16 +8,10 @@ public class ClickSquare : MonoBehaviour
 {
     public GameObject playerMouse;
     public GameObject opponentMouse;
-
     private ClickMouse playerClickMouseScript;
     private ClickMouse opponentClickMouseScript;
-
-    private Controller controller;
-
     private InvalidMovePopup invalidPopup;
-
-    // script for playing sound effects 
-    private SoundEffectController soundEffectController;
+    private InterfaceController interfaceController;
 
     // Start is called before the first frame update
     void Start()
@@ -28,17 +22,9 @@ public class ClickSquare : MonoBehaviour
         playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
         opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
 
-        controller = gameObject.GetComponentInParent<Controller>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
 
-        invalidPopup = controller.GetComponent<InvalidMovePopup>();
-
-        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        invalidPopup = interfaceController.GetComponent<InvalidMovePopup>();        
     }
 
     private void OnMouseEnter()
@@ -72,14 +58,13 @@ public class ClickSquare : MonoBehaviour
                 MoveMouse moveMouseScript = playerMouse.GetComponent<MoveMouse>();
                 if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y) && !moveMouseScript.moveMouse)
                 {
-                    if (controller.IsValidMove(GameBoard.PlayerEnum.ONE, gameObject.name))
+                    if (interfaceController.RecordLocalPlayerMove(gameObject.name))
                     {
-                        
+                        //playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
                         moveMouseScript.target = new Vector3(transform.position.x, transform.position.y, -0.5f);
                         moveMouseScript.moveMouse = true;
-                        //playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                        controller.MarkLocalPlayerMove();
-                        soundEffectController.PlaySqueakSound();
+                        interfaceController.PlayMouseMoveSound();
+
                     }
                     else
                     {
@@ -87,22 +72,6 @@ public class ClickSquare : MonoBehaviour
                     }
                 }
             }
-
-            // This was commented out on 2/24 to prevent local player from being able to move opponent's mouse 
-            //if (opponentClickMouseScript.mouseSelected)
-            //{
-            //    if ((opponentMouse.transform.position.x != this.transform.position.x || opponentMouse.transform.position.y != this.transform.position.y))
-            //    {
-            //        if (controller.IsValidMove(GameBoard.PlayerEnum.TWO, gameObject.name))
-            //        {
-            //            opponentMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-            //        }
-            //         else
-            //        {
-            //            invalidPopup.isPoppedUp = true;
-            //        }
-            //    }
-            //}
         }
     }
 
