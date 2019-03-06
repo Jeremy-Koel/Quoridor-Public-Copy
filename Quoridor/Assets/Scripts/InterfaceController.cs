@@ -74,7 +74,7 @@ public class InterfaceController : MonoBehaviour
             moveWallScript.target = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
             moveWallScript.moveWall = true;
 
-            wall.GetComponent<MoveWalls>().SetLockPlace(true);
+            moveWallScript.SetIsOnBoard(true);
         }
     }
 
@@ -82,7 +82,7 @@ public class InterfaceController : MonoBehaviour
     {
         foreach (GameObject wall in GameObject.FindGameObjectsWithTag("PlayerTwoWall"))
         {
-            if (!wall.GetComponent<MoveWalls>().IsOnBoard())
+            if (!wall.GetComponent<MoveWallsProgramatically>().IsOnBoard())
             {
                 return wall;
             }
