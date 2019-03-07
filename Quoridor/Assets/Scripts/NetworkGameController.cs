@@ -85,19 +85,22 @@ public class NetworkGameController : MonoBehaviour
             if (moveString.Length == 2)
             {
                 moveString = GameCore.BoardUtil.MirrorMove(moveString);
-                if (gameCoreController.RecordOpponentMove(moveString))
-                {
-                    interfaceController.MoveOpponentPieceInGUI(moveString);
-                }
+                
+                //if (gameCoreController.RecordOpponentMove(moveString))
+                //{
+                //    interfaceController.MoveOpponentPieceInGUI(moveString);
+                //}
             }
             else if (moveString.Length == 3)
             {
                 moveString = GameCore.BoardUtil.MirrorWall(moveString);
-                if (gameCoreController.RecordOpponentMove(moveString))
-                {
-                    interfaceController.MoveOpponentWallInGUI(moveString);
-                }
+
+                //if (gameCoreController.RecordOpponentMove(moveString))
+                //{
+                //    interfaceController.MoveOpponentWallInGUI(moveString);
+                //}
             }
+            gameCoreController.RecordOpponentMove(moveString);
         }
     }
 

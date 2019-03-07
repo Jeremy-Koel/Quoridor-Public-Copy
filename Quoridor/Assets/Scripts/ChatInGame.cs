@@ -9,12 +9,12 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class ChatWindowPanel : MonoBehaviour
+public class ChatInGame : MonoBehaviour
 {
     private GSEnumerable<GetMyTeamsResponse._Team> teams = null;
 
     GameObject chatInput;
-    private GameObject chatMessagesView;
+    GameObject chatMessagesView;
     public RectTransform chatMessagesViewContent;
     public VerticalLayoutGroup chatMessagesLayoutGroup;
     public List<GameObject> chatMessages;
@@ -27,11 +27,9 @@ public class ChatWindowPanel : MonoBehaviour
         chatMessagesView = GameObject.Find("ChatMessagesView");
         chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
         chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
-        TeamChatMessage.Listener += ChatMessageReceived;
+        //TeamChatMessage.Listener += ChatMessageReceived;
         Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
     }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -45,62 +43,6 @@ public class ChatWindowPanel : MonoBehaviour
 
     }
 
-    void JoinGlobalTeam()
-    {
-        bool teamMatch = false;
-        foreach (var team in teams)
-        {
-            if (team.TeamId == "0")
-            {
-                teamMatch = true;
-            }
-        }
-        // If I am not part of GlobalTeam
-        if (!teamMatch)
-        {
-            // join GlobalTeam
-            Debug.Log("Joining Global Team");
-            JoinTeamRequest joinTeamRequest = new JoinTeamRequest();
-            joinTeamRequest.SetTeamId("0");
-            joinTeamRequest.SetTeamType("GlobalTeam");
-            joinTeamRequest.Send(JoinedGlobalTeam);
-        }
-        else
-        {
-            Debug.Log("Already part of team");
-        }
-    }
-
-    public void CheckTeams()
-    {
-        Debug.Log("Checking Teams");
-        List<string> teamTypes = new List<string>();
-        teamTypes.Add("GlobalTeam");
-        // Check my teams
-        GetMyTeamsRequest teamsRequest = new GetMyTeamsRequest();
-        teamsRequest.SetOwnedOnly(false);
-        teamsRequest.SetTeamTypes(teamTypes);
-        teamsRequest.Send(CheckedTeams);
-    }
-
-    void CheckedTeams(GetMyTeamsResponse response)
-    {
-        teams = response.Teams;
-        Debug.Log(teams);
-        JoinGlobalTeam();
-    }
-
-    void JoinedGlobalTeam(JoinTeamResponse response)
-    {
-        if (response.HasErrors)
-        {
-            Debug.Log("Did not join Global Team");
-        }
-        else
-        {
-            Debug.Log("Joined Global Team");
-        }
-    }
 
     public void OnChatInputSend()
     {
@@ -136,7 +78,6 @@ public class ChatWindowPanel : MonoBehaviour
         string messageMessage = message.Message.ToString();
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
-        
 
         GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
 
@@ -151,7 +92,7 @@ public class ChatWindowPanel : MonoBehaviour
         {
             playerText.text = ("<b>" + messageWho + ":</b>");
         }
-        
+
         //playerText.text = ("<b>" + messageWho + ":</b>");
         messageText.text = (messageMessage);
 
@@ -160,7 +101,7 @@ public class ChatWindowPanel : MonoBehaviour
         messageTextObject.transform.localScale = new Vector3(1, 1, 1);
 
         chatMessages.Add(messageTextObject);
-        
+
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
         AddSpacingMessage();
@@ -183,7 +124,7 @@ public class ChatWindowPanel : MonoBehaviour
 
         chatMessages.Add(messageTextObject);
     }
-    
+
 
     private void ChatMessagesFull()
     {

@@ -20,6 +20,8 @@ public class InterfaceController : MonoBehaviour
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
@@ -38,15 +40,21 @@ public class InterfaceController : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
-        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
         // Grab other controllers 
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         networkGameController = GameObject.Find("GameController").GetComponent<NetworkGameController>();
     }
-    
+
+    private void Update()
+    {
+        if (IsGameOver() && !menuPanel.activeSelf)
+        {
+            winPanel.SetActive(true);
+        }
+    }
+
     public void MoveOpponentPieceInGUI(string guiSpaceName)
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
@@ -126,18 +134,19 @@ public class InterfaceController : MonoBehaviour
 
     public bool RecordLocalPlayerMove(string move)
     {
-        if (gameCoreController.RecordLocalPlayerMove(move))
+        bool movedSuccessfully = gameCoreController.RecordLocalPlayerMove(move);
+        if (movedSuccessfully)
         {
             if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
             {
                 eventManager.InvokeLocalPlayerMoved();
             }
-            return true;
+            else
+            {
+                challengeManagerScript.Move(move);
+            }
         }
-        else
-        {
-            return false;
-        }
+        return movedSuccessfully;
     }
 
     public string GetPlayerNameForTurn()
@@ -215,6 +224,11 @@ public class InterfaceController : MonoBehaviour
                 return "AI Wins!";
             }
         }
+    }
+
+    public bool IsGameOver()
+    {
+        return gameCoreController.IsGameOver();
     }
 
 }

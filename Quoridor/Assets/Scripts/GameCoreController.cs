@@ -15,25 +15,21 @@ public class GameCoreController : MonoBehaviour
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
+        wallCoordMap = new Dictionary<string, WallCoordinate>();
+
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager.ListenToNewGame(ResetGameBoard);
             eventManager.InvokeGameBoardReady();
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
-        gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
-        spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
-        wallCoordMap = new Dictionary<string, WallCoordinate>();
-
-        if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        else
         {
             // Randomize player turn 
-            bool opponentTurn = new System.Random().NextDouble() >= .5;
+            //bool opponentTurn = new System.Random().NextDouble() >= .5;
+            bool opponentTurn = false;
             if (opponentTurn)
             {
                 interfaceController.SetPlayerOneText("Computer");
@@ -47,6 +43,11 @@ public class GameCoreController : MonoBehaviour
                 interfaceController.SetPlayerTwoText("Computer");
             }
         }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
 
     }
 
@@ -87,20 +88,39 @@ public class GameCoreController : MonoBehaviour
 
     public bool RecordOpponentMove(string moveString)
     {
-        return RecordMove(GameBoard.PlayerEnum.TWO, moveString);
+        if (RecordMove(GameBoard.PlayerEnum.TWO, moveString))
+        {
+            if (moveString.Length == 2)
+            {
+                interfaceController.MoveOpponentPieceInGUI(moveString);
+            }
+            else
+            {
+                interfaceController.MoveOpponentWallInGUI(moveString);
+            }
+            return true;
+        }
+        return false;
     }
 
     private bool RecordMove(GameBoard.PlayerEnum player, string moveString)
     {
+        bool returnValue = false;
         if (moveString.Length == 2)
         {
-            return gameBoard.MovePiece(player, new PlayerCoordinate(moveString));
+            returnValue = gameBoard.MovePiece(player, new PlayerCoordinate(moveString));
         }
         else if (moveString.Length == 3)
         {
-            return gameBoard.PlaceWall(player, new WallCoordinate(moveString));
+            returnValue = gameBoard.PlaceWall(player, new WallCoordinate(moveString));
         }
-        return false;
+
+        if (returnValue && GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        {
+            eventManager.InvokeTurnTaken();
+        }
+
+        return returnValue;
     }
 
     public Task<string> GetMoveFromAI()
