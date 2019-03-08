@@ -8,8 +8,9 @@ public class WallPlacement : MonoBehaviour
 {
 
     private GameObject wallHighlight;
-    private Controller controller;
+    private InterfaceController interfaceController;
     private bool wallPlacedHere =false;
+    private EventManager eventManager;
     private InvalidMovePopup invalidPopup;
 
     //private GameObject horizontalWallHighlight;
@@ -18,8 +19,9 @@ public class WallPlacement : MonoBehaviour
     void Start()
     {
         wallHighlight = this.transform.GetChild(0).gameObject;
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
-        invalidPopup = controller.GetComponent<InvalidMovePopup>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        invalidPopup = interfaceController.GetComponent<InvalidMovePopup>();
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
     }
 
     // Update is called once per frame
@@ -40,7 +42,7 @@ public class WallPlacement : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             //Debug.Log("Entered Collider");
-            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
             {
                 wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
             }
@@ -51,7 +53,7 @@ public class WallPlacement : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
             {
                 wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
             }
@@ -67,7 +69,7 @@ public class WallPlacement : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (controller.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
             {
                 TryToPlaceAWall();
             }
@@ -91,7 +93,7 @@ public class WallPlacement : MonoBehaviour
     {
         //GameBoard.PlayerEnum player = controller.GetWhoseTurn();
 
-        if (controller.IsValidWallPlacement(GameBoard.PlayerEnum.ONE, name))
+        if (interfaceController.RecordLocalPlayerMove(name))
         {
             GameObject wall = GetUnusedWall();
             MoveWallsProgramatically moveWallsProgramatically = wall.GetComponent<MoveWallsProgramatically>();
@@ -99,7 +101,7 @@ public class WallPlacement : MonoBehaviour
             moveWallsProgramatically.SetTarget(this.transform.position, this.transform.localScale);
             moveWallsProgramatically.moveWall = true;
             moveWallsProgramatically.SetIsOnBoard(true);
-            controller.MarkLocalPlayerMove();
+            eventManager.InvokeLocalPlayerMoved();
             wallPlacedHere = true;
         }
         else
