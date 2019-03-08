@@ -9,69 +9,65 @@ public class GameCoreController : MonoBehaviour
     private GameBoard gameBoard;
     private Dictionary<string, PlayerCoordinate> spaceCoordMap;
     private Dictionary<string, WallCoordinate> wallCoordMap;
-    private bool opponentTurn;
+    private EventManager eventManager;
+    private InterfaceController interfaceController;
+
+    private void Awake()
+    {
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
+        wallCoordMap = new Dictionary<string, WallCoordinate>();
+
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            eventManager.ListenToNewGame(ResetGameBoard);
+            eventManager.InvokeGameBoardReady();
+        }
+        else
+        {
+            // Randomize player turn 
+            //bool opponentTurn = new System.Random().NextDouble() >= .5;
+            bool opponentTurn = false;
+            if (opponentTurn)
+            {
+                interfaceController.SetPlayerOneText("Computer");
+                interfaceController.SetPlayerTwoText("Player");
+                gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
+                eventManager.InvokeLocalPlayerMoved();
+            }
+            else
+            {
+                interfaceController.SetPlayerOneText("Player");
+                interfaceController.SetPlayerTwoText("Computer");
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
-        wallCoordMap = new Dictionary<string, WallCoordinate>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddToSpaceMap(string name)
     {
-        
+        spaceCoordMap.Add(name, new PlayerCoordinate(name));
     }
 
-    public void AddToSpaceMap(GameObject obj)
+    public void AddToWallMap(string name)
     {
-        spaceCoordMap.Add(obj.name, new PlayerCoordinate(obj.name));
-    }
-
-    public void AddToWallMap(GameObject collider)
-    {
-        wallCoordMap.Add(collider.name, new WallCoordinate(collider.name));
+        wallCoordMap.Add(name, new WallCoordinate(name));
     }
 
     public void ResetGameBoard()
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
-    }
-
-    public void SetPlayerTurn(int n)
-    {
-        if (n == 1)
+        
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            opponentTurn = false;
-            // Set player's turn in GameBoard
-            gameBoard.SetPlayerTurnRandom();
-            while (gameBoard.GetWhoseTurn() != 1)
-            {
-                gameBoard.SetPlayerTurnRandom();
-            }
-        }
-        else if (n == 2)
-        {
-            opponentTurn = true;
-            // Set player's turn in GameBoard
-            gameBoard.SetPlayerTurnRandom();
-            while (gameBoard.GetWhoseTurn() != 2)
-            {
-                gameBoard.SetPlayerTurnRandom();
-            }
-        }
-    }
-
-    public GameBoard.PlayerEnum GetWhoseTurn()
-    {
-        if (gameBoard.GetWhoseTurn() == 1)
-        {
-            return GameBoard.PlayerEnum.ONE;
-        }
-        else
-        {
-            return GameBoard.PlayerEnum.TWO;
+            eventManager.InvokeGameBoardReady();
         }
     }
 
@@ -92,25 +88,88 @@ public class GameCoreController : MonoBehaviour
 
     public bool RecordOpponentMove(string moveString)
     {
-        return RecordMove(GameBoard.PlayerEnum.TWO, moveString);
+        if (RecordMove(GameBoard.PlayerEnum.TWO, moveString))
+        {
+            if (moveString.Length == 2)
+            {
+                interfaceController.MoveOpponentPieceInGUI(moveString);
+            }
+            else
+            {
+                interfaceController.MoveOpponentWallInGUI(moveString);
+            }
+            return true;
+        }
+        return false;
     }
 
     private bool RecordMove(GameBoard.PlayerEnum player, string moveString)
     {
+        bool returnValue = false;
         if (moveString.Length == 2)
         {
-            return gameBoard.MovePiece(player, new PlayerCoordinate(moveString));
+            returnValue = gameBoard.MovePiece(player, new PlayerCoordinate(moveString));
         }
         else if (moveString.Length == 3)
         {
-            return gameBoard.PlaceWall(player, new WallCoordinate(moveString));
+            returnValue = gameBoard.PlaceWall(player, new WallCoordinate(moveString));
         }
-        return false;
+
+        if (returnValue && GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        {
+            eventManager.InvokeTurnTaken();
+        }
+
+        return returnValue;
     }
 
     public Task<string> GetMoveFromAI()
     {
         MonteCarlo tree = new MonteCarlo(gameBoard);
         return Task.Run(() => tree.MonteCarloTreeSearch());
+    }
+
+    public void SetupMultiplayerGame(int playerNumber)
+    {
+        if (playerNumber == 1)
+        {
+            // Set player's turn in GameBoard
+            gameBoard.SetPlayerTurnRandom();
+            while (gameBoard.GetWhoseTurn() != 1)
+            {
+                gameBoard.SetPlayerTurnRandom();
+            }
+        }
+        else if (playerNumber == 2)
+        {
+            // Set player's turn in GameBoard
+            gameBoard.SetPlayerTurnRandom();
+            while (gameBoard.GetWhoseTurn() != 2)
+            {
+                gameBoard.SetPlayerTurnRandom();
+            }
+        }
+    }
+
+    public int GetPlayerOneWallCount()
+    {
+        return gameBoard.GetPlayerWallCount(GameBoard.PlayerEnum.ONE);
+    }
+
+    public int GetPlayerTwoWallCount()
+    {
+        return gameBoard.GetPlayerWallCount(GameBoard.PlayerEnum.TWO);
+    }
+
+    public GameBoard.PlayerEnum GetWhoseTurn()
+    {
+        if (gameBoard.GetWhoseTurn() == 1)
+        {
+            return GameBoard.PlayerEnum.ONE;
+        }
+        else
+        {
+            return GameBoard.PlayerEnum.TWO;
+        }
     }
 }

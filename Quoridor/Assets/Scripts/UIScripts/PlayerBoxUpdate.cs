@@ -12,7 +12,7 @@ public class PlayerBoxUpdate : MonoBehaviour
     private Text playerTwoTurn;
     private Text playerOneWallCount;
     private Text playerTwoWallCount;
-    private Controller controller;
+    public InterfaceController interfaceController;
     private EventManager eventManager;
 
     // Start is called before the first frame update
@@ -28,7 +28,7 @@ public class PlayerBoxUpdate : MonoBehaviour
         playerOneWallCount.text = "10";
         playerTwoWallCount = GameObject.Find("PlayerTwoWallsLeft").GetComponent<Text>();
         playerTwoWallCount.text = "10";
-        controller = controller = GameObject.Find("GameController").GetComponent<Controller>();
+        interfaceController = interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
@@ -80,8 +80,8 @@ public class PlayerBoxUpdate : MonoBehaviour
             OTHERPLAYERTEXT : YOURTURNTEXT;
         playerTwoTurn.text = playerTwoTurn.text == YOURTURNTEXT ?
             OTHERPLAYERTEXT : YOURTURNTEXT;
-        playerOneWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.ONE).ToString();
-        playerTwoWallCount.text = controller.GetPlayerWallCount(GameBoard.PlayerEnum.TWO).ToString();
+        playerOneWallCount.text = interfaceController.GetPlayerOneWallCount().ToString();
+        playerTwoWallCount.text = interfaceController.GetPlayerTwoWallCount().ToString();
     }
 
 }

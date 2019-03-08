@@ -20,17 +20,16 @@ public class InterfaceController : MonoBehaviour
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
-        {
-            //messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-            //GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
-            //challengeManagerScript = challengeManagerObject.GetComponent<ChallengeManager>();
+        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
-            //eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
-            //eventManager.ListenToMoveReceived(MakeOpponentMove);
-            //eventManager.ListenToNewGame(RestartGame);
-            //eventManager.InvokeGameBoardReady();
+        if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        {
+            eventManager.ListenToLocalPlayerMoved(GenerateMoveForAI);
+        }
+        else if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            //eventManager.ListenToLocalPlayerMoved();
         }
     }
 
@@ -41,18 +40,22 @@ public class InterfaceController : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
-        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
+
+        // Grab other controllers 
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
+        networkGameController = GameObject.Find("GameController").GetComponent<NetworkGameController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (IsGameOver() && !menuPanel.activeSelf)
+        {
+            winPanel.SetActive(true);
+        }
     }
 
-    private void MoveOpponentPieceInGUI(string guiSpaceName)
+    public void MoveOpponentPieceInGUI(string guiSpaceName)
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
         GameObject targetSquare = GameObject.Find(guiSpaceName);
@@ -63,7 +66,7 @@ public class InterfaceController : MonoBehaviour
         soundEffectController.PlaySqueakSound();
     }
 
-    private void MoveOpponentWallInGUI(string colliderName)
+    public void MoveOpponentWallInGUI(string colliderName)
     {
         GameObject wall = GetUnusedOpponentWall();
         Collider collider = GetCollider(colliderName);
@@ -97,48 +100,135 @@ public class InterfaceController : MonoBehaviour
         return collider;
     }
 
-    //public void SetupMultiplayerGame()
-    //{
-    //    PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
+    public void SetPlayerOneText(string str)
+    {
+        if (playerOneText != null)
+        {
+            playerOneText.text = str;
+        }
+    }
 
-    //    // set player in gameboard 
-    //    gameCoreController.SetPlayerTurn(playerInfo.PlayerNumber);
-        
-    //    // set gui text 
-    //    playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-    //    playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
-    //    if (playerOneText != null)
-    //    {
-    //        playerOneText.text = networkGameController.GetPlayerOneDisplayName();
-    //    }
-    //    if (playerTwoText != null)
-    //    {
-    //        playerTwoText.text = networkGameController.GetPlayerTwoDisplayName();
-    //    }
-    //}
+    public void SetPlayerTwoText(string str)
+    {
+        if (playerTwoText != null)
+        { 
+            playerTwoText.text = str;
+        }
+    }
 
-    //private PlayerInfo GetPlayerInfo(int playerNumber = 0)
-    //{
-    //    PlayerInfo playerInfo = new PlayerInfo();
-    //    if (challengeManagerScript)
-    //    {
-    //        playerInfo = challengeManagerScript.GetPlayerInfo(playerNumber);
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("challengeManager not active (not a multiplayer game)");
-    //    }
-    //    return playerInfo;
-    //}
+    private async void GenerateMoveForAI()
+    {
+        string str = await gameCoreController.GetMoveFromAI();
+        gameCoreController.RecordOpponentMove(str);
+    }
 
-    //public void RestartGame()
-    //{
-    //    gameCoreController.ResetGameBoard();
+    public void PlayMouseMoveSound()
+    {
+        soundEffectController.PlaySqueakSound();
+    }
 
-    //    if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
-    //    {
-    //        eventManager.InvokeGameBoardReady();
-    //    }
-    //}
+    public void PlayErrorSound()
+    {
+        soundEffectController.PlayErrorSound();
+    }
+
+    public bool RecordLocalPlayerMove(string move)
+    {
+        bool movedSuccessfully = gameCoreController.RecordLocalPlayerMove(move);
+        if (movedSuccessfully)
+        {
+            if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+            {
+                eventManager.InvokeLocalPlayerMoved();
+            }
+            else
+            {
+                challengeManagerScript.Move(move);
+            }
+        }
+        return movedSuccessfully;
+    }
+
+    public string GetPlayerNameForTurn()
+    {
+        string playerDisplayName = "";
+        playerDisplayName = challengeManagerScript.PlayerNameForTurn;
+        return playerDisplayName;
+    }
+
+    public string GetLocalPlayerName()
+    {
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            return challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public int GetPlayerOneWallCount()
+    {
+        return gameCoreController.GetPlayerOneWallCount();
+    }
+
+    public int GetPlayerTwoWallCount()
+    {
+        return gameCoreController.GetPlayerOneWallCount();
+    }
+
+    public void AddToSpaceMap(GameObject obj)
+    {
+        gameCoreController.AddToSpaceMap(obj.name);
+    }
+
+    public void AddToWallMap(GameObject collider)
+    {
+        gameCoreController.AddToWallMap(collider.name);
+    }
+
+    public GameCore.GameBoard.PlayerEnum GetWhoseTurn()
+    {
+        return gameCoreController.GetWhoseTurn();
+    }
+
+    public string WhoWon()
+    {
+        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            if (!gameCoreController.DidPlayerOneWin()) 
+            {
+                if (challengeManagerScript.CurrentPlayerInfo.PlayerID == challengeManagerScript.SecondPlayerInfo.PlayerID)
+                {
+                    return challengeManagerScript.FirstPlayerInfo.PlayerDisplayName + " Wins!";
+                }
+                else
+                {
+                    return challengeManagerScript.SecondPlayerInfo.PlayerDisplayName + " Wins!";
+                }
+            }
+            else
+            {
+                return challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName + " Wins!";
+            }
+        }
+        else
+        {
+            if (gameCoreController.DidPlayerOneWin())
+            {
+                return "You Win!";
+            }
+            else
+            {
+                return "AI Wins!";
+            }
+        }
+    }
+
+    public bool IsGameOver()
+    {
+        return gameCoreController.IsGameOver();
+    }
 
 }

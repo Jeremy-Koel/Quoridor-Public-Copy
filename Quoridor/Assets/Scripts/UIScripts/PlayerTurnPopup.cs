@@ -7,7 +7,7 @@ public class PlayerTurnPopup : MonoBehaviour
 {
 
     public EventManager eventManager;
-    public Controller controller; 
+    public InterfaceController interfaceController;
 
     private float popupTime = 2f;
 
@@ -27,7 +27,7 @@ public class PlayerTurnPopup : MonoBehaviour
         playerTurnPopup = GameObject.Find("PlayerTurnBox");
         playerTurnPopupText = GameObject.Find("PlayerTurnBoxText");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         turnText = playerTurnPopupText.GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
@@ -79,7 +79,7 @@ public class PlayerTurnPopup : MonoBehaviour
         // Get info from ChallengeManager/Controller
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
-            turnText.text = controller.GetPlayerNameForTurn() + "'s Turn!";
+            turnText.text = interfaceController.GetPlayerNameForTurn() + "'s Turn!";
         }
         else
         {

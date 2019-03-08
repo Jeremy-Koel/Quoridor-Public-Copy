@@ -20,7 +20,7 @@ public class EventManager : MonoBehaviour
 
     private UnityEvent GameBoardReady = new UnityEvent();
 
-    private UnityEvent MoveSent = new UnityEvent();
+    private UnityEvent LocalPlayerMoved = new UnityEvent();
     private UnityEvent MoveReceived = new UnityEvent();
     private UnityEvent GameOver = new UnityEvent();
     private UnityEvent NewGame = new UnityEvent();
@@ -56,7 +56,7 @@ public class EventManager : MonoBehaviour
         ChallengeWon.RemoveAllListeners();
         ChallengeLost.RemoveAllListeners();
         GameBoardReady.RemoveAllListeners();
-        MoveSent.RemoveAllListeners();
+        LocalPlayerMoved.RemoveAllListeners();
         MoveReceived.RemoveAllListeners();
         GameOver.RemoveAllListeners();
         TurnTaken.RemoveAllListeners();
@@ -73,7 +73,7 @@ public class EventManager : MonoBehaviour
 
         GameBoardReady = new UnityEvent();
 
-        MoveSent = new UnityEvent();
+        LocalPlayerMoved = new UnityEvent();
         MoveReceived = new UnityEvent();
         GameOver = new UnityEvent();
         NewGame = new UnityEvent();
@@ -166,16 +166,16 @@ public class EventManager : MonoBehaviour
         GameBoardReady.Invoke();
     }
 
-    public void ListenToMoveSent(UnityAction action)
+    public void ListenToLocalPlayerMoved(UnityAction action)
     {
         Debug.Log("Move Sent Listener Added");
-        MoveSent.AddListener(action);
+        LocalPlayerMoved.AddListener(action);
     }
 
-    public void InvokeMoveSent()
+    public void InvokeLocalPlayerMoved()
     {
         Debug.Log("Move Sent Invoked");
-        MoveSent.Invoke();
+        LocalPlayerMoved.Invoke();
     }
 
     public void ListenToMoveReceived(UnityAction action)

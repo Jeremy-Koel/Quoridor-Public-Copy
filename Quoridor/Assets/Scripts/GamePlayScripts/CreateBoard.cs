@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CreateBoard : MonoBehaviour
 {
-    private Controller controller;
+    public InterfaceController interfaceController;
 
     public GameObject[,] gameBoard = new GameObject[9, 9];
     public GameObject squarePrefab;
@@ -31,7 +31,7 @@ public class CreateBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controller = GameObject.Find("GameController").GetComponent<Controller>();
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         generateCubes();
         generatePlayer();
         addScriptToWalls();
@@ -58,7 +58,7 @@ public class CreateBoard : MonoBehaviour
 
                 piece.transform.SetParent(gameBoardWrapper.transform);
 
-                controller.AddToSpaceMap(piece);
+                interfaceController.AddToSpaceMap(piece);
 
                 GameObject highlightPiece = Instantiate(highlightSquarePrefab) as GameObject;
 
@@ -98,8 +98,8 @@ public class CreateBoard : MonoBehaviour
             wallCollVertical.transform.SetParent(wallColliderWrapper.transform);
             wallCollHorizontal.transform.SetParent(wallColliderWrapper.transform);
 
-            controller.AddToWallMap(wallCollHorizontal);
-            controller.AddToWallMap(wallCollVertical);
+            interfaceController.AddToWallMap(wallCollHorizontal);
+            interfaceController.AddToWallMap(wallCollVertical);
         }
     }
 
