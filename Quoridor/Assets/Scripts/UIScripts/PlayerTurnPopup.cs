@@ -74,8 +74,8 @@ public class PlayerTurnPopup : MonoBehaviour
     {
         isPoppedUp = true;
         playerTurnPopup.SetActive(true);
-            
-            
+
+
         // Get info from ChallengeManager/Controller
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
@@ -86,7 +86,7 @@ public class PlayerTurnPopup : MonoBehaviour
             turnText.text = turnText.text == YOURTURNTEXT ?
                 OTHERPLAYERTEXT : YOURTURNTEXT;
         }
-            
+
         Debug.Log("turnText value: " + turnText.text);
         StartCoroutine(PopUp());
     }

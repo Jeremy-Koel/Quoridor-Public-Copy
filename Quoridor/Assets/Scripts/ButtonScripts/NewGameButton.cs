@@ -58,7 +58,7 @@ public class NewGameButton : MonoBehaviour
             EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
             eventManager.InvokePlayAgain();
 
-            onMatchMakingButtonClick();
+            StartCoroutine(onMatchMakingButtonClick());
         }
         else
         {
@@ -66,30 +66,31 @@ public class NewGameButton : MonoBehaviour
         }
     }
 
-    public void onMatchMakingButtonClick()
+    public IEnumerator onMatchMakingButtonClick()
     {
         BlockInput();
         Debug.Log("Making/sending matchmaking request");
+
+        string matchGroupNumber = "";
+        yield return GetMatchmakingGroupNumber(matchGroupNumber);
+
         MatchmakingRequest request = new MatchmakingRequest();
         request.SetMatchShortCode("DefaultMatch");
         request.SetSkill(0);
-        //string matchGroupNumber = GetMatchmakingGroupNumber();
-        //request.SetMatchGroup(matchGroupNumber);
+        request.SetMatchGroup(matchGroupNumber);
         request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+        
     }
 
-    private string GetMatchmakingGroupNumber()
+    private IEnumerator GetMatchmakingGroupNumber(string matchmakingGroupNumber)
     {
         MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-        while (messageQueue.IsQueueEmpty("matchmakingGroupNumberQueue"))
-        {
-
-        }
+        yield return messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER);
         ScriptMessage message = messageQueue.DequeueMatchmakingGroupNumber();
         IDictionary<string, object> messageData = message.Data.BaseData;
         Debug.Log("Matchmaking Group Number: " + messageData["matchGroupNumber"].ToString());
         var matchGroupNumber = messageData["matchGroupNumber"];
-        return matchGroupNumber.ToString();
+        matchmakingGroupNumber = matchGroupNumber.ToString();
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)

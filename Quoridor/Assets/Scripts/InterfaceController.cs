@@ -19,6 +19,7 @@ public class InterfaceController : MonoBehaviour
 
     private void Awake()
     {
+        challengeManagerScript = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
         playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();

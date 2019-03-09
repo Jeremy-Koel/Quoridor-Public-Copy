@@ -9,6 +9,8 @@ public class MessageQueue : MonoBehaviour
     public Queue<ScriptMessage> matchmakingGroupNumberQueue = new Queue<ScriptMessage>();
     public Queue<ScriptMessage> challengeMoveQueue = new Queue<ScriptMessage>();
     public Queue<string> opponentMoveQueue = new Queue<string>();
+
+    public enum QueueNameEnum { STARTINGPLAYER, MATCHMAKINGGROUPNUMBER, CHALLENGEMOVE,  OPPONENTMOVE}
     
     private void Awake()
     {
@@ -57,6 +59,15 @@ public class MessageQueue : MonoBehaviour
         return opponentMoveQueue.Dequeue();
     }
 
+    IEnumerator CheckIfQueueIsEmpty(string queueName)
+    {
+        while (this.IsQueueEmpty(queueName))
+        {
+            Debug.Log(queueName + "is empty");
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     public bool IsQueueEmpty(string queueName)
     {
         bool empty = true;
@@ -87,6 +98,35 @@ public class MessageQueue : MonoBehaviour
             {
                 empty = false;
             }
+        }
+        return empty;
+    }
+
+    public IEnumerator WaitForQueueNotEmptyEnum(QueueNameEnum queueName)
+    {
+        while (this.IsQueueEmptyEnum(queueName))
+        {
+            Debug.Log("Queue is empty");
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public bool IsQueueEmptyEnum(QueueNameEnum queueName)
+    {
+        bool empty = true;
+        switch (queueName) {
+            case QueueNameEnum.STARTINGPLAYER:
+                empty = startingPlayerSetQueue.Count.Equals(0);
+                break;
+            case QueueNameEnum.OPPONENTMOVE:
+                empty = opponentMoveQueue.Count.Equals(0);
+                break;
+            case QueueNameEnum.CHALLENGEMOVE:
+                empty = challengeMoveQueue.Count.Equals(0);
+                break;
+            case QueueNameEnum.MATCHMAKINGGROUPNUMBER:
+                empty = matchmakingGroupNumberQueue.Count.Equals(0);
+                break;
         }
         return empty;
     }

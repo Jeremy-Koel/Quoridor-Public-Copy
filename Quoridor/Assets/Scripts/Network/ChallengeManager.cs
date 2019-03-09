@@ -143,10 +143,7 @@ public class ChallengeManager : MonoBehaviour
     void OnMoveReceived()
     {
         Debug.Log("Challenge Move Received");
-        while (messageQueue.IsQueueEmpty("ChallengeMove"))
-        {
-
-        }
+        messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.CHALLENGEMOVE);
         ScriptMessage message = messageQueue.DequeueChallengeMove();
         IDictionary<string, object> messageData = message.Data.BaseData;
 
@@ -189,18 +186,21 @@ public class ChallengeManager : MonoBehaviour
 
     public void SetupPlayerInfo()
     {
-        Debug.Log("Challenge Starting Player");
-        while (messageQueue.IsQueueEmpty("startingPlayerSetQueue"))
-        {
+        StartCoroutine(SetupPlayers());
+    }
 
-        }
+    public IEnumerator SetupPlayers()
+    {
+        Debug.Log("Challenge Starting Player");
+
+        yield return messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER);
+ 
         ScriptMessage message = messageQueue.DequeueStartingPlayerSetQueue();
         IDictionary<string, object> messageData = message.Data.BaseData;
         Debug.Log("Starting Player ID: " + messageData["startingPlayer"].ToString());
         string startingPlayerID = messageData["startingPlayer"].ToString();
         string gameSparksUserID = gameSparksUserIDScript.myUserID;
 
-        
         FirstPlayerInfo.PlayerID = startingPlayerID;
         Debug.Log("Starting Player Name: " + messageData["startingPlayerName"].ToString());
         FirstPlayerInfo.PlayerDisplayName = messageData["startingPlayerName"].ToString();
@@ -208,7 +208,7 @@ public class ChallengeManager : MonoBehaviour
         FirstPlayerInfo.PlayerEnum = GameCore.GameBoard.PlayerEnum.ONE;
 
         Debug.Log(FirstPlayerInfo.ToString());
-        
+
         Debug.Log("Second Player ID: " + messageData["secondPlayer"].ToString());
         SecondPlayerInfo.PlayerID = messageData["secondPlayer"].ToString();
         Debug.Log("Second Player Name: " + messageData["secondPlayerName"].ToString());
@@ -269,11 +269,14 @@ public class ChallengeManager : MonoBehaviour
 
     public void PlayAgain()
     {
-        Debug.Log("Sending playAgain event to GS");
-        LogChallengeEventRequest request = new LogChallengeEventRequest();
-        request.SetChallengeInstanceId(ChallengeID);
-        request.SetEventKey("PlayAgain");        
-        request.Send(OnPlayAgainSuccess, OnPlayAgainError);
+        if (messageQueue.IsQueueEmptyEnum(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
+        {
+            Debug.Log("Sending playAgain event to GS");
+            LogChallengeEventRequest request = new LogChallengeEventRequest();
+            request.SetChallengeInstanceId(ChallengeID);
+            request.SetEventKey("PlayAgain");
+            request.Send(OnPlayAgainSuccess, OnPlayAgainError);
+        }
     }
 
     private void OnPlayAgainSuccess(LogChallengeEventResponse response)
