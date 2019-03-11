@@ -131,8 +131,6 @@ public class GameCoreController : MonoBehaviour
 
     public void SetupMultiplayerGame(int playerNumber)
     {
-        //Temp patch
-        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         if (playerNumber == 1)
         {
             // Set player's turn in GameBoard

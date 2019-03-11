@@ -16,9 +16,6 @@ public class NetworkGameController : MonoBehaviour
     {
         Debug.Log("Awake network controller");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
-        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
-        gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
@@ -28,13 +25,15 @@ public class NetworkGameController : MonoBehaviour
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
             eventManager.ListenToMoveReceived(MakeNetworkOpponentMove);
             eventManager.InvokeGameBoardReady();
-        }        
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
     }
 
     public string GetPlayerOneDisplayName()
@@ -51,7 +50,7 @@ public class NetworkGameController : MonoBehaviour
     {
         Debug.Log("Setting up multiplayer game in network controller");
         PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
-        
+
         // Set appropriate turn in game core 
         gameCoreController.SetupMultiplayerGame(playerInfo.PlayerNumber);
 
