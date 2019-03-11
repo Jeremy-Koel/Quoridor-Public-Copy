@@ -192,9 +192,11 @@ public class ChallengeManager : MonoBehaviour
     public IEnumerator SetupPlayers()
     {
         Debug.Log("Challenge Starting Player");
+        while (messageQueue.IsQueueEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER))
+        {
+            yield return messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER);
+        }        
 
-        yield return messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER);
- 
         ScriptMessage message = messageQueue.DequeueStartingPlayerSetQueue();
         IDictionary<string, object> messageData = message.Data.BaseData;
         Debug.Log("Starting Player ID: " + messageData["startingPlayer"].ToString());
