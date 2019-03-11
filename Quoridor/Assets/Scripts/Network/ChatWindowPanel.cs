@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ChatWindowPanel : MonoBehaviour
 {
@@ -23,12 +24,24 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void Awake()
     {
-        chatInput = GameObject.Find("ChatInput");
-        chatMessagesView = GameObject.Find("ChatMessagesView");
-        chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
-        chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
-        TeamChatMessage.Listener += ChatMessageReceived;
-        Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            chatInput = GameObject.Find("ChatInput");
+            chatMessagesView = GameObject.Find("ChatMessagesView");
+            chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
+            chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
+            TeamChatMessage.Listener += ChatMessageReceived;
+            Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+        }
+        else
+        {
+            chatInput = GameObject.Find("InGameChatInput");
+            chatMessagesView = GameObject.Find("InGameChatMessagesView");
+            chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();
+            chatMessagesLayoutGroup = GameObject.Find("InGameMessages").GetComponent<VerticalLayoutGroup>();
+            ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
+            Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+        }
     }
 
 
@@ -104,21 +117,44 @@ public class ChatWindowPanel : MonoBehaviour
 
     public void OnChatInputSend()
     {
-        InputField chatInputField = chatInput.GetComponent<InputField>();
-        string message = chatInputField.text;
-        SendChatMessage(message);
+         InputField chatInputField = chatInput.GetComponent<InputField>();
+         string message = chatInputField.text;
+         SendChatMessage(message);
     }
 
     void SendChatMessage(string message)
     {
-        Debug.Log("Sending message: " + message);
-        SendTeamChatMessageRequest teamChatMessageRequest = new SendTeamChatMessageRequest();
-        teamChatMessageRequest.SetMessage(message);
-        teamChatMessageRequest.SetTeamId("0");
-        teamChatMessageRequest.Send(ChatMessageResponse);
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            Debug.Log("Sending message: " + message);
+            SendTeamChatMessageRequest teamChatMessageRequest = new SendTeamChatMessageRequest();
+            teamChatMessageRequest.SetMessage(message);
+            teamChatMessageRequest.SetTeamId("0");
+            teamChatMessageRequest.Send(ChatMessageResponse);
+        }
+        else
+        {
+            Debug.Log("Sending message: " + message);
+            ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
+            challengeChatMessageRequest.SetMessage(message);
+            //challengeChatMessageRequest.SetChallengeInstanceId(challengeInstanceId);
+            challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
+        }
     }
 
     void ChatMessageResponse(SendTeamChatMessageResponse response)
+    {
+        if (response.HasErrors)
+        {
+            Debug.Log("Chat message not sent");
+        }
+        else
+        {
+            Debug.Log("Chat message sent");
+        }
+    }
+
+    void ChallengeChatMessageResponse(ChatOnChallengeResponse response)
     {
         if (response.HasErrors)
         {
@@ -136,8 +172,7 @@ public class ChatWindowPanel : MonoBehaviour
         string messageMessage = message.Message.ToString();
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
-        
-
+ 
         GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
 
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
@@ -166,7 +201,41 @@ public class ChatWindowPanel : MonoBehaviour
         AddSpacingMessage();
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+    }
 
+    private void ChallengeChatMessageReceived(ChallengeChatMessage message)
+    {
+        string messageWho = message.Who.ToString();
+        string messageMessage = message.Message.ToString();
+        Debug.Log("Challenge chat message received: " + messageMessage);
+        Debug.Log("Message sent by: " + messageWho);
+
+        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
+
+        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
+        Text playerText = messageTextObjectChildrenText[0];
+        Text messageText = messageTextObjectChildrenText[1];
+        if(messageWho.Length >= 10)
+        {
+            playerText.text = ("<b>" + messageWho.Substring(0, 10) + ":</b>");
+        }
+        else
+        {
+            playerText.text = ("<b>" + messageWho + ":</b>");
+        }
+        messageText.text = messageMessage;
+
+        Debug.Log("Name of chatMessagesViewContent: " + chatMessagesViewContent.name);
+        messageTextObject.transform.SetParent(chatMessagesViewContent);
+        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+
+        chatMessages.Add(messageTextObject);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+
+        AddSpacingMessage();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
     }
 
     private void AddSpacingMessage()
