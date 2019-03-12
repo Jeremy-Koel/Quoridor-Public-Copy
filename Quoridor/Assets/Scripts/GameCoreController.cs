@@ -34,7 +34,7 @@ public class GameCoreController : MonoBehaviour
             {
                 interfaceController.SetPlayerOneText("Computer");
                 interfaceController.SetPlayerTwoText("Player");
-                gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
+                gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.TWO);
                 eventManager.InvokeLocalPlayerMoved();
             }
             else
