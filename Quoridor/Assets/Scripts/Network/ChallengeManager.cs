@@ -143,7 +143,7 @@ public class ChallengeManager : MonoBehaviour
     void OnMoveReceived()
     {
         Debug.Log("Challenge Move Received");
-        messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.CHALLENGEMOVE);
+        messageQueue.WaitForQueueNotEmpty(MessageQueue.QueueNameEnum.CHALLENGEMOVE);
         ScriptMessage message = messageQueue.DequeueChallengeMove();
         IDictionary<string, object> messageData = message.Data.BaseData;
 
@@ -192,9 +192,9 @@ public class ChallengeManager : MonoBehaviour
     public IEnumerator SetupPlayers()
     {
         Debug.Log("Challenge Starting Player");
-        while (messageQueue.IsQueueEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER))
+        while (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.STARTINGPLAYER))
         {
-            yield return messageQueue.CheckQueueNotEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER);
+            yield return messageQueue.CheckQueueNotEmpty(MessageQueue.QueueNameEnum.STARTINGPLAYER);
         }        
 
         ScriptMessage message = messageQueue.DequeueStartingPlayerSetQueue();
@@ -271,7 +271,7 @@ public class ChallengeManager : MonoBehaviour
 
     public void PlayAgain()
     {
-        if (messageQueue.IsQueueEmptyEnum(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
+        if (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
         {
             Debug.Log("Sending playAgain event to GS");
             LogChallengeEventRequest request = new LogChallengeEventRequest();

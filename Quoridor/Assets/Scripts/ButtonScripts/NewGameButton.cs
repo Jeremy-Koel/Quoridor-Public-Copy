@@ -85,7 +85,10 @@ public class NewGameButton : MonoBehaviour
     private IEnumerator GetMatchmakingGroupNumber(string matchmakingGroupNumber)
     {
         MessageQueue messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
-        yield return messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER);
+        while (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
+        {
+            yield return messageQueue.CheckQueueNotEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER);
+        }
         ScriptMessage message = messageQueue.DequeueMatchmakingGroupNumber();
         IDictionary<string, object> messageData = message.Data.BaseData;
         Debug.Log("Matchmaking Group Number: " + messageData["matchGroupNumber"].ToString());

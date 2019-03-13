@@ -59,68 +59,25 @@ public class MessageQueue : MonoBehaviour
         return opponentMoveQueue.Dequeue();
     }
 
-    IEnumerator CheckIfQueueIsEmpty(string queueName)
+    public IEnumerator WaitForQueueNotEmpty(QueueNameEnum queueName)
     {
         while (this.IsQueueEmpty(queueName))
         {
-            Debug.Log(queueName + "is empty");
-            yield return new WaitForSeconds(1);
+            Debug.Log("Queue is empty");
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public bool IsQueueEmpty(string queueName)
+    public IEnumerator CheckQueueNotEmpty(QueueNameEnum queueName)
     {
-        bool empty = true;
-        if (queueName == "startingPlayerSetQueue")
-        {
-            if (startingPlayerSetQueue.Count != 0)
-            {
-                empty = false;
-            }
-        }
-        else if (queueName == "matchmakingGroupNumberQueue")
-        {
-            if (matchmakingGroupNumberQueue.Count != 0)
-            {
-                empty = false;
-            }
-        }
-        else if (queueName == "opponentMoveQueue")
-        {
-            if (opponentMoveQueue.Count != 0)
-            {
-                empty = false;
-            }
-        }
-        else if (queueName == "ChallengeMove")
-        {
-            if (challengeMoveQueue.Count != 0)
-            {
-                empty = false;
-            }
-        }
-        return empty;
-    }
-
-    public IEnumerator WaitForQueueNotEmptyEnum(QueueNameEnum queueName)
-    {
-        while (this.IsQueueEmptyEnum(queueName))
+        if (this.IsQueueEmpty(queueName))
         {
             Debug.Log("Queue is empty");
             yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public IEnumerator CheckQueueNotEmptyEnum(QueueNameEnum queueName)
-    {
-        if (this.IsQueueEmptyEnum(queueName))
-        {
-            Debug.Log("Queue is empty");
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    public bool IsQueueEmptyEnum(QueueNameEnum queueName)
+    public bool IsQueueEmpty(QueueNameEnum queueName)
     {
         bool empty = true;
         switch (queueName) {
