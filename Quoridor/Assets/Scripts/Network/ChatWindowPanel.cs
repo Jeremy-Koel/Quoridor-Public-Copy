@@ -20,6 +20,7 @@ public class ChatWindowPanel : MonoBehaviour
     public VerticalLayoutGroup chatMessagesLayoutGroup;
     public List<GameObject> chatMessages;
     public GameObject textMessagePrefab;
+    public ChallengeManager challengeManager;
 
 
     private void Awake()
@@ -35,6 +36,7 @@ public class ChatWindowPanel : MonoBehaviour
         }
         else
         {
+            challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
             chatInput = GameObject.Find("InGameChatInput");
             chatMessagesView = GameObject.Find("InGameChatMessagesView");
             chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();
@@ -137,7 +139,7 @@ public class ChatWindowPanel : MonoBehaviour
             Debug.Log("Sending message: " + message);
             ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
             challengeChatMessageRequest.SetMessage(message);
-            //challengeChatMessageRequest.SetChallengeInstanceId(challengeInstanceId);
+            challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
             challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
         }
     }
