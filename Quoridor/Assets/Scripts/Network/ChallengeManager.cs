@@ -194,7 +194,7 @@ public class ChallengeManager : MonoBehaviour
         Debug.Log("Challenge Starting Player");
         while (messageQueue.IsQueueEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER))
         {
-            yield return messageQueue.WaitForQueueNotEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER);
+            yield return messageQueue.CheckQueueNotEmptyEnum(MessageQueue.QueueNameEnum.STARTINGPLAYER);
         }        
 
         ScriptMessage message = messageQueue.DequeueStartingPlayerSetQueue();

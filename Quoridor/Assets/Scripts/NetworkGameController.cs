@@ -27,7 +27,7 @@ public class NetworkGameController : MonoBehaviour
 
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
             eventManager.ListenToMoveReceived(MakeNetworkOpponentMove);
-            eventManager.InvokeGameBoardReady();
+            //eventManager.InvokeGameBoardReady();
         }        
     }
 

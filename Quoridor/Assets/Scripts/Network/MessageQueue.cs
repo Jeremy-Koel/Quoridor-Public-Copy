@@ -111,6 +111,15 @@ public class MessageQueue : MonoBehaviour
         }
     }
 
+    public IEnumerator CheckQueueNotEmptyEnum(QueueNameEnum queueName)
+    {
+        if (this.IsQueueEmptyEnum(queueName))
+        {
+            Debug.Log("Queue is empty");
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     public bool IsQueueEmptyEnum(QueueNameEnum queueName)
     {
         bool empty = true;
