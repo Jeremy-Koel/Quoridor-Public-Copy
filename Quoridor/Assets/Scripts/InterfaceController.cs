@@ -176,7 +176,7 @@ public class InterfaceController : MonoBehaviour
 
     public int GetPlayerTwoWallCount()
     {
-        return gameCoreController.GetPlayerOneWallCount();
+        return gameCoreController.GetPlayerTwoWallCount();
     }
 
     public void AddToSpaceMap(GameObject obj)
