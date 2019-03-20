@@ -34,7 +34,7 @@ public class GameCoreController : MonoBehaviour
             {
                 interfaceController.SetPlayerOneText("Computer");
                 interfaceController.SetPlayerTwoText("Player");
-                gameBoard = new GameBoard(GameBoard.PlayerEnum.TWO, "e1", "e9");
+                gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.TWO);
                 eventManager.InvokeLocalPlayerMoved();
             }
             else
@@ -131,25 +131,14 @@ public class GameCoreController : MonoBehaviour
 
     public void SetupMultiplayerGame(int playerNumber)
     {
-        //Temp patch
-        gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
+        // Set player's turn in GameBoard
         if (playerNumber == 1)
         {
-            // Set player's turn in GameBoard
-            gameBoard.SetPlayerTurnRandom();
-            while (gameBoard.GetWhoseTurn() != 1)
-            {
-                gameBoard.SetPlayerTurnRandom();
-            }
+            gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.ONE);
         }
         else if (playerNumber == 2)
         {
-            // Set player's turn in GameBoard
-            gameBoard.SetPlayerTurnRandom();
-            while (gameBoard.GetWhoseTurn() != 2)
-            {
-                gameBoard.SetPlayerTurnRandom();
-            }
+            gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.TWO);
         }
     }
 

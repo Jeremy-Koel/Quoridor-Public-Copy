@@ -27,7 +27,7 @@ public class NetworkGameController : MonoBehaviour
 
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
             eventManager.ListenToMoveReceived(MakeNetworkOpponentMove);
-            eventManager.InvokeGameBoardReady();
+            //eventManager.InvokeGameBoardReady();
         }        
     }
 
@@ -108,11 +108,11 @@ public class NetworkGameController : MonoBehaviour
     private string GetMoveFromNetwork()
     {
         string mirroredMove = "";
-        while (messageQueue.IsQueueEmpty("opponentMoveQueue"))
+        while (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.OPPONENTMOVE))
         {
 
         }
-        if (!messageQueue.IsQueueEmpty("opponentMoveQueue"))
+        if (!messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.OPPONENTMOVE))
         {
             mirroredMove = messageQueue.DequeueOpponentMoveQueue();
         }
