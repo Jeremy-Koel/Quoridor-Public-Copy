@@ -73,12 +73,13 @@ public class InterfaceController : MonoBehaviour
         Collider collider = GetCollider(colliderName);
         if (wall != null && collider != null)
         {
-            wall.transform.localScale = collider.transform.localScale;
-            MoveWallsProgramatically moveWallScript = wall.GetComponent<MoveWallsProgramatically>();
-            moveWallScript.target = new Vector3(collider.transform.position.x, collider.transform.position.y, wall.transform.position.z);
-            moveWallScript.moveWall = true;
-
-            moveWallScript.SetIsOnBoard(true);
+            //wall.transform.localScale = collider.transform.localScale;
+            MoveWallsProgramatically moveWallsProgramatically = wall.GetComponent<MoveWallsProgramatically>();
+            wall.transform.localScale = moveWallsProgramatically.GetWallSize(collider.transform.localScale);
+            moveWallsProgramatically.SetTarget(collider.transform.position, collider.transform.localScale);
+            moveWallsProgramatically.moveWall = true;
+            moveWallsProgramatically.SetIsOnBoard(true);
+            collider.GetComponent<WallPlacement>().SetWallPlacedHere(true);
         }
     }
 
