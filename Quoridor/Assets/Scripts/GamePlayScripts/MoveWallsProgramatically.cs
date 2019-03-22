@@ -13,6 +13,9 @@ public class MoveWallsProgramatically : MonoBehaviour
     private GameObject scientistArmTwo;
     private MoveArms moveArmsOne;
     private MoveArms moveArmsTwo;
+    private Material verticalWallMat;
+    private Material horizontalWallMat;
+    private Renderer matRenderer;
    
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,9 @@ public class MoveWallsProgramatically : MonoBehaviour
         moveArmsTwo = scientistArmTwo.GetComponent<MoveArms>();
         moveWall = false;
         target = transform.position;
+        verticalWallMat = Resources.Load("wallColor", typeof(Material)) as Material;
+        horizontalWallMat = Resources.Load("horizontalWallColor", typeof(Material)) as Material;
+        matRenderer = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -67,10 +73,12 @@ public class MoveWallsProgramatically : MonoBehaviour
         if (colliderSize.x == .7f)
         {
             newSize = new Vector3(colliderSize.x, colliderSize.y * 2, colliderSize.z);
+            matRenderer.material = verticalWallMat;
         }
         else if (colliderSize.x == 3.5f)
         {
             newSize = new Vector3(colliderSize.x * 2, colliderSize.y, colliderSize.z);
+            matRenderer.material = horizontalWallMat;
         }
 
         return newSize;
