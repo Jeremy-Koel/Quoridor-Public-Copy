@@ -11,8 +11,6 @@ public class InterfaceController : MonoBehaviour
     private GameObject winPanel;
     private GameObject menuPanel;
     private GameObject helpScreen;
-    private Text playerOneText;
-    private Text playerTwoText;
     private SoundEffectController soundEffectController;
     private NetworkGameController networkGameController;
     private GameCoreController gameCoreController;
@@ -21,8 +19,6 @@ public class InterfaceController : MonoBehaviour
     {
         challengeManagerScript = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        //playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-        //playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {

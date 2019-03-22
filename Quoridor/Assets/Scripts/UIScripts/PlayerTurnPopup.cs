@@ -52,9 +52,6 @@ public class PlayerTurnPopup : MonoBehaviour
         }
         else
         {
-            //Text playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-            //Debug.Log("(PlayerTurnPopup) PlayerOneText value is: " + playerOneText.text);
-            
             if (gameCoreController.GetWhoseTurn() == GameCore.GameBoard.PlayerEnum.ONE)
             {
                 turnText.text = YOURTURNTEXT;

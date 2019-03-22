@@ -28,7 +28,6 @@ public class GameCoreController : MonoBehaviour
         else
         {
             // Randomize player turn 
-            //bool opponentTurn = new System.Random().NextDouble() >= .5;
             bool opponentTurn = false;
             if (opponentTurn)
             {
