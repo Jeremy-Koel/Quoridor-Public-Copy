@@ -98,21 +98,21 @@ public class InterfaceController : MonoBehaviour
         return collider;
     }
 
-    public void SetPlayerOneText(string str)
-    {
-        if (playerOneText != null)
-        {
-            playerOneText.text = str;
-        }
-    }
+    //public void SetPlayerOneText(string str)
+    //{
+    //    if (playerOneText != null)
+    //    {
+    //        playerOneText.text = str;
+    //    }
+    //}
 
-    public void SetPlayerTwoText(string str)
-    {
-        if (playerTwoText != null)
-        { 
-            playerTwoText.text = str;
-        }
-    }
+    //public void SetPlayerTwoText(string str)
+    //{
+    //    if (playerTwoText != null)
+    //    { 
+    //        playerTwoText.text = str;
+    //    }
+    //}
 
     private async void GenerateMoveForAI()
     {
