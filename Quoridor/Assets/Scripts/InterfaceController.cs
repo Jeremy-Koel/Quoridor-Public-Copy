@@ -11,6 +11,8 @@ public class InterfaceController : MonoBehaviour
     private GameObject winPanel;
     private GameObject menuPanel;
     private GameObject helpScreen;
+    private Text playerWallLabel;
+    private Text opponentWallLabel;
     private SoundEffectController soundEffectController;
     private NetworkGameController networkGameController;
     private GameCoreController gameCoreController;
@@ -19,6 +21,8 @@ public class InterfaceController : MonoBehaviour
     {
         challengeManagerScript = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
+        opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
@@ -113,6 +117,21 @@ public class InterfaceController : MonoBehaviour
     //        playerTwoText.text = str;
     //    }
     //}
+    public void SetPlayerWallLabelText(string str)
+    {
+        if (playerWallLabel != null)
+        {
+            playerWallLabel.text = str;
+        }
+    }
+
+    public void SetOpponentWallLabelText(string str)
+    {
+        if (opponentWallLabel != null)
+        {
+            opponentWallLabel.text = str;
+        }
+    }
 
     private async void GenerateMoveForAI()
     {
