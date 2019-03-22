@@ -18,27 +18,27 @@ public class PlayerBoxUpdate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerOneTurn = GameObject.Find("PlayerOneTurn").GetComponent<Text>();
-        playerOneTurn.text = YOURTURNTEXT;
-        playerOneTurn.fontStyle = FontStyle.Italic;
-        playerTwoTurn = GameObject.Find("PlayerTwoTurn").GetComponent<Text>();
-        playerTwoTurn.text = OTHERPLAYERTEXT;
-        playerTwoTurn.fontStyle = FontStyle.Italic;
-        playerOneWallCount = GameObject.Find("PlayerOneWallsLeft").GetComponent<Text>();
-        playerOneWallCount.text = "10";
-        playerTwoWallCount = GameObject.Find("PlayerTwoWallsLeft").GetComponent<Text>();
-        playerTwoWallCount.text = "10";
+        //playerOneTurn = GameObject.Find("PlayerOneTurn").GetComponent<Text>();
+        //playerOneTurn.text = YOURTURNTEXT;
+        //playerOneTurn.fontStyle = FontStyle.Italic;
+        //playerTwoTurn = GameObject.Find("PlayerTwoTurn").GetComponent<Text>();
+        //playerTwoTurn.text = OTHERPLAYERTEXT;
+        //playerTwoTurn.fontStyle = FontStyle.Italic;
+        //playerOneWallCount = GameObject.Find("PlayerOneWallsLeft").GetComponent<Text>();
+        //playerOneWallCount.text = "10";
+        //playerTwoWallCount = GameObject.Find("PlayerTwoWallsLeft").GetComponent<Text>();
+        //playerTwoWallCount.text = "10";
         interfaceController = interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-            eventManager.ListenToChallengeTurnTaken(UpdatePlayerBoxes);
+            //eventManager.ListenToChallengeTurnTaken(UpdatePlayerBoxes);
             
         }
         else
         {
             eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-            eventManager.ListenToTurnTaken(UpdatePlayerBoxes);
+            //eventManager.ListenToTurnTaken(UpdatePlayerBoxes);
         }
     }
 
@@ -74,14 +74,14 @@ public class PlayerBoxUpdate : MonoBehaviour
         //}
     }
 
-    public void UpdatePlayerBoxes()
-    {
-        playerOneTurn.text = playerOneTurn.text == YOURTURNTEXT ?
-            OTHERPLAYERTEXT : YOURTURNTEXT;
-        playerTwoTurn.text = playerTwoTurn.text == YOURTURNTEXT ?
-            OTHERPLAYERTEXT : YOURTURNTEXT;
-        playerOneWallCount.text = interfaceController.GetPlayerOneWallCount().ToString();
-        playerTwoWallCount.text = interfaceController.GetPlayerTwoWallCount().ToString();
-    }
+    //public void UpdatePlayerBoxes()
+    //{
+    //    playerOneTurn.text = playerOneTurn.text == YOURTURNTEXT ?
+    //        OTHERPLAYERTEXT : YOURTURNTEXT;
+    //    playerTwoTurn.text = playerTwoTurn.text == YOURTURNTEXT ?
+    //        OTHERPLAYERTEXT : YOURTURNTEXT;
+    //    playerOneWallCount.text = interfaceController.GetPlayerOneWallCount().ToString();
+    //    playerTwoWallCount.text = interfaceController.GetPlayerTwoWallCount().ToString();
+    //}
 
 }

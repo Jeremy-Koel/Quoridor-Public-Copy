@@ -56,8 +56,8 @@ public class NetworkGameController : MonoBehaviour
         gameCoreController.SetupMultiplayerGame(playerInfo.PlayerNumber);
 
         // Set player names in GUI
-        interfaceController.SetPlayerOneText(challengeManagerScript.FirstPlayerInfo.PlayerDisplayName);
-        interfaceController.SetPlayerTwoText(challengeManagerScript.SecondPlayerInfo.PlayerDisplayName);
+        //interfaceController.SetPlayerOneText(challengeManagerScript.FirstPlayerInfo.PlayerDisplayName);
+        //interfaceController.SetPlayerTwoText(challengeManagerScript.SecondPlayerInfo.PlayerDisplayName);
     }
 
     private PlayerInfo GetPlayerInfo(int playerNumber = 0)

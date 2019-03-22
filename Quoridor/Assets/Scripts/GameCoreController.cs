@@ -32,15 +32,8 @@ public class GameCoreController : MonoBehaviour
             bool opponentTurn = false;
             if (opponentTurn)
             {
-                interfaceController.SetPlayerOneText("Computer");
-                interfaceController.SetPlayerTwoText("Player");
                 gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.TWO);
                 eventManager.InvokeLocalPlayerMoved();
-            }
-            else
-            {
-                interfaceController.SetPlayerOneText("Player");
-                interfaceController.SetPlayerTwoText("Computer");
             }
         }
     }

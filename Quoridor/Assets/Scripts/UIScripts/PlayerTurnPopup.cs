@@ -8,6 +8,7 @@ public class PlayerTurnPopup : MonoBehaviour
 
     public EventManager eventManager;
     public InterfaceController interfaceController;
+    public GameCoreController gameCoreController;
 
     private float popupTime = 2f;
 
@@ -28,6 +29,7 @@ public class PlayerTurnPopup : MonoBehaviour
         playerTurnPopupText = GameObject.Find("PlayerTurnBoxText");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         turnText = playerTurnPopupText.GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
@@ -50,9 +52,10 @@ public class PlayerTurnPopup : MonoBehaviour
         }
         else
         {
-            Text playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-            Debug.Log("(PlayerTurnPopup) PlayerOneText value is: " + playerOneText.text);
-            if (playerOneText.text == PLAYERNAME)
+            //Text playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+            //Debug.Log("(PlayerTurnPopup) PlayerOneText value is: " + playerOneText.text);
+            
+            if (gameCoreController.GetWhoseTurn() == GameCore.GameBoard.PlayerEnum.ONE)
             {
                 turnText.text = YOURTURNTEXT;
             }

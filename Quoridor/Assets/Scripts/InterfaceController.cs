@@ -21,8 +21,8 @@ public class InterfaceController : MonoBehaviour
     {
         challengeManagerScript = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
-        playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
+        //playerOneText = GameObject.Find("PlayerOneText").GetComponent<Text>();
+        //playerTwoText = GameObject.Find("PlayerTwoText").GetComponent<Text>();
 
         if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
