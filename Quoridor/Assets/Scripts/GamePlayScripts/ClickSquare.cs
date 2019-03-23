@@ -27,30 +27,30 @@ public class ClickSquare : MonoBehaviour
         invalidPopup = interfaceController.GetComponent<InvalidMovePopup>();        
     }
 
-    private void OnMouseEnter()
-    {
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            //TODO
-            //controller.IsValidMove...
-            // transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
-            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
-            {
-                GameObject highlight = transform.GetChild(0).gameObject;
-                highlight.SetActive(true);
-            }
-        }
-    }
+    //private void OnMouseEnter()
+    //{
+    //    if (!EventSystem.current.IsPointerOverGameObject())
+    //    {
+    //        //TODO
+    //        //controller.IsValidMove...
+    //        // transform.localScale = new Vector3(transform.localScale.x + .05f, transform.localScale.y + .05f, transform.localScale.z);
+    //        if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+    //        {
+    //            GameObject highlight = transform.GetChild(0).gameObject;
+    //            highlight.SetActive(true);
+    //        }
+    //    }
+    //}
 
-    private void OnMouseExit()
-    {
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            // transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
-            GameObject highlight = transform.GetChild(0).gameObject;
-            highlight.SetActive(false);
-        }
-    }
+    //private void OnMouseExit()
+    //{
+    //    if (!EventSystem.current.IsPointerOverGameObject())
+    //    {
+    //        // transform.localScale = new Vector3(transform.localScale.x - .05f, transform.localScale.y - .05f, transform.localScale.z);
+    //        GameObject highlight = transform.GetChild(0).gameObject;
+    //        highlight.SetActive(false);
+    //    }
+    //}
 
     private void OnMouseUp()
     {

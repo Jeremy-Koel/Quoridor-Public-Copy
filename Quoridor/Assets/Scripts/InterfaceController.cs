@@ -248,4 +248,8 @@ public class InterfaceController : MonoBehaviour
         return gameCoreController.IsGameOver();
     }
 
+    public List<string> GetPossibleMoves()
+    {
+        return gameCoreController.GetPossibleMoves();
+    }
 }

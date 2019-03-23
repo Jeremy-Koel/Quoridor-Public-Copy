@@ -11,6 +11,9 @@ public class ClickMouse : MonoBehaviour
     private bool cursorOnMouse;
     private SpriteOutline spriteOutline;
     public InterfaceController interfaceController;
+    private Material highlightMat;
+    private Material gameSquareMat;
+    private List<string> possibleMoves;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +23,9 @@ public class ClickMouse : MonoBehaviour
         spriteOutline = GetComponent<SpriteOutline>();
         spriteOutline.enabled = false;
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        highlightMat = Resources.Load("highlightColor", typeof(Material)) as Material;
+        possibleMoves = new List<string>();
+        gameSquareMat = Resources.Load("cubeColor", typeof(Material)) as Material;
     }
 
     //https://answers.unity.com/questions/587637/replacing-onmouseenterexitdownetc-with-raycasting.html
@@ -69,6 +75,10 @@ public class ClickMouse : MonoBehaviour
         {
             mouseSelected = false;
             spriteOutline.enabled = false;
+            foreach (string move in possibleMoves)
+            {
+                GameObject.Find(move).GetComponent<Renderer>().material = gameSquareMat;
+            }
             //Debug.Log("Update Mouse");
         }
     }
@@ -95,6 +105,13 @@ public class ClickMouse : MonoBehaviour
             {
                 mouseSelected = true;
                 spriteOutline.enabled = true;
+                possibleMoves = interfaceController.GetPossibleMoves(); 
+                foreach(string move in possibleMoves)
+                {
+                    GameObject square = GameObject.Find(move);
+                    square.GetComponent<Renderer>().material = highlightMat;
+                }
+
                 //Debug.Log("ButtonMouse");
             }
         }

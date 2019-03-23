@@ -155,4 +155,9 @@ public class GameCoreController : MonoBehaviour
             return GameBoard.PlayerEnum.TWO;
         }
     }
+
+    public List<string> GetPossibleMoves()
+    {
+        return gameBoard.GetPossibleMoves();
+    }
 }
