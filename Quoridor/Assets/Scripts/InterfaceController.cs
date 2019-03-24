@@ -92,7 +92,7 @@ public class InterfaceController : MonoBehaviour
         GameObject targetSquare = GameObject.Find(guiSpaceName);
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
         MoveMouse moveMouseScript = opponentMouse.GetComponent<MoveMouse>();
-        moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -0.5f);
+        moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -1f);
         moveMouseScript.moveMouse = true;
         soundEffectController.PlaySqueakSound();
     }

@@ -64,7 +64,7 @@ public class ClickSquare : MonoBehaviour
                     if (interfaceController.RecordLocalPlayerMove(gameObject.name))
                     {
                         //playerMouse.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -0.5f);
-                        moveMouseScript.target = new Vector3(transform.position.x, transform.position.y, -0.5f);
+                        moveMouseScript.target = new Vector3(transform.position.x, transform.position.y, -1f);
                         moveMouseScript.moveMouse = true;
                         interfaceController.PlayMouseMoveSound();
 

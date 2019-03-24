@@ -21,10 +21,11 @@ public class MoveMouse : MonoBehaviour
         {
             float step = speed * Time.deltaTime; // calculate distance to move
             transform.position = Vector3.MoveTowards(transform.position, target, step);
-
+            
             if (transform.position == target)
             {
                 moveMouse = false;
+                transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
             }
         }
     }
