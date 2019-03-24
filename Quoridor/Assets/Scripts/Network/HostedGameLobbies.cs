@@ -121,6 +121,7 @@ public class HostedGameLobbies : MonoBehaviour
         hostedGameLobbyScript.hostName = hostName;
         hostedGameLobbyScript.gameID = gameID;
         hostedGameLobbyScript.matchShortCode = matchShortCode;
+        hostedGameLobby.GetComponent<Button>().onClick.AddListener(hostedGameLobbyScript.onClick);
         
         // Get text component of button
         UnityEngine.UI.Text[] hostedGameLobbyText = hostedGameLobby.GetComponentsInChildren<Text>();
@@ -146,4 +147,9 @@ public class HostedGameLobbies : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(hostedGameLobbiesRectTransform);
     }
+
+    void onHostedGameLobbyClick()
+    {
+        
+    } 
 }
