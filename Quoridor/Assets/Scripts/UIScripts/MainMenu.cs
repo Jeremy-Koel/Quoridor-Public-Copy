@@ -242,6 +242,7 @@ public class MainMenu : MonoBehaviour
         GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
         GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
         gameSparksUserIDScript.myUserID = response.UserId;
+        gameSparksUserIDScript.myDisplayName = response.DisplayName;
         // Setup ChatWindowPanel
         ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
         chatWindowPanelScript.CheckTeams();

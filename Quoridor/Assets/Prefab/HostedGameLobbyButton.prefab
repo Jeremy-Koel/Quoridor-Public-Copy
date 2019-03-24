@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 2927087550519085907}
   - component: {fileID: 1377476998408495467}
   - component: {fileID: 8679356851947449180}
+  - component: {fileID: 2695930541673410125}
   m_Layer: 5
   m_Name: HostedGameLobbyButton
   m_TagString: Untagged
@@ -218,3 +219,15 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2695930541673410125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5100968050931827320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7db42546e921614cb98eeb6717b8830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

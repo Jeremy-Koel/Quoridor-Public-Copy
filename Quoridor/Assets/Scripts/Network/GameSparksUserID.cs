@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameSparksUserID : MonoBehaviour
 {
     public string myUserID;
+    public string myDisplayName;
 
     private void Awake()
     {
