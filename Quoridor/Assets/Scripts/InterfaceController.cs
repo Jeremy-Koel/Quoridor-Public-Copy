@@ -93,6 +93,7 @@ public class InterfaceController : MonoBehaviour
         ClickSquare clickSquare = targetSquare.GetComponent<ClickSquare>();
         MoveMouse moveMouseScript = opponentMouse.GetComponent<MoveMouse>();
         moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -1f);
+        opponentMouse.transform.localScale = new Vector3(opponentMouse.transform.localScale.x + .001f, opponentMouse.transform.localScale.y + .001f, opponentMouse.transform.localScale.z);
         moveMouseScript.moveMouse = true;
         soundEffectController.PlaySqueakSound();
     }
