@@ -16,6 +16,8 @@ public class InterfaceController : MonoBehaviour
     private SoundEffectController soundEffectController;
     private NetworkGameController networkGameController;
     private GameCoreController gameCoreController;
+    private Queue<Animator> playerWallIndicators;
+    private Queue<Animator> opponentWallIndicators;
 
     private void Awake()
     {
@@ -23,6 +25,7 @@ public class InterfaceController : MonoBehaviour
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
         opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
+        initAnimatorQueues();
 
         if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
@@ -56,6 +59,33 @@ public class InterfaceController : MonoBehaviour
         }
     }
 
+    private void initAnimatorQueues()
+    {
+        playerWallIndicators = new Queue<Animator>();
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator0").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator1").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator2").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator3").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator4").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator5").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator6").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator7").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator8").GetComponent<Animator>());
+        playerWallIndicators.Enqueue(GameObject.Find("PlayerWallIndicator9").GetComponent<Animator>());
+
+        opponentWallIndicators = new Queue<Animator>();
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator0").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator1").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator2").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator3").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator4").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator5").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator6").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator7").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator8").GetComponent<Animator>());
+        opponentWallIndicators.Enqueue(GameObject.Find("OpponentWallIndicator9").GetComponent<Animator>());
+    }
+
     public void MoveOpponentPieceInGUI(string guiSpaceName)
     {
         GameObject opponentMouse = GameObject.Find("opponentMouse");
@@ -73,6 +103,8 @@ public class InterfaceController : MonoBehaviour
         Collider collider = GetCollider(colliderName);
         if (wall != null && collider != null)
         {
+            TriggerOpponentWallIndicatorAnimation();
+
             //wall.transform.localScale = collider.transform.localScale;
             MoveWallsProgramatically moveWallsProgramatically = wall.GetComponent<MoveWallsProgramatically>();
             wall.transform.localScale = moveWallsProgramatically.GetWallSize(collider.transform.localScale);
@@ -154,6 +186,12 @@ public class InterfaceController : MonoBehaviour
         bool movedSuccessfully = gameCoreController.RecordLocalPlayerMove(move);
         if (movedSuccessfully)
         {
+            if (move.Length == 3)
+            {
+                Debug.Log("player moved a wall");
+                TriggerPlayerWallIndicatorAnimation();
+            }
+
             if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
             {
                 eventManager.InvokeLocalPlayerMoved();
@@ -166,6 +204,19 @@ public class InterfaceController : MonoBehaviour
         return movedSuccessfully;
     }
 
+    private void TriggerPlayerWallIndicatorAnimation()
+    {
+        Debug.Log("trigger wall tick animation");
+        Animator anim = playerWallIndicators.Dequeue();
+        anim.SetTrigger("PlaceWall");
+    }
+
+    private void TriggerOpponentWallIndicatorAnimation()
+    {
+        Animator anim = opponentWallIndicators.Dequeue();
+        anim.SetTrigger("PlaceWall");
+    }
+    
     public string GetPlayerNameForTurn()
     {
         string playerDisplayName = "";
