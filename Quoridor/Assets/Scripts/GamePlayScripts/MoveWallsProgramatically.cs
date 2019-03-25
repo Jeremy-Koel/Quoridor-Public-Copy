@@ -72,12 +72,12 @@ public class MoveWallsProgramatically : MonoBehaviour
         Vector3 newSize = colliderSize;
         if (colliderSize.x == .7f)
         {
-            newSize = new Vector3(colliderSize.x, colliderSize.y * 2, colliderSize.z);
+            newSize = new Vector3(colliderSize.x, (colliderSize.y * 2) + .5f, colliderSize.z);
             matRenderer.material = verticalWallMat;
         }
-        else if (colliderSize.x == 3.5f)
+        else if (colliderSize.x == 4f)
         {
-            newSize = new Vector3(colliderSize.x * 2, colliderSize.y, colliderSize.z);
+            newSize = new Vector3((colliderSize.x * 2) +.5f, colliderSize.y, colliderSize.z);
             matRenderer.material = horizontalWallMat;
         }
 
@@ -88,11 +88,11 @@ public class MoveWallsProgramatically : MonoBehaviour
     {
         if (colliderSize.x == .7f)
         {
-            pos = new Vector3(pos.x, pos.y - (colliderSize.y/2) - .25f, -0.7f);
+            pos = new Vector3(pos.x, pos.y - (colliderSize.y/2) - .5f, -0.7f);
         }
-        else if (colliderSize.x == 3.5f)
+        else if (colliderSize.x == 4f)
         {
-            pos = new Vector3(pos.x + (colliderSize.x/2) + .25f, pos.y, -0.7f);
+            pos = new Vector3(pos.x + (colliderSize.x/2) + .5f, pos.y, -0.7f);
         }
 
         target = pos;
