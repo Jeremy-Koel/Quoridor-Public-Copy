@@ -5,31 +5,36 @@ using UnityEngine.UI;
 using GameSparks.Api.Messages;
 using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
+using System;
 
 public class HostedGameLobbies : MonoBehaviour
 {
     RectTransform hostedGameLobbiesRectTransform;
     Button hostGameButton;
+    Button refreshGamesButton;
     public GameObject hostedGamePrefab;
     public List<GameObject> hostedGames;
 
     public ChallengeManager challengeManager;
+    
+    private bool hosting = false;
 
     private void Awake()
     {
         hostedGameLobbiesRectTransform = GameObject.Find("HostedGameLobbies").GetComponent<RectTransform>();
         hostGameButton = GameObject.Find("HostGameButton").GetComponent<Button>();
         hostGameButton.onClick.AddListener(onHostGameButtonClick);
+        refreshGamesButton = GameObject.Find("RefreshGamesButton").GetComponent<Button>();
+        refreshGamesButton.onClick.AddListener(onRefreshGamesButtonClick);
         hostedGames = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-
-        //FindGameLobbies();
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        onRefreshGamesButtonClick();
     }
 
     // Update is called once per frame
@@ -40,6 +45,7 @@ public class HostedGameLobbies : MonoBehaviour
 
     void FindGameLobbies()
     {
+        RemoveAllHostedGames();
         FindPendingMatchesRequest findPendingMatchesRequest = new FindPendingMatchesRequest();
         findPendingMatchesRequest.SetMatchShortCode("HostedMatch");
         findPendingMatchesRequest.SetMaxMatchesToFind(100);
@@ -48,54 +54,111 @@ public class HostedGameLobbies : MonoBehaviour
 
     public void OnFindPendingMatchesRequestSuccess(FindPendingMatchesResponse response)
     {
-        //UnblockInput();
-
         if ((bool)response.ScriptData.BaseData["matchesFound"])
         {
-            Debug.Log(response.ScriptData.BaseData["matchesFound"]);
+            Debug.Log("Matches found: " + response.ScriptData.BaseData["matchesFound"]);
             var pendingMatches = response.PendingMatches.GetEnumerator();
-            Debug.Log(pendingMatches.ToString());
             bool endOfMatches = !pendingMatches.MoveNext();
             while (!endOfMatches)
             {
                 // Get match data
                 var matchedPlayers = pendingMatches.Current.MatchedPlayers.GetEnumerator();
                 matchedPlayers.MoveNext();
-                string hostDisplayName = matchedPlayers.Current.ParticipantData.BaseData["displayName"].ToString();
-                string matchID = pendingMatches.Current.Id;
-                string matchShortCode = pendingMatches.Current.MatchShortCode;
-                AddHostedGameToLobbies(hostDisplayName, matchID, matchShortCode);
+                if ((bool)matchedPlayers.Current.ParticipantData.BaseData["hosting"])
+                {
+                    string hostDisplayName = matchedPlayers.Current.ParticipantData.BaseData["displayName"].ToString();
+                    string matchID = pendingMatches.Current.Id;
+                    string matchShortCode = pendingMatches.Current.MatchShortCode;
+                    AddHostedGameToLobbies(hostDisplayName, matchID, matchShortCode);
+                }
                 endOfMatches = !pendingMatches.MoveNext();
             }
-        }        
+        }
         else
         {
             // No pending matches found
             Debug.Log("No Pending Matches found");
         }
+        UnblockRefreshInput();
     }
 
     public void OnFindPendingMatchesRequestError(FindPendingMatchesResponse response)
     {
-        //UnblockInput();
-        Debug.Log("Find Matches Error");
+        Debug.Log("Find Matches Error: " + response.Errors.ToString());
+        UnblockRefreshInput();
+    }
+
+
+    private void onRefreshGamesButtonClick()
+    {
+        BlockRefreshInput();
+        // Make sure the user isn't currently hosting that way the refresh doesn't remove their hosted lobby/game
+        if (!hosting)
+        {
+            GameSparksUserID gameSparksUserIDScript = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+            // Do a matchmaking request
+            MatchmakingRequest matchmakingRequest = new MatchmakingRequest();
+            matchmakingRequest.SetMatchShortCode("HostedMatch");
+
+            GameSparks.Core.GSRequestData participantData = new GameSparks.Core.GSRequestData();
+            participantData.AddString("displayName", gameSparksUserIDScript.myDisplayName);
+            participantData.AddBoolean("hosting", false);
+            matchmakingRequest.SetParticipantData(participantData);
+
+            matchmakingRequest.SetSkill(0);
+
+            matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+        }        
+        else
+        {
+            FindGameLobbies();
+        }        
+    }
+
+    private void BlockRefreshInput()
+    {
+        refreshGamesButton.enabled = false;
+    }
+
+    private void UnblockRefreshInput()
+    {
+        refreshGamesButton.enabled = true;
     }
 
     public void onHostGameButtonClick()
     {
         GameSparksUserID gameSparksUserIDScript = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
 
-        // Do a matchmaking request
         MatchmakingRequest matchmakingRequest = new MatchmakingRequest();
         matchmakingRequest.SetMatchShortCode("HostedMatch");
-        
+
         GameSparks.Core.GSRequestData participantData = new GameSparks.Core.GSRequestData();
         participantData.AddString("displayName", gameSparksUserIDScript.myDisplayName);
+        participantData.AddBoolean("hosting", true);
         matchmakingRequest.SetParticipantData(participantData);
 
         matchmakingRequest.SetSkill(0);
 
+        
+        if (!hosting)
+        {
+            hosting = true;
+            // Change button text to represent canceling host
+            UnityEngine.UI.Text[] buttonText = hostGameButton.GetComponentsInChildren<Text>();
+            buttonText[0].text = "Cancel Host";
+        }
+        else
+        {
+            // Cancel host
+            matchmakingRequest.SetAction("cancel");
+            matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            // Change button text to represent hosting a game
+            UnityEngine.UI.Text[] buttonText = hostGameButton.GetComponentsInChildren<Text>();
+            buttonText[0].text = "Host Game";
+        }
+
         matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
@@ -148,8 +211,12 @@ public class HostedGameLobbies : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(hostedGameLobbiesRectTransform);
     }
 
-    void onHostedGameLobbyClick()
+    void RemoveAllHostedGames()
     {
-        
-    } 
+        foreach (RectTransform child in hostedGameLobbiesRectTransform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        hostedGames.Clear();
+    }
 }
