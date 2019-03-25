@@ -41,8 +41,7 @@ public class ChatWindowPanel : MonoBehaviour
             chatMessagesView = GameObject.Find("InGameChatMessagesView");
             chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();
             chatMessagesLayoutGroup = GameObject.Find("InGameMessages").GetComponent<VerticalLayoutGroup>();
-            //ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
-            TeamChatMessage.Listener += ChatMessageReceived;
+            ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
         }
     }
@@ -127,7 +126,7 @@ public class ChatWindowPanel : MonoBehaviour
 
     void SendChatMessage(string message)
     {
-       // if (SceneManager.GetActiveScene().name == "MainMenu")
+        if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             Debug.Log("Sending message: " + message);
             SendTeamChatMessageRequest teamChatMessageRequest = new SendTeamChatMessageRequest();
@@ -135,14 +134,13 @@ public class ChatWindowPanel : MonoBehaviour
             teamChatMessageRequest.SetTeamId("0");
             teamChatMessageRequest.Send(ChatMessageResponse);
         }
-        //else
+        else
         {
-
-            //Debug.Log("Sending message: " + message);
-            //ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
-            //challengeChatMessageRequest.SetMessage(message);
-            //challengeChatMessageRequest.SetChallengeInstanceId("0");
-            //challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
+            Debug.Log("Sending message: " + message);
+            ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
+            challengeChatMessageRequest.SetMessage(message);
+            challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
+            challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
         }
     }
 
@@ -158,17 +156,17 @@ public class ChatWindowPanel : MonoBehaviour
         }
     }
 
-    //void ChallengeChatMessageResponse(ChatOnChallengeResponse response)
-    //{
-    //    if (response.HasErrors)
-    //    {
-    //        Debug.Log("Chat message not sent");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Chat message sent");
-    //    }
-    //}
+    void ChallengeChatMessageResponse(ChatOnChallengeResponse response)
+    {
+        if (response.HasErrors)
+        {
+            Debug.Log("Chat message not sent");
+        }
+        else
+        {
+            Debug.Log("Chat message sent");
+        }
+    }
 
     private void ChatMessageReceived(TeamChatMessage message)
     {
@@ -207,40 +205,40 @@ public class ChatWindowPanel : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
     }
 
-    //private void ChallengeChatMessageReceived(ChallengeChatMessage message)
-    //{
-    //    string messageWho = message.Who.ToString();
-    //    string messageMessage = message.Message.ToString();
-    //    Debug.Log("Challenge chat message received: " + messageMessage);
-    //    Debug.Log("Message sent by: " + messageWho);
+    private void ChallengeChatMessageReceived(ChallengeChatMessage message)
+    {
+        string messageWho = message.Who.ToString();
+        string messageMessage = message.Message.ToString();
+        Debug.Log("Challenge chat message received: " + messageMessage);
+        Debug.Log("Message sent by: " + messageWho);
 
-    //    GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
+        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
 
-    //    UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
-    //    Text playerText = messageTextObjectChildrenText[0];
-    //    Text messageText = messageTextObjectChildrenText[1];
-    //    if(messageWho.Length >= 10)
-    //    {
-    //        playerText.text = ("<b>" + messageWho.Substring(0, 10) + ":</b>");
-    //    }
-    //    else
-    //    {
-    //        playerText.text = ("<b>" + messageWho + ":</b>");
-    //    }
-    //    messageText.text = messageMessage;
+        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
+        Text playerText = messageTextObjectChildrenText[0];
+        Text messageText = messageTextObjectChildrenText[1];
+        if (messageWho.Length >= 10)
+        {
+            playerText.text = ("<b>" + messageWho.Substring(0, 10) + ":</b>");
+        }
+        else
+        {
+            playerText.text = ("<b>" + messageWho + ":</b>");
+        }
+        messageText.text = messageMessage;
 
-    //    Debug.Log("Name of chatMessagesViewContent: " + chatMessagesViewContent.name);
-    //    messageTextObject.transform.SetParent(chatMessagesViewContent);
-    //    messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+        Debug.Log("Name of chatMessagesViewContent: " + chatMessagesViewContent.name);
+        messageTextObject.transform.SetParent(chatMessagesViewContent);
+        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
 
-    //    chatMessages.Add(messageTextObject);
+        chatMessages.Add(messageTextObject);
 
-    //    LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
-    //    AddSpacingMessage();
+        AddSpacingMessage();
 
-    //    LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-    //}
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+    }
 
     private void AddSpacingMessage() 
     {
