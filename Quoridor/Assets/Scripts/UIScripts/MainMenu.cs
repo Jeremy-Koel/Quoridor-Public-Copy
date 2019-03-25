@@ -217,6 +217,9 @@ public class MainMenu : MonoBehaviour
     private void OnChallengeStarted(ChallengeStartedMessage message)
     {
         UnblockInput();
+        HostedGameLobbies hostedGameLobbiesScript = GameObject.Find("HostedGameLobbies").GetComponent<HostedGameLobbies>();
+        hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
+
         Debug.Log("Challenge Started");
         // Switch to GameBoard Scene connected to opponent
         SceneManager.LoadScene("GameBoard");

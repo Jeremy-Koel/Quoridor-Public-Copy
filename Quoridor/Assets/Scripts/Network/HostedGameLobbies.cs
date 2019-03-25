@@ -6,6 +6,7 @@ using GameSparks.Api.Messages;
 using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
 using System;
+using UnityEngine.SceneManagement;
 
 public class HostedGameLobbies : MonoBehaviour
 {
@@ -28,17 +29,12 @@ public class HostedGameLobbies : MonoBehaviour
         refreshGamesButton.onClick.AddListener(onRefreshGamesButtonClick);
         hostedGames = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-        ScriptMessage.Listener += RefreshHostedGames;
-    }
-
-    private void RefreshHostedGames(ScriptMessage message)
-    {
-        onRefreshGamesButtonClick();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        ScriptMessage.Listener += RefreshHostedGames;
         onRefreshGamesButtonClick();
     }
 
@@ -47,6 +43,17 @@ public class HostedGameLobbies : MonoBehaviour
     {
         
     }
+
+    public void RemoveRefreshHostedGamesListener()
+    {
+        ScriptMessage.Listener -= RefreshHostedGames;
+    }
+
+    private void RefreshHostedGames(ScriptMessage message)
+    {
+        onRefreshGamesButtonClick();
+    }
+
 
     void FindGameLobbies()
     {
@@ -89,7 +96,7 @@ public class HostedGameLobbies : MonoBehaviour
 
     public void OnFindPendingMatchesRequestError(FindPendingMatchesResponse response)
     {
-        Debug.Log("Find Matches Error: " + response.Errors.ToString());
+        Debug.Log("Find Matches Error: " + response.Errors.JSON);
         UnblockRefreshInput();
     }
 
@@ -109,10 +116,11 @@ public class HostedGameLobbies : MonoBehaviour
             participantData.AddString("displayName", gameSparksUserIDScript.myDisplayName);
             participantData.AddBoolean("hosting", false);
             matchmakingRequest.SetParticipantData(participantData);
-
+            matchmakingRequest.SetMatchData(participantData);
             matchmakingRequest.SetSkill(0);
 
             matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            FindGameLobbies();
         }        
         else
         {
@@ -122,12 +130,18 @@ public class HostedGameLobbies : MonoBehaviour
 
     private void BlockRefreshInput()
     {
-        refreshGamesButton.enabled = false;
+        if (refreshGamesButton != null)
+        {
+            refreshGamesButton.enabled = false;
+        }        
     }
 
     private void UnblockRefreshInput()
     {
-        refreshGamesButton.enabled = true;
+        if (refreshGamesButton != null)
+        {
+            refreshGamesButton.enabled = true;
+        }        
     }
 
     public void onHostGameButtonClick()
@@ -141,7 +155,7 @@ public class HostedGameLobbies : MonoBehaviour
         participantData.AddString("displayName", gameSparksUserIDScript.myDisplayName);
         participantData.AddBoolean("hosting", true);
         matchmakingRequest.SetParticipantData(participantData);
-
+        matchmakingRequest.SetMatchData(participantData);
         matchmakingRequest.SetSkill(0);
 
         
@@ -155,6 +169,7 @@ public class HostedGameLobbies : MonoBehaviour
         else
         {
             // Cancel host
+            hosting = false;
             matchmakingRequest.SetAction("cancel");
             matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
             // Change button text to represent hosting a game
@@ -163,15 +178,12 @@ public class HostedGameLobbies : MonoBehaviour
         }
 
         matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
-
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
     {
         //UnblockInput();
         Debug.Log("Matchmaking Success");
-
-        FindGameLobbies();
     }
 
     public void OnMatchmakingError(MatchmakingResponse response)

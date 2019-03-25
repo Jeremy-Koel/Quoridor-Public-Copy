@@ -52,23 +52,23 @@ public class GameSparksUnity : MonoBehaviour
 	
 	void OnGUI () {
 		if (GameSparksSettings.PreviewBuild == true) {
-			GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
+			//GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
 
-			GUILayout.BeginVertical ();
+			//GUILayout.BeginVertical ();
 
-			GUILayout.FlexibleSpace ();
+			//GUILayout.FlexibleSpace ();
 
-			GUILayout.BeginHorizontal ();
+			//GUILayout.BeginHorizontal ();
 
-			GUILayout.Space (10);
+			//GUILayout.Space (10);
 
-			GUILayout.Label ("GameSparks Preview mode", GUILayout.Width (200), GUILayout.Height (25));
+			//GUILayout.Label ("GameSparks Preview mode", GUILayout.Width (200), GUILayout.Height (25));
 
-			GUILayout.EndHorizontal ();
+			//GUILayout.EndHorizontal ();
 
-			GUILayout.EndVertical ();
+			//GUILayout.EndVertical ();
 
-			GUILayout.EndArea ();
+			//GUILayout.EndArea ();
 		}
 	}
 

@@ -24,11 +24,29 @@ public class HostedGameLobbyButton : MonoBehaviour
 
     public void onClick()
     {
+
+        HostedGameLobbies hostedGameLobbiesScript = GetComponentInParent<HostedGameLobbies>();
+        hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
+
         //ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         JoinPendingMatchRequest joinPendingMatch = new JoinPendingMatchRequest();
         joinPendingMatch.SetMatchShortCode(matchShortCode);
         joinPendingMatch.SetPendingMatchId(gameID);
         joinPendingMatch.Send(OnJoinPendingMatchSuccess, OnJoinPendingMatchError);
+
+        RemoveAllHostedGames();
+    }
+
+    public void OnMatchmakingSuccess(MatchmakingResponse response)
+    {
+        //UnblockInput();
+        Debug.Log("Matchmaking Success");
+    }
+
+    public void OnMatchmakingError(MatchmakingResponse response)
+    {
+        //UnblockInput();
+        Debug.Log("Matchmaking Error");
     }
 
     void OnJoinPendingMatchSuccess(JoinPendingMatchResponse response)
@@ -39,5 +57,16 @@ public class HostedGameLobbyButton : MonoBehaviour
     void OnJoinPendingMatchError(JoinPendingMatchResponse response)
     {
         Debug.Log("Failed to join pending match");
+    }
+
+    void RemoveAllHostedGames()
+    {
+        RectTransform hostedGameLobbiesRectTransform = GetComponentInParent<RectTransform>();
+        foreach (RectTransform child in hostedGameLobbiesRectTransform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        HostedGameLobbies hostedGameLobbiesScript = GetComponentInParent<HostedGameLobbies>();
+        hostedGameLobbiesScript.hostedGames.Clear();
     }
 }
