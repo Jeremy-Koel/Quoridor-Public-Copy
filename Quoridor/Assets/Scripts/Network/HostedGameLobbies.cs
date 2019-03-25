@@ -28,7 +28,12 @@ public class HostedGameLobbies : MonoBehaviour
         refreshGamesButton.onClick.AddListener(onRefreshGamesButtonClick);
         hostedGames = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-        
+        ScriptMessage.Listener += RefreshHostedGames;
+    }
+
+    private void RefreshHostedGames(ScriptMessage message)
+    {
+        onRefreshGamesButtonClick();
     }
 
     // Start is called before the first frame update
