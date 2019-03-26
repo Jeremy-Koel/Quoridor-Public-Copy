@@ -93,6 +93,8 @@ public class ChallengeManager : MonoBehaviour
         eventManager.ListenToGameBoardReady(SetupPlayerInfo);
         eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
         eventManager.ListenToChallengeMove(OnMoveReceived);
+        eventManager.ListenToChallengeWon(ChallengeGameWon);
+        eventManager.ListenToChallengeLost(ChallengeGameLost);
         //eventManager.ListenToGameOver(ResetChallengeManager);        
     }
 
@@ -247,6 +249,46 @@ public class ChallengeManager : MonoBehaviour
     private void OnSetStartingPlayerError(LogChallengeEventResponse response)
     {
 
+    }
+
+    public void ChallengeGameWon()
+    {
+        Debug.Log("Challenge Game Won");
+        LogChallengeEventRequest request = new LogChallengeEventRequest();
+        request.SetChallengeInstanceId(ChallengeID);
+        request.SetEventKey("GameWon");
+        request.SetEventAttribute("playerID", gameSparksUserIDScript.myUserID);
+        request.Send(OnChallengeGameWonSuccess, OnChallengeGameWonError);
+    }
+
+    private void OnChallengeGameWonSuccess(LogChallengeEventResponse response)
+    {
+        Debug.Log("Challenge Game Won Success");
+    }
+
+    private void OnChallengeGameWonError(LogChallengeEventResponse response)
+    {
+        Debug.Log("Challenge Game Won Error: " + response.Errors.JSON.ToString());
+    }
+
+    public void ChallengeGameLost()
+    {
+        Debug.Log("Challenge Game Lost");
+        LogChallengeEventRequest request = new LogChallengeEventRequest();
+        request.SetChallengeInstanceId(ChallengeID);
+        request.SetEventKey("GameLost");
+        request.SetEventAttribute("playerID", gameSparksUserIDScript.myUserID);
+        request.Send(OnChallengeGameLostSuccess, OnChallengeGameLostError);
+    }
+
+    private void OnChallengeGameLostSuccess(LogChallengeEventResponse response)
+    {
+        Debug.Log("Challenge Game Lost Success");
+    }
+
+    private void OnChallengeGameLostError(LogChallengeEventResponse response)
+    {
+        Debug.Log("Challenge Game Lost Error: " + response.Errors.JSON.ToString());
     }
 
     public void Move(string action)

@@ -53,10 +53,10 @@ public class InterfaceController : MonoBehaviour
 
     private void Update()
     {
-        if (IsGameOver() && !menuPanel.activeSelf)
-        {
-            winPanel.SetActive(true);
-        }
+        //if (IsGameOver() && !menuPanel.activeSelf)
+        //{
+        //    winPanel.SetActive(true);
+        //}
     }
 
     private void initAnimatorQueues()
@@ -169,7 +169,12 @@ public class InterfaceController : MonoBehaviour
     private async void GenerateMoveForAI()
     {
         string str = await gameCoreController.GetMoveFromAI();
-        gameCoreController.RecordOpponentMove(str);
+        bool recorded = gameCoreController.RecordOpponentMove(str);
+        // Check if the AI's move won the game - NK
+        if (recorded)
+        {
+            CheckIsGameOver();
+        }
     }
 
     public void PlayMouseMoveSound()
@@ -201,6 +206,9 @@ public class InterfaceController : MonoBehaviour
             {
                 challengeManagerScript.Move(move);
             }
+
+            // Check if the local player won - NK
+            CheckIsGameOver();
         }
         return movedSuccessfully;
     }
@@ -298,6 +306,14 @@ public class InterfaceController : MonoBehaviour
     public bool IsGameOver()
     {
         return gameCoreController.IsGameOver();
+    }
+
+    public void CheckIsGameOver()
+    {
+        if (IsGameOver() && !menuPanel.activeSelf)
+        {
+            winPanel.SetActive(true);
+        }
     }
 
     public List<string> GetPossibleMoves()

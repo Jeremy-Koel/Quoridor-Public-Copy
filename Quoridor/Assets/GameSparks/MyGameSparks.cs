@@ -13,7 +13,104 @@ using GameSparks.Api.Responses;
 //THIS FILE IS AUTO GENERATED, DO NOT MODIFY!!
 
 namespace GameSparks.Api.Requests{
-		public class LogEventRequest_CheckConnection : GSTypedRequest<LogEventRequest_CheckConnection, LogEventResponse>
+		public class LogEventRequest_AcceptFriendRequest : GSTypedRequest<LogEventRequest_AcceptFriendRequest, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_AcceptFriendRequest() : base("LogEventRequest"){
+			request.AddString("eventKey", "AcceptFriendRequest");
+		}
+		
+		public LogEventRequest_AcceptFriendRequest Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_AcceptFriendRequest : GSTypedRequest<LogChallengeEventRequest_AcceptFriendRequest, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_AcceptFriendRequest() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "AcceptFriendRequest");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_AcceptFriendRequest SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_AcceptFriendRequest Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_ChatOpponent : GSTypedRequest<LogEventRequest_ChatOpponent, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_ChatOpponent() : base("LogEventRequest"){
+			request.AddString("eventKey", "ChatOpponent");
+		}
+		public LogEventRequest_ChatOpponent Set_PlayerChat( GSData value )
+		{
+			request.AddObject("PlayerChat", value);
+			return this;
+		}			
+		
+		public LogEventRequest_ChatOpponent Set_Message( string value )
+		{
+			request.AddString("Message", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_ChatOpponent : GSTypedRequest<LogChallengeEventRequest_ChatOpponent, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_ChatOpponent() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "ChatOpponent");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_ChatOpponent SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_ChatOpponent Set_PlayerChat( GSData value )
+		{
+			request.AddObject("PlayerChat", value);
+			return this;
+		}
+		
+		public LogChallengeEventRequest_ChatOpponent Set_Message( string value )
+		{
+			request.AddString("Message", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_CheckConnection : GSTypedRequest<LogEventRequest_CheckConnection, LogEventResponse>
 	{
 	
 		protected override GSTypedResponse BuildResponse (GSObject response){
@@ -41,6 +138,275 @@ namespace GameSparks.Api.Requests{
 		public LogChallengeEventRequest_CheckConnection SetChallengeInstanceId( String challengeInstanceId )
 		{
 			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_DeclineFriendRequest : GSTypedRequest<LogEventRequest_DeclineFriendRequest, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_DeclineFriendRequest() : base("LogEventRequest"){
+			request.AddString("eventKey", "DeclineFriendRequest");
+		}
+		
+		public LogEventRequest_DeclineFriendRequest Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_DeclineFriendRequest : GSTypedRequest<LogChallengeEventRequest_DeclineFriendRequest, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_DeclineFriendRequest() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "DeclineFriendRequest");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_DeclineFriendRequest SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_DeclineFriendRequest Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_FindPlayers : GSTypedRequest<LogEventRequest_FindPlayers, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_FindPlayers() : base("LogEventRequest"){
+			request.AddString("eventKey", "FindPlayers");
+		}
+		
+		public LogEventRequest_FindPlayers Set_displayName( string value )
+		{
+			request.AddString("displayName", value);
+			return this;
+		}
+		
+		public LogEventRequest_FindPlayers Set_username( string value )
+		{
+			request.AddString("username", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_FindPlayers : GSTypedRequest<LogChallengeEventRequest_FindPlayers, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_FindPlayers() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "FindPlayers");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_FindPlayers SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_FindPlayers Set_displayName( string value )
+		{
+			request.AddString("displayName", value);
+			return this;
+		}
+		public LogChallengeEventRequest_FindPlayers Set_username( string value )
+		{
+			request.AddString("username", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_FriendRequest : GSTypedRequest<LogEventRequest_FriendRequest, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_FriendRequest() : base("LogEventRequest"){
+			request.AddString("eventKey", "FriendRequest");
+		}
+		
+		public LogEventRequest_FriendRequest Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_FriendRequest : GSTypedRequest<LogChallengeEventRequest_FriendRequest, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_FriendRequest() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "FriendRequest");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_FriendRequest SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_FriendRequest Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_GameLost : GSTypedRequest<LogEventRequest_GameLost, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_GameLost() : base("LogEventRequest"){
+			request.AddString("eventKey", "GameLost");
+		}
+		
+		public LogEventRequest_GameLost Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_GameLost : GSTypedRequest<LogChallengeEventRequest_GameLost, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_GameLost() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "GameLost");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_GameLost SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_GameLost Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_GameWon : GSTypedRequest<LogEventRequest_GameWon, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_GameWon() : base("LogEventRequest"){
+			request.AddString("eventKey", "GameWon");
+		}
+		
+		public LogEventRequest_GameWon Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_GameWon : GSTypedRequest<LogChallengeEventRequest_GameWon, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_GameWon() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "GameWon");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_GameWon SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_GameWon Set_playerID( string value )
+		{
+			request.AddString("playerID", value);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_GetFriendsList : GSTypedRequest<LogEventRequest_GetFriendsList, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_GetFriendsList() : base("LogEventRequest"){
+			request.AddString("eventKey", "GetFriendsList");
+		}
+		
+		public LogEventRequest_GetFriendsList Set_group( string value )
+		{
+			request.AddString("group", value);
+			return this;
+		}
+	}
+	
+	public class LogChallengeEventRequest_GetFriendsList : GSTypedRequest<LogChallengeEventRequest_GetFriendsList, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_GetFriendsList() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "GetFriendsList");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_GetFriendsList SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_GetFriendsList Set_group( string value )
+		{
+			request.AddString("group", value);
 			return this;
 		}
 	}
@@ -118,6 +484,48 @@ namespace GameSparks.Api.Requests{
 			request.AddString("challengeInstanceId", challengeInstanceId);
 			return this;
 		}
+	}
+	
+	public class LogEventRequest_PlayerScore : GSTypedRequest<LogEventRequest_PlayerScore, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_PlayerScore() : base("LogEventRequest"){
+			request.AddString("eventKey", "PlayerScore");
+		}
+		public LogEventRequest_PlayerScore Set_playerAttr( long value )
+		{
+			request.AddNumber("playerAttr", value);
+			return this;
+		}			
+	}
+	
+	public class LogChallengeEventRequest_PlayerScore : GSTypedRequest<LogChallengeEventRequest_PlayerScore, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_PlayerScore() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "PlayerScore");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_PlayerScore SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_PlayerScore Set_playerAttr( long value )
+		{
+			request.AddNumber("playerAttr", value);
+			return this;
+		}			
 	}
 	
 	public class LogEventRequest_SetStartingPlayer : GSTypedRequest<LogEventRequest_SetStartingPlayer, LogEventResponse>
@@ -208,9 +616,238 @@ namespace GameSparks.Api.Requests{
 	
 }
 	
+	
+	
+namespace GameSparks.Api.Requests{
+	
+	public class LeaderboardDataRequest_HighScoreLB : GSTypedRequest<LeaderboardDataRequest_HighScoreLB,LeaderboardDataResponse_HighScoreLB>
+	{
+		public LeaderboardDataRequest_HighScoreLB() : base("LeaderboardDataRequest"){
+			request.AddString("leaderboardShortCode", "HighScoreLB");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LeaderboardDataResponse_HighScoreLB (response);
+		}		
+		
+		/// <summary>
+		/// The challenge instance to get the leaderboard data for
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		/// <summary>
+		/// The number of items to return in a page (default=50)
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetEntryCount( long entryCount )
+		{
+			request.AddNumber("entryCount", entryCount);
+			return this;
+		}
+		/// <summary>
+		/// A friend id or an array of friend ids to use instead of the player's social friends
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetFriendIds( List<string> friendIds )
+		{
+			request.AddStringList("friendIds", friendIds);
+			return this;
+		}
+		/// <summary>
+		/// Number of entries to include from head of the list
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetIncludeFirst( long includeFirst )
+		{
+			request.AddNumber("includeFirst", includeFirst);
+			return this;
+		}
+		/// <summary>
+		/// Number of entries to include from tail of the list
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetIncludeLast( long includeLast )
+		{
+			request.AddNumber("includeLast", includeLast);
+			return this;
+		}
+		
+		/// <summary>
+		/// The offset into the set of leaderboards returned
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetOffset( long offset )
+		{
+			request.AddNumber("offset", offset);
+			return this;
+		}
+		/// <summary>
+		/// If True returns a leaderboard of the player's social friends
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetSocial( bool social )
+		{
+			request.AddBoolean("social", social);
+			return this;
+		}
+		/// <summary>
+		/// The IDs of the teams you are interested in
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetTeamIds( List<string> teamIds )
+		{
+			request.AddStringList("teamIds", teamIds);
+			return this;
+		}
+		/// <summary>
+		/// The type of team you are interested in
+		/// </summary>
+		public LeaderboardDataRequest_HighScoreLB SetTeamTypes( List<string> teamTypes )
+		{
+			request.AddStringList("teamTypes", teamTypes);
+			return this;
+		}
+		
+	}
+
+	public class AroundMeLeaderboardRequest_HighScoreLB : GSTypedRequest<AroundMeLeaderboardRequest_HighScoreLB,AroundMeLeaderboardResponse_HighScoreLB>
+	{
+		public AroundMeLeaderboardRequest_HighScoreLB() : base("AroundMeLeaderboardRequest"){
+			request.AddString("leaderboardShortCode", "HighScoreLB");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new AroundMeLeaderboardResponse_HighScoreLB (response);
+		}		
+		
+		/// <summary>
+		/// The number of items to return in a page (default=50)
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetEntryCount( long entryCount )
+		{
+			request.AddNumber("entryCount", entryCount);
+			return this;
+		}
+		/// <summary>
+		/// A friend id or an array of friend ids to use instead of the player's social friends
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetFriendIds( List<string> friendIds )
+		{
+			request.AddStringList("friendIds", friendIds);
+			return this;
+		}
+		/// <summary>
+		/// Number of entries to include from head of the list
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetIncludeFirst( long includeFirst )
+		{
+			request.AddNumber("includeFirst", includeFirst);
+			return this;
+		}
+		/// <summary>
+		/// Number of entries to include from tail of the list
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetIncludeLast( long includeLast )
+		{
+			request.AddNumber("includeLast", includeLast);
+			return this;
+		}
+		
+		/// <summary>
+		/// If True returns a leaderboard of the player's social friends
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetSocial( bool social )
+		{
+			request.AddBoolean("social", social);
+			return this;
+		}
+		/// <summary>
+		/// The IDs of the teams you are interested in
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetTeamIds( List<string> teamIds )
+		{
+			request.AddStringList("teamIds", teamIds);
+			return this;
+		}
+		/// <summary>
+		/// The type of team you are interested in
+		/// </summary>
+		public AroundMeLeaderboardRequest_HighScoreLB SetTeamTypes( List<string> teamTypes )
+		{
+			request.AddStringList("teamTypes", teamTypes);
+			return this;
+		}
+	}
+}
+
+namespace GameSparks.Api.Responses{
+	
+	public class _LeaderboardEntry_HighScoreLB : LeaderboardDataResponse._LeaderboardData{
+		public _LeaderboardEntry_HighScoreLB(GSData data) : base(data){}
+		public long? playerAttr{
+			get{return response.GetNumber("playerAttr");}
+		}
+	}
+	
+	public class LeaderboardDataResponse_HighScoreLB : LeaderboardDataResponse
+	{
+		public LeaderboardDataResponse_HighScoreLB(GSData data) : base(data){}
+		
+		public GSEnumerable<_LeaderboardEntry_HighScoreLB> Data_HighScoreLB{
+			get{return new GSEnumerable<_LeaderboardEntry_HighScoreLB>(response.GetObjectList("data"), (data) => { return new _LeaderboardEntry_HighScoreLB(data);});}
+		}
+		
+		public GSEnumerable<_LeaderboardEntry_HighScoreLB> First_HighScoreLB{
+			get{return new GSEnumerable<_LeaderboardEntry_HighScoreLB>(response.GetObjectList("first"), (data) => { return new _LeaderboardEntry_HighScoreLB(data);});}
+		}
+		
+		public GSEnumerable<_LeaderboardEntry_HighScoreLB> Last_HighScoreLB{
+			get{return new GSEnumerable<_LeaderboardEntry_HighScoreLB>(response.GetObjectList("last"), (data) => { return new _LeaderboardEntry_HighScoreLB(data);});}
+		}
+	}
+	
+	public class AroundMeLeaderboardResponse_HighScoreLB : AroundMeLeaderboardResponse
+	{
+		public AroundMeLeaderboardResponse_HighScoreLB(GSData data) : base(data){}
+		
+		public GSEnumerable<_LeaderboardEntry_HighScoreLB> Data_HighScoreLB{
+			get{return new GSEnumerable<_LeaderboardEntry_HighScoreLB>(response.GetObjectList("data"), (data) => { return new _LeaderboardEntry_HighScoreLB(data);});}
+		}
+		
+		public GSEnumerable<_LeaderboardEntry_HighScoreLB> First_HighScoreLB{
+			get{return new GSEnumerable<_LeaderboardEntry_HighScoreLB>(response.GetObjectList("first"), (data) => { return new _LeaderboardEntry_HighScoreLB(data);});}
+		}
+		
+		public GSEnumerable<_LeaderboardEntry_HighScoreLB> Last_HighScoreLB{
+			get{return new GSEnumerable<_LeaderboardEntry_HighScoreLB>(response.GetObjectList("last"), (data) => { return new _LeaderboardEntry_HighScoreLB(data);});}
+		}
+	}
+}	
 
 namespace GameSparks.Api.Messages {
 
+		public class ScriptMessage_AcceptedFriendRequest : ScriptMessage {
+		
+			public new static Action<ScriptMessage_AcceptedFriendRequest> Listener;
+	
+			public ScriptMessage_AcceptedFriendRequest(GSData data) : base(data){}
+	
+			private static ScriptMessage_AcceptedFriendRequest Create(GSData data)
+			{
+				ScriptMessage_AcceptedFriendRequest message = new ScriptMessage_AcceptedFriendRequest (data);
+				return message;
+			}
+	
+			static ScriptMessage_AcceptedFriendRequest()
+			{
+				handlers.Add (".ScriptMessage_AcceptedFriendRequest", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
 		public class ScriptMessage_ChallengeMove : ScriptMessage {
 		
 			public new static Action<ScriptMessage_ChallengeMove> Listener;
@@ -263,6 +900,84 @@ namespace GameSparks.Api.Messages {
 				}
 			}
 		}
+		public class ScriptMessage_DeclinedFriendRequest : ScriptMessage {
+		
+			public new static Action<ScriptMessage_DeclinedFriendRequest> Listener;
+	
+			public ScriptMessage_DeclinedFriendRequest(GSData data) : base(data){}
+	
+			private static ScriptMessage_DeclinedFriendRequest Create(GSData data)
+			{
+				ScriptMessage_DeclinedFriendRequest message = new ScriptMessage_DeclinedFriendRequest (data);
+				return message;
+			}
+	
+			static ScriptMessage_DeclinedFriendRequest()
+			{
+				handlers.Add (".ScriptMessage_DeclinedFriendRequest", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
+		public class ScriptMessage_FriendOnline : ScriptMessage {
+		
+			public new static Action<ScriptMessage_FriendOnline> Listener;
+	
+			public ScriptMessage_FriendOnline(GSData data) : base(data){}
+	
+			private static ScriptMessage_FriendOnline Create(GSData data)
+			{
+				ScriptMessage_FriendOnline message = new ScriptMessage_FriendOnline (data);
+				return message;
+			}
+	
+			static ScriptMessage_FriendOnline()
+			{
+				handlers.Add (".ScriptMessage_FriendOnline", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
+		public class ScriptMessage_FriendRequest : ScriptMessage {
+		
+			public new static Action<ScriptMessage_FriendRequest> Listener;
+	
+			public ScriptMessage_FriendRequest(GSData data) : base(data){}
+	
+			private static ScriptMessage_FriendRequest Create(GSData data)
+			{
+				ScriptMessage_FriendRequest message = new ScriptMessage_FriendRequest (data);
+				return message;
+			}
+	
+			static ScriptMessage_FriendRequest()
+			{
+				handlers.Add (".ScriptMessage_FriendRequest", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
 		public class ScriptMessage_MatchmakingGroupNumber : ScriptMessage {
 		
 			public new static Action<ScriptMessage_MatchmakingGroupNumber> Listener;
@@ -278,6 +993,32 @@ namespace GameSparks.Api.Messages {
 			static ScriptMessage_MatchmakingGroupNumber()
 			{
 				handlers.Add (".ScriptMessage_MatchmakingGroupNumber", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
+		public class ScriptMessage_RefreshLobbyGames : ScriptMessage {
+		
+			public new static Action<ScriptMessage_RefreshLobbyGames> Listener;
+	
+			public ScriptMessage_RefreshLobbyGames(GSData data) : base(data){}
+	
+			private static ScriptMessage_RefreshLobbyGames Create(GSData data)
+			{
+				ScriptMessage_RefreshLobbyGames message = new ScriptMessage_RefreshLobbyGames (data);
+				return message;
+			}
+	
+			static ScriptMessage_RefreshLobbyGames()
+			{
+				handlers.Add (".ScriptMessage_RefreshLobbyGames", Create);
 	
 			}
 			

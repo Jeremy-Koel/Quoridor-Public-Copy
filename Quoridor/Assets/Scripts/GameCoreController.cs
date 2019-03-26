@@ -65,7 +65,12 @@ public class GameCoreController : MonoBehaviour
 
     public bool IsGameOver()
     {
-        return gameBoard.IsGameOver();
+        bool gameOver = gameBoard.IsGameOver();
+        if (gameOver)
+        {
+            eventManager.InvokeGameOver();
+        }
+        return gameOver;
     }
 
     public bool DidPlayerOneWin()

@@ -27,6 +27,7 @@ public class NetworkGameController : MonoBehaviour
 
             eventManager.ListenToChallengeStartingPlayerSet(SetupMultiplayerGame);
             eventManager.ListenToMoveReceived(MakeNetworkOpponentMove);
+            eventManager.ListenToGameOver(DetermineWinner);
             //eventManager.InvokeGameBoardReady();
         }        
     }
@@ -101,7 +102,13 @@ public class NetworkGameController : MonoBehaviour
                 //    interfaceController.MoveOpponentWallInGUI(moveString);
                 //}
             }
-            gameCoreController.RecordOpponentMove(moveString);
+            bool recorded = gameCoreController.RecordOpponentMove(moveString);
+            // Check if the opponent's move won the game - NK
+            if (recorded)
+            {
+                // Call interface method
+                interfaceController.CheckIsGameOver();
+            }
         }
     }
 
@@ -117,6 +124,21 @@ public class NetworkGameController : MonoBehaviour
             mirroredMove = messageQueue.DequeueOpponentMoveQueue();
         }
         return mirroredMove;
+    }
+
+    public void DetermineWinner()
+    {
+        bool playerOneWin = gameCoreController.DidPlayerOneWin();
+        if (playerOneWin)
+        {
+            // Call GameWon GS event
+            eventManager.InvokeChallengeWon();
+        }
+        else
+        {
+            // Call GameLost GS event
+            eventManager.InvokeChallengeLost();
+        }
     }
 
 }
