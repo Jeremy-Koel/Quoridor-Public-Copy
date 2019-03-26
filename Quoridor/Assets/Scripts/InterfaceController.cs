@@ -27,11 +27,11 @@ public class InterfaceController : MonoBehaviour
         opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
         initAnimatorQueues();
 
-        if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        if (SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
             eventManager.ListenToLocalPlayerMoved(GenerateMoveForAI);
         }
-        else if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        else if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             //eventManager.ListenToLocalPlayerMoved();
         }
@@ -193,7 +193,7 @@ public class InterfaceController : MonoBehaviour
                 TriggerPlayerWallIndicatorAnimation();
             }
 
-            if (GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+            if (SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
             {
                 eventManager.InvokeLocalPlayerMoved();
             }
@@ -227,7 +227,7 @@ public class InterfaceController : MonoBehaviour
 
     public string GetLocalPlayerName()
     {
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             return challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName;
         }
@@ -264,7 +264,7 @@ public class InterfaceController : MonoBehaviour
 
     public string WhoWon()
     {
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             if (!gameCoreController.DidPlayerOneWin()) 
             {

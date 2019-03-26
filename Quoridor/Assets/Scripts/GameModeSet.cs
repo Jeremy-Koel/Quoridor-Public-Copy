@@ -19,11 +19,11 @@ public class GameModeSet : MonoBehaviour
 
     private void SetGameModeSinglePlayer()
     {
-        GameModeStatus.GameMode = GameModeEnum.SINGLE_PLAYER;
+        SessionStates.GameMode = GameModeEnum.SINGLE_PLAYER;
     }
 
     private void SetGameModeMultiplayer()
     {
-        GameModeStatus.GameMode = GameModeEnum.MULTIPLAYER;
+        SessionStates.GameMode = GameModeEnum.MULTIPLAYER;
     }
 }

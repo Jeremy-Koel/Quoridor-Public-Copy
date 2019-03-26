@@ -145,6 +145,13 @@ public class MainMenu : MonoBehaviour
 
     public void onEasyButtonClick()
     {
+        SessionStates.Difficulty = DifficultyEnum.EASY;
+        SceneManager.LoadScene("GameBoard");
+    }
+
+    public void onHardButtonClick()
+    {
+        SessionStates.Difficulty = DifficultyEnum.HARD;
         SceneManager.LoadScene("GameBoard");
     }
 

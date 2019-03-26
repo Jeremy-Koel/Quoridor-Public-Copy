@@ -32,7 +32,7 @@ public class PlayerTurnPopup : MonoBehaviour
         gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         turnText = playerTurnPopupText.GetComponent<Text>();
 
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager.ListenToChallengeTurnTaken(UpdateTurnPopup);            
         }
@@ -46,7 +46,7 @@ public class PlayerTurnPopup : MonoBehaviour
     private void Start()
     {
         playerTurnPopup.SetActive(false);
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             UpdateTurnPopup();
         }
@@ -77,7 +77,7 @@ public class PlayerTurnPopup : MonoBehaviour
 
 
         // Get info from ChallengeManager/Controller
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             turnText.text = interfaceController.GetPlayerNameForTurn() + "'s Turn!";
         }

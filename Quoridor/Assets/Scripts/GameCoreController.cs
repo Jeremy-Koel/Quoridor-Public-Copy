@@ -20,7 +20,7 @@ public class GameCoreController : MonoBehaviour
         spaceCoordMap = new Dictionary<string, PlayerCoordinate>();
         wallCoordMap = new Dictionary<string, WallCoordinate>();
 
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager.ListenToNewGame(ResetGameBoard);
             eventManager.InvokeGameBoardReady();
@@ -40,7 +40,7 @@ public class GameCoreController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     public void AddToSpaceMap(string name)
@@ -57,7 +57,7 @@ public class GameCoreController : MonoBehaviour
     {
         gameBoard = new GameBoard(GameBoard.PlayerEnum.ONE, "e1", "e9");
         
-        if (GameModeStatus.GameMode == GameModeEnum.MULTIPLAYER)
+        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
         {
             eventManager.InvokeGameBoardReady();
         }
@@ -107,7 +107,7 @@ public class GameCoreController : MonoBehaviour
             returnValue = gameBoard.PlaceWall(player, new WallCoordinate(moveString));
         }
 
-        if (returnValue && GameModeStatus.GameMode == GameModeEnum.SINGLE_PLAYER)
+        if (returnValue && SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
             eventManager.InvokeTurnTaken();
         }
@@ -117,7 +117,7 @@ public class GameCoreController : MonoBehaviour
 
     public Task<string> GetMoveFromAI()
     {
-        MonteCarlo tree = new MonteCarlo(gameBoard);
+        MonteCarlo tree = new MonteCarlo(gameBoard, (SessionStates.Difficulty == DifficultyEnum.HARD));
         return Task.Run(() => tree.MonteCarloTreeSearch());
     }
 
