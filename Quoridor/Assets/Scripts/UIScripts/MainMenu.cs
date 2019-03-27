@@ -19,6 +19,7 @@ public class MainMenu : MonoBehaviour
     public GameObject lobbyPanel;
     public GameObject chatWindowPanel;
     public GameObject leaderboardPanel;
+    public GameObject tutorialPanel;
     //public GameObject previousPanel;
     //public GameObject currentPanel;
     public Stack<GameObject> panelOrder;
@@ -71,6 +72,7 @@ public class MainMenu : MonoBehaviour
         registrationPanel = GameObject.Find("RegistrationPanel");
         lobbyPanel = GameObject.Find("LobbyPanel");
         leaderboardPanel = GameObject.Find("LeaderboardPanel");
+        tutorialPanel = GameObject.Find("TutorialPanel");
         // previousPanel = new GameObject();
         //currentPanel = new GameObject();
         panelOrder = new Stack<GameObject>();
@@ -84,6 +86,7 @@ public class MainMenu : MonoBehaviour
         registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         leaderboardPanel.SetActive(false);
+        tutorialPanel.SetActive(false);
     }
 
     public void onPlayButtonClick()
@@ -167,6 +170,16 @@ public class MainMenu : MonoBehaviour
         settingsPanel.SetActive(true);
         //currentPanel = settingsPanel;
         panelOrder.Push(settingsPanel);
+    }
+
+    public void onTutorialButtonClick(Button button)
+    {
+        mainMenuPanel.SetActive(false);
+        playModePanel.SetActive(false);
+        difficultyLevelPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        tutorialPanel.SetActive(true);
+        panelOrder.Push(tutorialPanel);
     }
 
     public void onBackButtonClick()
