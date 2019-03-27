@@ -368,6 +368,38 @@ namespace GameSparks.Api.Requests{
 		}
 	}
 	
+	public class LogEventRequest_GetFriendRequests : GSTypedRequest<LogEventRequest_GetFriendRequests, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_GetFriendRequests() : base("LogEventRequest"){
+			request.AddString("eventKey", "GetFriendRequests");
+		}
+	}
+	
+	public class LogChallengeEventRequest_GetFriendRequests : GSTypedRequest<LogChallengeEventRequest_GetFriendRequests, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_GetFriendRequests() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "GetFriendRequests");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_GetFriendRequests SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+	}
+	
 	public class LogEventRequest_GetFriendsList : GSTypedRequest<LogEventRequest_GetFriendsList, LogEventResponse>
 	{
 	

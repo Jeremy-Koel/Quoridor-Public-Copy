@@ -92,6 +92,8 @@ public class FriendsPanel : MonoBehaviour
         onlineFriendsButton.interactable = true;
         offlineFriendsButton.interactable = true;
         addFriendsButton.interactable = true;
+        // Get my pending friend requests
+        GetPendingFriendsList();
     }
 
     private void SwitchToAddfriends()
@@ -101,6 +103,13 @@ public class FriendsPanel : MonoBehaviour
         onlineFriendsButton.interactable = true;
         offlineFriendsButton.interactable = true;
         friendRequestsButton.interactable = true;
+    }
+
+    // Get player's pending friend requests
+    private void GetPendingFriendsList()
+    {
+        LogEventRequest_GetFriendRequests getFriendsListRequest = new LogEventRequest_GetFriendRequests();
+        getFriendsListRequest.Send(GetFriendsListResponse);
     }
 
     // Friends group determines which group of friends to search for (online/offline)
