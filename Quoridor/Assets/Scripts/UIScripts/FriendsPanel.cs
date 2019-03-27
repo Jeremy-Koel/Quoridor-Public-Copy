@@ -203,7 +203,10 @@ public class FriendsPanel : MonoBehaviour
             playerName = playerName + "+" + playerID.Substring(20, 4);
 
             GameObject friendResultButton = Instantiate(friendResultButtonPrefab) as GameObject;
-
+            FriendResult friendResultScript = friendResultButton.GetComponent<FriendResult>();
+            friendResultScript.playerID = playerID;
+            friendResultButton.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClick);
+            friendResultButton.name = playerID;
             // Get text component of button
             UnityEngine.UI.Text[] playerObjectTexts = friendResultButton.GetComponentsInChildren<Text>();
             Text playerText = playerObjectTexts[0];
