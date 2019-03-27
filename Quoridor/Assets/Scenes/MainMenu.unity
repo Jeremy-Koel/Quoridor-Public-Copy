@@ -4360,7 +4360,7 @@ GameObject:
   - component: {fileID: 988624299}
   - component: {fileID: 988624300}
   m_Layer: 5
-  m_Name: LeaderbordListContent
+  m_Name: LeaderboardListContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
