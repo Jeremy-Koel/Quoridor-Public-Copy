@@ -27,7 +27,7 @@ public class LeaderboardPanel : MonoBehaviour
         playersListLayoutGroup = GameObject.Find("LeaderboardListContent").GetComponent<VerticalLayoutGroup>();
         playersList = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-        refreshLeaderboardButton = GameObject.Find("RefreshLeaderboardList").GetComponent<Button>();
+        refreshLeaderboardButton = GameObject.Find("RefreshLeaderboardListButton").GetComponent<Button>();
         refreshLeaderboardButton.onClick.AddListener(onRefreshLeaderboardButtonClick);
     }
 
@@ -102,19 +102,17 @@ public class LeaderboardPanel : MonoBehaviour
             UnityEngine.UI.Text[] playerObjectTexts = playerObject.GetComponentsInChildren<Text>();
             Text playerText = playerObjectTexts[0];
             Text winsText = playerObjectTexts[1];
-
-            // MOVE PLAYER NAME AND WINS LABELING TO ABOVE THE LEADERBOARD INSTEAD OF INSIDE OF EVERY OBJECT - NK
-
-            if (playerName.Length >= 10)
+            
+            if (playerName.Length >= 20)
             {
-                playerText.text = ("<b>Player Name: </b>" + playerName.Substring(0, 10));
+                playerText.text = (playerName.Substring(0, 20));
             }
             else
             {
-                playerText.text = ("<b>Player Name: </b>" + playerName);
+                playerText.text = (playerName);
             }
-            // Adding spacing for now to avoid making changes to unity scene - NK
-            winsText.text = ("                              <b>Wins: </b>" + playerWins);
+
+            winsText.text = (playerWins);
 
             playerObject.transform.SetParent(leaderboardContent);
             playerObject.transform.localScale = new Vector3(1, 1, 1);
