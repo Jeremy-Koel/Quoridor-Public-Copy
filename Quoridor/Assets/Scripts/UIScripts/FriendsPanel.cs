@@ -17,7 +17,11 @@ public class FriendsPanel : MonoBehaviour
     GameObject addFriendsPanel;
     GameObject chatWindowPanel;
     GameObject chatSelectionPanel;
+    RectTransform friendsListContent;
+    public VerticalLayoutGroup friendsListLayoutGroup;
+    private GameObject friendsListView;
     public GameObject friendResultButtonPrefab;
+    public List<GameObject> friendsList;
 
     private void Awake()
     {
@@ -28,6 +32,10 @@ public class FriendsPanel : MonoBehaviour
         addFriendsPanel = GameObject.Find("AddFriendsPanel");
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         chatSelectionPanel = GameObject.Find("ChatSelectionPanel");
+        friendsListView = GameObject.Find("FriendsListViewport");
+        friendsListContent = GameObject.Find("FriendsListContent").GetComponent<RectTransform>();
+        friendsListLayoutGroup = friendsListContent.GetComponent<VerticalLayoutGroup>();
+        friendsList = new List<GameObject>();
         // We don't want the addFriendsPanel active at the start
         SwitchActiveAddFriendsPanel();
     }
@@ -104,14 +112,12 @@ public class FriendsPanel : MonoBehaviour
                 playerText.text = (playerName);
             }
 
-            winsText.text = (playerWins);
-
-            playerObject.transform.SetParent(leaderboardContent);
+            playerObject.transform.SetParent(friendsListContent);
             playerObject.transform.localScale = new Vector3(1, 1, 1);
 
-            playersList.Add(playerObject);
+            friendsList.Add(playerObject);
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(leaderboardContent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(friendsListContent);
     }
 }
