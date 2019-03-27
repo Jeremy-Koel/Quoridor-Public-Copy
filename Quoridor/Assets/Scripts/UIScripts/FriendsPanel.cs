@@ -10,6 +10,7 @@ using GameSparks.Core;
 
 public class FriendsPanel : MonoBehaviour
 {
+    InputField searchFriendsInput;
     Button onlineFriendsButton;
     Button offlineFriendsButton;
     Button friendRequestsButton;
@@ -25,9 +26,15 @@ public class FriendsPanel : MonoBehaviour
     private GameObject friendsListViewPort;
     public GameObject friendResultButtonPrefab;
     public List<GameObject> friendsList;
+    public List<GameObject> friendsSearchResultList;
+    private RectTransform friendsSearchResultListContent;
+    private VerticalLayoutGroup friendsSearchResultLayoutGroup;
+    private GameObject friendsSearchResultListView;
+    //private GameObject friendsSearchResultListViewPort;
 
     private void Awake()
     {
+        searchFriendsInput = GameObject.Find("SearchFriendsInput").GetComponent<InputField>();
         onlineFriendsButton = GameObject.Find("OnlineFriendsButton").GetComponent<Button>();
         offlineFriendsButton = GameObject.Find("OfflineFriendsButton").GetComponent<Button>();
         friendRequestsButton = GameObject.Find("FriendRequestsButton").GetComponent<Button>();
@@ -42,6 +49,12 @@ public class FriendsPanel : MonoBehaviour
         friendsListContent = GameObject.Find("FriendsListContent").GetComponent<RectTransform>();
         friendsListLayoutGroup = friendsListContent.GetComponent<VerticalLayoutGroup>();
         friendsList = new List<GameObject>();
+        friendsSearchResultList = new List<GameObject>();
+        friendsSearchResultListContent = GameObject.Find("AddFriendsContent").GetComponent<RectTransform>();
+        friendsSearchResultLayoutGroup = GameObject.Find("AddFriendsContent").GetComponent<VerticalLayoutGroup>();
+        friendsSearchResultListView = GameObject.Find("AddFriendsView");
+        //friendsSearchResultListViewPort = GameObject.Find("");
+
         // We don't want the addFriendsPanel active at the start
         addFriendsPanel.SetActive(false);
     }
@@ -54,7 +67,7 @@ public class FriendsPanel : MonoBehaviour
         offlineFriendsButton.onClick.AddListener(SwitchFriendsListToOffline);
         friendRequestsButton.onClick.AddListener(SwitchFriendsListToRequests);
         addFriendsButton.onClick.AddListener(SwitchToAddfriends);
-        //searchFriendsButton.onClick.AddListener();
+        searchFriendsButton.onClick.AddListener(SearchForFriendsToAdd);
         // Call starting point function
         SwitchFriendsListToOnline();
     }
@@ -150,6 +163,62 @@ public class FriendsPanel : MonoBehaviour
         friendRequestsButton.interactable = true;
     }
 
+    private void SearchForFriendsToAdd()
+    {
+        LogEventRequest_FindPlayers findPlayersRequest = new LogEventRequest_FindPlayers();
+        findPlayersRequest.Set_displayName(searchFriendsInput.text);
+        findPlayersRequest.Send(SearchForFriendsResponse);
+    }
+
+    private void SearchForFriendsResponse(LogEventResponse response)
+    {
+        ClearSearchForFriendsList();
+        var friendsSearchListData = response.ScriptData.BaseData;
+        UpdateSearchForFriendsUI(friendsSearchListData);
+    }
+
+    private void UpdateSearchForFriendsUI(IDictionary<string, object> friendsSearchListData)
+    {
+        var friendsSearchListDataEnumerator = friendsSearchListData.GetEnumerator();
+        friendsSearchListDataEnumerator.MoveNext();
+        var playerListData = (List<object>)friendsSearchListDataEnumerator.Current.Value;
+        var playerListDataEnumerator = playerListData.GetEnumerator();
+        while (playerListDataEnumerator.MoveNext())
+        {
+            var playerData = playerListDataEnumerator.Current;
+            var playerDataDictionary = (IDictionary<string, object>)playerData;
+            var playerDataEnumerator = playerDataDictionary.GetEnumerator();
+
+            playerDataEnumerator.MoveNext();
+            string playerName = playerDataEnumerator.Current.Value.ToString();
+
+            if (playerName.Length >= 20)
+            {
+                playerName = (playerName.Substring(0, 20));
+            }
+
+            playerDataEnumerator.MoveNext();
+            playerDataEnumerator.MoveNext();
+            string playerID = playerDataEnumerator.Current.Value.ToString();
+            playerName = playerName + "+" + playerID.Substring(20, 4);
+
+            GameObject friendResultButton = Instantiate(friendResultButtonPrefab) as GameObject;
+
+            // Get text component of button
+            UnityEngine.UI.Text[] playerObjectTexts = friendResultButton.GetComponentsInChildren<Text>();
+            Text playerText = playerObjectTexts[0];
+
+            playerText.text = playerName;
+
+            friendResultButton.transform.SetParent(friendsSearchResultListContent);
+            friendResultButton.transform.localScale = new Vector3(1, 1, 1);
+
+            friendsSearchResultList.Add(friendResultButton);
+
+        }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(friendsSearchResultListContent);
+    }
+
     // Get player's pending friend requests
     private void GetPendingFriendsList()
     {
@@ -221,5 +290,14 @@ public class FriendsPanel : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         }
         friendsList.Clear();
+    }
+
+    private void ClearSearchForFriendsList()
+    {
+        foreach (RectTransform child in friendsSearchResultListContent)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        friendsSearchResultList.Clear();
     }
 }
