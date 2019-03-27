@@ -28,6 +28,7 @@ public class LeaderboardPanel : MonoBehaviour
         playersList = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         refreshLeaderboardButton = GameObject.Find("RefreshLeaderboardList").GetComponent<Button>();
+        refreshLeaderboardButton.onClick.AddListener(onRefreshLeaderboardButtonClick);
     }
 
     // Start is called before the first frame update
@@ -62,7 +63,7 @@ public class LeaderboardPanel : MonoBehaviour
         
     }
 
-    private void onRefreshGamesButtonClick()
+    public void onRefreshLeaderboardButtonClick()
     {
         BlockRefreshInput();
         GetLeaderboardData();
@@ -93,6 +94,7 @@ public class LeaderboardPanel : MonoBehaviour
         {
             var leaderboardBaseData = leaderboardData.Current.BaseData;
             string playerName = leaderboardBaseData.GetString("SUPPLEMENTAL-playerName");
+            string playerWins = leaderboardBaseData.GetNumber("MAX-playerAttr").ToString();
             // Create new (gamelobby) Button to add to children of HostedGameLobbies
             GameObject playerObject = Instantiate(playerPrefab) as GameObject;
 
@@ -101,26 +103,26 @@ public class LeaderboardPanel : MonoBehaviour
             Text playerText = playerObjectTexts[0];
             Text winsText = playerObjectTexts[1];
 
+            // MOVE PLAYER NAME AND WINS LABELING TO ABOVE THE LEADERBOARD INSTEAD OF INSIDE OF EVERY OBJECT - NK
+
             if (playerName.Length >= 10)
             {
-                playerText.text = ("<b>" + playerName.Substring(0, 10) + ":</b>");
+                playerText.text = ("<b>Player Name: </b>" + playerName.Substring(0, 10));
             }
             else
             {
-                playerText.text = ("<b>" + playerName + ":</b>");
+                playerText.text = ("<b>Player Name: </b>" + playerName);
             }
+            // Adding spacing for now to avoid making changes to unity scene - NK
+            winsText.text = ("                              <b>Wins: </b>" + playerWins);
 
-            ////playerText.text = ("<b>" + messageWho + ":</b>");
-            ////messageText.text = (messageMessage);
+            playerObject.transform.SetParent(leaderboardContent);
+            playerObject.transform.localScale = new Vector3(1, 1, 1);
 
-            //hostedGameLobby.transform.SetParent(hostedGameLobbiesRectTransform);
-            //hostedGameLobby.transform.localScale = new Vector3(1, 1, 1);
-
-            //hostedGames.Add(hostedGameLobby);
-
+            playersList.Add(playerObject);
         }
 
-        //LayoutRebuilder.ForceRebuildLayoutImmediate(hostedGameLobbiesRectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(leaderboardContent);
     }
 
     void RemoveLeaderboardData()

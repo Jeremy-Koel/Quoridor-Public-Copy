@@ -25,6 +25,8 @@ public class MainMenu : MonoBehaviour
 
     public GameObject challengeManager;
 
+    private bool lobbyActivatedOnce;
+
     [SerializeField]
     private InputField usernameLoginInput;
     [SerializeField]
@@ -269,6 +271,10 @@ public class MainMenu : MonoBehaviour
         registrationPanel.SetActive(false);
         panelOrder.Push(lobbyPanel);
         lobbyPanel.SetActive(true);
+
+        // Set click listener for leaderboards button
+        Button leaderboardButton = GameObject.Find("LeaderboardButton").GetComponent<Button>();
+        leaderboardButton.onClick.AddListener(OnLeaderboardsClick);
     }
 
     private void OnLoginError(AuthenticationResponse response)
@@ -309,6 +315,16 @@ public class MainMenu : MonoBehaviour
         UnblockInput();
         errorMessageRegistrationText.color = Color.red;
         errorMessageRegistrationText.text = response.Errors.BaseData["USERNAME"].ToString();
+    }
+
+    private void OnLeaderboardsClick()
+    {
+        lobbyPanel.SetActive(false);
+        leaderboardPanel.SetActive(true);
+        panelOrder.Push(leaderboardPanel);
+
+        LeaderboardPanel leaderboardPanelScript = GameObject.Find("LeaderboardPanel").GetComponent<LeaderboardPanel>();
+        leaderboardPanelScript.onRefreshLeaderboardButtonClick();
     }
 
     private void BlockInput()
