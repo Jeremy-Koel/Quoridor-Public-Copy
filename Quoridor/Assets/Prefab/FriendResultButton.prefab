@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6627127886447672637}
   - component: {fileID: 760845241066340002}
   - component: {fileID: 3126162904223902045}
+  - component: {fileID: 6847673441941880581}
   m_Layer: 5
   m_Name: FriendResultButton
   m_TagString: Untagged
@@ -139,6 +140,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &6847673441941880581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4701965646430249678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf7a4090273f2ea44853a63b2f3bda8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6502158042174607489
 GameObject:
   m_ObjectHideFlags: 0
