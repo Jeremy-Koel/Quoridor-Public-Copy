@@ -25,7 +25,25 @@ public class FriendResult : MonoBehaviour
         
     }
 
-    public void OnClick()
+    public void OnClickAcceptFriendRequest()
+    {
+        LogEventRequest_AcceptFriendRequest acceptFriendRequest = new LogEventRequest_AcceptFriendRequest();
+        acceptFriendRequest.Set_playerID(playerID);
+        acceptFriendRequest.Send(OnAcceptFriendRequestResult);
+    }
+
+    private void OnAcceptFriendRequestResult(LogEventResponse response)
+    {
+        if (!response.HasErrors)
+        {
+            // remove pending request from list
+            GameObject.Destroy(GameObject.Find(playerID + "pending"));
+            FriendsPanel friendsPanelScript = GetComponentInParent<FriendsPanel>();
+            friendsPanelScript.GetPendingFriendsList();
+        }
+    }
+
+    public void OnClickSendFriendRequest()
     {
         LogEventRequest_FriendRequest friendRequest = new LogEventRequest_FriendRequest();
         friendRequest.Set_playerID(playerID);
@@ -35,7 +53,7 @@ public class FriendResult : MonoBehaviour
     private void OnFriendRequestResponse(LogEventResponse response)
     {
 
-        UnityEngine.UI.Text[] friendResultObjectTexts = GameObject.Find(playerID).GetComponentsInChildren<Text>();
+        UnityEngine.UI.Text[] friendResultObjectTexts = GameObject.Find(playerID + "search").GetComponentsInChildren<Text>();
         Text friendResultText = friendResultObjectTexts[0];
         if (!response.HasErrors)
         {

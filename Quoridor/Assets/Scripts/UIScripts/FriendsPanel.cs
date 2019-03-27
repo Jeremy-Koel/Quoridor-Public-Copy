@@ -32,6 +32,8 @@ public class FriendsPanel : MonoBehaviour
     private GameObject friendsSearchResultListView;
     //private GameObject friendsSearchResultListViewPort;
 
+    private bool pending;
+
     private void Awake()
     {
         searchFriendsInput = GameObject.Find("SearchFriendsInput").GetComponent<InputField>();
@@ -54,6 +56,7 @@ public class FriendsPanel : MonoBehaviour
         friendsSearchResultLayoutGroup = GameObject.Find("AddFriendsContent").GetComponent<VerticalLayoutGroup>();
         friendsSearchResultListView = GameObject.Find("AddFriendsView");
         //friendsSearchResultListViewPort = GameObject.Find("");
+        pending = false;
 
         // We don't want the addFriendsPanel active at the start
         addFriendsPanel.SetActive(false);
@@ -205,8 +208,8 @@ public class FriendsPanel : MonoBehaviour
             GameObject friendResultButton = Instantiate(friendResultButtonPrefab) as GameObject;
             FriendResult friendResultScript = friendResultButton.GetComponent<FriendResult>();
             friendResultScript.playerID = playerID;
-            friendResultButton.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClick);
-            friendResultButton.name = playerID;
+            friendResultButton.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClickSendFriendRequest);
+            friendResultButton.name = playerID + "search";
             // Get text component of button
             UnityEngine.UI.Text[] playerObjectTexts = friendResultButton.GetComponentsInChildren<Text>();
             Text playerText = playerObjectTexts[0];
@@ -223,8 +226,9 @@ public class FriendsPanel : MonoBehaviour
     }
 
     // Get player's pending friend requests
-    private void GetPendingFriendsList()
+    public void GetPendingFriendsList()
     {
+        pending = true;
         LogEventRequest_GetFriendRequests getFriendsListRequest = new LogEventRequest_GetFriendRequests();
         getFriendsListRequest.Send(GetFriendsListResponse);
     }
@@ -234,7 +238,7 @@ public class FriendsPanel : MonoBehaviour
     {
         // For now ignore the group choice
         friendsGroup = "all";
-
+        pending = false;
         LogEventRequest_GetFriendsList getFriendsListRequest = new LogEventRequest_GetFriendsList();
         getFriendsListRequest.Set_group(friendsGroup);
         getFriendsListRequest.Send(GetFriendsListResponse);
@@ -249,20 +253,28 @@ public class FriendsPanel : MonoBehaviour
 
     private void UpdateFriendsListUI(IDictionary<string, object> friendsListData)
     {
+        // The player name is burried deep in key/value pair-like structures
         var friendsListEnumerator = friendsListData.GetEnumerator();
-        while (friendsListEnumerator.MoveNext())
+        friendsListEnumerator.MoveNext();
+        var friendBaseData = (KeyValuePair<string, object>)friendsListEnumerator.Current;
+        var friendActualBaseData = (GameSparks.Core.GSData)friendBaseData.Value;
+        var friendPlayerIDBaseData = friendActualBaseData.BaseData.GetEnumerator();
+        while (friendPlayerIDBaseData.MoveNext())
         {
-            // The player name is burried deep in key/value pair-like structures
-            var friendBaseData = (KeyValuePair<string, object>)friendsListEnumerator.Current;
-            var friendActualBaseData = (GameSparks.Core.GSData)friendBaseData.Value;
-            var friendPlayerIDBaseData = friendActualBaseData.BaseData.GetEnumerator();
-            friendPlayerIDBaseData.MoveNext();
+            string playerID = friendPlayerIDBaseData.Current.Key;
             var friendPlayerIDActualBaseData = (GameSparks.Core.GSData)friendPlayerIDBaseData.Current.Value;
             var friendPlayerNameBaseData = friendPlayerIDActualBaseData.BaseData.GetEnumerator();
             friendPlayerNameBaseData.MoveNext();
             string playerName = friendPlayerNameBaseData.Current.Value.ToString();
             
             GameObject friendObject = Instantiate(friendResultButtonPrefab) as GameObject;
+            if (pending)
+            {
+                FriendResult friendResultScript = friendObject.GetComponent<FriendResult>();
+                friendResultScript.playerID = playerID;
+                friendObject.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClickAcceptFriendRequest);
+                friendObject.name = playerID + "pending";
+            }            
 
             // Get text component of button
             UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
@@ -282,6 +294,7 @@ public class FriendsPanel : MonoBehaviour
 
             friendsList.Add(friendObject);
         }
+        pending = false;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(friendsListContent);
     }
