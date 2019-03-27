@@ -1059,7 +1059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: 0.000016054475}
+  m_AnchoredPosition: {x: 1.4848496, y: 0.000011231548}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -14836,7 +14836,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   friendsListLayoutGroup: {fileID: 0}
-  friendResultButtonPrefab: {fileID: 0}
+  friendResultButtonPrefab: {fileID: 4701965646430249678, guid: 14f9f0446313ecf46ab3850658da2112,
+    type: 3}
   friendsList: []
 --- !u!1 &2078953516
 GameObject:

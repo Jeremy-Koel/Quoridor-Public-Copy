@@ -43,7 +43,13 @@ public class FriendsPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Add on clicks
+        onlineFriendsButton.onClick.AddListener(SwitchFriendsListToOnline);
+        offlineFriendsButton.onClick.AddListener(SwitchFriendsListToOffline);
+        friendRequestsButton.onClick.AddListener(SwitchFriendsListToRequests);
+        addFriendsButton.onClick.AddListener(SwitchToAddfriends);
+        // Call starting point function
+        SwitchFriendsListToOnline();
     }
 
     // Update is called once per frame
@@ -59,18 +65,44 @@ public class FriendsPanel : MonoBehaviour
 
     private void SwitchFriendsListToOnline()
     {
-
+        onlineFriendsButton.interactable = false;
+        // Switch all other buttons to interactable
+        offlineFriendsButton.interactable = true;
+        friendRequestsButton.interactable = true;
+        addFriendsButton.interactable = true;
+        // Get my friends list
+        GetFriendsList("online");
     }
 
     private void SwitchFriendsListToOffline()
     {
-
+        offlineFriendsButton.interactable = false;
+        // Switch all other buttons to interactable
+        onlineFriendsButton.interactable = true;
+        friendRequestsButton.interactable = true;
+        addFriendsButton.interactable = true;
+        // Get my friends list
+        GetFriendsList("offline");
     }
 
     private void SwitchFriendsListToRequests()
     {
-
+        friendRequestsButton.interactable = false;
+        // Switch all other buttons to interactable
+        onlineFriendsButton.interactable = true;
+        offlineFriendsButton.interactable = true;
+        addFriendsButton.interactable = true;
     }
+
+    private void SwitchToAddfriends()
+    {
+        addFriendsButton.interactable = false;
+        // Switch all other buttons to interactable
+        onlineFriendsButton.interactable = true;
+        offlineFriendsButton.interactable = true;
+        friendRequestsButton.interactable = true;
+    }
+
     // Friends group determines which group of friends to search for (online/offline)
     private void GetFriendsList(string friendsGroup)
     {
@@ -84,40 +116,56 @@ public class FriendsPanel : MonoBehaviour
 
     private void GetFriendsListResponse(LogEventResponse response)
     {
-        var friendsListData = response.ScriptData.GetGSDataList("friendsList");
+        ClearFriendsList();
+        var friendsListData = response.ScriptData.BaseData;
         UpdateFriendsListUI(friendsListData);
     }
 
-    private void UpdateFriendsListUI(List<GSData> friendsListData)
+    private void UpdateFriendsListUI(IDictionary<string, object> friendsListData)
     {
         var friendsListEnumerator = friendsListData.GetEnumerator();
         while (friendsListEnumerator.MoveNext())
         {
-            var friendBaseData = friendsListEnumerator.Current.BaseData;
-            string playerName = friendBaseData["displayName"].ToString();
-            // Create new (gamelobby) Button to add to children of HostedGameLobbies
-            GameObject playerObject = Instantiate(friendResultButtonPrefab) as GameObject;
+            // The player name is burried deep in key/value pair-like structures
+            var friendBaseData = (KeyValuePair<string, object>)friendsListEnumerator.Current;
+            var friendActualBaseData = (GameSparks.Core.GSData)friendBaseData.Value;
+            var friendPlayerIDBaseData = friendActualBaseData.BaseData.GetEnumerator();
+            friendPlayerIDBaseData.MoveNext();
+            var friendPlayerIDActualBaseData = (GameSparks.Core.GSData)friendPlayerIDBaseData.Current.Value;
+            var friendPlayerNameBaseData = friendPlayerIDActualBaseData.BaseData.GetEnumerator();
+            friendPlayerNameBaseData.MoveNext();
+            string playerName = friendPlayerNameBaseData.Current.Value.ToString();
+            
+            GameObject friendObject = Instantiate(friendResultButtonPrefab) as GameObject;
 
             // Get text component of button
-            UnityEngine.UI.Text[] playerObjectTexts = playerObject.GetComponentsInChildren<Text>();
-            Text playerText = playerObjectTexts[0];
-            Text winsText = playerObjectTexts[1];
+            UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
+            Text friendNameText = friendObjectTexts[0];
 
             if (playerName.Length >= 20)
             {
-                playerText.text = (playerName.Substring(0, 20));
+                friendNameText.text = (playerName.Substring(0, 20));
             }
             else
             {
-                playerText.text = (playerName);
+                friendNameText.text = (playerName);
             }
 
-            playerObject.transform.SetParent(friendsListContent);
-            playerObject.transform.localScale = new Vector3(1, 1, 1);
+            friendObject.transform.SetParent(friendsListContent);
+            friendObject.transform.localScale = new Vector3(1, 1, 1);
 
-            friendsList.Add(playerObject);
+            friendsList.Add(friendObject);
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(friendsListContent);
+    }
+
+    private void ClearFriendsList()
+    {
+        foreach (RectTransform child in friendsListContent)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        friendsList.Clear();
     }
 }
