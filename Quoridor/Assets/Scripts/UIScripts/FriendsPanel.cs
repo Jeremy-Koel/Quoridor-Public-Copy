@@ -14,12 +14,15 @@ public class FriendsPanel : MonoBehaviour
     Button offlineFriendsButton;
     Button friendRequestsButton;
     Button addFriendsButton;
+    Button searchFriendsButton;
     GameObject addFriendsPanel;
     GameObject chatWindowPanel;
     GameObject chatSelectionPanel;
     RectTransform friendsListContent;
     public VerticalLayoutGroup friendsListLayoutGroup;
+    private Image friendsPanelUIObjectImage;
     private GameObject friendsListView;
+    private GameObject friendsListViewPort;
     public GameObject friendResultButtonPrefab;
     public List<GameObject> friendsList;
 
@@ -29,15 +32,18 @@ public class FriendsPanel : MonoBehaviour
         offlineFriendsButton = GameObject.Find("OfflineFriendsButton").GetComponent<Button>();
         friendRequestsButton = GameObject.Find("FriendRequestsButton").GetComponent<Button>();
         addFriendsButton = GameObject.Find("AddFriendsButton").GetComponent<Button>();
+        searchFriendsButton = GameObject.Find("SearchFriendsButton").GetComponent<Button>();
         addFriendsPanel = GameObject.Find("AddFriendsPanel");
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         chatSelectionPanel = GameObject.Find("ChatSelectionPanel");
-        friendsListView = GameObject.Find("FriendsListViewport");
+        friendsPanelUIObjectImage = GameObject.Find("FriendsPanel").GetComponent<Image>();
+        friendsListView = GameObject.Find("FriendsListView");
+        friendsListViewPort = GameObject.Find("FriendsListViewport");
         friendsListContent = GameObject.Find("FriendsListContent").GetComponent<RectTransform>();
         friendsListLayoutGroup = friendsListContent.GetComponent<VerticalLayoutGroup>();
         friendsList = new List<GameObject>();
         // We don't want the addFriendsPanel active at the start
-        SwitchActiveAddFriendsPanel();
+        addFriendsPanel.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -48,6 +54,7 @@ public class FriendsPanel : MonoBehaviour
         offlineFriendsButton.onClick.AddListener(SwitchFriendsListToOffline);
         friendRequestsButton.onClick.AddListener(SwitchFriendsListToRequests);
         addFriendsButton.onClick.AddListener(SwitchToAddfriends);
+        //searchFriendsButton.onClick.AddListener();
         // Call starting point function
         SwitchFriendsListToOnline();
     }
@@ -60,7 +67,26 @@ public class FriendsPanel : MonoBehaviour
 
     private void SwitchActiveAddFriendsPanel()
     {
-        addFriendsPanel.SetActive(!addFriendsPanel.activeSelf);
+        if (addFriendsPanel.activeSelf)
+        {
+            // Make friends list panel invisible
+            friendsPanelUIObjectImage.enabled = false;
+            friendsListView.SetActive(false);
+
+            // Make chat invisible
+            chatWindowPanel.SetActive(false);
+            chatSelectionPanel.SetActive(false);
+        }
+        else
+        {
+            // Make friends list panel visible
+            friendsPanelUIObjectImage.enabled = true;
+            friendsListView.SetActive(true);
+
+            // Make chat visible
+            chatWindowPanel.SetActive(true);
+            chatSelectionPanel.SetActive(true);
+        }        
     }
 
     private void SwitchFriendsListToOnline()
@@ -70,6 +96,10 @@ public class FriendsPanel : MonoBehaviour
         offlineFriendsButton.interactable = true;
         friendRequestsButton.interactable = true;
         addFriendsButton.interactable = true;
+
+        addFriendsPanel.SetActive(false);
+        SwitchActiveAddFriendsPanel();
+
         // Get my friends list
         GetFriendsList("online");
     }
@@ -81,6 +111,10 @@ public class FriendsPanel : MonoBehaviour
         onlineFriendsButton.interactable = true;
         friendRequestsButton.interactable = true;
         addFriendsButton.interactable = true;
+
+        addFriendsPanel.SetActive(false);
+        SwitchActiveAddFriendsPanel();
+
         // Get my friends list
         GetFriendsList("offline");
     }
@@ -92,6 +126,10 @@ public class FriendsPanel : MonoBehaviour
         onlineFriendsButton.interactable = true;
         offlineFriendsButton.interactable = true;
         addFriendsButton.interactable = true;
+
+        addFriendsPanel.SetActive(false);
+        SwitchActiveAddFriendsPanel();
+
         // Get my pending friend requests
         GetPendingFriendsList();
     }
@@ -103,6 +141,10 @@ public class FriendsPanel : MonoBehaviour
         onlineFriendsButton.interactable = true;
         offlineFriendsButton.interactable = true;
         friendRequestsButton.interactable = true;
+
+        addFriendsPanel.SetActive(true);
+
+        SwitchActiveAddFriendsPanel();
     }
 
     // Get player's pending friend requests
