@@ -501,6 +501,12 @@ namespace GameSparks.Api.Requests{
 			request.AddNumber("playerAttr", value);
 			return this;
 		}			
+		
+		public LogEventRequest_PlayerScore Set_playerName( string value )
+		{
+			request.AddString("playerName", value);
+			return this;
+		}
 	}
 	
 	public class LogChallengeEventRequest_PlayerScore : GSTypedRequest<LogChallengeEventRequest_PlayerScore, LogChallengeEventResponse>
@@ -526,6 +532,11 @@ namespace GameSparks.Api.Requests{
 			request.AddNumber("playerAttr", value);
 			return this;
 		}			
+		public LogChallengeEventRequest_PlayerScore Set_playerName( string value )
+		{
+			request.AddString("playerName", value);
+			return this;
+		}
 	}
 	
 	public class LogEventRequest_SetStartingPlayer : GSTypedRequest<LogEventRequest_SetStartingPlayer, LogEventResponse>
@@ -780,8 +791,11 @@ namespace GameSparks.Api.Responses{
 	
 	public class _LeaderboardEntry_HighScoreLB : LeaderboardDataResponse._LeaderboardData{
 		public _LeaderboardEntry_HighScoreLB(GSData data) : base(data){}
-		public long? playerAttr{
-			get{return response.GetNumber("playerAttr");}
+		public long? MAX_playerAttr{
+			get{return response.GetNumber("MAX-playerAttr");}
+		}
+		public string SUPPLEMENTAL_playerName{
+			get{return response.GetString("SUPPLEMENTAL-playerName");}
 		}
 	}
 	
