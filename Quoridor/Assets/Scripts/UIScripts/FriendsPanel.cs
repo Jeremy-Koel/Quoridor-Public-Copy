@@ -91,11 +91,10 @@ public class FriendsPanel : MonoBehaviour
 
     private void SwitchFriendsListToOnline()
     {
-        onlineFriendsButton.interactable = false;
         // Switch all other buttons to interactable
-        offlineFriendsButton.interactable = true;
-        friendRequestsButton.interactable = true;
-        addFriendsButton.interactable = true;
+        SwitchFriendsPanelButtons();
+
+        onlineFriendsButton.interactable = false;
 
         addFriendsPanel.SetActive(false);
         SwitchActiveAddFriendsPanel();
@@ -106,11 +105,10 @@ public class FriendsPanel : MonoBehaviour
 
     private void SwitchFriendsListToOffline()
     {
-        offlineFriendsButton.interactable = false;
         // Switch all other buttons to interactable
-        onlineFriendsButton.interactable = true;
-        friendRequestsButton.interactable = true;
-        addFriendsButton.interactable = true;
+        SwitchFriendsPanelButtons();
+
+        offlineFriendsButton.interactable = false;
 
         addFriendsPanel.SetActive(false);
         SwitchActiveAddFriendsPanel();
@@ -121,11 +119,10 @@ public class FriendsPanel : MonoBehaviour
 
     private void SwitchFriendsListToRequests()
     {
-        friendRequestsButton.interactable = false;
         // Switch all other buttons to interactable
-        onlineFriendsButton.interactable = true;
-        offlineFriendsButton.interactable = true;
-        addFriendsButton.interactable = true;
+        SwitchFriendsPanelButtons();
+
+        friendRequestsButton.interactable = false;
 
         addFriendsPanel.SetActive(false);
         SwitchActiveAddFriendsPanel();
@@ -136,15 +133,21 @@ public class FriendsPanel : MonoBehaviour
 
     private void SwitchToAddfriends()
     {
-        addFriendsButton.interactable = false;
         // Switch all other buttons to interactable
-        onlineFriendsButton.interactable = true;
-        offlineFriendsButton.interactable = true;
-        friendRequestsButton.interactable = true;
+        SwitchFriendsPanelButtons();
+        addFriendsButton.interactable = false;
 
         addFriendsPanel.SetActive(true);
 
         SwitchActiveAddFriendsPanel();
+    }
+
+    private void SwitchFriendsPanelButtons()
+    {
+        addFriendsButton.interactable = true;        
+        onlineFriendsButton.interactable = true;
+        offlineFriendsButton.interactable = true;
+        friendRequestsButton.interactable = true;
     }
 
     // Get player's pending friend requests
