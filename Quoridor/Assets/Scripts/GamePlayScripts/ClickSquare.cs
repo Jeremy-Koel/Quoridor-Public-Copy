@@ -8,9 +8,12 @@ public class ClickSquare : MonoBehaviour
 {
     public GameObject playerMouse;
     public GameObject opponentMouse;
-    private ClickMouse playerClickMouseScript;
-    private ClickMouse opponentClickMouseScript;
+    //private ClickMouse playerClickMouseScript;
+    // private ClickMouse opponentClickMouseScript;
     private InterfaceController interfaceController;
+    private Material highlightMat;
+    private Material gameSquareMat;
+    private List<string> possibleMoves;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +21,36 @@ public class ClickSquare : MonoBehaviour
         playerMouse = GameObject.Find("playerMouse");
         opponentMouse = GameObject.Find("opponentMouse");
 
-        playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
-        opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
+       // playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
+       // opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
 
-        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();  
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        highlightMat = Resources.Load("highlightColor", typeof(Material)) as Material;
+        possibleMoves = new List<string>();
+        gameSquareMat = Resources.Load("cubeColor", typeof(Material)) as Material;
     }
 
+    void Update()
+    {
+        if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+        {
+            possibleMoves = interfaceController.GetPossibleMoves();
+            foreach (string move in possibleMoves)
+            {
+                GameObject square = GameObject.Find(move);
+                square.GetComponent<Renderer>().material = highlightMat;
+            }
+        }
+        else
+        {
+            foreach (string move in possibleMoves)
+            {
+                GameObject square = GameObject.Find(move);
+                square.GetComponent<Renderer>().material = gameSquareMat;
+            }
+        }
+
+    }
     //private void OnMouseEnter()
     //{
     //    if (!EventSystem.current.IsPointerOverGameObject())
@@ -53,8 +80,8 @@ public class ClickSquare : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (playerClickMouseScript.mouseSelected)
-            {
+            //if (playerClickMouseScript.mouseSelected)
+           // {
                 MoveMouse moveMouseScript = playerMouse.GetComponent<MoveMouse>();
                 if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y) && !moveMouseScript.moveMouse)
                 {
@@ -72,19 +99,19 @@ public class ClickSquare : MonoBehaviour
                         // Invalid move
                     }
                 }
-            }
+           // }
         }
     }
 
-    public void OnClickToggleMouse()
-    {
+    //public void OnClickToggleMouse()
+    //{
 
-        playerClickMouseScript.mouseSelected = !playerClickMouseScript.mouseSelected;
-    }
+    //    playerClickMouseScript.mouseSelected = !playerClickMouseScript.mouseSelected;
+    //}
 
-    public void OnClickToggleMouse2()
-    {
-        opponentClickMouseScript.mouseSelected = !opponentClickMouseScript.mouseSelected;
+    //public void OnClickToggleMouse2()
+    //{
+    //    opponentClickMouseScript.mouseSelected = !opponentClickMouseScript.mouseSelected;
 
-    }
+    //}
 }
