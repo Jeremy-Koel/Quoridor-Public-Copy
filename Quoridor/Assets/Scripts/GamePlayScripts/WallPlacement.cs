@@ -11,16 +11,12 @@ public class WallPlacement : MonoBehaviour
     private InterfaceController interfaceController;
     private bool wallPlacedHere =false;
     private EventManager eventManager;
-    private InvalidMovePopup invalidPopup;
-
-    //private GameObject horizontalWallHighlight;
 
     // Start is called before the first frame update
     void Start()
     {
         wallHighlight = this.transform.GetChild(0).gameObject;
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
-        invalidPopup = interfaceController.GetComponent<InvalidMovePopup>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
     }
 
@@ -106,7 +102,7 @@ public class WallPlacement : MonoBehaviour
         }
         else
         {
-            invalidPopup.isPoppedUp = true;
+            // Invalid move
         }
     }
 

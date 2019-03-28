@@ -10,7 +10,6 @@ public class ClickSquare : MonoBehaviour
     public GameObject opponentMouse;
     private ClickMouse playerClickMouseScript;
     private ClickMouse opponentClickMouseScript;
-    private InvalidMovePopup invalidPopup;
     private InterfaceController interfaceController;
 
     // Start is called before the first frame update
@@ -22,9 +21,7 @@ public class ClickSquare : MonoBehaviour
         playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
         opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
 
-        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
-
-        invalidPopup = interfaceController.GetComponent<InvalidMovePopup>();        
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();  
     }
 
     //private void OnMouseEnter()
@@ -72,7 +69,7 @@ public class ClickSquare : MonoBehaviour
                     }
                     else
                     {
-                        invalidPopup.isPoppedUp = true;
+                        // Invalid move
                     }
                 }
             }
