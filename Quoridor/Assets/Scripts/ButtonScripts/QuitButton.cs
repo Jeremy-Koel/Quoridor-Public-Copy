@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class QuitButton : MonoBehaviour
+public class QuitButton : MonoBehaviour, IPointerClickHandler
 {
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,12 @@ public class QuitButton : MonoBehaviour
 
     public void OnQuitButtonClick()
     {
+        Application.Quit();
+    }
+
+    public void OnPointerClick(PointerEventData data)
+    {
+        Debug.Log("ClickQuit");
         Application.Quit();
     }
 }
