@@ -57,9 +57,41 @@ public class ChatWindowPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+ 
     }
 
+    //Called when Input changes
+    private void inputSubmitCallBack()
+    {
+        if (chatInput.GetComponent<InputField>().text != "" && Input.GetKey(KeyCode.Return))
+        {
+            SendChatMessage(chatInput.GetComponent<InputField>().text);
+            chatInput.GetComponent<InputField>().text = "";
+        }
+        Debug.Log("Input Submitted");
+        //chatInput.GetComponent<InputField>().ActivateInputField(); //Re-focus on the input field
+        chatInput.GetComponent<InputField>().Select();//Re-focus on the input field
+    }
+
+    //Called when Input is submitted
+    private void inputChangedCallBack()
+    {
+        Debug.Log("Input Changed");
+    }
+
+    void OnEnable()
+    {
+        //Register InputField Events
+        chatInput.GetComponent<InputField>().onEndEdit.AddListener(delegate { inputSubmitCallBack(); });
+        chatInput.GetComponent<InputField>().onValueChanged.AddListener(delegate { inputChangedCallBack(); });
+    }
+
+    void OnDisable()
+    {
+        //Un-Register InputField Events
+        //chatInput.GetComponent<InputField>().onEndEdit.RemoveAllListeners();
+        //chatInput.GetComponent<InputField>().onValueChanged.RemoveAllListeners();
+    }
     void JoinGlobalTeam()
     {
         bool teamMatch = false;
