@@ -149,6 +149,35 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("GameBoard");
     }
 
+    public void onPlayButtonClick()
+    {
+        Toggle hardOption = GameObject.Find("HardOption").GetComponent<Toggle>();
+        Toggle easyOption = GameObject.Find("EasyOption").GetComponent<Toggle>();
+        Toggle goFirst = GameObject.Find("MoveFirst").GetComponent<Toggle>();
+        Toggle goSecond = GameObject.Find("MoveSecond").GetComponent<Toggle>();
+
+        if (hardOption.isOn)
+        {
+            SessionStates.Difficulty = DifficultyEnum.HARD;
+        }
+        else if(easyOption.isOn)
+        {
+            SessionStates.Difficulty = DifficultyEnum.EASY;
+        }
+
+        if(goFirst.isOn)
+        {
+            SessionStates.PlayerTurnPref = PlayerTurnEnum.FIRST;
+        }
+        else if(goSecond.isOn)
+        {
+            SessionStates.PlayerTurnPref = PlayerTurnEnum.SECOND;
+        }
+
+
+        SceneManager.LoadScene("GameBoard");
+    }
+
     public void onSettingsButtonClick(Button button)
     {
         mainMenuPanel.SetActive(false);
