@@ -51,25 +51,25 @@ public class GameSparksUnity : MonoBehaviour
 	}
 	
 	void OnGUI () {
-		if (GameSparksSettings.PreviewBuild == true) {
-			//GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
 
-			//GUILayout.BeginVertical ();
+            //GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
 
-			//GUILayout.FlexibleSpace ();
+            //GUILayout.BeginVertical ();
 
-			//GUILayout.BeginHorizontal ();
+            //GUILayout.FlexibleSpace ();
 
-			//GUILayout.Space (10);
+            //GUILayout.BeginHorizontal ();
 
-			//GUILayout.Label ("GameSparks Preview mode", GUILayout.Width (200), GUILayout.Height (25));
+            //GUILayout.Space (10);
 
-			//GUILayout.EndHorizontal ();
+            //GUILayout.Label ("GameSparks Preview mode", GUILayout.Width (200), GUILayout.Height (25));
 
-			//GUILayout.EndVertical ();
+            //GUILayout.EndHorizontal ();
 
-			//GUILayout.EndArea ();
-		}
+            //GUILayout.EndVertical ();
+
+            //GUILayout.EndArea ();
+        }
 	}
 
 #if UNITY_IOS && !UNITY_EDITOR
@@ -93,4 +93,3 @@ public class GameSparksUnity : MonoBehaviour
 	private static extern void GSGetProxySettings(string gameObjectName);
 
 #endif
-}
