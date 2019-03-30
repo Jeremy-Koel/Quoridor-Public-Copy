@@ -26,6 +26,8 @@ public class EventManager : MonoBehaviour
     private UnityEvent NewGame = new UnityEvent();
     private UnityEvent PlayAgain = new UnityEvent();
 
+    private UnityEvent InvalidMove = new UnityEvent();
+
 
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
@@ -140,7 +142,7 @@ public class EventManager : MonoBehaviour
         Debug.Log("Challenge Lost Invoked");
         ChallengeLost.Invoke();
     }
-
+    
     public void ListenToChallengeMove(UnityAction action)
     {
         Debug.Log("Challenge Move Listener Added");
@@ -236,6 +238,18 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Turn Taken Invoked");
         TurnTaken.Invoke();
+    }
+
+    public void ListenToInvalidMove(UnityAction action)
+    {
+        Debug.Log("Invalid Move Listener Added");
+        InvalidMove.AddListener(action);
+    }
+
+    public void InvokeInvalidMove()
+    {
+        Debug.Log("Invalid Move Invoked");
+        InvalidMove.Invoke();
     }
 
 }

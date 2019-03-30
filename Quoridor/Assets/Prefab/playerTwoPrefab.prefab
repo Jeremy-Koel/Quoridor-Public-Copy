@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6074537554522806244}
   - component: {fileID: 2963852264779504229}
   - component: {fileID: 4990516279025797937}
-  - component: {fileID: 6750587051408356896}
   - component: {fileID: 8945695824637271780}
   m_Layer: 0
   m_Name: playerTwoPrefab
@@ -98,22 +97,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 15.000001
---- !u!114 &6750587051408356896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307015620295830308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7002e08fad50d2d4e94a5c141fd61072, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSelected: 0
-  interfaceController: {fileID: 0}
-  hoveredGO: {fileID: 0}
-  hover_state: 1
 --- !u!114 &8945695824637271780
 MonoBehaviour:
   m_ObjectHideFlags: 0

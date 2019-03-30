@@ -18,6 +18,7 @@ public class InterfaceController : MonoBehaviour
     private GameCoreController gameCoreController;
     private Queue<Animator> playerWallIndicators;
     private Queue<Animator> opponentWallIndicators;
+    private Animator playerTurnBoxAnimator;
 
     private void Awake()
     {
@@ -25,7 +26,10 @@ public class InterfaceController : MonoBehaviour
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
         opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
+        playerTurnBoxAnimator = GameObject.Find("PlayerTurnBox").GetComponent<Animator>();
         initAnimatorQueues();
+
+        eventManager.ListenToInvalidMove(SwitchTurnIndicatorToInvalidMove);
 
         if (SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
@@ -96,6 +100,7 @@ public class InterfaceController : MonoBehaviour
         opponentMouse.transform.localScale = new Vector3(opponentMouse.transform.localScale.x + .001f, opponentMouse.transform.localScale.y + .001f, opponentMouse.transform.localScale.z);
         moveMouseScript.moveMouse = true;
         soundEffectController.PlaySqueakSound();
+        SwitchTurnIndicatorToLocal();
     }
 
     public void MoveOpponentWallInGUI(string colliderName)
@@ -113,6 +118,8 @@ public class InterfaceController : MonoBehaviour
             moveWallsProgramatically.moveWall = true;
             moveWallsProgramatically.SetIsOnBoard(true);
             collider.GetComponent<WallPlacement>().SetWallPlacedHere(true);
+            
+            SwitchTurnIndicatorToLocal();
         }
     }
 
@@ -135,21 +142,6 @@ public class InterfaceController : MonoBehaviour
         return collider;
     }
 
-    //public void SetPlayerOneText(string str)
-    //{
-    //    if (playerOneText != null)
-    //    {
-    //        playerOneText.text = str;
-    //    }
-    //}
-
-    //public void SetPlayerTwoText(string str)
-    //{
-    //    if (playerTwoText != null)
-    //    { 
-    //        playerTwoText.text = str;
-    //    }
-    //}
     public void SetPlayerWallLabelText(string str)
     {
         if (playerWallLabel != null)
@@ -170,6 +162,7 @@ public class InterfaceController : MonoBehaviour
     {
         string str = await gameCoreController.GetMoveFromAI();
         bool recorded = gameCoreController.RecordOpponentMove(str);
+
         // Check if the AI's move won the game - NK
         if (recorded)
         {
@@ -194,7 +187,6 @@ public class InterfaceController : MonoBehaviour
         {
             if (move.Length == 3)
             {
-                Debug.Log("player moved a wall");
                 TriggerPlayerWallIndicatorAnimation();
             }
 
@@ -207,8 +199,15 @@ public class InterfaceController : MonoBehaviour
                 challengeManagerScript.Move(move);
             }
 
+            // Switch turn indicator 
+            SwitchTurnIndicatorToOpponent();
+
             // Check if the local player won - NK
             CheckIsGameOver();
+        }
+        else
+        {
+            eventManager.InvokeInvalidMove();
         }
         return movedSuccessfully;
     }
@@ -224,6 +223,22 @@ public class InterfaceController : MonoBehaviour
     {
         Animator anim = opponentWallIndicators.Dequeue();
         anim.SetTrigger("PlaceWall");
+    }
+
+    private void SwitchTurnIndicatorToInvalidMove()
+    {
+        playerTurnBoxAnimator.SetTrigger("InvalidMove");
+        soundEffectController.PlayErrorSound();
+    }
+
+    private void SwitchTurnIndicatorToOpponent()
+    {
+        playerTurnBoxAnimator.SetTrigger("LocalTurnTaken");
+    }
+
+    private void SwitchTurnIndicatorToLocal()
+    {
+        playerTurnBoxAnimator.SetTrigger("OpponentTurnTaken");
     }
     
     public string GetPlayerNameForTurn()

@@ -11,8 +11,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenuPanel;
-    public GameObject playModePanel;
-    public GameObject difficultyLevelPanel;
+    public GameObject singlePlayerSetupPanel;
     public GameObject settingsPanel;
     public GameObject loginPanel;
     public GameObject registrationPanel;
@@ -20,8 +19,7 @@ public class MainMenu : MonoBehaviour
     public GameObject chatWindowPanel;
     public GameObject leaderboardPanel;
     public GameObject tutorialPanel;
-    //public GameObject previousPanel;
-    //public GameObject currentPanel;
+  //  public GameObject quitPanel;
     public Stack<GameObject> panelOrder;
 
     public GameObject challengeManager;
@@ -67,52 +65,40 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         mainMenuPanel = GameObject.Find("MainButtonPanel");
-        playModePanel = GameObject.Find("PlayModePanel");
-        difficultyLevelPanel = GameObject.Find("DifficultyLevelPanel");
+        singlePlayerSetupPanel = GameObject.Find("SinglePlayerSetupPanel");
         settingsPanel = GameObject.Find("SettingsPanel");
         loginPanel = GameObject.Find("LoginPanel");
         registrationPanel = GameObject.Find("RegistrationPanel");
         lobbyPanel = GameObject.Find("LobbyPanel");
         leaderboardPanel = GameObject.Find("LeaderboardPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
-        // previousPanel = new GameObject();
-        //currentPanel = new GameObject();
+       // quitPanel = GameObject.Find("QuitPanel");
+
         panelOrder = new Stack<GameObject>();
         panelOrder.Push(mainMenuPanel);
 
         mainMenuPanel.SetActive(true);
-        playModePanel.SetActive(false);
-        difficultyLevelPanel.SetActive(false);
+        singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
         loginPanel.SetActive(false);
         registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         leaderboardPanel.SetActive(false);
         tutorialPanel.SetActive(false);
-    }
-
-    public void onPlayButtonClick()
-    {
-        mainMenuPanel.SetActive(false);
-        panelOrder.Push(mainMenuPanel);
-
-        playModePanel.SetActive(true);
-        panelOrder.Push(playModePanel);
-
+       
     }
 
     public void onSinglePlayerClick()
     {
-        playModePanel.SetActive(false);
-        //previousPanel = playModePanel;
+        mainMenuPanel.SetActive(false);
 
-        difficultyLevelPanel.SetActive(true);
-        panelOrder.Push(difficultyLevelPanel);
+        singlePlayerSetupPanel.SetActive(true);
+        panelOrder.Push(singlePlayerSetupPanel);
     }
 
     public void onMultiplayerClick()
     {
-        playModePanel.SetActive(false);
+        mainMenuPanel.SetActive(false);
         
         if (LoggedIn())
         {
@@ -163,22 +149,47 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("GameBoard");
     }
 
+    public void onPlayButtonClick()
+    {
+        Toggle hardOption = GameObject.Find("HardOption").GetComponent<Toggle>();
+        Toggle easyOption = GameObject.Find("EasyOption").GetComponent<Toggle>();
+        Toggle goFirst = GameObject.Find("MoveFirst").GetComponent<Toggle>();
+        Toggle goSecond = GameObject.Find("MoveSecond").GetComponent<Toggle>();
+
+        if (hardOption.isOn)
+        {
+            SessionStates.Difficulty = DifficultyEnum.HARD;
+        }
+        else if(easyOption.isOn)
+        {
+            SessionStates.Difficulty = DifficultyEnum.EASY;
+        }
+
+        if(goFirst.isOn)
+        {
+            SessionStates.PlayerTurnPref = PlayerTurnEnum.FIRST;
+        }
+        else if(goSecond.isOn)
+        {
+            SessionStates.PlayerTurnPref = PlayerTurnEnum.SECOND;
+        }
+
+
+        SceneManager.LoadScene("GameBoard");
+    }
+
     public void onSettingsButtonClick(Button button)
     {
-       // previousPanel = button.transform.parent.gameObject;
         mainMenuPanel.SetActive(false);
-        playModePanel.SetActive(false);
-        difficultyLevelPanel.SetActive(false);
+        singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(true);
-        //currentPanel = settingsPanel;
         panelOrder.Push(settingsPanel);
     }
 
     public void onTutorialButtonClick(Button button)
     {
         mainMenuPanel.SetActive(false);
-        playModePanel.SetActive(false);
-        difficultyLevelPanel.SetActive(false);
+        singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
         tutorialPanel.SetActive(true);
         panelOrder.Push(tutorialPanel);
@@ -186,8 +197,6 @@ public class MainMenu : MonoBehaviour
 
     public void onBackButtonClick()
     {
-        //currentPanel.SetActive(false);
-        //previousPanel.SetActive(true);
         GameObject disableScreen = panelOrder.Pop();
         GameObject enableScreen = panelOrder.Peek();
 
