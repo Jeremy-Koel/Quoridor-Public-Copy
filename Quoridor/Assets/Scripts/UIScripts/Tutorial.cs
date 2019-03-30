@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class Tutorial : MonoBehaviour
@@ -10,6 +11,8 @@ public class Tutorial : MonoBehaviour
     private int index = 0;
     private GameObject prevButton;
     private GameObject nextButton;
+    private string[] instructList;
+    private Text instructTextBox;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +24,7 @@ public class Tutorial : MonoBehaviour
 
         prevButton = GameObject.Find("PreviousSlideButton");
         nextButton = GameObject.Find("NextSlideButton");
-
+        instructTextBox = GameObject.Find("TutorialText").GetComponent<Text>();
     }
 
     // Update is called once per frame
@@ -78,5 +81,10 @@ public class Tutorial : MonoBehaviour
         {
             index = tutorialClips.Length - 1;
         }
+    }
+
+    private void createInstructList()
+    {
+
     }
 }

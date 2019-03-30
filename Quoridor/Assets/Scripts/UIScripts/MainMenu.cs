@@ -19,6 +19,7 @@ public class MainMenu : MonoBehaviour
     public GameObject chatWindowPanel;
     public GameObject leaderboardPanel;
     public GameObject tutorialPanel;
+  //  public GameObject quitPanel;
     public Stack<GameObject> panelOrder;
 
     public GameObject challengeManager;
@@ -71,6 +72,7 @@ public class MainMenu : MonoBehaviour
         lobbyPanel = GameObject.Find("LobbyPanel");
         leaderboardPanel = GameObject.Find("LeaderboardPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
+       // quitPanel = GameObject.Find("QuitPanel");
 
         panelOrder = new Stack<GameObject>();
         panelOrder.Push(mainMenuPanel);
@@ -83,6 +85,7 @@ public class MainMenu : MonoBehaviour
         lobbyPanel.SetActive(false);
         leaderboardPanel.SetActive(false);
         tutorialPanel.SetActive(false);
+       
     }
 
     public void onSinglePlayerClick()
