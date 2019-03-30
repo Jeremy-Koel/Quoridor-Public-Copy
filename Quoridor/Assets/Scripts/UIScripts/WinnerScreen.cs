@@ -2,35 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class WinnerScreen : MonoBehaviour
 {
     // Start is called before the first frame update
     //private GameObject winPanel;
-    private Text winText;
     public InterfaceController interfaceController;
-    private Text gameOverText;
     private SoundEffectController soundEffectController;
+    private VideoPlayer winVideoPlayer;
+    private VideoClip winClip;
+    private VideoClip loseClip;
+
+    private void Awake()
+    {
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        winVideoPlayer = GameObject.Find("WinVideoPlayer").GetComponent<VideoPlayer>();
+        winClip = Resources.Load<VideoClip>("Win Animation");
+        loseClip = Resources.Load<VideoClip>("Lose Animation");
+    }
 
     void Start()
     {
-        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
-        winText = GameObject.Find("WinnerText").GetComponent<Text>();
-        winText.text = getWhoWon();
-        gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
-        gameOverText.text = "Game Over!";
+        RenderTexture texture = GetNewRenderTexture();
+        winVideoPlayer.targetTexture = texture;
 
-        soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
-        if (winText.text == "You Win!" || winText.text == interfaceController.GetLocalPlayerName()+" Wins!")
+        RawImage winImage = GameObject.Find("WinImage").GetComponent<RawImage>();
+        winImage.texture = texture;
+
+        string winnerString = getWhoWon();
+        if (winnerString == "You Win!" || winnerString == interfaceController.GetLocalPlayerName()+" Wins!")
         {
             Debug.Log("playing win sound");
             soundEffectController.PlayWinSound();
+
+            winVideoPlayer.clip = winClip;
         }
         else
         {
             Debug.Log("playing lose sound");
             soundEffectController.PlayLoseSound();
+
+            winVideoPlayer.clip = loseClip;
         }
+        
+        winVideoPlayer.Play();
     }
 
     // Update is called once per frame
@@ -48,5 +65,12 @@ public class WinnerScreen : MonoBehaviour
     private string getWhoWon()
     {
         return interfaceController.WhoWon();
+    }
+
+    private RenderTexture GetNewRenderTexture()
+    {
+        RenderTexture texture = new RenderTexture(768, 432, 16);
+        texture.Create();
+        return texture;
     }
 }
