@@ -23,16 +23,17 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
         
     }
 
-    //public void OnQuitButtonClick()
-    //{
-    //    Application.Quit();
-    //}
+    public void OnQuitButtonClick()
+    {
+        quitPanel.SetActive(true);
+    }
 
     public void OnPointerClick(PointerEventData data)
     {
        // mainMenuPanel.SetActive(false);
         quitPanel.SetActive(true);
     }
+
 
     public void OnYesButtonClick()
     {
