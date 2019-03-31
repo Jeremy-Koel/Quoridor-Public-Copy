@@ -10,31 +10,31 @@ public class AudioSettingController : MonoBehaviour
     void Start()
     {
         Slider masterVolumeSlider = GameObject.Find("MasterVolumeSlider").GetComponent<Slider>();
-        masterVolumeSlider.value = SessionStates.MasterVolumePref;
+        masterVolumeSlider.value = GameSession.MasterVolumePref;
 
         Slider backgroundVolumeSlider = GameObject.Find("BackgroundVolumeSlider").GetComponent<Slider>();
-        backgroundVolumeSlider.value = SessionStates.BackgroundVolumePref;
+        backgroundVolumeSlider.value = GameSession.BackgroundVolumePref;
 
         Slider effectsVolumeSlider = GameObject.Find("EffectsVolumeSlider").GetComponent<Slider>();
-        effectsVolumeSlider.value = SessionStates.EffectVolumePref;
+        effectsVolumeSlider.value = GameSession.EffectVolumePref;
     }
 
     public void SetMasterLevel(float sliderValue)
     {
         mixer.SetFloat("MasterVolume", GetMixerValueFromSliderValue(sliderValue));
-        SessionStates.MasterVolumePref = sliderValue;
+        GameSession.MasterVolumePref = sliderValue;
     }
 
     public void SetBackgroundLevel(float sliderValue)
     {
         mixer.SetFloat("BackgroundVolume", GetMixerValueFromSliderValue(sliderValue));
-        SessionStates.BackgroundVolumePref = sliderValue;
+        GameSession.BackgroundVolumePref = sliderValue;
     }
 
     public void SetEffectsLevel(float sliderValue)
     {
         mixer.SetFloat("EffectsVolume", GetMixerValueFromSliderValue(sliderValue));
-        SessionStates.EffectVolumePref = sliderValue;
+        GameSession.EffectVolumePref = sliderValue;
     }
 
     private float GetMixerValueFromSliderValue(float f)

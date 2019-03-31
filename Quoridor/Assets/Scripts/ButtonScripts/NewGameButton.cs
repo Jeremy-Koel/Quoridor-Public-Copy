@@ -19,12 +19,12 @@ public class NewGameButton : MonoBehaviour
         {
             newGameMenuButton = GameObject.Find("NewGameButton").GetComponent<Button>();
             newGameMenuButton.interactable = false;
-            if (SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
+            if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
             {
                 newGameMenuButton.interactable = true;
             }
         }
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             if (GameObject.Find("WinScreenNewGameButton") != null)
             {
@@ -52,7 +52,7 @@ public class NewGameButton : MonoBehaviour
 
     public void onNewGameButtonClick()
     {
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
 
             EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();

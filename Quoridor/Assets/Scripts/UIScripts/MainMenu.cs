@@ -91,14 +91,19 @@ public class MainMenu : MonoBehaviour
 
     public void onSinglePlayerClick()
     {
-        mainMenuPanel.SetActive(false);
+        // Set session to singleplayer 
+        GameSession.GameMode = GameModeEnum.SINGLE_PLAYER;
 
+        mainMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(true);
         panelOrder.Push(singlePlayerSetupPanel);
     }
 
     public void onMultiplayerClick()
     {
+        // Set session to multiplayer 
+        GameSession.GameMode = GameModeEnum.MULTIPLAYER;
+
         mainMenuPanel.SetActive(false);
         
         if (LoggedIn())
@@ -140,13 +145,13 @@ public class MainMenu : MonoBehaviour
 
     public void onEasyButtonClick()
     {
-        SessionStates.Difficulty = DifficultyEnum.EASY;
+        GameSession.Difficulty = DifficultyEnum.EASY;
         SceneManager.LoadScene("GameBoard");
     }
 
     public void onHardButtonClick()
     {
-        SessionStates.Difficulty = DifficultyEnum.HARD;
+        GameSession.Difficulty = DifficultyEnum.HARD;
         SceneManager.LoadScene("GameBoard");
     }
 
@@ -160,24 +165,24 @@ public class MainMenu : MonoBehaviour
 
         if (hardOption.isOn)
         {
-            SessionStates.Difficulty = DifficultyEnum.HARD;
+            GameSession.Difficulty = DifficultyEnum.HARD;
         }
         else if(easyOption.isOn)
         {
-            SessionStates.Difficulty = DifficultyEnum.EASY;
+            GameSession.Difficulty = DifficultyEnum.EASY;
         }
 
         if(goFirst.isOn)
         {
-            SessionStates.PlayerTurnPref = PlayerTurnEnum.FIRST;
+            GameSession.PlayerTurnPref = PlayerTurnEnum.FIRST;
         }
         else if(goSecond.isOn)
         {
-            SessionStates.PlayerTurnPref = PlayerTurnEnum.SECOND;
+            GameSession.PlayerTurnPref = PlayerTurnEnum.SECOND;
         }
         else if(goRandom.isOn)
         {
-            SessionStates.PlayerTurnPref = PlayerTurnEnum.RANDOM;
+            GameSession.PlayerTurnPref = PlayerTurnEnum.RANDOM;
         }
 
 

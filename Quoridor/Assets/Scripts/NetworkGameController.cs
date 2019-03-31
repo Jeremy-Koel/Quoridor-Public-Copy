@@ -19,7 +19,7 @@ public class NetworkGameController : MonoBehaviour
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
             GameObject challengeManagerObject = GameObject.Find("ChallengeManager");
@@ -80,7 +80,7 @@ public class NetworkGameController : MonoBehaviour
         Debug.Log("Getting move from network");
 
         // Decide if the opponent placed a wall or piece, and call appropriate method 
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             string moveString = GetMoveFromNetwork();
             Debug.Log("MakeOpponentMove, moveString: " + moveString);

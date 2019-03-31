@@ -31,11 +31,11 @@ public class InterfaceController : MonoBehaviour
 
         eventManager.ListenToInvalidMove(SwitchTurnIndicatorToInvalidMove);
 
-        if (SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
+        if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
             eventManager.ListenToLocalPlayerMoved(GenerateMoveForAI);
         }
-        else if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        else if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             //eventManager.ListenToLocalPlayerMoved();
         }
@@ -190,7 +190,7 @@ public class InterfaceController : MonoBehaviour
                 TriggerPlayerWallIndicatorAnimation();
             }
 
-            if (SessionStates.GameMode == GameModeEnum.SINGLE_PLAYER)
+            if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
             {
                 eventManager.InvokeLocalPlayerMoved();
             }
@@ -250,7 +250,7 @@ public class InterfaceController : MonoBehaviour
 
     public string GetLocalPlayerName()
     {
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             return challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName;
         }
@@ -287,7 +287,7 @@ public class InterfaceController : MonoBehaviour
 
     public string WhoWon()
     {
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             if (!gameCoreController.DidPlayerOneWin()) 
             {

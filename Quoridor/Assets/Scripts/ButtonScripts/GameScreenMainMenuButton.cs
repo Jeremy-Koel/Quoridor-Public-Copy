@@ -20,7 +20,7 @@ public class GameScreenMainMenuButton : MonoBehaviour
     public void onMainMenuButtonClick()
     {
         // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
-        if (SessionStates.GameMode == GameModeEnum.MULTIPLAYER)
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
             challengeManager.RemoveAllChallengeListeners();

@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SessionStates
+/*
+ *  The purpose of this class is to keep track of all session-level preferences.
+ *  Use of this class is preferred over PlayerPrefs.
+ */
+
+public static class GameSession
 {
     public static GameModeEnum GameMode { get; set; }
     public static DifficultyEnum Difficulty { get; set; }
@@ -11,7 +16,7 @@ public static class SessionStates
     public static float BackgroundVolumePref { get; set; }
     public static float EffectVolumePref { get; set; }
 
-    static SessionStates()
+    static GameSession()
     {
         GameMode = GameModeEnum.SINGLE_PLAYER;
         Difficulty = DifficultyEnum.EASY;
