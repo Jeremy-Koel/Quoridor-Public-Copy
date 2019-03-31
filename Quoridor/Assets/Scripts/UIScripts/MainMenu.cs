@@ -19,6 +19,7 @@ public class MainMenu : MonoBehaviour
     public GameObject chatWindowPanel;
     public GameObject leaderboardPanel;
     public GameObject tutorialPanel;
+    public GameObject dummyMenuPanel;
   //  public GameObject quitPanel;
     public Stack<GameObject> panelOrder;
 
@@ -71,12 +72,14 @@ public class MainMenu : MonoBehaviour
         registrationPanel = GameObject.Find("RegistrationPanel");
         lobbyPanel = GameObject.Find("LobbyPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
+        dummyMenuPanel = GameObject.Find("DummyMenuPanel");
        // quitPanel = GameObject.Find("QuitPanel");
 
         panelOrder = new Stack<GameObject>();
         panelOrder.Push(mainMenuPanel);
 
         mainMenuPanel.SetActive(true);
+        dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
         loginPanel.SetActive(false);
@@ -194,6 +197,7 @@ public class MainMenu : MonoBehaviour
         mainMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
+        dummyMenuPanel.SetActive(true);
         tutorialPanel.SetActive(true);
         panelOrder.Push(tutorialPanel);
     }
@@ -210,6 +214,12 @@ public class MainMenu : MonoBehaviour
 
         disableScreen.SetActive(false);
         enableScreen.SetActive(true);
+    }
+
+    public void onTutorialBackButtonClick()
+    {
+        dummyMenuPanel.SetActive(false);
+        onBackButtonClick();
     }
 
     public void onMatchMakingButtonClick()
