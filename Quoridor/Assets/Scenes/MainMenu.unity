@@ -1166,7 +1166,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: -0.00000028329734}
+  m_AnchoredPosition: {x: 1.4848496, y: 0.000016210617}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -9439,7 +9439,9 @@ MonoBehaviour:
   chatMessagesViewContent: {fileID: 1229460439}
   chatMessagesLayoutGroup: {fileID: 0}
   chatMessages: []
-  textMessagePrefab: {fileID: 4200148258067595106, guid: 31eb684bc11ab08489ec181135891db9,
+  lobbyMessagePrefab: {fileID: 4200148258067595106, guid: 31eb684bc11ab08489ec181135891db9,
+    type: 3}
+  inGameMessagePrefab: {fileID: 5475536711530470074, guid: 9acf17470664df0468006714d90990e5,
     type: 3}
   challengeManager: {fileID: 0}
 --- !u!1 &1191065878

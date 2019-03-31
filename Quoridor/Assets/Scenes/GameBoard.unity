@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5361,7 +5361,12 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000056600747
+      value: -0.00012848627
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -600
       objectReference: {fileID: 0}
     - target: {fileID: 3650439703653539492, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -8917,7 +8922,8 @@ MonoBehaviour:
   chatMessagesViewContent: {fileID: 993795453}
   chatMessagesLayoutGroup: {fileID: 0}
   chatMessages: []
-  textMessagePrefab: {fileID: 4200148258067595106, guid: 31eb684bc11ab08489ec181135891db9,
+  lobbyMessagePrefab: {fileID: 0}
+  inGameMessagePrefab: {fileID: 5475536711530470074, guid: 9acf17470664df0468006714d90990e5,
     type: 3}
   challengeManager: {fileID: 0}
 --- !u!222 &1586233013

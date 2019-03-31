@@ -19,7 +19,8 @@ public class ChatWindowPanel : MonoBehaviour
     public RectTransform chatMessagesViewContent;
     public VerticalLayoutGroup chatMessagesLayoutGroup;
     public List<GameObject> chatMessages;
-    public GameObject textMessagePrefab;
+    public GameObject lobbyMessagePrefab;
+    public GameObject inGameMessagePrefab;
     public ChallengeManager challengeManager;
 
 
@@ -206,9 +207,24 @@ public class ChatWindowPanel : MonoBehaviour
         string messageMessage = message.Message.ToString();
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
- 
-        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
 
+        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
+        BuildChatMessageUI(messageWho, messageMessage, messageTextObject);
+    }
+
+    private void ChallengeChatMessageReceived(ChallengeChatMessage message)
+    {
+        string messageWho = message.Who.ToString();
+        string messageMessage = message.Message.ToString();
+        Debug.Log("Team chat message recieved: " + messageMessage);
+        Debug.Log("Message sent by: " + messageWho);
+
+        GameObject messageTextObject = Instantiate(inGameMessagePrefab) as GameObject;
+        BuildChatMessageUI(messageWho, messageMessage, messageTextObject);
+    }
+
+    private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObject)
+    {
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
@@ -228,42 +244,6 @@ public class ChatWindowPanel : MonoBehaviour
         messageTextObject.transform.localScale = new Vector3(1, 1, 1);
 
         chatMessages.Add(messageTextObject);
-        
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-
-        AddSpacingMessage();
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-    }
-
-    private void ChallengeChatMessageReceived(ChallengeChatMessage message)
-    {
-        string messageWho = message.Who.ToString();
-        string messageMessage = message.Message.ToString();
-        Debug.Log("Challenge chat message received: " + messageMessage);
-        Debug.Log("Message sent by: " + messageWho);
-
-        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
-
-        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
-        Text playerText = messageTextObjectChildrenText[0];
-        Text messageText = messageTextObjectChildrenText[1];
-
-        if (messageWho.Length >= 20)
-        {
-            playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
-        }
-        else
-        {
-            playerText.text = ("<b>" + messageWho + ":</b>");
-        }
-        messageText.text = messageMessage;
-
-        Debug.Log("Name of chatMessagesViewContent: " + chatMessagesViewContent.name);
-        messageTextObject.transform.SetParent(chatMessagesViewContent);
-        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
-
-        chatMessages.Add(messageTextObject);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
@@ -274,7 +254,7 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void AddSpacingMessage() 
     {
-        GameObject messageTextObject = Instantiate(textMessagePrefab) as GameObject;
+        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
