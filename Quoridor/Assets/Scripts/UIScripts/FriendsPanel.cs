@@ -197,7 +197,7 @@ public class FriendsPanel : MonoBehaviour
 
             if (playerName.Length >= 20)
             {
-                playerName = (playerName.Substring(0, 20));
+                playerName = (playerName.Substring(0, 17) + "...");
             }
 
             playerDataEnumerator.MoveNext();
@@ -282,7 +282,7 @@ public class FriendsPanel : MonoBehaviour
 
             if (playerName.Length >= 20)
             {
-                friendNameText.text = (playerName.Substring(0, 20));
+                friendNameText.text = (playerName.Substring(0, 17) + "...");
             }
             else
             {

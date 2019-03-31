@@ -212,17 +212,16 @@ public class ChatWindowPanel : MonoBehaviour
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-        if (messageWho.Length >= 10)
+
+        if (messageWho.Length >= 20)
         {
-            playerText.text = ("<b>" + messageWho.Substring(0, 10) + ":</b>");
+            playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
         }
         else
         {
             playerText.text = ("<b>" + messageWho + ":</b>");
         }
-        
-        //playerText.text = ("<b>" + messageWho + ":</b>");
-        messageText.text = (messageMessage);
+        messageText.text = messageMessage;
 
         Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
         messageTextObject.transform.SetParent(chatMessagesViewContent);
@@ -249,9 +248,10 @@ public class ChatWindowPanel : MonoBehaviour
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-        if (messageWho.Length >= 10)
+
+        if (messageWho.Length >= 20)
         {
-            playerText.text = ("<b>" + messageWho.Substring(0, 10) + ":</b>");
+            playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
         }
         else
         {
@@ -278,7 +278,7 @@ public class ChatWindowPanel : MonoBehaviour
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-        playerText.text = "________________________________________";
+        playerText.text = "____________________________";
         messageText.text = "";
 
         messageTextObject.transform.SetParent(chatMessagesViewContent);
