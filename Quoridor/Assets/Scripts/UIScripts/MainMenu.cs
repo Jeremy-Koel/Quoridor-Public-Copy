@@ -187,6 +187,7 @@ public class MainMenu : MonoBehaviour
     public void onSettingsButtonClick(Button button)
     {
         mainMenuPanel.SetActive(false);
+        dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(true);
         panelOrder.Push(settingsPanel);
