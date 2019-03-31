@@ -155,6 +155,7 @@ public class MainMenu : MonoBehaviour
         Toggle easyOption = GameObject.Find("EasyOption").GetComponent<Toggle>();
         Toggle goFirst = GameObject.Find("MoveFirst").GetComponent<Toggle>();
         Toggle goSecond = GameObject.Find("MoveSecond").GetComponent<Toggle>();
+        Toggle goRandom = GameObject.Find("MoveRandom").GetComponent<Toggle>();
 
         if (hardOption.isOn)
         {
@@ -172,6 +173,10 @@ public class MainMenu : MonoBehaviour
         else if(goSecond.isOn)
         {
             SessionStates.PlayerTurnPref = PlayerTurnEnum.SECOND;
+        }
+        else if(goRandom.isOn)
+        {
+            SessionStates.PlayerTurnPref = PlayerTurnEnum.RANDOM;
         }
 
 
