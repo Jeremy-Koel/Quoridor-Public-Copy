@@ -9,6 +9,7 @@ public class HostedGameLobbyButton : MonoBehaviour
     public string hostName;
     public string gameID;
     public string matchShortCode;
+    public int clickedCount;
 
     // Start is called before the first frame update
     void Start()
@@ -24,17 +25,21 @@ public class HostedGameLobbyButton : MonoBehaviour
 
     public void onClick()
     {
+        // Double click to join
+        clickedCount++;
+        if (clickedCount % 2 == 0)
+        {
+            HostedGameLobbies hostedGameLobbiesScript = GetComponentInParent<HostedGameLobbies>();
+            hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
 
-        HostedGameLobbies hostedGameLobbiesScript = GetComponentInParent<HostedGameLobbies>();
-        hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
+            //ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+            JoinPendingMatchRequest joinPendingMatch = new JoinPendingMatchRequest();
+            joinPendingMatch.SetMatchShortCode(matchShortCode);
+            joinPendingMatch.SetPendingMatchId(gameID);
+            joinPendingMatch.Send(OnJoinPendingMatchSuccess, OnJoinPendingMatchError);
 
-        //ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-        JoinPendingMatchRequest joinPendingMatch = new JoinPendingMatchRequest();
-        joinPendingMatch.SetMatchShortCode(matchShortCode);
-        joinPendingMatch.SetPendingMatchId(gameID);
-        joinPendingMatch.Send(OnJoinPendingMatchSuccess, OnJoinPendingMatchError);
-
-        RemoveAllHostedGames();
+            RemoveAllHostedGames();
+        }        
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)

@@ -70,7 +70,6 @@ public class MainMenu : MonoBehaviour
         loginPanel = GameObject.Find("LoginPanel");
         registrationPanel = GameObject.Find("RegistrationPanel");
         lobbyPanel = GameObject.Find("LobbyPanel");
-        leaderboardPanel = GameObject.Find("LeaderboardPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
        // quitPanel = GameObject.Find("QuitPanel");
 
@@ -83,7 +82,6 @@ public class MainMenu : MonoBehaviour
         loginPanel.SetActive(false);
         registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
-        leaderboardPanel.SetActive(false);
         tutorialPanel.SetActive(false);
        
     }
@@ -298,10 +296,7 @@ public class MainMenu : MonoBehaviour
         registrationPanel.SetActive(false);
         panelOrder.Push(lobbyPanel);
         lobbyPanel.SetActive(true);
-
-        // Set click listener for leaderboards button
-        Button leaderboardButton = GameObject.Find("LeaderboardButton").GetComponent<Button>();
-        leaderboardButton.onClick.AddListener(OnLeaderboardsClick);
+        OnLeaderboardsClick();
     }
 
     private void OnLoginError(AuthenticationResponse response)
@@ -346,10 +341,6 @@ public class MainMenu : MonoBehaviour
 
     private void OnLeaderboardsClick()
     {
-        lobbyPanel.SetActive(false);
-        leaderboardPanel.SetActive(true);
-        panelOrder.Push(leaderboardPanel);
-
         LeaderboardPanel leaderboardPanelScript = GameObject.Find("LeaderboardPanel").GetComponent<LeaderboardPanel>();
         leaderboardPanelScript.onRefreshLeaderboardButtonClick();
     }
