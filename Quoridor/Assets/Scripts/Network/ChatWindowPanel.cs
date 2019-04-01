@@ -33,6 +33,7 @@ public class ChatWindowPanel : MonoBehaviour
             chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
             chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
             TeamChatMessage.Listener += ChatMessageReceived;
+            ScriptMessage_JoinFriendTeam.Listener += JoinFriendTeam;
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
         }
         else
@@ -46,8 +47,6 @@ public class ChatWindowPanel : MonoBehaviour
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
         }
     }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -147,6 +146,37 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             Debug.Log("Joined Global Team");
+        }
+    }
+
+
+    private void JoinFriendTeam(ScriptMessage_JoinFriendTeam message)
+    {
+        // Not working - NK
+        var joinFriendTeamData = message.ScriptData.BaseData;
+        var joinFriendTeamDataEnum = joinFriendTeamData.GetEnumerator();
+        joinFriendTeamDataEnum.MoveNext();
+        var joinTeamBaseDataEnum = (KeyValuePair<string, object>)joinFriendTeamDataEnum.Current;
+        var joinTeamActualBaseData = (GameSparks.Core.GSData)joinTeamBaseDataEnum.Value;
+        var friendPlayerIDBaseData = joinTeamActualBaseData.BaseData.GetEnumerator();
+        friendPlayerIDBaseData.MoveNext();
+        string teamID = friendPlayerIDBaseData.Current.Value.ToString();
+        // Create join team request
+        JoinTeamRequest joinTeamRequest = new JoinTeamRequest();
+        joinTeamRequest.SetTeamId(teamID);
+        joinTeamRequest.SetTeamType("FriendTeam");
+        joinTeamRequest.Send(JoinedFriendTeam);
+    }
+
+    void JoinedFriendTeam(JoinTeamResponse response)
+    {
+        if (response.HasErrors)
+        {
+            Debug.Log("Did not join Friend Team");
+        }
+        else
+        {
+            Debug.Log("Joined Friend Team");
         }
     }
 

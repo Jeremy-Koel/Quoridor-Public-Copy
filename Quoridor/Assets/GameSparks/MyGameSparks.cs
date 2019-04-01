@@ -1024,6 +1024,32 @@ namespace GameSparks.Api.Messages {
 				}
 			}
 		}
+		public class ScriptMessage_JoinFriendTeam : ScriptMessage {
+		
+			public new static Action<ScriptMessage_JoinFriendTeam> Listener;
+	
+			public ScriptMessage_JoinFriendTeam(GSData data) : base(data){}
+	
+			private static ScriptMessage_JoinFriendTeam Create(GSData data)
+			{
+				ScriptMessage_JoinFriendTeam message = new ScriptMessage_JoinFriendTeam (data);
+				return message;
+			}
+	
+			static ScriptMessage_JoinFriendTeam()
+			{
+				handlers.Add (".ScriptMessage_JoinFriendTeam", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
 		public class ScriptMessage_MatchmakingGroupNumber : ScriptMessage {
 		
 			public new static Action<ScriptMessage_MatchmakingGroupNumber> Listener;
