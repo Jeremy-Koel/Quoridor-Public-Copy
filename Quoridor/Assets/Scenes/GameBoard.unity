@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -539,7 +539,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 8400000, guid: d498315769b149e4f9ca5664f75b1a65, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -4464,6 +4464,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveArm: 0
   target: {x: 0, y: 0, z: 0}
+  chatSpeed: 2000
+  chatTarget: {x: 0, y: 0}
+  chatOrigPos: {x: 0, y: 0}
+  isChatArm: 0
+  chatArmRectTransform: {fileID: 0}
 --- !u!1 &822279156
 GameObject:
   m_ObjectHideFlags: 0
@@ -5335,7 +5340,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000057232104
+      value: -0.00014785407
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -6115,6 +6120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveArm: 0
   target: {x: 0, y: 0, z: 0}
+  chatSpeed: 2000
+  chatTarget: {x: 0, y: 0}
+  chatOrigPos: {x: 0, y: 0}
+  isChatArm: 0
+  chatArmRectTransform: {fileID: 0}
 --- !u!1001 &1041039692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6213,7 +6223,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: d498315769b149e4f9ca5664f75b1a65, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex
