@@ -229,6 +229,16 @@ public class ChatWindowPanel : MonoBehaviour
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
 
+        if (SceneManager.GetActiveScene().name == "GameBoard")
+        {
+            //actual font is just less than half of number shown
+            playerText.fontSize = 118;
+            messageText.fontSize = 92;
+
+            //try bold message
+            messageText.text = ("<b>" + messageMessage + "</b>");
+        }
+
         if (messageWho.Length >= 20)
         {
             playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
