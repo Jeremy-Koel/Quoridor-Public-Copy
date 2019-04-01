@@ -49,21 +49,22 @@ public class ChatSelectionPanel : MonoBehaviour
     {
         // Adjust dimensions of rightMostBoundaries
         widthOfAllChatButtons = (chatSelectionContentObject.GetComponentsInChildren<Button>().Length * widthOfChatButton);
-        rightMostBoundaries.localPosition = new Vector2((leftMostBoundaries.localPosition.x - (widthOfAllChatButtons / 2)),
-                                        leftMostBoundaries.localPosition.y);
-        //chatSelectionContentObject.GetComponent<LayoutElement>().minWidth = widthOfAllChatButtons;
-
-        chatSelectionContentRectTransform.localPosition = new Vector2(chatSelectionContentRectTransform.localPosition.x + value, 
-                                                        chatSelectionContentRectTransform.localPosition.y);
-
-        if (chatSelectionContentRectTransform.localPosition.x <= rightMostBoundaries.localPosition.x)
+        if (widthOfAllChatButtons > 300)
         {
-            chatSelectionContentRectTransform.localPosition = rightMostBoundaries.localPosition;
-        }
-        if (chatSelectionContentRectTransform.localPosition.x >= leftMostBoundaries.localPosition.x)
-        {
-            chatSelectionContentRectTransform.localPosition = leftMostBoundaries.localPosition;
-        }
+            rightMostBoundaries.localPosition = new Vector2((leftMostBoundaries.localPosition.x - (widthOfAllChatButtons / 2)),
+                                leftMostBoundaries.localPosition.y);
 
+            chatSelectionContentRectTransform.localPosition = new Vector2(chatSelectionContentRectTransform.localPosition.x + value,
+                                                            chatSelectionContentRectTransform.localPosition.y);
+
+            if (chatSelectionContentRectTransform.localPosition.x <= rightMostBoundaries.localPosition.x)
+            {
+                chatSelectionContentRectTransform.localPosition = rightMostBoundaries.localPosition;
+            }
+            if (chatSelectionContentRectTransform.localPosition.x >= leftMostBoundaries.localPosition.x)
+            {
+                chatSelectionContentRectTransform.localPosition = leftMostBoundaries.localPosition;
+            }
+        }
     }
 }
