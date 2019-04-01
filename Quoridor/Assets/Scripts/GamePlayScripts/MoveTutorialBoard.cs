@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveTutorialBoard : MonoBehaviour
 {
     // Start is called before the first frame update
-    public bool moveBoard;
+    public bool moveBoard = false;
     public Vector3 target;
     public Vector3 origPos;
     public Vector3 activePos;
@@ -13,7 +13,7 @@ public class MoveTutorialBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveBoard = false;
+        //moveBoard = false;
         origPos = transform.position;
         target = new Vector3(0, 0, 0);
         activePos = target;
