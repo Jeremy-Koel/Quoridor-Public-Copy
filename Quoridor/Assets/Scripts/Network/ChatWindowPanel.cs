@@ -166,7 +166,7 @@ public class ChatWindowPanel : MonoBehaviour
         // Create join team request
         JoinTeamRequest joinTeamRequest = new JoinTeamRequest();
         joinTeamRequest.SetTeamId(teamID);
-        joinTeamRequest.SetTeamType("FriendTeam");
+        joinTeamRequest.SetTeamType("FriendsTeam");
         joinTeamRequest.Send(JoinedFriendTeam);
     }
 
