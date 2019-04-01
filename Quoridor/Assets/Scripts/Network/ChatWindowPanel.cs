@@ -152,17 +152,9 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void JoinFriendTeam(ScriptMessage_JoinFriendTeam message)
     {
-        // Not working - NK
         var joinFriendTeamData = message.Data.BaseData.Values.GetEnumerator();
         joinFriendTeamData.MoveNext();
-        var joinFriendTeamID = joinFriendTeamData.Current.ToString();
-        //var joinFriendTeamDataEnum = joinFriendTeamData.GetEnumerator();
-        //joinFriendTeamDataEnum.MoveNext();
-        //var joinTeamBaseDataEnum = (KeyValuePair<string, object>)joinFriendTeamDataEnum.Current;
-        //var joinTeamActualBaseData = (GameSparks.Core.GSData)joinTeamBaseDataEnum.Value;
-        //var friendPlayerIDBaseData = joinTeamActualBaseData.BaseData.GetEnumerator();
-        //friendPlayerIDBaseData.MoveNext();
-        string teamID = joinFriendTeamID;
+        string teamID = joinFriendTeamData.Current.ToString();
         // Create join team request
         JoinTeamRequest joinTeamRequest = new JoinTeamRequest();
         joinTeamRequest.SetTeamId(teamID);
