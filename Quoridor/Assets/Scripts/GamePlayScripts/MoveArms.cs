@@ -1,20 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MoveArms : MonoBehaviour
 {
     public bool moveArm;
     public Vector3 target;
     private float speed = 20.0f;
+    public float chatSpeed = 2000.0f;
     private Vector3 origPos;
+    public Vector2 chatTarget;
+    public Vector2 chatOrigPos;
+    public bool isChatArm = false;
+
+    public RectTransform chatArmRectTransform;
     
     // Start is called before the first frame update
     void Start()
     {
-        origPos = transform.position;
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            isChatArm = true;
+            chatArmRectTransform = GetComponent<RectTransform>();
+        }
+        else
+        {
+            origPos = transform.position;
+            target = transform.position;
+        }
         moveArm = false;
-        target = transform.position;
     }
 
     // Update is called once per frame
@@ -22,19 +37,41 @@ public class MoveArms : MonoBehaviour
     {
         if (moveArm)
         {
-            float step = speed * Time.deltaTime; // calculate distance to move
-            transform.position = Vector3.MoveTowards(transform.position, target, step);
-
-            if (transform.position == target && target != origPos)
+            if (isChatArm)
             {
-                target = origPos;
+                float step = chatSpeed * Time.deltaTime; // calculate distance to move
+                Vector2 transformPosition = new Vector2(chatArmRectTransform.localPosition.x,
+                                                chatArmRectTransform.localPosition.y);
+
+                chatArmRectTransform.localPosition = Vector2.MoveTowards(transformPosition, chatTarget, step);
+                chatArmRectTransform.localPosition = new Vector3(chatArmRectTransform.localPosition.x,
+                                                        chatArmRectTransform.localPosition.y, -3);
+
+                //if ((chatArmRectTransform.localPosition.x == chatTarget.x &&
+                //        chatArmRectTransform.localPosition.y == chatTarget.y) && chatTarget != chatOrigPos)
+                //{
+                //    chatTarget = chatOrigPos;
+                //}
+                if (chatArmRectTransform.localPosition.x == chatOrigPos.x &&
+                            chatArmRectTransform.localPosition.y == chatOrigPos.y)
+                {
+                    moveArm = false;
+                }
             }
-            else if(transform.position == target)
+            else
             {
-                moveArm = false;
+                float step = speed * Time.deltaTime; // calculate distance to move
+                transform.position = Vector3.MoveTowards(transform.position, target, step);
+
+                if (transform.position == target && target != origPos)
+                {
+                    target = origPos;
+                }
+                else if (transform.position == target)
+                {
+                    moveArm = false;
+                }
             }
-
-
         }
     }
 
@@ -50,5 +87,11 @@ public class MoveArms : MonoBehaviour
             Vector3 newTarget = new Vector3(pos.x, pos.y + 23, -2);
             target = newTarget;
         }
+    }
+
+    public void SetTargetChat(Vector2 pos)
+    {
+        //Vector2 newTarget = new Vector2(pos.x, pos.y - 23);
+        chatTarget = pos;
     }
 }
