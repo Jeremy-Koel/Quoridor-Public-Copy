@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1074,7 +1074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: 0.0000004952815}
+  m_AnchoredPosition: {x: 1.4848496, y: 0.000018987035}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -2848,6 +2848,7 @@ GameObject:
   - component: {fileID: 264065371}
   - component: {fileID: 264065370}
   - component: {fileID: 264065369}
+  - component: {fileID: 264065372}
   m_Layer: 5
   m_Name: UsernameInput
   m_TagString: Untagged
@@ -2977,6 +2978,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 264065367}
   m_CullTransparentMesh: 0
+--- !u!114 &264065372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264065367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7046f416b99de3845871249176ee2ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  findFirstSelectable: 0
 --- !u!1 &285226831
 GameObject:
   m_ObjectHideFlags: 0
@@ -3914,6 +3928,7 @@ GameObject:
   - component: {fileID: 394447613}
   - component: {fileID: 394447612}
   - component: {fileID: 394447611}
+  - component: {fileID: 394447614}
   m_Layer: 5
   m_Name: DisplayNameInput
   m_TagString: Untagged
@@ -4043,6 +4058,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 394447609}
   m_CullTransparentMesh: 0
+--- !u!114 &394447614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394447609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7046f416b99de3845871249176ee2ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  findFirstSelectable: 0
 --- !u!1 &396104855
 GameObject:
   m_ObjectHideFlags: 0
