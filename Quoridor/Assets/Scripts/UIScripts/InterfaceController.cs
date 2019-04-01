@@ -231,12 +231,12 @@ public class InterfaceController : MonoBehaviour
         soundEffectController.PlayErrorSound();
     }
 
-    private void SwitchTurnIndicatorToOpponent()
+    public void SwitchTurnIndicatorToOpponent()
     {
         playerTurnBoxAnimator.SetTrigger("LocalTurnTaken");
     }
 
-    private void SwitchTurnIndicatorToLocal()
+    public void SwitchTurnIndicatorToLocal()
     {
         playerTurnBoxAnimator.SetTrigger("OpponentTurnTaken");
     }
