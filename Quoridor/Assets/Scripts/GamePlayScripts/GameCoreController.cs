@@ -27,12 +27,18 @@ public class GameCoreController : MonoBehaviour
         }
         else
         {
-            // Randomize player turn 
-            bool opponentTurn = false;
-            if (opponentTurn)
+            // Set player turn 
+
+            if (GameSession.PlayerTurnPref != PlayerTurnEnum.FIRST)
             {
-                gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.TWO);
-                eventManager.InvokeLocalPlayerMoved();
+                if (GameSession.PlayerTurnPref == PlayerTurnEnum.SECOND)
+                {
+                    gameBoard.SetPlayerTurn(GameBoard.PlayerEnum.TWO);
+                }
+                else
+                {
+                    gameBoard.SetPlayerTurnRandom();
+                }
             }
         }
     }
@@ -40,7 +46,11 @@ public class GameCoreController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (gameBoard.GetWhoseTurn() == 2)
+        {
+            eventManager.InvokeLocalPlayerMoved();
+            interfaceController.SwitchTurnIndicatorToOpponent();
+        }
     }
 
     public void AddToSpaceMap(string name)
