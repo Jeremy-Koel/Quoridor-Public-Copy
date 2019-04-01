@@ -232,11 +232,12 @@ public class ChatWindowPanel : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "GameBoard")
         {
             //actual font is just less than half of number shown
-            playerText.fontSize = 118;
+            playerText.fontSize = 112;
             messageText.fontSize = 92;
 
             //try bold message
-            messageText.text = ("<b>" + messageMessage + "</b>");
+            //messageText.text = ("<b>" + messageMessage + "</b>");
+            GetComponent<>
         }
 
         if (messageWho.Length >= 20)
