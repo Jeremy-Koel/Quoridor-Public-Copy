@@ -86,6 +86,8 @@ public class MainMenu : MonoBehaviour
         registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         tutorialPanel.SetActive(false);
+
+        mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
        
     }
 
@@ -205,6 +207,7 @@ public class MainMenu : MonoBehaviour
         settingsPanel.SetActive(false);
         dummyMenuPanel.SetActive(true);
         tutorialPanel.SetActive(true);
+        tutorialPanel.GetComponent<MoveTutorialBoard>().moveBoard = true;
         panelOrder.Push(tutorialPanel);
     }
 
@@ -218,12 +221,17 @@ public class MainMenu : MonoBehaviour
         usernameRegisterInput.text = "";
         passwordRegisterInput.text = "";
 
-        disableScreen.SetActive(false);
+        if (disableScreen.name != "TutorialPanel")
+        {
+            disableScreen.SetActive(false);
+        }
+
         enableScreen.SetActive(true);
     }
 
     public void onTutorialBackButtonClick()
     {
+        tutorialPanel.GetComponent<MoveTutorialBoard>().moveBoard = true;
         dummyMenuPanel.SetActive(false);
         onBackButtonClick();
     }
