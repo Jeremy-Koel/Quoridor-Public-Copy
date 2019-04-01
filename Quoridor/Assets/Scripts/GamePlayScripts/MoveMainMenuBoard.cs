@@ -5,13 +5,13 @@ using UnityEngine;
 public class MoveMainMenuBoard : MonoBehaviour
 {
     // Start is called before the first frame update
-    public bool moveBoard;
+    public bool moveBoard =false;
     public Vector3 target;
     public float speed = 10f;
     // Start is called before the first frame update
     void Start()
     {
-        moveBoard = false;
+       // moveBoard = false;
         target = new Vector3(-5.3f, 0, 0);
     }
 
