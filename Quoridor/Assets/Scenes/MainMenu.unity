@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1074,7 +1074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: -0.00009240042}
+  m_AnchoredPosition: {x: 1.4848496, y: -0.0001050509}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -5640,10 +5640,21 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 557960013}
+  m_TargetGraphic: {fileID: 1820138499}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1798782726}
+        m_MethodName: MoveContentPane
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: -50
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &557960013
@@ -7837,8 +7848,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 919033554}
-  - component: {fileID: 919033557}
   - component: {fileID: 919033556}
+  - component: {fileID: 919033557}
   - component: {fileID: 919033555}
   m_Layer: 5
   m_Name: ChatSelectionView
@@ -7913,24 +7924,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 919033553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 705c8d90a359d8f4e932ed9179bb391b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2086418884}
   m_Horizontal: 1
   m_Vertical: 0
-  m_MovementType: 1
+  m_MovementType: 0
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 0
   m_Viewport: {fileID: 916180853}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14503,6 +14514,7 @@ GameObject:
   - component: {fileID: 1798782723}
   - component: {fileID: 1798782725}
   - component: {fileID: 1798782724}
+  - component: {fileID: 1798782726}
   m_Layer: 5
   m_Name: ChatSelectionPanel
   m_TagString: Untagged
@@ -14569,6 +14581,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798782722}
   m_CullTransparentMesh: 0
+--- !u!114 &1798782726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798782722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e73ea781fde8544a32ab564851f8d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatSelectionLeftButton: {fileID: 1820138498}
+  chatSelectionRightButton: {fileID: 557960012}
+  chatSelectionContentObject: {fileID: 0}
+  chatSelectionContentRectTransform: {fileID: 0}
+  leftMostBoundaries: {fileID: 0}
+  rightMostBoundaries: {fileID: 0}
+  widthOfChatButton: 100
+  chatSelectionButtonPrefab: {fileID: 436498755343838290, guid: 4cef1ede563d570448951c39a2c7dd0d,
+    type: 3}
 --- !u!1 &1804832325
 GameObject:
   m_ObjectHideFlags: 0
@@ -14762,7 +14795,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1820138499}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1798782726}
+        m_MethodName: MoveContentPane
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 50
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1820138499
@@ -15311,7 +15355,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00011614587
+      value: -0.0000725602
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -17627,7 +17671,7 @@ GameObject:
   - component: {fileID: 2086418884}
   - component: {fileID: 2086418885}
   m_Layer: 5
-  m_Name: Content
+  m_Name: ChatSelectionContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17650,7 +17694,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 7.924011, y: 0.0000038146973}
+  m_AnchoredPosition: {x: 7.924011, y: -0.0000762905}
   m_SizeDelta: {x: 15.848212, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086418885
