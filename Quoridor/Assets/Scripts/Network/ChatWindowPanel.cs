@@ -32,7 +32,8 @@ public class ChatWindowPanel : MonoBehaviour
     private List<string> teamIDs;
     // List of friendsChatMessagesRectTransforms
     public List<RectTransform> listOfFriendsMessagesContents;
-    
+
+    private string currentTeamID;
 
     private void Awake()
     {
@@ -80,6 +81,7 @@ public class ChatWindowPanel : MonoBehaviour
     public void SwitchToGlobalChat()
     {
         SwitchAllFriendChatOff();
+        currentTeamID = "0";
         chatMessagesViewContent.gameObject.SetActive(true);
     }
 
@@ -111,6 +113,7 @@ public class ChatWindowPanel : MonoBehaviour
             }
             index++;
         }
+        currentTeamID = teamID;
     }
 
     public void SwitchAllFriendChatOff()
@@ -177,7 +180,7 @@ public class ChatWindowPanel : MonoBehaviour
             friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];
             SwitchActiveChat(teamID, messageWho.ToString());
         }
-
+        currentTeamID = teamID;
         GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
         BuildChatMessageUI(messageWho, messageMessage, messageTextObject, friendChatMessagesContent, friendChatMessages);
     }
@@ -310,7 +313,8 @@ public class ChatWindowPanel : MonoBehaviour
             Debug.Log("Sending message: " + message);
             SendTeamChatMessageRequest teamChatMessageRequest = new SendTeamChatMessageRequest();
             teamChatMessageRequest.SetMessage(message);
-            teamChatMessageRequest.SetTeamId("0");
+            //teamChatMessageRequest.SetTeamId("0");
+            teamChatMessageRequest.SetTeamId(currentTeamID);
             teamChatMessageRequest.Send(ChatMessageResponse);
         }
         else
