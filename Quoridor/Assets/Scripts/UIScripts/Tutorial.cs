@@ -92,11 +92,12 @@ public class Tutorial : MonoBehaviour
     {
         string[] temp = new string[5];
 
-        temp[0] = "To place a wall, hover over the spot you want to place it and click.";
-        temp[1] = "To move your mouse, click one of the green squares - these show what moves you are allowed to make.";
+        
+        temp[0] = "To move your mouse, click one of the green squares - these show what moves you are allowed to make.";
+        temp[1] = "To place a wall, hover over the spot you want to place it and click.";
         temp[2] = "If your opponent is directly in front of you, and there isn't a wall behind them, you can jump over them.";
-        temp[3] = "If your opponent is directly in front of you, and there is a wall behind them, you can move diagonally to a space on either side of them";
-        temp[4] = "When placing walls, you can place them anywhere, UNLESS placing the wall blocks your's or your opponent's path to the other side.";
+        temp[3] = "If your opponent is directly in front of you, and there is a wall behind them, you can move diagonally to a space on either side of them.";
+        temp[4] = "When placing walls, you can place them anywhere, UNLESS placing the wall blocks you or your opponent from reaching their goal.";
 
         return temp;
     }
