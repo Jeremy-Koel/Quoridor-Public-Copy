@@ -946,6 +946,32 @@ namespace GameSparks.Api.Messages {
 				}
 			}
 		}
+		public class ScriptMessage_ConnectionLost : ScriptMessage {
+		
+			public new static Action<ScriptMessage_ConnectionLost> Listener;
+	
+			public ScriptMessage_ConnectionLost(GSData data) : base(data){}
+	
+			private static ScriptMessage_ConnectionLost Create(GSData data)
+			{
+				ScriptMessage_ConnectionLost message = new ScriptMessage_ConnectionLost (data);
+				return message;
+			}
+	
+			static ScriptMessage_ConnectionLost()
+			{
+				handlers.Add (".ScriptMessage_ConnectionLost", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
 		public class ScriptMessage_DeclinedFriendRequest : ScriptMessage {
 		
 			public new static Action<ScriptMessage_DeclinedFriendRequest> Listener;
