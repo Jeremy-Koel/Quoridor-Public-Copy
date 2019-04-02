@@ -83,6 +83,7 @@ public class ChatWindowPanel : MonoBehaviour
         SwitchAllFriendChatOff();
         currentTeamID = "0";
         chatMessagesViewContent.gameObject.SetActive(true);
+        chatSelectionPanel.SetSelectionButtonsInteractive(-1);
     }
 
     public void SwitchActiveChat(string teamID, string playerName)
@@ -113,6 +114,7 @@ public class ChatWindowPanel : MonoBehaviour
             }
             index++;
         }
+        chatSelectionPanel.SetSelectionButtonsInteractive(teamIDIndex);
         currentTeamID = teamID;
     }
 

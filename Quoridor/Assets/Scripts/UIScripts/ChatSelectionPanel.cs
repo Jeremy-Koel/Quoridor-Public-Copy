@@ -19,6 +19,24 @@ public class ChatSelectionPanel : MonoBehaviour
 
     private List<GameObject> chatSelectionButtons;
 
+    public void SetSelectionButtonsInteractive(int targetIndex)
+    {
+        int index = 0;
+        var chatSelectionButtonsEnum = chatSelectionButtons.GetEnumerator();
+        while (chatSelectionButtonsEnum.MoveNext())
+        {
+            if (index == targetIndex)
+            {
+                chatSelectionButtonsEnum.Current.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                chatSelectionButtonsEnum.Current.GetComponent<Button>().interactable = true;
+            }            
+            index++;
+        }
+    }
+
     private void Awake()
     {
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
