@@ -184,6 +184,10 @@ public class ChallengeManager : MonoBehaviour
             messageQueue.EnqueueChallengeMove(message);
             eventManager.InvokeChallengeMove();
         }
+        else if (message.ExtCode == "LostConnection")
+        {
+            eventManager.InvokeLostConnection();
+        }
     }
 
     public void SetupPlayerInfo()

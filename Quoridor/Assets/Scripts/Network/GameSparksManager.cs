@@ -10,6 +10,9 @@ using System;
 
 public class GameSparksManager : MonoBehaviour
 {
+    private ChallengeManager challengeManager;
+    private EventManager eventManager;
+
     private void Awake()
     {
         int numberOfActiveThises = FindObjectsOfType<GameSparksManager>().Length;
@@ -20,6 +23,15 @@ public class GameSparksManager : MonoBehaviour
         DontDestroyOnLoad(this);
         ScriptMessage_ConnectionLost.Listener += LostConnectionMessageHandler;
         GS.GameSparksAvailable += HandleGameSparksAvailable;
+        CheckConnectionRepeating();
+        //// Listen to events for checking connection
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        eventManager.ListenToLostConnection(LostConnection);
+    }
+
+    private void CheckConnectionRepeating()
+    {
+        InvokeRepeating("CheckConnection", 10.0f, 10.0f);
     }
 
     // Disconnect handling
@@ -36,7 +48,15 @@ public class GameSparksManager : MonoBehaviour
 
     private void CheckConnection()
     {
-        
+        challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+        LogChallengeEventRequest_CheckConnection checkConnectionRequest = new LogChallengeEventRequest_CheckConnection();
+        checkConnectionRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
+        checkConnectionRequest.Send(CheckConnectionResponse);
+    }
+
+    private void CheckConnectionResponse(LogChallengeEventResponse message)
+    {
+        Debug.Log("Check Connection Response: " + message);
     }
 
     // Triggered when gamesparks available value is modified

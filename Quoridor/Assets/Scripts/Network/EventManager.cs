@@ -10,7 +10,8 @@ using GameSparks.Api.Messages;
 [System.Serializable]
 public class EventManager : MonoBehaviour
 {
-    
+    private UnityEvent CheckConnectionPeriodic = new UnityEvent();
+    private UnityEvent LostConnection = new UnityEvent();
     private UnityEvent ChallengeStarted = new UnityEvent();
     private UnityEvent ChallengeTurnTaken = new UnityEvent();
     private UnityEvent ChallengeStartingPlayerSet = new UnityEvent();
@@ -52,6 +53,7 @@ public class EventManager : MonoBehaviour
     public void RemoveAllListeners()
     {
         Debug.Log("Removing all unityEvent listeners");
+        CheckConnectionPeriodic.RemoveAllListeners();
         ChallengeStarted.RemoveAllListeners();
         ChallengeTurnTaken.RemoveAllListeners();
         ChallengeStartingPlayerSet.RemoveAllListeners();
@@ -66,6 +68,8 @@ public class EventManager : MonoBehaviour
 
     public void ResetEventManager()
     {
+        LostConnection = new UnityEvent();
+        CheckConnectionPeriodic = new UnityEvent();
         ChallengeStarted = new UnityEvent();
         ChallengeTurnTaken = new UnityEvent();
         ChallengeStartingPlayerSet = new UnityEvent();
@@ -82,7 +86,31 @@ public class EventManager : MonoBehaviour
         PlayAgain = new UnityEvent();
         // For AI Game
         TurnTaken = new UnityEvent();
-}
+    }
+
+    public void ListenToCheckConnectionPeriodic(UnityAction action)
+    {
+        Debug.Log("Check Connection Periodic Listener Added");
+        CheckConnectionPeriodic.AddListener(action);
+    }
+
+    public void InvokeCheckConnectionPeriodic()
+    {
+        Debug.Log("Check Connection Periodic Invoked");
+        CheckConnectionPeriodic.Invoke();
+    }
+
+    public void ListenToLostConnection(UnityAction action)
+    {
+        Debug.Log("LostConnection Listener Added");
+        LostConnection.AddListener(action);
+    }
+
+    public void InvokeLostConnection()
+    {
+        Debug.Log("LostConnection Invoked");
+        LostConnection.Invoke();
+    }
 
     public void ListenToChallengeStarted(UnityAction action)
     {
