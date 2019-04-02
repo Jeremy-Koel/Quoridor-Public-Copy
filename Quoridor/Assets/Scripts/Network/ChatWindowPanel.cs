@@ -33,7 +33,7 @@ public class ChatWindowPanel : MonoBehaviour
     // List of friendsChatMessagesRectTransforms
     public List<RectTransform> listOfFriendsMessagesContents;
 
-    private string currentTeamID;
+    private string currentTeamID = "0";
 
     private void Awake()
     {
