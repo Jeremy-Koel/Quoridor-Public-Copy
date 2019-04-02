@@ -152,6 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf7a4090273f2ea44853a63b2f3bda8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerID: 
+  playerName: 
+  teamID: 
+  chatWindowPanel: {fileID: 0}
 --- !u!1 &6502158042174607489
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +222,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 5640aed5b23d3f64c89e23bc7d3b69eb, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
