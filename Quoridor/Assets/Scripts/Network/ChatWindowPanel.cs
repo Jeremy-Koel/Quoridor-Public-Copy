@@ -21,12 +21,15 @@ public class ChatWindowPanel : MonoBehaviour
     public List<GameObject> chatMessages;
     public GameObject lobbyMessagePrefab;
     public GameObject inGameMessagePrefab;
+    public GameObject friendChatMessagesBoxPrefab;
     public ChallengeManager challengeManager;
 
     // A list of each list of a friend's chat messages
     private List<List<GameObject>> listOfChatMessages;
     // List of teamIDs for reference (we only need one instance of each teamID)
     private List<string> teamIDs;
+    // List of friendsChatMessagesRectTransforms
+    private List<RectTransform> listOfFriendsMessagesContents;
 
     // NK - NOTES
     //    1. TeamChatMessage router
@@ -40,15 +43,49 @@ public class ChatWindowPanel : MonoBehaviour
     //	    2b) Add GameObject to list of FriendChatMessagesContents(RectTransforms)
     //	    2c) Add a new List<GameObject> chatMessages to a List<List<GameObject>> listOfChatMessages
 
+    private void ChatMessagesViewContentCreator()
+    {
+        // Add new list of chat messages to list
+        List<GameObject> friendChatMessages = new List<GameObject>();
+        listOfChatMessages.Add(friendChatMessages);
+        GameObject friendChatMessagesObject = Instantiate(friendChatMessagesBoxPrefab);
+        RectTransform friendChatMessagesRectTransform = friendChatMessagesObject.GetComponent<RectTransform>();
+        friendChatMessagesRectTransform.SetParent(chatMessagesViewContent.parent.parent);
+        var friendChatMessagesRectTransformChildrenEnum = friendChatMessagesObject.GetComponentsInChildren<RectTransform>().GetEnumerator();
+        friendChatMessagesRectTransformChildrenEnum.MoveNext();
+        friendChatMessagesRectTransformChildrenEnum.MoveNext();
+        var friendChatMessagesRectTransformChild = (RectTransform)friendChatMessagesRectTransformChildrenEnum.Current;
+        listOfFriendsMessagesContents.Add(friendChatMessagesRectTransformChild);
+        //listOfFriendsMessagesContents.Add(friendChatMessagesRectTransform);
+    }
+
     private void TeamChatMessageRouter(TeamChatMessage message)
     {
         string teamID = "0";
+        List<GameObject> friendChatMessages = chatMessages;
+        RectTransform friendChatMessagesContent = chatMessagesViewContent;
         if (message.TeamType == "GlobalTeam") {
 
         }
         else
         {
-            //teamIDs.Find(message.TeamId);
+            teamID = message.TeamId;
+            Predicate<string> predicate = delegate(string toCompare) { return toCompare == teamID; };
+            int teamIDIndex = teamIDs.FindIndex(predicate);
+
+            // If the team ID does not exist in the list
+            if (teamIDIndex == -1)
+            {
+                teamIDs.Add(teamID);
+                teamIDIndex = teamIDs.Count - 1;
+                ChatMessagesViewContentCreator();
+            }
+            else
+            {
+
+            }
+            friendChatMessages = listOfChatMessages[teamIDIndex];
+            friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];
         }           
 
         string messageWho = message.Who.ToString();
@@ -57,9 +94,8 @@ public class ChatWindowPanel : MonoBehaviour
         Debug.Log("Message sent by: " + messageWho);
         
         GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
-        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent);
+        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, friendChatMessagesContent, friendChatMessages);
     }
-
     
 
     private void Awake()
@@ -73,6 +109,9 @@ public class ChatWindowPanel : MonoBehaviour
             TeamChatMessage.Listener += TeamChatMessageRouter;
             ScriptMessage_JoinFriendTeam.Listener += JoinFriendTeam;
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+            listOfChatMessages = new List<List<GameObject>>();
+            teamIDs = new List<string>();
+            listOfFriendsMessagesContents = new List<RectTransform>();
         }
         else
         {
@@ -196,7 +235,7 @@ public class ChatWindowPanel : MonoBehaviour
         // Create join team request
         JoinTeamRequest joinTeamRequest = new JoinTeamRequest();
         joinTeamRequest.SetTeamId(teamID);
-        joinTeamRequest.SetTeamType("FriendsTeam");
+        //joinTeamRequest.SetTeamType("FriendsTeam");
         joinTeamRequest.Send(JoinedFriendTeam);
     }
 
@@ -265,13 +304,13 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void ChatMessageReceived(TeamChatMessage message, RectTransform chatMessagesViewContent)
     {
-        string messageWho = message.Who.ToString();
-        string messageMessage = message.Message.ToString();
-        Debug.Log("Team chat message recieved: " + messageMessage);
-        Debug.Log("Message sent by: " + messageWho);
+        //string messageWho = message.Who.ToString();
+        //string messageMessage = message.Message.ToString();
+        //Debug.Log("Team chat message recieved: " + messageMessage);
+        //Debug.Log("Message sent by: " + messageWho);
 
-        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
-        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent);
+        //GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
+        //BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent);
     }
 
     private void ChallengeChatMessageReceived(ChallengeChatMessage message)
@@ -282,10 +321,10 @@ public class ChatWindowPanel : MonoBehaviour
         Debug.Log("Message sent by: " + messageWho);
 
         GameObject messageTextObject = Instantiate(inGameMessagePrefab) as GameObject;
-        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent);
+        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent, chatMessages);
     }
 
-    private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObject, RectTransform chatMessagesViewContent)
+    private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObject, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
     {
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
@@ -320,12 +359,12 @@ public class ChatWindowPanel : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
-        AddSpacingMessage();
+        AddSpacingMessage(chatMessagesViewContent, chatMessages);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
     }
 
-    private void AddSpacingMessage() 
+    private void AddSpacingMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages) 
     {
         GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
