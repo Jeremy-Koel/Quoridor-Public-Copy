@@ -183,8 +183,7 @@ public class ChatWindowPanel : MonoBehaviour
             SwitchActiveChat(teamID, messageWho.ToString());
         }
         currentTeamID = teamID;
-        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
-        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, friendChatMessagesContent, friendChatMessages);
+        BuildChatMessageUI(messageWho, messageMessage, lobbyMessagePrefab, friendChatMessagesContent, friendChatMessages);
     }
 
     //Called when Input changes
@@ -321,11 +320,22 @@ public class ChatWindowPanel : MonoBehaviour
         }
         else
         {
-            Debug.Log("Sending message: " + message);
-            ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
-            challengeChatMessageRequest.SetMessage(message);
-            challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
-            challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
+            if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+            {
+                Debug.Log("Sending message: " + message);
+                ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
+                challengeChatMessageRequest.SetMessage(message);
+                challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
+                challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
+            }
+            else
+            {
+                // Send player's message
+                BuildChatMessageUI("Player", message, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
+                // Use AI chat
+                string aiMessage = AIChat.GetAIMessage();
+                BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
+            }
         }
     }
 
@@ -353,30 +363,19 @@ public class ChatWindowPanel : MonoBehaviour
         }
     }
 
-    private void ChatMessageReceived(TeamChatMessage message, RectTransform chatMessagesViewContent)
-    {
-        //string messageWho = message.Who.ToString();
-        //string messageMessage = message.Message.ToString();
-        //Debug.Log("Team chat message recieved: " + messageMessage);
-        //Debug.Log("Message sent by: " + messageWho);
-
-        //GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
-        //BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent);
-    }
-
     private void ChallengeChatMessageReceived(ChallengeChatMessage message)
     {
         string messageWho = message.Who.ToString();
         string messageMessage = message.Message.ToString();
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
-
-        GameObject messageTextObject = Instantiate(inGameMessagePrefab) as GameObject;
-        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, chatMessagesViewContent, chatMessages);
+        
+        BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
 
-    private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObject, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
+    private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObjectPrefab, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
     {
+        GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
@@ -399,14 +398,14 @@ public class ChatWindowPanel : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
-        AddSpacingMessage(chatMessagesViewContent, chatMessages);
+        AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
     }
 
-    private void AddSpacingMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages) 
+    private void AddSpacingMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages, GameObject chatMessageObjectPrefab) 
     {
-        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
+        GameObject messageTextObject = Instantiate(chatMessageObjectPrefab) as GameObject;
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
