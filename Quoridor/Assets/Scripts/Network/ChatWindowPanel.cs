@@ -23,6 +23,23 @@ public class ChatWindowPanel : MonoBehaviour
     public GameObject inGameMessagePrefab;
     public ChallengeManager challengeManager;
 
+    // A list of each list of a friend's chat messages
+    private List<List<GameObject>> listOfChatMessages;
+    // List of teamIDs for reference (we only need one instance of each teamID)
+    private List<string> teamIDs;
+
+    // NK - NOTES
+    //    1. TeamChatMessage router
+    //  	1a) figure out if the teamid has already been sent a message(no duplicates)
+    //		    1aA) if so, don't add teamid to list of teamids
+    //		    1aB) if not, add teamid to list of teamids, and use ChatMessagesViewContentCreator
+    //	    1b) route team message through teamid in teamids list
+	
+    //  2. ChatMessagesViewContentCreator
+    //	    2a) Create new GameObject using FriendChatMessagesPrefab
+    //	    2b) Add GameObject to list of FriendChatMessagesContents(RectTransforms)
+    //	    2c) Add a new List<GameObject> chatMessages to a List<List<GameObject>> listOfChatMessages
+
 
     private void Awake()
     {
