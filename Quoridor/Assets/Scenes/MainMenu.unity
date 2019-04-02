@@ -1074,7 +1074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: -0.00009558133}
+  m_AnchoredPosition: {x: 1.4848496, y: -0.00008863558}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -9684,6 +9684,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69856e80f85612c4eae5419cc680ab1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatSelectionPanel: {fileID: 0}
+  globalChatButtonObject: {fileID: 0}
   chatMessagesViewContent: {fileID: 1229460439}
   chatMessagesLayoutGroup: {fileID: 0}
   chatMessages: []
@@ -9694,6 +9696,7 @@ MonoBehaviour:
   friendChatMessagesBoxPrefab: {fileID: 1270347813843829938, guid: 63340fe1069936c4f80ceb259a4f7f73,
     type: 3}
   challengeManager: {fileID: 0}
+  listOfFriendsMessagesContents: []
 --- !u!1 &1191065878
 GameObject:
   m_ObjectHideFlags: 0
@@ -14617,6 +14620,7 @@ MonoBehaviour:
   widthOfChatButton: 100
   chatSelectionButtonPrefab: {fileID: 436498755343838290, guid: 4cef1ede563d570448951c39a2c7dd0d,
     type: 3}
+  chatWindowPanel: {fileID: 0}
 --- !u!1 &1804832325
 GameObject:
   m_ObjectHideFlags: 0
@@ -15370,7 +15374,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000098635006
+      value: -0.00006838624
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}

@@ -266,15 +266,27 @@ public class FriendsPanel : MonoBehaviour
             var friendPlayerNameBaseData = friendPlayerIDActualBaseData.BaseData.GetEnumerator();
             friendPlayerNameBaseData.MoveNext();
             string playerName = friendPlayerNameBaseData.Current.Value.ToString();
-            
+
             GameObject friendObject = Instantiate(friendResultButtonPrefab) as GameObject;
+            FriendResult friendResultScript = friendObject.GetComponent<FriendResult>();
+
+            friendResultScript.playerName = playerName;
+
             if (pending)
             {
-                FriendResult friendResultScript = friendObject.GetComponent<FriendResult>();
                 friendResultScript.playerID = playerID;
                 friendObject.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClickAcceptFriendRequest);
                 friendObject.name = playerID + "pending";
-            }            
+            }
+            else
+            {
+                friendObject.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClickOpenTeamChat);
+                friendResultScript.chatWindowPanel = chatWindowPanel.GetComponent<ChatWindowPanel>();
+            }
+
+            friendPlayerNameBaseData.MoveNext();
+            string teamID = friendPlayerNameBaseData.Current.Value.ToString();
+            friendResultScript.teamID = teamID;
 
             // Get text component of button
             UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();

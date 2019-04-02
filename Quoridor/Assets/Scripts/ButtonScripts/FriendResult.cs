@@ -12,6 +12,9 @@ using UnityEngine.UI;
 public class FriendResult : MonoBehaviour
 {
     public string playerID;
+    public string playerName;
+    public string teamID;
+    public ChatWindowPanel chatWindowPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,11 @@ public class FriendResult : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void OnClickOpenTeamChat()
+    {
+        chatWindowPanel.SwitchActiveChat(teamID, playerName);
     }
 
     public void OnClickAcceptFriendRequest()

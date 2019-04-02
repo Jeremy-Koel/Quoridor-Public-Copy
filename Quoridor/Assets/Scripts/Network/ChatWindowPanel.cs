@@ -14,7 +14,9 @@ public class ChatWindowPanel : MonoBehaviour
 {
     private GSEnumerable<GetMyTeamsResponse._Team> teams = null;
 
+    public ChatSelectionPanel chatSelectionPanel;
     GameObject chatInput;
+    public GameObject globalChatButtonObject;
     private GameObject chatMessagesView;
     public RectTransform chatMessagesViewContent;
     public VerticalLayoutGroup chatMessagesLayoutGroup;
@@ -29,79 +31,15 @@ public class ChatWindowPanel : MonoBehaviour
     // List of teamIDs for reference (we only need one instance of each teamID)
     private List<string> teamIDs;
     // List of friendsChatMessagesRectTransforms
-    private List<RectTransform> listOfFriendsMessagesContents;
-
-    // NK - NOTES
-    //    1. TeamChatMessage router
-    //  	1a) figure out if the teamid has already been sent a message(no duplicates)
-    //		    1aA) if so, don't add teamid to list of teamids
-    //		    1aB) if not, add teamid to list of teamids, and use ChatMessagesViewContentCreator
-    //	    1b) route team message through teamid in teamids list
-	
-    //  2. ChatMessagesViewContentCreator
-    //	    2a) Create new GameObject using FriendChatMessagesPrefab
-    //	    2b) Add GameObject to list of FriendChatMessagesContents(RectTransforms)
-    //	    2c) Add a new List<GameObject> chatMessages to a List<List<GameObject>> listOfChatMessages
-
-    private void ChatMessagesViewContentCreator()
-    {
-        // Add new list of chat messages to list
-        List<GameObject> friendChatMessages = new List<GameObject>();
-        listOfChatMessages.Add(friendChatMessages);
-        GameObject friendChatMessagesObject = Instantiate(friendChatMessagesBoxPrefab);
-        RectTransform friendChatMessagesRectTransform = friendChatMessagesObject.GetComponent<RectTransform>();
-        friendChatMessagesRectTransform.SetParent(chatMessagesViewContent.parent.parent);
-        var friendChatMessagesRectTransformChildrenEnum = friendChatMessagesObject.GetComponentsInChildren<RectTransform>().GetEnumerator();
-        friendChatMessagesRectTransformChildrenEnum.MoveNext();
-        friendChatMessagesRectTransformChildrenEnum.MoveNext();
-        var friendChatMessagesRectTransformChild = (RectTransform)friendChatMessagesRectTransformChildrenEnum.Current;
-        listOfFriendsMessagesContents.Add(friendChatMessagesRectTransformChild);
-        //listOfFriendsMessagesContents.Add(friendChatMessagesRectTransform);
-    }
-
-    private void TeamChatMessageRouter(TeamChatMessage message)
-    {
-        string teamID = "0";
-        List<GameObject> friendChatMessages = chatMessages;
-        RectTransform friendChatMessagesContent = chatMessagesViewContent;
-        if (message.TeamType == "GlobalTeam") {
-
-        }
-        else
-        {
-            teamID = message.TeamId;
-            Predicate<string> predicate = delegate(string toCompare) { return toCompare == teamID; };
-            int teamIDIndex = teamIDs.FindIndex(predicate);
-
-            // If the team ID does not exist in the list
-            if (teamIDIndex == -1)
-            {
-                teamIDs.Add(teamID);
-                teamIDIndex = teamIDs.Count - 1;
-                ChatMessagesViewContentCreator();
-            }
-            else
-            {
-
-            }
-            friendChatMessages = listOfChatMessages[teamIDIndex];
-            friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];
-        }           
-
-        string messageWho = message.Who.ToString();
-        string messageMessage = message.Message.ToString();
-        Debug.Log("Team chat message recieved: " + messageMessage);
-        Debug.Log("Message sent by: " + messageWho);
-        
-        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
-        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, friendChatMessagesContent, friendChatMessages);
-    }
+    public List<RectTransform> listOfFriendsMessagesContents;
     
 
     private void Awake()
     {
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
+            globalChatButtonObject = GameObject.Find("GlobalChatButton");
+            globalChatButtonObject.GetComponent<Button>().onClick.AddListener(SwitchToGlobalChat);
             chatInput = GameObject.Find("ChatInput");
             chatMessagesView = GameObject.Find("ChatMessagesView");
             chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
@@ -112,6 +50,7 @@ public class ChatWindowPanel : MonoBehaviour
             listOfChatMessages = new List<List<GameObject>>();
             teamIDs = new List<string>();
             listOfFriendsMessagesContents = new List<RectTransform>();
+            chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
         }
         else
         {
@@ -135,6 +74,112 @@ public class ChatWindowPanel : MonoBehaviour
     void Update()
     {
  
+    }
+
+
+    public void SwitchToGlobalChat()
+    {
+        SwitchAllFriendChatOff();
+        chatMessagesViewContent.gameObject.SetActive(true);
+    }
+
+    public void SwitchActiveChat(string teamID, string playerName)
+    {
+        chatMessagesViewContent.gameObject.SetActive(false);
+        Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
+        int teamIDIndex = teamIDs.FindIndex(predicate);
+        if (teamIDIndex == -1)
+        {
+            // Create stuff
+            teamIDs.Add(teamID);
+            teamIDIndex = teamIDs.Count - 1;
+            ChatMessagesViewContentCreator();
+            chatSelectionPanel.AddChatSelectionButton(playerName, teamID);
+        }
+        int index = 0;
+        // Set all friends chats to inactive (aside from the one we want)
+        var listOfFriendsMessagesContentsEnum = listOfFriendsMessagesContents.GetEnumerator();
+        while (listOfFriendsMessagesContentsEnum.MoveNext())
+        {
+            if (index == teamIDIndex)
+            {
+                listOfFriendsMessagesContentsEnum.Current.gameObject.SetActive(true);
+            }
+            else
+            {
+                listOfFriendsMessagesContentsEnum.Current.gameObject.SetActive(false);
+            }
+            index++;
+        }
+    }
+
+    public void SwitchAllFriendChatOff()
+    {
+        var listOfFriendsMessagesContentsEnum = listOfFriendsMessagesContents.GetEnumerator();
+        while (listOfFriendsMessagesContentsEnum.MoveNext())
+        {
+            listOfFriendsMessagesContentsEnum.Current.gameObject.SetActive(false);
+        }
+    }
+
+    private void ChatMessagesViewContentCreator()
+    {
+        // Add new list of chat messages to list
+        List<GameObject> friendChatMessages = new List<GameObject>();
+        listOfChatMessages.Add(friendChatMessages);
+        GameObject friendChatMessagesObject = Instantiate(friendChatMessagesBoxPrefab);
+        RectTransform friendChatMessagesRectTransform = friendChatMessagesObject.GetComponent<RectTransform>();
+        friendChatMessagesRectTransform.SetParent(chatMessagesViewContent.parent.parent);
+        friendChatMessagesObject.transform.localScale = new Vector3(1, 1, 1);
+        friendChatMessagesObject.transform.localPosition = chatMessagesViewContent.parent.parent.localPosition;
+        var friendChatMessagesRectTransformChildrenEnum = friendChatMessagesObject.GetComponentsInChildren<RectTransform>().GetEnumerator();
+        friendChatMessagesRectTransformChildrenEnum.MoveNext();
+        friendChatMessagesRectTransformChildrenEnum.MoveNext();
+        var friendChatMessagesRectTransformChild = (RectTransform)friendChatMessagesRectTransformChildrenEnum.Current;
+        listOfFriendsMessagesContents.Add(friendChatMessagesRectTransformChild);
+        //listOfFriendsMessagesContents.Add(friendChatMessagesRectTransform);
+    }
+
+    private void TeamChatMessageRouter(TeamChatMessage message)
+    {
+        string messageWho = message.Who.ToString();
+        string messageMessage = message.Message.ToString();
+        Debug.Log("Team chat message recieved: " + messageMessage);
+        Debug.Log("Message sent by: " + messageWho);
+
+        string teamID = "0";
+        List<GameObject> friendChatMessages = chatMessages;
+        RectTransform friendChatMessagesContent = chatMessagesViewContent;
+        if (message.TeamType == "GlobalTeam")
+        {
+
+        }
+        else
+        {
+            teamID = message.TeamId;
+            Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
+            int teamIDIndex = teamIDs.FindIndex(predicate);
+
+            // If the team ID does not exist in the list
+            if (teamIDIndex == -1)
+            {
+                teamIDs.Add(teamID);
+                teamIDIndex = teamIDs.Count - 1;
+                ChatMessagesViewContentCreator();
+                // Doesn't work if message was sent by myself ( should be added in a send first )
+                chatSelectionPanel.AddChatSelectionButton(message.Who.ToString(), teamID);
+            }
+            else
+            {
+
+            }
+            friendChatMessages = listOfChatMessages[teamIDIndex];
+            friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];
+            SwitchActiveChat(teamID, messageWho.ToString());
+        }
+
+        GameObject messageTextObject = Instantiate(lobbyMessagePrefab) as GameObject;
+        BuildChatMessageUI(messageWho, messageMessage, messageTextObject, friendChatMessagesContent, friendChatMessages);
     }
 
     //Called when Input changes
@@ -329,17 +374,6 @@ public class ChatWindowPanel : MonoBehaviour
         UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
         Text playerText = messageTextObjectChildrenText[0];
         Text messageText = messageTextObjectChildrenText[1];
-
-        //if (SceneManager.GetActiveScene().name == "GameBoard")
-        //{
-        //    //actual font is just less than half of number shown
-        //    //playerText.fontSize = 112;
-        //    //messageText.fontSize = 92;
-
-        //    //try bold message
-        //    //messageText.text = ("<b>" + messageMessage + "</b>");
-        //    //GetComponent<>
-        //}
 
         if (messageWho.Length >= 20)
         {

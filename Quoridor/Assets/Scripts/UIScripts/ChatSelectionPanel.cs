@@ -15,11 +15,16 @@ public class ChatSelectionPanel : MonoBehaviour
     private float widthOfAllChatButtons;
     public GameObject chatSelectionButtonPrefab;
 
+    public GameObject chatWindowPanel;
+
+    private List<GameObject> chatSelectionButtons;
+
     private void Awake()
     {
+        chatWindowPanel = GameObject.Find("ChatWindowPanel");
         chatSelectionContentObject = GameObject.Find("ChatSelectionContent");
         chatSelectionContentRectTransform = chatSelectionContentObject.GetComponent<RectTransform>();
-
+        chatSelectionButtons = new List<GameObject>();
         //chatSelectionContentObject.GetComponent<LayoutElement>().minWidth = widthOfChatButton;
 
         GameObject leftMostBoundsObject = new GameObject("leftMostBoundariesObject", typeof(RectTransform));
@@ -43,6 +48,22 @@ public class ChatSelectionPanel : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void AddChatSelectionButton(string name, string teamID)
+    {
+        GameObject chatSelectionButtonObject = Instantiate(chatSelectionButtonPrefab);
+        chatSelectionButtonObject.transform.SetParent(chatSelectionContentRectTransform);
+        chatSelectionButtonObject.transform.localScale = new Vector3(1, 1, 1);
+        Button chatSelectionButton = chatSelectionButtonObject.GetComponent<Button>();
+        var chatSelectionButtonScript = chatSelectionButton.GetComponent<ChatSelectionButton>();
+        chatSelectionButtonScript.playerName = name;
+        chatSelectionButtonScript.teamID = teamID;
+        chatSelectionButtonScript.chatWindowPanel = chatWindowPanel.GetComponent<ChatWindowPanel>();
+        chatSelectionButton.onClick.AddListener(chatSelectionButtonScript.OnClickOpenTeamChat);
+        Text chatButtonName = chatSelectionButtonObject.GetComponentInChildren<Text>();
+        chatButtonName.text = name;
+        chatSelectionButtons.Add(chatSelectionButtonObject);        
     }
 
     public void MoveContentPane(float value)
