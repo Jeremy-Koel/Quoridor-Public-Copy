@@ -305,6 +305,7 @@ public class FriendsPanel : MonoBehaviour
 
             friendObject.transform.SetParent(friendsListContent);
             friendObject.transform.localScale = new Vector3(1, 1, 1);
+            friendsListContent.sizeDelta = new Vector2(friendsListContent.sizeDelta.x, (friendsListContent.sizeDelta.y + 30));
 
             friendsList.Add(friendObject);
         }
