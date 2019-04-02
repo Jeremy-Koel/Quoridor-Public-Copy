@@ -398,7 +398,7 @@ public class ChatWindowPanel : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
-        AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
+        //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
     }

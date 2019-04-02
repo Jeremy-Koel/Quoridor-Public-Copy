@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class AIChat
 {
-
     public static string GetAIMessage()
     {
         return "testing snark";

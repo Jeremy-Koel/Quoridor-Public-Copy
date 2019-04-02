@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4889,8 +4889,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1134, y: 121}
-  m_SizeDelta: {x: 300, y: 225}
+  m_AnchoredPosition: {x: 1134, y: 161}
+  m_SizeDelta: {x: 300, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &901067479
 MonoBehaviour:
@@ -5352,7 +5352,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00016029026
+      value: -0.000012466936
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -5517,7 +5517,7 @@ PrefabInstance:
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -5527,7 +5527,7 @@ PrefabInstance:
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 49.999992
       objectReference: {fileID: 0}
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -5537,7 +5537,7 @@ PrefabInstance:
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.095278025
       objectReference: {fileID: 0}
     - target: {fileID: 3650439703011161195, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -5627,13 +5627,18 @@ PrefabInstance:
     - target: {fileID: 3650439702599552810, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_ScrollSensitivity
-      value: 40
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 3650439702599552810, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_VerticalScrollbar
       value: 
       objectReference: {fileID: 993795457}
+    - target: {fileID: 3650439702599552810, guid: 6bdab04dabc936b41aa3e970cd316db0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3650439703472560084, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_Enabled
@@ -5673,6 +5678,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: -160.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650439703011161198, guid: 6bdab04dabc936b41aa3e970cd316db0,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.007843138
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bdab04dabc936b41aa3e970cd316db0, type: 3}
@@ -8868,7 +8878,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -1}
+  m_AnchoredPosition: {x: 9, y: 12.7}
   m_SizeDelta: {x: 1034.04, y: 657.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1586233011
@@ -8883,13 +8893,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69856e80f85612c4eae5419cc680ab1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatSelectionPanel: {fileID: 0}
+  globalChatButtonObject: {fileID: 0}
   chatMessagesViewContent: {fileID: 993795453}
   chatMessagesLayoutGroup: {fileID: 0}
   chatMessages: []
   lobbyMessagePrefab: {fileID: 0}
   inGameMessagePrefab: {fileID: 5475536711530470074, guid: 9acf17470664df0468006714d90990e5,
     type: 3}
+  friendChatMessagesBoxPrefab: {fileID: 0}
   challengeManager: {fileID: 0}
+  listOfFriendsMessagesContents: []
 --- !u!222 &1586233013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9656,7 +9670,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -1.5, y: 72}
+  m_AnchoredPosition: {x: -1.5, y: -108}
   m_SizeDelta: {x: -33.699997, y: 116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1826027453
