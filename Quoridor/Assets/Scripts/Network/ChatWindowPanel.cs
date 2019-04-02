@@ -105,11 +105,11 @@ public class ChatWindowPanel : MonoBehaviour
         {
             if (index == teamIDIndex)
             {
-                listOfFriendsMessagesContentsEnum.Current.gameObject.SetActive(true);
+                listOfFriendsMessagesContentsEnum.Current.parent.gameObject.SetActive(true);
             }
             else
             {
-                listOfFriendsMessagesContentsEnum.Current.gameObject.SetActive(false);
+                listOfFriendsMessagesContentsEnum.Current.parent.gameObject.SetActive(false);
             }
             index++;
         }
@@ -121,7 +121,7 @@ public class ChatWindowPanel : MonoBehaviour
         var listOfFriendsMessagesContentsEnum = listOfFriendsMessagesContents.GetEnumerator();
         while (listOfFriendsMessagesContentsEnum.MoveNext())
         {
-            listOfFriendsMessagesContentsEnum.Current.gameObject.SetActive(false);
+            listOfFriendsMessagesContentsEnum.Current.parent.gameObject.SetActive(false);
         }
     }
 
