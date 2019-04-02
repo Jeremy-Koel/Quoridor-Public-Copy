@@ -27,6 +27,8 @@ public class MainMenu : MonoBehaviour
 
     private bool lobbyActivatedOnce;
 
+    public AudioControllerMainMenu audioController;
+
     [SerializeField]
     private InputField usernameLoginInput;
     [SerializeField]
@@ -55,6 +57,7 @@ public class MainMenu : MonoBehaviour
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         challengeManager = GameObject.Find("ChallengeManager");
         matchmakingButton = GameObject.Find("MatchmakingSearchButton").GetComponent<Button>();
+        audioController = GameObject.Find("MusicPlayer").GetComponent<AudioControllerMainMenu>();
     }
 
     void OnDestroy()
