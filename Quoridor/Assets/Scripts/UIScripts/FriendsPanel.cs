@@ -284,9 +284,11 @@ public class FriendsPanel : MonoBehaviour
                 friendResultScript.chatWindowPanel = chatWindowPanel.GetComponent<ChatWindowPanel>();
             }
 
-            friendPlayerNameBaseData.MoveNext();
-            string teamID = friendPlayerNameBaseData.Current.Value.ToString();
-            friendResultScript.teamID = teamID;
+            if (friendPlayerNameBaseData.MoveNext())
+            {
+                string teamID = friendPlayerNameBaseData.Current.Value.ToString();
+                friendResultScript.teamID = teamID;
+            }
 
             // Get text component of button
             UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
