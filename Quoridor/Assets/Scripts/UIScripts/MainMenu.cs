@@ -96,6 +96,8 @@ public class MainMenu : MonoBehaviour
 
     public void onSinglePlayerClick()
     {
+        audioController.PlayChalkWritingSound();
+
         // Set session to singleplayer 
         GameSession.GameMode = GameModeEnum.SINGLE_PLAYER;
 
@@ -106,6 +108,8 @@ public class MainMenu : MonoBehaviour
 
     public void onMultiplayerClick()
     {
+        audioController.PlayChalkWritingSound();
+
         // Set session to multiplayer 
         GameSession.GameMode = GameModeEnum.MULTIPLAYER;
 
@@ -162,6 +166,8 @@ public class MainMenu : MonoBehaviour
 
     public void onPlayButtonClick()
     {
+        audioController.PlayChalkWritingSound();
+
         Toggle hardOption = GameObject.Find("HardOption").GetComponent<Toggle>();
         Toggle easyOption = GameObject.Find("EasyOption").GetComponent<Toggle>();
         Toggle goFirst = GameObject.Find("MoveFirst").GetComponent<Toggle>();
@@ -196,6 +202,8 @@ public class MainMenu : MonoBehaviour
 
     public void onSettingsButtonClick(Button button)
     {
+        audioController.PlayChalkWritingSound();
+
         mainMenuPanel.SetActive(false);
         dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
@@ -205,6 +213,8 @@ public class MainMenu : MonoBehaviour
 
     public void onTutorialButtonClick(Button button)
     {
+        audioController.PlayChalkWritingSound();
+
         mainMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
