@@ -61,16 +61,16 @@ public class DisconnectPopup : MonoBehaviour
                 GameObject currentGameObject = (GameObject)mainMenuSceneObjectsEnumerator.Current;
                 if (currentGameObject.name == "Canvas")
                 {
-                    // do stuff
-                    // get disconnect panel
-                    var canvasPanelsRectTransforms = currentGameObject.GetComponentsInChildren<RectTransform>().GetEnumerator();
-                    while (canvasPanelsRectTransforms.MoveNext())
+                    // look for disconnect panel
+                    var canvasPanelRectTransforms = currentGameObject.GetComponentsInChildren<RectTransform>(true);
+                    for (int index = 0; index < (canvasPanelRectTransforms.Length - 1); index++)
                     {
-                        var currentCanvasPanelRectTransform = (RectTransform)canvasPanelsRectTransforms.Current;
+                        var currentCanvasPanelRectTransform = (RectTransform)canvasPanelRectTransforms.GetValue(index);
                         // This is the disconnect panel
                         if (currentCanvasPanelRectTransform.gameObject.name == "DisconnectPanel")
                         {
                             disconnectPanel = currentCanvasPanelRectTransform.gameObject;
+                            index = (canvasPanelRectTransforms.Length - 1);
                         }
                     }
                 }

@@ -350,11 +350,13 @@ public class MainMenu : MonoBehaviour
     private bool LoggedIn()
     {
         bool loggedIn = false;
-        GameSparksUserID gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
-        if (gameSparksUserID.myUserID != "")
-        {
-            loggedIn = true;
-        }
+        GameSparksManager gameSparksManager = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+        loggedIn = gameSparksManager.connected;
+        //GameSparksUserID gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+        //if (gameSparksUserID.myUserID != "")
+        //{
+        //    loggedIn = true;
+        //}
         return loggedIn;
     }
 
