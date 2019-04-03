@@ -333,7 +333,15 @@ public class ChatWindowPanel : MonoBehaviour
                 // Send player's message
                 BuildChatMessageUI("Player", message, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
                 // Use AI chat
-                string aiMessage = AIChat.GetAIMessage();
+                string aiMessage;
+                if (GameSession.Difficulty == DifficultyEnum.EASY)
+                {
+                    aiMessage = AIChat.GetEasyAIMessage();
+                }
+                else
+                {
+                    aiMessage = AIChat.GetHardAIMessage();
+                }
                 BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
             }
         }
