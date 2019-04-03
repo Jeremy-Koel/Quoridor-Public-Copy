@@ -105,4 +105,9 @@ public class DisconnectPopup : MonoBehaviour
             mainMenu.lobbyPanel.SetActive(true);
         }
     }
+
+    private void ActivateDisconnectPanel()
+    {
+
+    }
 }
