@@ -12,6 +12,7 @@ public class GameSparksManager : MonoBehaviour
 {
     private ChallengeManager challengeManager;
     private EventManager eventManager;
+    public bool connected;
 
     private void Awake()
     {
@@ -44,6 +45,7 @@ public class GameSparksManager : MonoBehaviour
     private void LostConnection()
     {
         Debug.Log("Lost connection");
+        connected = false;
     }
 
     private void CheckConnection()
@@ -67,6 +69,11 @@ public class GameSparksManager : MonoBehaviour
         {
             //LostConnection();
             eventManager.InvokeLostConnection();
+            connected = false;
+        }
+        else
+        {
+            connected = true;
         }
     }
 }

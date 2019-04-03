@@ -53,6 +53,36 @@ public class DisconnectPopup : MonoBehaviour
         {
             isCurrentSceneMainMenu = false;
         }
+        if (isCurrentSceneMainMenu)
+        {
+            // Handle main menu stuff
+            var mainMenuSceneObjectsEnumerator = SceneManager.GetSceneByName(mainMenuSceneName).GetRootGameObjects().GetEnumerator();
+            while (mainMenuSceneObjectsEnumerator.MoveNext())
+            {
+                GameObject currentGameObject = (GameObject)mainMenuSceneObjectsEnumerator.Current;
+                if (currentGameObject.name == "Canvas")
+                {
+                    // look for disconnect panel
+                    var canvasPanelRectTransforms = currentGameObject.GetComponentsInChildren<RectTransform>(true);
+                    for (int index = 0; index < (canvasPanelRectTransforms.Length - 1); index++)
+                    {
+                        var currentCanvasPanelRectTransform = (RectTransform)canvasPanelRectTransforms.GetValue(index);
+                        // This is the disconnect panel
+                        if (currentCanvasPanelRectTransform.gameObject.name == "DisconnectPanel")
+                        {
+                            disconnectPanel = currentCanvasPanelRectTransform.gameObject;
+                            index = (canvasPanelRectTransforms.Length - 1);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            // handle game board scene stuff
+        }
+
+        ActivateDisconnectPanel();
     }
 
     private void ReconnectYes()

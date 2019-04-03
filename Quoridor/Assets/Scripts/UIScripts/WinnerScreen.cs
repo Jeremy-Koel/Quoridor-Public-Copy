@@ -10,6 +10,7 @@ public class WinnerScreen : MonoBehaviour
     //private GameObject winPanel;
     public InterfaceController interfaceController;
     private SoundEffectController soundEffectController;
+    private ParticleSystem cheeseGenerator;
     private VideoPlayer winVideoPlayer;
     private VideoClip winClip;
     private VideoClip loseClip;
@@ -18,6 +19,7 @@ public class WinnerScreen : MonoBehaviour
     {
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
+        cheeseGenerator = GameObject.Find("CheeseGenerator").GetComponent<ParticleSystem>();
         winVideoPlayer = GameObject.Find("WinVideoPlayer").GetComponent<VideoPlayer>();
         winClip = Resources.Load<VideoClip>("Win Animation");
         loseClip = Resources.Load<VideoClip>("Lose Animation");
@@ -34,14 +36,13 @@ public class WinnerScreen : MonoBehaviour
         string winnerString = getWhoWon();
         if (winnerString == "You Win!" || winnerString == interfaceController.GetLocalPlayerName()+" Wins!")
         {
-            Debug.Log("playing win sound");
+            cheeseGenerator.Play();
             soundEffectController.PlayWinSound();
 
             winVideoPlayer.clip = winClip;
         }
         else
         {
-            Debug.Log("playing lose sound");
             soundEffectController.PlayLoseSound();
 
             winVideoPlayer.clip = loseClip;
