@@ -21,7 +21,8 @@ public class DisconnectPopup : MonoBehaviour
         }
         DontDestroyOnLoad(this);
 
-        FindSceneGameObjects();
+        //FindSceneGameObjects();
+
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventManager.ListenToLostConnection(FindSceneGameObjects);
         eventManager.ListenToDisconnectReconnectionYes(ReconnectYes);
@@ -31,20 +32,18 @@ public class DisconnectPopup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // We need a different panel if we are in the main menu vs game board
     private void FindSceneGameObjects()
     {
-        disconnectPanel = GameObject.Find("DisconnectPanel");
-
         if (SceneManager.GetActiveScene().name == mainMenuSceneName)
         {
             isCurrentSceneMainMenu = true;
@@ -85,6 +84,12 @@ public class DisconnectPopup : MonoBehaviour
         ActivateDisconnectPanel();
     }
 
+    private void ActivateDisconnectPanel()
+    {
+        disconnectPanel.SetActive(true);
+    }
+
+
     private void ReconnectYes()
     {
         // handle reconnection UI logic
@@ -95,19 +100,19 @@ public class DisconnectPopup : MonoBehaviour
         // handle disconnect UI logic
         if (isCurrentSceneMainMenu)
         {
-            // 
+            // Go to main menu
+            MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+            mainMenu.InactivateAllPanels();
+            mainMenu.mainMenuPanel.SetActive(true);
         }
         else
         {
             // Send them back to lobby panel
             SceneManager.LoadScene(mainMenuSceneName);
             MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+            mainMenu.InactivateAllPanels();
             mainMenu.lobbyPanel.SetActive(true);
         }
-    }
-
-    private void ActivateDisconnectPanel()
-    {
-
+        disconnectPanel.SetActive(false);
     }
 }

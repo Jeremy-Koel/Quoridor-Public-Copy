@@ -10,6 +10,7 @@ public class InterfaceController : MonoBehaviour
     private MessageQueue messageQueue;
     private GameObject winPanel;
     private GameObject menuPanel;
+    private GameObject disconnectPanel;
     private GameObject helpScreen;
     private Text playerWallLabel;
     private Text opponentWallLabel;
@@ -22,6 +23,7 @@ public class InterfaceController : MonoBehaviour
 
     private void Awake()
     {
+        disconnectPanel = GameObject.Find("DisconnectPanel");
         challengeManagerScript = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
@@ -48,6 +50,7 @@ public class InterfaceController : MonoBehaviour
         winPanel.SetActive(false);
         menuPanel = GameObject.Find("MenuOptions");
         helpScreen = GameObject.Find("HelpMenu");
+        disconnectPanel.SetActive(false);
 
         // Grab other controllers 
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
