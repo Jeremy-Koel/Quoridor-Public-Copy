@@ -24,7 +24,7 @@ public class GameSparksManager : MonoBehaviour
         ScriptMessage_ConnectionLost.Listener += LostConnectionMessageHandler;
         GS.GameSparksAvailable += HandleGameSparksAvailable;
         CheckConnectionRepeating();
-        //// Listen to events for checking connection
+        // Listen to events for checking connection
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventManager.ListenToLostConnection(LostConnection);
     }
@@ -65,7 +65,8 @@ public class GameSparksManager : MonoBehaviour
         Debug.Log("HandleGameSparksAvailable value: " + value.ToString());
         if (!value)
         {
-            LostConnection();
+            //LostConnection();
+            eventManager.InvokeLostConnection();
         }
     }
 }

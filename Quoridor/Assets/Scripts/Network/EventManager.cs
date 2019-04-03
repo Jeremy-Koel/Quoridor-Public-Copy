@@ -10,6 +10,9 @@ using GameSparks.Api.Messages;
 [System.Serializable]
 public class EventManager : MonoBehaviour
 {
+    private UnityEvent DisconnectReconnectionYes = new UnityEvent();
+    private UnityEvent DisconnectReconnectionNo = new UnityEvent();
+
     private UnityEvent CheckConnectionPeriodic = new UnityEvent();
     private UnityEvent LostConnection = new UnityEvent();
     private UnityEvent ChallengeStarted = new UnityEvent();
@@ -53,6 +56,8 @@ public class EventManager : MonoBehaviour
     public void RemoveAllListeners()
     {
         Debug.Log("Removing all unityEvent listeners");
+        DisconnectReconnectionYes.RemoveAllListeners();
+        DisconnectReconnectionNo.RemoveAllListeners();
         CheckConnectionPeriodic.RemoveAllListeners();
         ChallengeStarted.RemoveAllListeners();
         ChallengeTurnTaken.RemoveAllListeners();
@@ -68,6 +73,8 @@ public class EventManager : MonoBehaviour
 
     public void ResetEventManager()
     {
+        DisconnectReconnectionYes = new UnityEvent();
+        DisconnectReconnectionNo = new UnityEvent();
         LostConnection = new UnityEvent();
         CheckConnectionPeriodic = new UnityEvent();
         ChallengeStarted = new UnityEvent();
@@ -86,6 +93,30 @@ public class EventManager : MonoBehaviour
         PlayAgain = new UnityEvent();
         // For AI Game
         TurnTaken = new UnityEvent();
+    }
+
+    public void ListenToDisconnectReconnectionYes(UnityAction action)
+    {
+        Debug.Log("DisconnectReconnectionYes Listener Added");
+        DisconnectReconnectionYes.AddListener(action);
+    }
+
+    public void InvokeDisconnectReconnectionYes()
+    {
+        Debug.Log("DisconnectReconnectionYes Invoked");
+        DisconnectReconnectionYes.Invoke();
+    }
+
+    public void ListenToDisconnectReconnectionNo(UnityAction action)
+    {
+        Debug.Log("DisconnectReconnectionNo Listener Added");
+        DisconnectReconnectionNo.AddListener(action);
+    }
+
+    public void InvokeDisconnectReconnectionNo()
+    {
+        Debug.Log("DisconnectReconnectionNo Invoked");
+        DisconnectReconnectionNo.Invoke();
     }
 
     public void ListenToCheckConnectionPeriodic(UnityAction action)
