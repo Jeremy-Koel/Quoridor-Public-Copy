@@ -347,12 +347,12 @@ public class MainMenu : MonoBehaviour
     {
         bool loggedIn = false;
         GameSparksManager gameSparksManager = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
-        loggedIn = gameSparksManager.connected;
-        //GameSparksUserID gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
-        //if (gameSparksUserID.myUserID != "")
-        //{
-        //    loggedIn = true;
-        //}
+        //loggedIn = gameSparksManager.connected;
+        GameSparksUserID gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+        if (gameSparksUserID.myUserID != "" && gameSparksManager.connected)
+        {
+            loggedIn = true;
+        }
         return loggedIn;
     }
 
