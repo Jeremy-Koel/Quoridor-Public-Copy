@@ -21,7 +21,8 @@ public class DisconnectPopup : MonoBehaviour
         }
         DontDestroyOnLoad(this);
 
-        FindSceneGameObjects();
+        //FindSceneGameObjects();
+
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventManager.ListenToLostConnection(FindSceneGameObjects);
         eventManager.ListenToDisconnectReconnectionYes(ReconnectYes);
@@ -43,8 +44,6 @@ public class DisconnectPopup : MonoBehaviour
     // We need a different panel if we are in the main menu vs game board
     private void FindSceneGameObjects()
     {
-        disconnectPanel = GameObject.Find("DisconnectPanel");
-
         if (SceneManager.GetActiveScene().name == mainMenuSceneName)
         {
             isCurrentSceneMainMenu = true;
@@ -53,7 +52,43 @@ public class DisconnectPopup : MonoBehaviour
         {
             isCurrentSceneMainMenu = false;
         }
+        if (isCurrentSceneMainMenu)
+        {
+            // Handle main menu stuff
+            var mainMenuSceneObjectsEnumerator = SceneManager.GetSceneByName(mainMenuSceneName).GetRootGameObjects().GetEnumerator();
+            while (mainMenuSceneObjectsEnumerator.MoveNext())
+            {
+                GameObject currentGameObject = (GameObject)mainMenuSceneObjectsEnumerator.Current;
+                if (currentGameObject.name == "Canvas")
+                {
+                    // do stuff
+                    // get disconnect panel
+                    var canvasPanelsRectTransforms = currentGameObject.GetComponentsInChildren<RectTransform>().GetEnumerator();
+                    while (canvasPanelsRectTransforms.MoveNext())
+                    {
+                        var currentCanvasPanelRectTransform = (RectTransform)canvasPanelsRectTransforms.Current;
+                        // This is the disconnect panel
+                        if (currentCanvasPanelRectTransform.gameObject.name == "DisconnectPanel")
+                        {
+                            disconnectPanel = currentCanvasPanelRectTransform.gameObject;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            // handle game board scene stuff
+        }
+
+        ActivateDisconnectPanel();
     }
+
+    private void ActivateDisconnectPanel()
+    {
+        disconnectPanel.SetActive(true);
+    }
+
 
     private void ReconnectYes()
     {
@@ -65,14 +100,19 @@ public class DisconnectPopup : MonoBehaviour
         // handle disconnect UI logic
         if (isCurrentSceneMainMenu)
         {
-            // 
+            // Go to main menu
+            MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+            mainMenu.InactivateAllPanels();
+            mainMenu.mainMenuPanel.SetActive(true);
         }
         else
         {
             // Send them back to lobby panel
             SceneManager.LoadScene(mainMenuSceneName);
             MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+            mainMenu.InactivateAllPanels();
             mainMenu.lobbyPanel.SetActive(true);
         }
+        disconnectPanel.SetActive(false);
     }
 }

@@ -20,7 +20,9 @@ public class MainMenu : MonoBehaviour
     public GameObject leaderboardPanel;
     public GameObject tutorialPanel;
     public GameObject dummyMenuPanel;
-  //  public GameObject quitPanel;
+    public GameObject disconnectPanel;
+    //  public GameObject quitPanel;
+
     public Stack<GameObject> panelOrder;
 
     public GameObject challengeManager;
@@ -76,7 +78,8 @@ public class MainMenu : MonoBehaviour
         lobbyPanel = GameObject.Find("LobbyPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
         dummyMenuPanel = GameObject.Find("DummyMenuPanel");
-       // quitPanel = GameObject.Find("QuitPanel");
+        disconnectPanel = GameObject.Find("DisconnectPanel");
+        // quitPanel = GameObject.Find("QuitPanel");
 
         panelOrder = new Stack<GameObject>();
         panelOrder.Push(mainMenuPanel);
@@ -89,6 +92,7 @@ public class MainMenu : MonoBehaviour
         registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         tutorialPanel.SetActive(false);
+        disconnectPanel.SetActive(false);
 
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
        
@@ -398,5 +402,27 @@ public class MainMenu : MonoBehaviour
         loginButton.interactable = true;
         registerButton.interactable = true;
         matchmakingButton.interactable = true;
+    }
+
+    public void InactivateAllPanels()
+    {
+        mainMenuPanel.SetActive(false);
+        singlePlayerSetupPanel.SetActive(false);
+        tutorialPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        loginPanel.SetActive(false);
+        registrationPanel.SetActive(false);
+        lobbyPanel.SetActive(false);
+    }
+
+    public void ActivateAllPanels()
+    {
+        mainMenuPanel.SetActive(true);
+        singlePlayerSetupPanel.SetActive(true);
+        tutorialPanel.SetActive(true);
+        settingsPanel.SetActive(true);
+        loginPanel.SetActive(true);
+        registrationPanel.SetActive(true);
+        lobbyPanel.SetActive(true);
     }
 }
