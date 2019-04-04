@@ -74,6 +74,73 @@ public class ChatWindowPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Check if the chat is focused
+        //if (chatInput.GetComponent<InputField>().isFocused)
+        //{
+        // Notice if the CTRL key is pressed
+        if (Input.GetAxisRaw("Fire1") == 1)
+        {
+            // block input
+            //int caretPosition = chatInput.GetComponent<InputField>().caretPosition;
+            chatInput.GetComponent<InputField>().DeactivateInputField();
+
+            // Notice if V is also pressed
+            if (Input.GetAxisRaw("CtrlV") == 1)
+            {
+                //chatInput.GetComponent<InputField>().caretPosition = caretPosition;
+                // get clipboard
+                string copiedText = ClipboardHelper.clipBoard;
+                List<string> splitText = new List<string>();
+
+                // split clipboard into multiple strings?
+                if (copiedText.Length >= 1000)
+                {
+                    //// get divisible length of string 
+                    //double divisibleLength = (double)((float)(copiedText.Length) / 1000f);
+                    //double leftOvers = divisibleLength - Math.Truncate(divisibleLength);
+                    //int leftOversWhole = Convert.ToInt32(leftOvers * 1000);
+                    //int valuesBeforeLeftOvers = (copiedText.Length - leftOversWhole);
+
+                    //// Reaches last index before left over index count is < 1000 (e.g. 12,313 - 313 = 12,000)
+                    //for (int index = 0; index < valuesBeforeLeftOvers; index += 1000)
+                    //{
+                    //    splitText.Add(copiedText.Substring(index, 1000));
+                    //}
+                    //splitText.Add(copiedText.Substring(valuesBeforeLeftOvers));
+
+
+                    //// send as separate messages?
+                    //var splitTextEnumerator = splitText.GetEnumerator();
+                    //while (splitTextEnumerator.MoveNext())
+                    //{
+                    //    SendChatMessage(splitTextEnumerator.Current);
+                    //    Debug.Log(splitTextEnumerator.Current);
+                    //}
+                    //chatInput.GetComponent<InputField>().ActivateInputField();
+                    //chatInput.GetComponent<InputField>().text = splitText[splitText.Count - 1];
+                    chatInput.GetComponent<InputField>().ActivateInputField();
+                    chatInput.GetComponent<InputField>().text = copiedText.Substring(0, 1000);
+                    chatInput.GetComponent<InputField>().Select();
+                    chatInput.GetComponent<InputField>().MoveTextEnd(false);
+                }
+                else
+                {
+                    chatInput.GetComponent<InputField>().ActivateInputField();
+                    chatInput.GetComponent<InputField>().text = chatInput.GetComponent<InputField>().text + copiedText;
+                    chatInput.GetComponent<InputField>().Select();
+                    chatInput.GetComponent<InputField>().MoveTextEnd(false);
+                }
+                // unblock input
+
+                //chatInput.SetActive(true);
+            }
+            // Handle CTRL + C
+            if (Input.GetAxisRaw("CtrlC") == 1)
+            {
+                ClipboardHelper.clipBoard = chatInput.GetComponent<InputField>().text;
+            }
+        }
+        //}
  
     }
 
@@ -203,6 +270,7 @@ public class ChatWindowPanel : MonoBehaviour
     private void inputChangedCallBack()
     {
         Debug.Log("Input Changed");
+        GameObject.Find("ChatCharLimitText").GetComponent<Text>().text = chatInput.GetComponent<InputField>().text.Length.ToString() + "/1000";
     }
 
     void OnEnable()
@@ -407,8 +475,18 @@ public class ChatWindowPanel : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
         //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
+        //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
+        StartCoroutine(ScrollToBottom());
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);        
+    }
+
+    IEnumerator ScrollToBottom()
+    {
+        yield return new WaitForEndOfFrame();
+        //scrollRect.gameObject.SetActive(true);
+        chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
+        chatMessagesViewContent.parent.gameObject.GetComponentInChildren<ScrollRect>().verticalNormalizedPosition = 0f;
     }
 
     private void AddSpacingMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages, GameObject chatMessageObjectPrefab) 

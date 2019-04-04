@@ -73,7 +73,6 @@ public class DisconnectPopup : MonoBehaviour
         IEnumerator sceneObjects = (isCurrentSceneMainMenu) ? SceneManager.GetSceneByName(mainMenuSceneName).GetRootGameObjects().GetEnumerator() :
             SceneManager.GetSceneByName(gameBoardSceneName).GetRootGameObjects().GetEnumerator();
 
-        // NEEDS TO ONLY ACTIVATE IF IT IS ON THE LOBBY OR IN GAME
         bool doneSearching = false;
         while (sceneObjects.MoveNext() && !doneSearching)
         {
@@ -122,11 +121,15 @@ public class DisconnectPopup : MonoBehaviour
             }
             else
             {
-                // Send them back to lobby panel
+                // Sends back to main menu
                 SceneManager.LoadScene(mainMenuSceneName);
-                MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
-                mainMenu.InactivateAllPanels();
-                mainMenu.lobbyPanel.SetActive(true);
+                // Send them back to lobby panel
+                //if (SceneManager.GetActiveScene().name == mainMenuSceneName)
+                //{
+                //    MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+                //    mainMenu.InactivateAllPanels();
+                //    mainMenu.lobbyPanel.SetActive(true);
+                //}
             }
             disconnectPanel.SetActive(false);
         }
