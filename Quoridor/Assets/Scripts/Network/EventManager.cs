@@ -32,6 +32,9 @@ public class EventManager : MonoBehaviour
 
     private UnityEvent InvalidMove = new UnityEvent();
 
+    private UnityEvent CountdownTimer = new UnityEvent();
+    private UnityEvent CountdownTimerValueChanged = new UnityEvent();
+
 
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
@@ -69,6 +72,8 @@ public class EventManager : MonoBehaviour
         MoveReceived.RemoveAllListeners();
         GameOver.RemoveAllListeners();
         TurnTaken.RemoveAllListeners();
+        CountdownTimer.RemoveAllListeners();
+        CountdownTimerValueChanged.RemoveAllListeners();
     }
 
     public void ResetEventManager()
@@ -93,6 +98,9 @@ public class EventManager : MonoBehaviour
         PlayAgain = new UnityEvent();
         // For AI Game
         TurnTaken = new UnityEvent();
+
+        CountdownTimer = new UnityEvent();
+        CountdownTimerValueChanged = new UnityEvent();
     }
 
     public void ListenToDisconnectReconnectionYes(UnityAction action)
@@ -309,6 +317,30 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Invalid Move Invoked");
         InvalidMove.Invoke();
+    }
+
+    public void ListenToCountdownTimer(UnityAction action)
+    {
+        Debug.Log("CountdownTimer Listener Added");
+        CountdownTimer.AddListener(action);
+    }
+
+    public void InvokeCountdownTimer()
+    {
+        Debug.Log("CountdownTimer Invoked");
+        CountdownTimer.Invoke();
+    }
+
+    public void ListenToCountdownTimerValueChanged(UnityAction action)
+    {
+        Debug.Log("CountdownTimerValueChanged Listener Added");
+        CountdownTimerValueChanged.AddListener(action);
+    }
+
+    public void InvokeCountdownTimerValueChanged()
+    {
+        Debug.Log("CountdownTimerValueChanged Invoked");
+        CountdownTimerValueChanged.Invoke();
     }
 
 }

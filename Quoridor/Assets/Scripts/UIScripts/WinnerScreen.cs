@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -15,8 +17,12 @@ public class WinnerScreen : MonoBehaviour
     private VideoClip winClip;
     private VideoClip loseClip;
 
+    private EventManager eventManager;
+    private GameObject winScreenTimerText;
+
     private void Awake()
     {
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         soundEffectController = GameObject.Find("GameController").GetComponent<SoundEffectController>();
         cheeseGenerator = GameObject.Find("CheeseGenerator").GetComponent<ParticleSystem>();
@@ -25,8 +31,34 @@ public class WinnerScreen : MonoBehaviour
         loseClip = Resources.Load<VideoClip>("Lose Animation");
     }
 
+    private void timerEnded()
+    {
+        // Send player back to main menu
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private void updateTimerText()
+    {
+        winScreenTimerText.GetComponent<Text>().text = GameObject.Find("GameController").GetComponent<DisconnectTimer>().GetTimerValue().ToString();
+    }
+
     void Start()
     {
+        winScreenTimerText = GameObject.Find("WinScreenTimerText");
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            eventManager.ListenToCountdownTimerValueChanged(updateTimerText);
+            eventManager.ListenToCountdownTimer(timerEnded);
+            winScreenTimerText.SetActive(true);
+        }
+        else
+        {
+            if (winScreenTimerText.activeSelf)
+            {
+                winScreenTimerText.SetActive(false);
+            }            
+        }
+
         RenderTexture texture = GetNewRenderTexture();
         winVideoPlayer.targetTexture = texture;
 
