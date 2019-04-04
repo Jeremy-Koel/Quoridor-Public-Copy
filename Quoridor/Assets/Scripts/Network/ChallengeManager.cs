@@ -90,6 +90,7 @@ public class ChallengeManager : MonoBehaviour
         //ChallengeTurnTakenMessage.Listener += OnChallengeTurnTaken;
         //Debug.Log("ChallengeTurnTakenMessage Listener set");
         ScriptMessage.Listener += GeneralChallengeMessageRouter;
+        eventManager.ListenToPlayAgain(PlayAgain);
         eventManager.ListenToGameBoardReady(SetupPlayerInfo);
         eventManager.ListenToChallengeTurnTaken(SetPlayerNameForTurn);
         eventManager.ListenToChallengeMove(OnMoveReceived);
@@ -317,6 +318,19 @@ public class ChallengeManager : MonoBehaviour
 
     public void PlayAgain()
     {
+        //AsyncPlayAgain();
+        //if (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
+        //{
+        Debug.Log("Sending playAgain event to GS");
+        LogChallengeEventRequest request = new LogChallengeEventRequest();
+        request.SetChallengeInstanceId(ChallengeID);
+        request.SetEventKey("PlayAgain");
+        request.Send(OnPlayAgainSuccess, OnPlayAgainError);
+        //}
+    }
+
+    public IEnumerable AsyncPlayAgain()
+    {
         if (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
         {
             Debug.Log("Sending playAgain event to GS");
@@ -324,6 +338,10 @@ public class ChallengeManager : MonoBehaviour
             request.SetChallengeInstanceId(ChallengeID);
             request.SetEventKey("PlayAgain");
             request.Send(OnPlayAgainSuccess, OnPlayAgainError);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
