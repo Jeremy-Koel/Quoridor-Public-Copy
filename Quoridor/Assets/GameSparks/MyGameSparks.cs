@@ -443,6 +443,38 @@ namespace GameSparks.Api.Requests{
 		}
 	}
 	
+	public class LogEventRequest_GetNewGuestUser : GSTypedRequest<LogEventRequest_GetNewGuestUser, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+
+        public LogEventRequest_GetNewGuestUser() : base("LogEventRequest"){
+			request.AddString("eventKey", "GetNewGuestUser");
+		}
+	}
+	
+	public class LogChallengeEventRequest_GetNewGuestUser : GSTypedRequest<LogChallengeEventRequest_GetNewGuestUser, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_GetNewGuestUser() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "GetNewGuestUser");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_GetNewGuestUser SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+	}
+	
 	public class LogEventRequest_Move : GSTypedRequest<LogEventRequest_Move, LogEventResponse>
 	{
 	
@@ -1039,6 +1071,32 @@ namespace GameSparks.Api.Messages {
 			static ScriptMessage_FriendRequest()
 			{
 				handlers.Add (".ScriptMessage_FriendRequest", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
+		public class ScriptMessage_GuestAccountDetails : ScriptMessage {
+		
+			public new static Action<ScriptMessage_GuestAccountDetails> Listener;
+	
+			public ScriptMessage_GuestAccountDetails(GSData data) : base(data){}
+	
+			private static ScriptMessage_GuestAccountDetails Create(GSData data)
+			{
+				ScriptMessage_GuestAccountDetails message = new ScriptMessage_GuestAccountDetails (data);
+				return message;
+			}
+	
+			static ScriptMessage_GuestAccountDetails()
+			{
+				handlers.Add (".ScriptMessage_GuestAccountDetails", Create);
 	
 			}
 			

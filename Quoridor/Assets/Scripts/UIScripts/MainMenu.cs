@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     public GameObject tutorialPanel;
     public GameObject dummyMenuPanel;
     public GameObject disconnectPanel;
+    public GameObject guestDetailsPanel;
     //  public GameObject quitPanel;
     public Stack<GameObject> panelOrder;
 
@@ -28,6 +29,9 @@ public class MainMenu : MonoBehaviour
 
     private bool lobbyActivatedOnce;
     private bool matching;
+    private bool adminLogin = false;
+    private string adminUsername = "ADMIN";
+    private string adminPassword = "PASSWORD";
 
     public AudioControllerMainMenu audioController;
 
@@ -54,6 +58,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        ScriptMessage_GuestAccountDetails.Listener += OnGuestAccountDetails;
         ChallengeStartedMessage.Listener += OnChallengeStarted;
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
@@ -79,6 +84,7 @@ public class MainMenu : MonoBehaviour
         tutorialPanel = GameObject.Find("TutorialPanel");
         dummyMenuPanel = GameObject.Find("DummyMenuPanel");
         disconnectPanel = GameObject.Find("DisconnectPanel");
+        guestDetailsPanel = GameObject.Find("GuestDetailsPanel");
         // quitPanel = GameObject.Find("QuitPanel");
 
         panelOrder = new Stack<GameObject>();
@@ -93,6 +99,7 @@ public class MainMenu : MonoBehaviour
         lobbyPanel.SetActive(false);
         tutorialPanel.SetActive(false);
         disconnectPanel.SetActive(false);
+        guestDetailsPanel.SetActive(false);
 
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
         matching = false;
@@ -131,6 +138,46 @@ public class MainMenu : MonoBehaviour
             panelOrder.Push(loginPanel);
         }        
         
+    }
+
+    private void OnGuestAccountDetails(ScriptMessage_GuestAccountDetails message)
+    {
+        // Decode data
+        string guestName = message.Data.GetString("name");
+        // Log user in
+        adminLogin = false;
+        Login(guestName, "password");
+        // Tell them their guest name
+        var textsEnum = guestDetailsPanel.GetComponentsInChildren<Text>().GetEnumerator();
+        while (textsEnum.MoveNext())
+        {
+            var currentText = (Text)textsEnum.Current;
+            if (currentText.name == "GuestNameText")
+            {
+                currentText.text = guestName;
+            }
+        }
+        guestDetailsPanel.SetActive(true);
+    }
+
+    public void OnGuestDetailsOkay()
+    {
+        guestDetailsPanel.SetActive(false);
+    }
+
+    public void OnSkipLogin()
+    {
+        // log in as admin so we can communicate with server
+        adminLogin = true;
+        Login(adminUsername, adminPassword);
+
+        LogEventRequest_GetNewGuestUser getNewGuestUser = new LogEventRequest_GetNewGuestUser();
+        getNewGuestUser.Send(OnGetNewGuestUserSuccess);
+    }
+
+    private void OnGetNewGuestUserSuccess(LogEventResponse message)
+    {
+        Debug.Log("New guest user successful");
     }
 
     public void onLoginClick()
@@ -337,26 +384,33 @@ public class MainMenu : MonoBehaviour
     private void OnLoginSuccess(AuthenticationResponse response)
     {
         UnblockInput();
-        // Set the User's ID to an object for referencing later
-        Debug.Log(response.UserId);
-        GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
-        GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
-        gameSparksUserIDScript.myUserID = response.UserId;
-        gameSparksUserIDScript.myDisplayName = response.DisplayName;
-        // Setup ChatWindowPanel
-        ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
-        chatWindowPanelScript.CheckTeams();
-        // Setup ChallengeManager
-        ChallengeManager challengeManagerScript = challengeManager.GetComponent<ChallengeManager>();
-        challengeManagerScript.SetupChallengeListeners();
+        if (adminLogin)
+        {
+            Debug.Log("Logged in as admin");
+        }
+        else
+        {
+            // Set the User's ID to an object for referencing later
+            Debug.Log(response.UserId);
+            GameObject gameSparksUserIDObject = GameObject.Find("GameSparksUserID");
+            GameSparksUserID gameSparksUserIDScript = gameSparksUserIDObject.GetComponent<GameSparksUserID>();
+            gameSparksUserIDScript.myUserID = response.UserId;
+            gameSparksUserIDScript.myDisplayName = response.DisplayName;
+            // Setup ChatWindowPanel
+            ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
+            chatWindowPanelScript.CheckTeams();
+            // Setup ChallengeManager
+            ChallengeManager challengeManagerScript = challengeManager.GetComponent<ChallengeManager>();
+            challengeManagerScript.SetupChallengeListeners();
 
-        // Switch to the Lobby Panel
-        panelOrder.Push(loginPanel);
-        loginPanel.SetActive(false);
-        registrationPanel.SetActive(false);
-        panelOrder.Push(lobbyPanel);
-        lobbyPanel.SetActive(true);
-        OnLeaderboardsClick();
+            // Switch to the Lobby Panel
+            panelOrder.Push(loginPanel);
+            loginPanel.SetActive(false);
+            registrationPanel.SetActive(false);
+            panelOrder.Push(lobbyPanel);
+            lobbyPanel.SetActive(true);
+            OnLeaderboardsClick();
+        }
     }
 
     private void OnLoginError(AuthenticationResponse response)
