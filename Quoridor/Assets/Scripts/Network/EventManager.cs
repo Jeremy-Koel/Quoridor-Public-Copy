@@ -48,7 +48,7 @@ public class EventManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this);
-        ListenToGameOver(ResetEventManager);
+        //ListenToGameOver(ResetEventManager);
     }
 
     void Start()

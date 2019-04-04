@@ -14,15 +14,22 @@ public class DisconnectTimer : MonoBehaviour
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        // Listen to game ending
-        eventManager.ListenToGameOver(StartCountdown);
+
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            // Listen to game ending
+            eventManager.ListenToGameOver(StartCountdown);
+        }
+        else
+        {
+
+        }
     }
 
     // Update is called once per frame
