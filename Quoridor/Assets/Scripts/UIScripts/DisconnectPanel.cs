@@ -8,6 +8,8 @@ public class DisconnectPanel : MonoBehaviour
 {
     private Button disconnectYesButton;
     private Button disconnectNoButton;
+    private Button aiDiffSelectEasy;
+    private Button aiDiffSelectHard;
     private EventManager eventManager;
     private GameObject disconnectionAIDifficultySelectPanel;
     private bool disconnectionAIDiffPanelFound = false;
@@ -15,19 +17,15 @@ public class DisconnectPanel : MonoBehaviour
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        //if (SceneManager.GetActiveScene().name == "GameBoard")
-        //{
-        //    disconnectionAIDifficultySelectPanel = GameObject.Find("DisconnectionAIDifficultySelectPanel");
-        //    if (disconnectionAIDifficultySelectPanel != null)
-        //    {
-        //        disconnectionAIDiffPanelFound = true;
-        //    }
-        //}
-        
+
         disconnectYesButton = GameObject.Find("DisconnectYesButton").GetComponent<Button>();
         disconnectNoButton = GameObject.Find("DisconnectNoButton").GetComponent<Button>();
         disconnectYesButton.onClick.AddListener(OnDisconnectYesClick);
         disconnectNoButton.onClick.AddListener(OnDisconnectNoClick);
+        aiDiffSelectEasy = GameObject.Find("AIDifficultySelectEasy").GetComponent<Button>();
+        aiDiffSelectHard = GameObject.Find("AIDifficultySelectHard").GetComponent<Button>();
+        aiDiffSelectEasy.onClick.AddListener(OnEasySelect);
+        aiDiffSelectHard.onClick.AddListener(OnHardSelect);
     }
 
     // Start is called before the first frame update
@@ -50,5 +48,15 @@ public class DisconnectPanel : MonoBehaviour
     public void OnDisconnectNoClick()
     {
         eventManager.InvokeDisconnectReconnectionNo();
+    }
+
+    public void OnEasySelect()
+    {
+        eventManager.InvokeDisconnectAIEasy();
+    }
+
+    public void OnHardSelect()
+    {
+        eventManager.InvokeDisconnectAIHard();
     }
 }

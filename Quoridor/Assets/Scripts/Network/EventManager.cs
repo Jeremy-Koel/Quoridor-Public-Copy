@@ -35,6 +35,9 @@ public class EventManager : MonoBehaviour
     private UnityEvent CountdownTimer = new UnityEvent();
     private UnityEvent CountdownTimerValueChanged = new UnityEvent();
 
+    private UnityEvent DisconnectAIEasy = new UnityEvent();
+    private UnityEvent DisconnectAIHard = new UnityEvent();
+
 
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
@@ -74,7 +77,9 @@ public class EventManager : MonoBehaviour
         TurnTaken.RemoveAllListeners();
         CountdownTimer.RemoveAllListeners();
         CountdownTimerValueChanged.RemoveAllListeners();
-    }
+        DisconnectAIEasy.RemoveAllListeners();
+        DisconnectAIHard.RemoveAllListeners();
+}
 
     public void ResetEventManager()
     {
@@ -101,6 +106,9 @@ public class EventManager : MonoBehaviour
 
         CountdownTimer = new UnityEvent();
         CountdownTimerValueChanged = new UnityEvent();
+
+        DisconnectAIEasy = new UnityEvent();
+        DisconnectAIHard = new UnityEvent();
     }
 
     public void ListenToDisconnectReconnectionYes(UnityAction action)
@@ -343,4 +351,27 @@ public class EventManager : MonoBehaviour
         CountdownTimerValueChanged.Invoke();
     }
 
+    public void ListenToDisconnectAIEasy(UnityAction action)
+    {
+        Debug.Log("DisconnectAIEasy Listener Added");
+        DisconnectAIEasy.AddListener(action);
+    }
+
+    public void InvokeDisconnectAIEasy()
+    {
+        Debug.Log("DisconnectAIEasy Invoked");
+        DisconnectAIEasy.Invoke();
+    }
+
+    public void ListenToDisconnectAIHard(UnityAction action)
+    {
+        Debug.Log("DisconnectAIHard Listener Added");
+        DisconnectAIHard.AddListener(action);
+    }
+
+    public void InvokeDisconnectAIHard()
+    {
+        Debug.Log("DisconnectAIHard Invoked");
+        DisconnectAIHard.Invoke();
+    }
 }

@@ -9,10 +9,14 @@ public class DisconnectPopup : MonoBehaviour
     private const string mainMenuSceneName = "MainMenu";
     private const string gameBoardSceneName = "GameBoard";
     public GameObject disconnectPanel;
+    public GameObject disconnectionAIDifficultySelectPanel;
+    private bool disconnectionAIDiffPanelFound;
     private bool isCurrentSceneMainMenu;
     private EventManager eventManager;
     private bool inLobby;
     private bool inGameBoard;
+
+    private InterfaceController interfaceController;
 
     private void Awake()
     {
@@ -24,11 +28,13 @@ public class DisconnectPopup : MonoBehaviour
         DontDestroyOnLoad(this);
 
         //FindSceneGameObjects();
-
+        
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventManager.ListenToLostConnection(FindSceneGameObjects);
         eventManager.ListenToDisconnectReconnectionYes(ReconnectYes);
         eventManager.ListenToDisconnectReconnectionNo(ReconnectNo);
+        eventManager.ListenToDisconnectAIEasy(AiSelectEasy);
+        eventManager.ListenToDisconnectAIHard(AiSelectHard);
     }
 
     // Start is called before the first frame update
@@ -68,10 +74,16 @@ public class DisconnectPopup : MonoBehaviour
         }        
     }
 
+    // GenerateMoveForAI()
     private void SearchForDisconnectPanel()
     {
         IEnumerator sceneObjects = (isCurrentSceneMainMenu) ? SceneManager.GetSceneByName(mainMenuSceneName).GetRootGameObjects().GetEnumerator() :
             SceneManager.GetSceneByName(gameBoardSceneName).GetRootGameObjects().GetEnumerator();
+
+        if (!isCurrentSceneMainMenu)
+        {
+            interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        }
 
         bool doneSearching = false;
         while (sceneObjects.MoveNext() && !doneSearching)
@@ -89,6 +101,17 @@ public class DisconnectPopup : MonoBehaviour
                     {
                         disconnectPanel = currentCanvasPanelRectTransform.gameObject;
                         index = (canvasPanelRectTransforms.Length - 1);
+                        var disconnectPanelRectTransforms = disconnectPanel.GetComponentsInChildren<RectTransform>(true).GetEnumerator();
+                        while (disconnectPanelRectTransforms.MoveNext())
+                        {
+                            var currentDisconnectPanelRectTransform = (RectTransform)disconnectPanelRectTransforms.Current;
+                            if (currentDisconnectPanelRectTransform.name == "DisconnectionAIDifficultySelectPanel")
+                                //if (currentCanvasPanelRectTransform.gameObject.name == "DisconnectionAIDifficultySelectPanel")
+                            {
+                                disconnectionAIDifficultySelectPanel = currentDisconnectPanelRectTransform.gameObject;
+                                disconnectionAIDiffPanelFound = true;
+                            }                            
+                        }                        
                         doneSearching = true;
                     }
                 }
@@ -101,11 +124,47 @@ public class DisconnectPopup : MonoBehaviour
         disconnectPanel.SetActive(true);
     }
 
+    private void ActivateDisconnectionAiSelectPanel()
+    {
+        if (disconnectionAIDiffPanelFound)
+        {
+            disconnectionAIDifficultySelectPanel.SetActive(true);
+        }
+    }
+
+    private void AiSelectEasy()
+    {
+        if (interfaceController.GetWhoseTurn() == GameCore.GameBoard.PlayerEnum.ONE) {
+            // Let the player move
+            //interfaceController.RecordLocalPlayerMove("");
+        }
+        else
+        {
+            // have the AI move
+            //interfaceController.GenerateMoveForAI();
+        }
+        
+        GameSession.Difficulty = DifficultyEnum.EASY;
+        GameSession.GameMode = GameModeEnum.SINGLE_PLAYER;
+        // make panels inactive
+        disconnectionAIDifficultySelectPanel.SetActive(false);
+        disconnectPanel.SetActive(false);
+    }
+    private void AiSelectHard()
+    {
+        GameSession.Difficulty = DifficultyEnum.HARD;
+        GameSession.GameMode = GameModeEnum.SINGLE_PLAYER;
+        // make panels inactive
+        disconnectionAIDifficultySelectPanel.SetActive(false);
+        disconnectPanel.SetActive(false);
+    }
 
     private void ReconnectYes()
     {
         // handle reconnection UI logic
         // SWITCH TO AI GAME
+        SearchForDisconnectPanel();
+        ActivateDisconnectionAiSelectPanel();
 
     }
 
