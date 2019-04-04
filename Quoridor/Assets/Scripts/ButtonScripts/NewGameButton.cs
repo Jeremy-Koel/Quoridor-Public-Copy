@@ -19,8 +19,10 @@ public class NewGameButton : MonoBehaviour
         {
             newGameMenuButton = GameObject.Find("NewGameButton").GetComponent<Button>();
             newGameMenuButton.interactable = false;
+            newGameMenuButton.gameObject.SetActive(false);
             if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
             {
+                newGameMenuButton.gameObject.SetActive(true);
                 newGameMenuButton.interactable = true;
             }
         }
