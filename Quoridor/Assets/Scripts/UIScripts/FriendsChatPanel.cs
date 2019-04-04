@@ -71,6 +71,10 @@ public class FriendsChatPanel : MonoBehaviour
 
     public void OnChatClick()
     {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(friendsChatPanelRectTransform);
+        LayoutRebuilder.MarkLayoutForRebuild(friendsChatPanelRectTransform);
+        friendsChatPanelRectTransform.gameObject.SetActive(false);
+        friendsChatPanelRectTransform.gameObject.SetActive(true);
         if (chatActive)
         {
             moveHand = true;

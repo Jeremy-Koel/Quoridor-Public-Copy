@@ -399,6 +399,7 @@ public class MainMenu : MonoBehaviour
             // Setup ChatWindowPanel
             ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
             chatWindowPanelScript.CheckTeams();
+            chatWindowPanel.GetComponent<RectTransform>().ForceUpdateRectTransforms();
             // Setup ChallengeManager
             ChallengeManager challengeManagerScript = challengeManager.GetComponent<ChallengeManager>();
             challengeManagerScript.SetupChallengeListeners();

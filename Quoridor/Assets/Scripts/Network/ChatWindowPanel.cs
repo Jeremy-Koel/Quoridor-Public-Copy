@@ -444,6 +444,10 @@ public class ChatWindowPanel : MonoBehaviour
     {
         string messageWho = message.Who.ToString();
         string messageMessage = message.Message.ToString();
+        if (messageMessage.Length > 1000)
+        {
+            messageMessage = messageMessage.Substring(0, 1000);
+        }        
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
         
@@ -474,7 +478,7 @@ public class ChatWindowPanel : MonoBehaviour
         chatMessages.Add(messageTextObject);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-
+        
         //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
         //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
         StartCoroutine(ScrollToBottom());
@@ -488,6 +492,7 @@ public class ChatWindowPanel : MonoBehaviour
         //scrollRect.gameObject.SetActive(true);
         chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
         chatMessagesViewContent.parent.gameObject.GetComponentInChildren<ScrollRect>().verticalNormalizedPosition = 0f;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
     }
 
     private void AddSpacingMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages, GameObject chatMessageObjectPrefab) 
