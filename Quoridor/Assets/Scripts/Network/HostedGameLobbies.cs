@@ -16,6 +16,8 @@ public class HostedGameLobbies : MonoBehaviour
     public GameObject hostedGamePrefab;
     public List<GameObject> hostedGames;
 
+    public int heightOfHostedGame = 40;
+
     public ChallengeManager challengeManager;
     
     private bool hosting = false;
@@ -72,7 +74,11 @@ public class HostedGameLobbies : MonoBehaviour
         bool endOfMatches = !pendingMatches.MoveNext();
         while (!endOfMatches)
         {
-            GameObject.Find("NoHostedGamesPanel").SetActive(false);
+            var noHostedGamesPanel = GameObject.Find("NoHostedGamesPanel");
+            if (noHostedGamesPanel != null)
+            {
+                noHostedGamesPanel.SetActive(false);
+            }
             matchesFound = true;
             // Get match data
             var matchedPlayers = pendingMatches.Current.MatchedPlayers.GetEnumerator();
@@ -225,6 +231,8 @@ public class HostedGameLobbies : MonoBehaviour
         hostedGameLobby.transform.localScale = new Vector3(1, 1, 1);
 
         hostedGames.Add(hostedGameLobby);
+
+        hostedGameLobbiesRectTransform.sizeDelta = new Vector2(hostedGameLobbiesRectTransform.sizeDelta.x, hostedGames.Count * heightOfHostedGame);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(hostedGameLobbiesRectTransform);
     }
