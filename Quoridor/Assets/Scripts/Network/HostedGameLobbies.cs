@@ -66,30 +66,31 @@ public class HostedGameLobbies : MonoBehaviour
 
     public void OnFindPendingMatchesRequestSuccess(FindPendingMatchesResponse response)
     {
-        if ((bool)response.ScriptData.BaseData["matchesFound"])
+        //Debug.Log("Matches found: " + response.ScriptData.BaseData["matchesFound"]);
+        var pendingMatches = response.PendingMatches.GetEnumerator();
+        bool matchesFound = false;
+        bool endOfMatches = !pendingMatches.MoveNext();
+        while (!endOfMatches)
         {
-            Debug.Log("Matches found: " + response.ScriptData.BaseData["matchesFound"]);
-            var pendingMatches = response.PendingMatches.GetEnumerator();
-            bool endOfMatches = !pendingMatches.MoveNext();
-            while (!endOfMatches)
+            GameObject.Find("NoHostedGamesPanel").SetActive(false);
+            matchesFound = true;
+            // Get match data
+            var matchedPlayers = pendingMatches.Current.MatchedPlayers.GetEnumerator();
+            matchedPlayers.MoveNext();
+            if ((bool)matchedPlayers.Current.ParticipantData.BaseData["hosting"])
             {
-                // Get match data
-                var matchedPlayers = pendingMatches.Current.MatchedPlayers.GetEnumerator();
-                matchedPlayers.MoveNext();
-                if ((bool)matchedPlayers.Current.ParticipantData.BaseData["hosting"])
-                {
-                    string hostDisplayName = matchedPlayers.Current.ParticipantData.BaseData["displayName"].ToString();
-                    string matchID = pendingMatches.Current.Id;
-                    string matchShortCode = pendingMatches.Current.MatchShortCode;
-                    AddHostedGameToLobbies(hostDisplayName, matchID, matchShortCode);
-                }
-                endOfMatches = !pendingMatches.MoveNext();
+                string hostDisplayName = matchedPlayers.Current.ParticipantData.BaseData["displayName"].ToString();
+                string matchID = pendingMatches.Current.Id;
+                string matchShortCode = pendingMatches.Current.MatchShortCode;
+                AddHostedGameToLobbies(hostDisplayName, matchID, matchShortCode);
             }
+            endOfMatches = !pendingMatches.MoveNext();
         }
-        else
+        if (!matchesFound)
         {
             // No pending matches found
             Debug.Log("No Pending Matches found");
+            GameObject.Find("NoHostedGamesPanel").SetActive(true);
         }
         UnblockRefreshInput();
     }
