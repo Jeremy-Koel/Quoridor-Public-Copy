@@ -105,6 +105,8 @@ public class DisconnectPopup : MonoBehaviour
     private void ReconnectYes()
     {
         // handle reconnection UI logic
+        // SWITCH TO AI GAME
+
     }
 
     private void ReconnectNo()
