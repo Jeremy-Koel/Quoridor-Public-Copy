@@ -17,6 +17,7 @@ public class LeaderboardPanel : MonoBehaviour
     public List<GameObject> playersList;
     public GameObject playerPrefab;
     public ChallengeManager challengeManager;
+    public int heightOfLeaderboardPlayer = 75;
 
     public Button refreshLeaderboardButton;
 
@@ -119,7 +120,8 @@ public class LeaderboardPanel : MonoBehaviour
 
             playersList.Add(playerObject);
         }
-
+        var leaderBoardListContent = GameObject.Find("LeaderboardListContent").GetComponent<RectTransform>();
+        leaderBoardListContent.sizeDelta = new Vector2 (leaderBoardListContent.sizeDelta.x, playersList.Count * heightOfLeaderboardPlayer);
         LayoutRebuilder.ForceRebuildLayoutImmediate(leaderboardContent);
     }
 
