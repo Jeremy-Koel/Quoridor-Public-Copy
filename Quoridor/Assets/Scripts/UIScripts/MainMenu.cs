@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour
     public GameObject challengeManager;
 
     private bool lobbyActivatedOnce;
+    private bool matching;
 
     public AudioControllerMainMenu audioController;
 
@@ -94,6 +95,7 @@ public class MainMenu : MonoBehaviour
         disconnectPanel.SetActive(false);
 
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
+        matching = false;
        
     }
 
@@ -255,11 +257,29 @@ public class MainMenu : MonoBehaviour
     public void onMatchMakingButtonClick()
     {
         BlockInput();
-        Debug.Log("Making/sending matchmaking request");
-        MatchmakingRequest request = new MatchmakingRequest();
-        request.SetMatchShortCode("DefaultMatch");
-        request.SetSkill(0);
-        request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+        if (matching)
+        {
+            matchmakingButton.gameObject.GetComponentInChildren<Text>().text = "Find Match";
+            Debug.Log("Making/sending matchmaking request");
+            MatchmakingRequest request = new MatchmakingRequest();
+            request.SetAction("cancel");
+            request.SetMatchShortCode("DefaultMatch");
+            request.SetSkill(0);
+            request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            matching = false;
+            UnblockInput();
+        }
+        else
+        {
+            matchmakingButton.gameObject.GetComponentInChildren<Text>().text = "Stop";
+            Debug.Log("Making/sending matchmaking request");
+            MatchmakingRequest request = new MatchmakingRequest();
+            request.SetMatchShortCode("DefaultMatch");
+            request.SetSkill(0);
+            request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            matching = true;
+            UnblockInput();
+        }        
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
