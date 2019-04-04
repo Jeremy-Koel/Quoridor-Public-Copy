@@ -169,7 +169,7 @@ public class MainMenu : MonoBehaviour
     {
         // log in as admin so we can communicate with server
         adminLogin = true;
-        Login(adminUsername, adminPassword);
+        LoginAsAdmin();
 
         LogEventRequest_GetNewGuestUser getNewGuestUser = new LogEventRequest_GetNewGuestUser();
         getNewGuestUser.Send(OnGetNewGuestUserSuccess);
@@ -178,12 +178,19 @@ public class MainMenu : MonoBehaviour
     private void OnGetNewGuestUserSuccess(LogEventResponse message)
     {
         Debug.Log("New guest user successful");
+        adminLogin = false;
     }
 
     public void onLoginClick()
     {
         // Try to login using username and password
-        Login(usernameLoginInput.text, passwordLoginInput.text);
+        if (usernameLoginInput.text != "")
+        {
+            if (passwordLoginInput.text != "")
+            {
+                Login(usernameLoginInput.text, passwordLoginInput.text);
+            }
+        }        
     }
 
     public void onRegistrationSwitchClick()
@@ -376,9 +383,23 @@ public class MainMenu : MonoBehaviour
         AuthenticationRequest request = new AuthenticationRequest();
         request.SetUserName(username);
         request.SetPassword(password);
-        //request.SetUserName(usernameLoginInput.text);
-        //request.SetPassword(passwordLoginInput.text);
         request.Send(OnLoginSuccess, OnLoginError);
+
+    }
+
+    private void LoginAsAdmin()
+    {
+        BlockInput();
+        AuthenticationRequest request = new AuthenticationRequest();
+        request.SetUserName(adminUsername);
+        request.SetPassword(adminPassword);
+        request.Send(OnAdminLoginSuccess, OnLoginError);
+    }
+
+    private void OnAdminLoginSuccess(AuthenticationResponse response)
+    {
+        UnblockInput();
+        Debug.Log("logged in as admin");
     }
 
     private void OnLoginSuccess(AuthenticationResponse response)
@@ -427,7 +448,7 @@ public class MainMenu : MonoBehaviour
         GameSparksManager gameSparksManager = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
         //loggedIn = gameSparksManager.connected;
         GameSparksUserID gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
-        if (gameSparksUserID.myUserID != "" && gameSparksManager.connected)
+        if (gameSparksUserID.myUserID != "" && gameSparksManager.connected && !adminLogin)
         {
             loggedIn = true;
         }
