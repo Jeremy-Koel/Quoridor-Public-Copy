@@ -11,6 +11,8 @@ public class DisconnectPopup : MonoBehaviour
     public GameObject disconnectPanel;
     private bool isCurrentSceneMainMenu;
     private EventManager eventManager;
+    private bool inLobby;
+    private bool inGameBoard;
 
     private void Awake()
     {
@@ -47,41 +49,52 @@ public class DisconnectPopup : MonoBehaviour
         if (SceneManager.GetActiveScene().name == mainMenuSceneName)
         {
             isCurrentSceneMainMenu = true;
+            if (GameObject.Find("Main Camera").GetComponent<MainMenu>().lobbyPanel.activeSelf)
+            {
+                inLobby = true;
+            }
         }
         else if (SceneManager.GetActiveScene().name == gameBoardSceneName)
         {
             isCurrentSceneMainMenu = false;
+            inGameBoard = true;
         }
-        if (isCurrentSceneMainMenu)
+
+        if (inLobby || inGameBoard)
         {
-            // Handle main menu stuff
-            var mainMenuSceneObjectsEnumerator = SceneManager.GetSceneByName(mainMenuSceneName).GetRootGameObjects().GetEnumerator();
-            while (mainMenuSceneObjectsEnumerator.MoveNext())
+            SearchForDisconnectPanel();
+
+            ActivateDisconnectPanel();
+        }        
+    }
+
+    private void SearchForDisconnectPanel()
+    {
+        IEnumerator sceneObjects = (isCurrentSceneMainMenu) ? SceneManager.GetSceneByName(mainMenuSceneName).GetRootGameObjects().GetEnumerator() :
+            SceneManager.GetSceneByName(gameBoardSceneName).GetRootGameObjects().GetEnumerator();
+
+        // NEEDS TO ONLY ACTIVATE IF IT IS ON THE LOBBY OR IN GAME
+        bool doneSearching = false;
+        while (sceneObjects.MoveNext() && !doneSearching)
+        {
+            GameObject currentRootGameObject = (GameObject)sceneObjects.Current;
+            if (currentRootGameObject.name == "GameController" || currentRootGameObject.name == "Canvas")
             {
-                GameObject currentGameObject = (GameObject)mainMenuSceneObjectsEnumerator.Current;
-                if (currentGameObject.name == "Canvas")
+                // look for disconnect panel
+                var canvasPanelRectTransforms = currentRootGameObject.GetComponentsInChildren<RectTransform>(true);
+                for (int index = 0; index < (canvasPanelRectTransforms.Length - 1); index++)
                 {
-                    // look for disconnect panel
-                    var canvasPanelRectTransforms = currentGameObject.GetComponentsInChildren<RectTransform>(true);
-                    for (int index = 0; index < (canvasPanelRectTransforms.Length - 1); index++)
+                    var currentCanvasPanelRectTransform = (RectTransform)canvasPanelRectTransforms.GetValue(index);
+                    // This is the disconnect panel
+                    if (currentCanvasPanelRectTransform.gameObject.name == "DisconnectPanel")
                     {
-                        var currentCanvasPanelRectTransform = (RectTransform)canvasPanelRectTransforms.GetValue(index);
-                        // This is the disconnect panel
-                        if (currentCanvasPanelRectTransform.gameObject.name == "DisconnectPanel")
-                        {
-                            disconnectPanel = currentCanvasPanelRectTransform.gameObject;
-                            index = (canvasPanelRectTransforms.Length - 1);
-                        }
+                        disconnectPanel = currentCanvasPanelRectTransform.gameObject;
+                        index = (canvasPanelRectTransforms.Length - 1);
+                        doneSearching = true;
                     }
                 }
             }
         }
-        else
-        {
-            // handle game board scene stuff
-        }
-
-        ActivateDisconnectPanel();
     }
 
     private void ActivateDisconnectPanel()
@@ -97,22 +110,25 @@ public class DisconnectPopup : MonoBehaviour
 
     private void ReconnectNo()
     {
-        // handle disconnect UI logic
-        if (isCurrentSceneMainMenu)
+        if (inLobby || inGameBoard)
         {
-            // Go to main menu
-            MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
-            mainMenu.InactivateAllPanels();
-            mainMenu.mainMenuPanel.SetActive(true);
+            // handle disconnect UI logic
+            if (isCurrentSceneMainMenu)
+            {
+                // Go to main menu
+                MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+                mainMenu.InactivateAllPanels();
+                mainMenu.mainMenuPanel.SetActive(true);
+            }
+            else
+            {
+                // Send them back to lobby panel
+                SceneManager.LoadScene(mainMenuSceneName);
+                MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+                mainMenu.InactivateAllPanels();
+                mainMenu.lobbyPanel.SetActive(true);
+            }
+            disconnectPanel.SetActive(false);
         }
-        else
-        {
-            // Send them back to lobby panel
-            SceneManager.LoadScene(mainMenuSceneName);
-            MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
-            mainMenu.InactivateAllPanels();
-            mainMenu.lobbyPanel.SetActive(true);
-        }
-        disconnectPanel.SetActive(false);
     }
 }
