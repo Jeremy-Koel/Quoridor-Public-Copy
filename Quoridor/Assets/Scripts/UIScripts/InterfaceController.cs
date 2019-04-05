@@ -22,7 +22,7 @@ public class InterfaceController : MonoBehaviour
     private Queue<Animator> playerWallIndicators;
     private Queue<Animator> opponentWallIndicators;
     private Animator playerTurnBoxAnimator;
-    private bool isChatShaking = false;
+    private bool isMouseShaking = false;
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class InterfaceController : MonoBehaviour
         playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
         opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
         playerTurnBoxAnimator = GameObject.Find("PlayerTurnBox").GetComponent<Animator>();
-        playerMouse = GameObject.Find("playerMouse");
+        
         initAnimatorQueues();
 
         eventManager.ListenToInvalidMove(SwitchTurnIndicatorToInvalidMove);
@@ -356,11 +356,16 @@ public class InterfaceController : MonoBehaviour
 
     public void ShakeMouse()
     {
-        if (isChatShaking)
+        if (playerMouse == null)
+        {
+            playerMouse = GameObject.Find("playerMouse");
+        }
+        
+        if (isMouseShaking)
         {
             return;
         }
-        shakeGameObject(playerMouse, 1.0f, 0.5f);
+        shakeGameObject(playerMouse, 0.5f, 0.25f);
     }
     
     private IEnumerator shakeGameObjectCOR(GameObject objectToShake, float totalShakeDuration, float decreasePoint)
@@ -434,14 +439,14 @@ public class InterfaceController : MonoBehaviour
         objTransform.position = defaultPos; //Reset to original postion
         objTransform.rotation = defaultRot;//Reset to original rotation
 
-        isChatShaking = false; //So that we can call this function next time
+        isMouseShaking = false; //So that we can call this function next time
         Debug.Log("Done shaking!");
     }
 
 
     private void shakeGameObject(GameObject objectToShake, float shakeDuration, float decreasePoint)
     {
-        isChatShaking = true;
+        isMouseShaking = true;
         StartCoroutine(shakeGameObjectCOR(objectToShake, shakeDuration, decreasePoint));
     }
 }
