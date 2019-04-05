@@ -36,8 +36,8 @@ public class FriendsPanel : MonoBehaviour
     private bool pending;
     private bool shakeInput = false;
     private Timer shakeTimer;
-    private float shakeDuration = 0.5f;
-    private float shakeDefault = 0.5f;
+    private float shakeDuration = 0.04f;
+    private float shakeDefault = 0.04f;
 
     private void Awake()
     {
@@ -113,8 +113,9 @@ public class FriendsPanel : MonoBehaviour
             shakeTimer = gameObject.AddComponent<Timer>();
             shakeTimer.timeUp.AddListener(TimeLimitReached);
             shakeTimer.SetTimeDefault(shakeDefault);
-            searchFriendsInput.gameObject.GetComponent<Animator>().SetBool("Shaking", true);
-        }
+        } 
+        searchFriendsInput.gameObject.GetComponent<Animator>().SetBool("Shaking", true);
+        shakeTimer.StartCountdown();
     }
 
     void TimeLimitReached()
