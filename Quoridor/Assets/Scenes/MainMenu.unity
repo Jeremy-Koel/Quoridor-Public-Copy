@@ -1206,7 +1206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: -0.00012181281}
+  m_AnchoredPosition: {x: 1.4848496, y: -0.00008623837}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -3542,7 +3542,9 @@ MonoBehaviour:
   registerButton: {fileID: 2141867165}
   errorMessageLoginText: {fileID: 32775856}
   errorMessageRegistrationText: {fileID: 1907460207}
-  matchmakingButton: {fileID: 0}
+  matchmakingButton: {fileID: 2049837201}
+  joinGameButton: {fileID: 649912961}
+  hostGameButton: {fileID: 151574330}
 --- !u!1 &287743214
 GameObject:
   m_ObjectHideFlags: 0
@@ -4464,8 +4466,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 70, y: 80}
-  m_SizeDelta: {x: 100, y: 30}
+  m_AnchoredPosition: {x: 19, y: 80}
+  m_SizeDelta: {x: 190, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &393003483
 MonoBehaviour:
@@ -7197,7 +7199,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Requests
+  m_Text: Pending Requests
 --- !u!222 &767156024
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8471,6 +8473,7 @@ GameObject:
   - component: {fileID: 927918571}
   - component: {fileID: 927918570}
   - component: {fileID: 927918569}
+  - component: {fileID: 927918572}
   m_Layer: 5
   m_Name: SearchFriendsInput
   m_TagString: Untagged
@@ -8600,6 +8603,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 927918567}
   m_CullTransparentMesh: 0
+--- !u!95 &927918572
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927918567}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 414004330290415478f7174cf25b20e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &940371439
 GameObject:
   m_ObjectHideFlags: 0
@@ -15932,7 +15954,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -401, y: -68}
-  m_SizeDelta: {x: 750, y: 950}
+  m_SizeDelta: {x: 450, y: 725}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1762161699
 MonoBehaviour:
@@ -16829,7 +16851,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: <b>+</b>
+  m_Text: <b>+</b> Add
 --- !u!222 &1826365833
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17230,7 +17252,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Online
+  m_Text: Friends
 --- !u!222 &1876417307
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17334,7 +17356,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000747058
+      value: -0.00012422085
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -17890,6 +17912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf9131827b217745a9816e7290f0612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  matchmakingButton: {fileID: 2049837201}
   hostedGamePrefab: {fileID: 5100968050931827320, guid: 80f5d0b3bc277ee488cea574dbdaef39,
     type: 3}
   hostedGames: []
@@ -18605,8 +18628,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: 80}
-  m_SizeDelta: {x: 50, y: 30}
+  m_AnchoredPosition: {x: 149, y: 80}
+  m_SizeDelta: {x: 60, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2020340812
 MonoBehaviour:
@@ -19729,7 +19752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2086774147
 RectTransform:
   m_ObjectHideFlags: 0

@@ -7,11 +7,14 @@ using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class HostedGameLobbies : MonoBehaviour
 {
     RectTransform hostedGameLobbiesRectTransform;
     Button hostGameButton;
+    Button joinGameButton;
+    public Button matchmakingButton;
     Button refreshGamesButton;
     public GameObject hostedGamePrefab;
     public List<GameObject> hostedGames;
@@ -26,7 +29,9 @@ public class HostedGameLobbies : MonoBehaviour
     {
         hostedGameLobbiesRectTransform = GameObject.Find("HostedGameLobbies").GetComponent<RectTransform>();
         hostGameButton = GameObject.Find("HostGameButton").GetComponent<Button>();
-        hostGameButton.onClick.AddListener(onHostGameButtonClick);
+        hostGameButton.onClick.AddListener(OnHostGameButtonClick);
+        joinGameButton = GameObject.Find("JoinGameButton").GetComponent<Button>();
+        joinGameButton.onClick.AddListener(OnJoinGameButtonClick);
         refreshGamesButton = GameObject.Find("RefreshGamesButton").GetComponent<Button>();
         refreshGamesButton.onClick.AddListener(onRefreshGamesButtonClick);
         hostedGames = new List<GameObject>();
@@ -151,8 +156,27 @@ public class HostedGameLobbies : MonoBehaviour
         }        
     }
 
-    public void onHostGameButtonClick()
+    private void BlockMatchmakingButton()
     {
+        matchmakingButton.interactable = false;
+    }
+    private void UnblockMatchmakingButton()
+    {
+        matchmakingButton.interactable = true;
+    }
+
+    private void OnJoinGameButtonClick()
+    {
+        //hostGameButton.interactable = false;
+        //BlockMatchmakingButton();
+    }
+
+    public void OnHostGameButtonClick()
+    {
+        BlockMatchmakingButton();
+        joinGameButton.interactable = false;
+        EventSystem.current.SetSelectedGameObject(null);
+
         GameSparksUserID gameSparksUserIDScript = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
 
         MatchmakingRequest matchmakingRequest = new MatchmakingRequest();
@@ -182,6 +206,8 @@ public class HostedGameLobbies : MonoBehaviour
             // Change button text to represent hosting a game
             UnityEngine.UI.Text[] buttonText = hostGameButton.GetComponentsInChildren<Text>();
             buttonText[0].text = "Host Game";
+            joinGameButton.interactable = true;
+            UnblockMatchmakingButton();
         }
 
         matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);

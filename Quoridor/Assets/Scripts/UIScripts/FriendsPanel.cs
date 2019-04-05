@@ -7,6 +7,7 @@ using GameSparks.Api.Messages;
 using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
 using GameSparks.Core;
+using System;
 
 public class FriendsPanel : MonoBehaviour
 {
@@ -33,12 +34,16 @@ public class FriendsPanel : MonoBehaviour
     //private GameObject friendsSearchResultListViewPort;
 
     private bool pending;
+    private bool shakeInput = false;
+    private Timer shakeTimer;
+    private float shakeDuration = 0.5f;
+    private float shakeDefault = 0.5f;
 
     private void Awake()
     {
         searchFriendsInput = GameObject.Find("SearchFriendsInput").GetComponent<InputField>();
         onlineFriendsButton = GameObject.Find("OnlineFriendsButton").GetComponent<Button>();
-        offlineFriendsButton = GameObject.Find("OfflineFriendsButton").GetComponent<Button>();
+        //offlineFriendsButton = GameObject.Find("OfflineFriendsButton").GetComponent<Button>();
         friendRequestsButton = GameObject.Find("FriendRequestsButton").GetComponent<Button>();
         addFriendsButton = GameObject.Find("AddFriendsButton").GetComponent<Button>();
         searchFriendsButton = GameObject.Find("SearchFriendsButton").GetComponent<Button>();
@@ -67,7 +72,7 @@ public class FriendsPanel : MonoBehaviour
     {
         // Add on clicks
         onlineFriendsButton.onClick.AddListener(SwitchFriendsListToOnline);
-        offlineFriendsButton.onClick.AddListener(SwitchFriendsListToOffline);
+        //offlineFriendsButton.onClick.AddListener(SwitchFriendsListToOffline);
         friendRequestsButton.onClick.AddListener(SwitchFriendsListToRequests);
         addFriendsButton.onClick.AddListener(SwitchToAddfriends);
         searchFriendsButton.onClick.AddListener(SearchForFriendsToAdd);
@@ -78,7 +83,7 @@ public class FriendsPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void SwitchActiveAddFriendsPanel()
@@ -102,7 +107,21 @@ public class FriendsPanel : MonoBehaviour
             // Make chat visible
             chatWindowPanel.SetActive(true);
             chatSelectionPanel.SetActive(true);
-        }        
+        }
+        if (shakeTimer == null)
+        {
+            shakeTimer = gameObject.AddComponent<Timer>();
+            shakeTimer.timeUp.AddListener(TimeLimitReached);
+            shakeTimer.SetTimeDefault(shakeDefault);
+            searchFriendsInput.gameObject.GetComponent<Animator>().SetBool("Shaking", true);
+        }
+    }
+
+    void TimeLimitReached()
+    {
+        //shakeInput = false;
+        searchFriendsInput.gameObject.GetComponent<Animator>().SetBool("Shaking", false);
+        shakeTimer.CancelCountdown();
     }
 
     private void SwitchFriendsListToOnline()
@@ -124,7 +143,7 @@ public class FriendsPanel : MonoBehaviour
         // Switch all other buttons to interactable
         SwitchFriendsPanelButtons();
 
-        offlineFriendsButton.interactable = false;
+        //offlineFriendsButton.interactable = false;
 
         addFriendsPanel.SetActive(false);
         SwitchActiveAddFriendsPanel();
@@ -162,7 +181,7 @@ public class FriendsPanel : MonoBehaviour
     {
         addFriendsButton.interactable = true;        
         onlineFriendsButton.interactable = true;
-        offlineFriendsButton.interactable = true;
+        //offlineFriendsButton.interactable = true;
         friendRequestsButton.interactable = true;
     }
 

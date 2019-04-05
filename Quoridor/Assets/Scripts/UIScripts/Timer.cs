@@ -2,18 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DisconnectTimer : MonoBehaviour
+public class Timer : MonoBehaviour
 {
     // Time left to countdown
-    private float timeLeft = 30f;
-    private readonly float timeDefault = 30f;
+    protected float timeLeft = 30f;
+    private float timeDefault = 30f;
     public bool countingDown = false;
-    private EventManager eventManager;
+    //private EventManager eventManager;
+    public UnityEvent timeUp = new UnityEvent();
+    public UnityEvent valueChanged = new UnityEvent();
 
     private void Awake()
     {
-        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        //eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
 
     }
 
@@ -21,34 +24,33 @@ public class DisconnectTimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
-        {
-            // Listen to game ending
-            eventManager.ListenToGameOver(StartCountdown);
-        }
-        else
-        {
+        //if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+        //{
+        //    // Listen to game ending
+        //    eventManager.ListenToGameOver(StartCountdown);
+        //}
+        //else
+        //{
 
-        }
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
-       if (countingDown)
+        if (countingDown)
         {
             timeLeft -= Time.deltaTime;
-            eventManager.InvokeCountdownTimerValueChanged();
-            
+            valueChanged.Invoke();
+
             if (timeLeft < 0)
             {
                 // time is up
                 countingDown = false;
-                eventManager.InvokeCountdownTimer();
+                timeUp.Invoke();
             }
-        } 
+        }
     }
-
 
     public void ResetTimer()
     {
@@ -69,5 +71,11 @@ public class DisconnectTimer : MonoBehaviour
     public void StartCountdown()
     {
         countingDown = true;
+    }
+
+    public void SetTimeDefault(float time)
+    {
+        timeDefault = time;
+        timeLeft = timeDefault;
     }
 }

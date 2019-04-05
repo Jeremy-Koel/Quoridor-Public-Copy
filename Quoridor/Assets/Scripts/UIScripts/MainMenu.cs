@@ -56,6 +56,10 @@ public class MainMenu : MonoBehaviour
     private Text errorMessageRegistrationText;
     [SerializeField]
     private Button matchmakingButton;
+    [SerializeField]
+    private Button joinGameButton;
+    [SerializeField]
+    private Button hostGameButton;
 
     private void Awake()
     {
@@ -314,6 +318,7 @@ public class MainMenu : MonoBehaviour
     public void onMatchMakingButtonClick()
     {
         BlockInput();
+        BlockJoinHostGameButtons();
         if (matching)
         {
             matchmakingButton.gameObject.GetComponentInChildren<Text>().text = "Find Match";
@@ -325,6 +330,7 @@ public class MainMenu : MonoBehaviour
             request.Send(OnMatchmakingSuccess, OnMatchmakingError);
             matching = false;
             UnblockInput();
+            UnblockJoinHostGameButtons();
         }
         else
         {
@@ -524,5 +530,16 @@ public class MainMenu : MonoBehaviour
         loginButton.interactable = true;
         registerButton.interactable = true;
         matchmakingButton.interactable = true;
+    }
+
+    private void BlockJoinHostGameButtons()
+    {
+        joinGameButton.interactable = false;
+        hostGameButton.interactable = false;
+    }
+    private void UnblockJoinHostGameButtons()
+    {
+        joinGameButton.interactable = true;
+        hostGameButton.interactable = true;
     }
 }
