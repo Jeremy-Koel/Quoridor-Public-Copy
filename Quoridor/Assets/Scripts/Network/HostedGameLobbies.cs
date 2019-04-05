@@ -19,7 +19,7 @@ public class HostedGameLobbies : MonoBehaviour
     public GameObject hostedGamePrefab;
     public List<GameObject> hostedGames;
 
-    public int heightOfHostedGame = 40;
+    public int heightOfHostedGame = 80;
 
     public ChallengeManager challengeManager;
     
