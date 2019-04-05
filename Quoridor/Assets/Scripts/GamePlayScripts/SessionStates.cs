@@ -15,6 +15,7 @@ public static class GameSession
     public static float MasterVolumePref { get; set; }
     public static float BackgroundVolumePref { get; set; }
     public static float EffectVolumePref { get; set; }
+    public static int WinCount { get; set; }
 
     static GameSession()
     {
@@ -24,6 +25,7 @@ public static class GameSession
         MasterVolumePref = 1.0f;
         BackgroundVolumePref = 1.0f;
         EffectVolumePref = 1.0f;
+        WinCount = 0;
     }
 
 

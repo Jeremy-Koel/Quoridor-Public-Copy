@@ -68,9 +68,10 @@ public class WinnerScreen : MonoBehaviour
         string winnerString = getWhoWon();
         if (winnerString == "You Win!" || winnerString == interfaceController.GetLocalPlayerName()+" Wins!")
         {
+            ++GameSession.WinCount;
+
             cheeseGenerator.Play();
             soundEffectController.PlayWinSound();
-
             winVideoPlayer.clip = winClip;
         }
         else
