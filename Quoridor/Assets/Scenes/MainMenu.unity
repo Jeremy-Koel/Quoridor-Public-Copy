@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1206,7 +1206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4848496, y: -0.000119122764}
+  m_AnchoredPosition: {x: 1.4848496, y: -0.00012181281}
   m_SizeDelta: {x: 349.9, y: 478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92525789
@@ -3531,6 +3531,7 @@ MonoBehaviour:
   disconnectPanel: {fileID: 0}
   guestDetailsPanel: {fileID: 0}
   challengeManager: {fileID: 0}
+  eventManager: {fileID: 0}
   audioController: {fileID: 0}
   usernameLoginInput: {fileID: 264065369}
   passwordLoginInput: {fileID: 143730860}
@@ -8703,7 +8704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disconnected: 0
-  disconnectPanel: {fileID: 0}
+  disconnectPanel: {fileID: 2137087132}
   disconnectionAIDifficultySelectPanel: {fileID: 0}
 --- !u!4 &968885595
 Transform:
@@ -17333,7 +17334,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00008927185
+      value: -0.0000747058
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -20655,6 +20656,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f809cf6faa7888647ad33fc995e57e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disconnectYesButton: {fileID: 1798186848}
+  disconnectNoButton: {fileID: 1085293705}
+  aiDiffSelectEasy: {fileID: 0}
+  aiDiffSelectHard: {fileID: 0}
+  disconnectPanel: {fileID: 0}
+  disconnectionAIDifficultySelectPanel: {fileID: 0}
 --- !u!1 &2141867163
 GameObject:
   m_ObjectHideFlags: 0

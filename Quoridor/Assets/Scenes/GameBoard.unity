@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -537,6 +537,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f809cf6faa7888647ad33fc995e57e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disconnectYesButton: {fileID: 1444105345}
+  disconnectNoButton: {fileID: 822938523}
+  aiDiffSelectEasy: {fileID: 974688041}
+  aiDiffSelectHard: {fileID: 1762669978}
+  disconnectPanel: {fileID: 90561281}
+  disconnectionAIDifficultySelectPanel: {fileID: 1948046441}
 --- !u!114 &90561284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10568,7 +10574,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000047070043
+      value: -0.000046663576
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -16562,14 +16568,13 @@ GameObject:
   - component: {fileID: 1948046442}
   - component: {fileID: 1948046445}
   - component: {fileID: 1948046444}
-  - component: {fileID: 1948046443}
   m_Layer: 5
   m_Name: DisconnectionAIDifficultySelectPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1948046442
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16593,18 +16598,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1360, y: 760}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1948046443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948046441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f809cf6faa7888647ad33fc995e57e51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1948046444
 MonoBehaviour:
   m_ObjectHideFlags: 0

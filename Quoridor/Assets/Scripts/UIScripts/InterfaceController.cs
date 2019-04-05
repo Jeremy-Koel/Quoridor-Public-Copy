@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +36,7 @@ public class InterfaceController : MonoBehaviour
         initAnimatorQueues();
 
         eventManager.ListenToInvalidMove(SwitchTurnIndicatorToInvalidMove);
+        eventManager.ListenToDisconnectAIEasy(SwitchToSingleplayer);
 
         if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
@@ -43,6 +45,15 @@ public class InterfaceController : MonoBehaviour
         else if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             //eventManager.ListenToLocalPlayerMoved();
+        }
+    }
+
+    private void SwitchToSingleplayer()
+    {
+        eventManager.ListenToLocalPlayerMoved(GenerateMoveForAI);
+        if (GameSession.ForceAiMove)
+        {
+            eventManager.InvokeLocalPlayerMoved();
         }
     }
 

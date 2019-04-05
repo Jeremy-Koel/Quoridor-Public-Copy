@@ -37,7 +37,7 @@ public class EventManager : MonoBehaviour
 
     private UnityEvent DisconnectAIEasy = new UnityEvent();
     private UnityEvent DisconnectAIHard = new UnityEvent();
-
+    private UnityEvent MultiplayerSelected = new UnityEvent();
 
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
@@ -79,6 +79,7 @@ public class EventManager : MonoBehaviour
         CountdownTimerValueChanged.RemoveAllListeners();
         DisconnectAIEasy.RemoveAllListeners();
         DisconnectAIHard.RemoveAllListeners();
+        MultiplayerSelected.RemoveAllListeners();
 }
 
     public void ResetEventManager()
@@ -109,6 +110,7 @@ public class EventManager : MonoBehaviour
 
         DisconnectAIEasy = new UnityEvent();
         DisconnectAIHard = new UnityEvent();
+        MultiplayerSelected = new UnityEvent();
     }
 
     public void ListenToDisconnectReconnectionYes(UnityAction action)
@@ -373,5 +375,17 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("DisconnectAIHard Invoked");
         DisconnectAIHard.Invoke();
+    }
+
+    public void ListenToMultiplayerSelected(UnityAction action)
+    {
+        Debug.Log("MultiplayerSelected Listener Added");
+        MultiplayerSelected.AddListener(action);
+    }
+
+    public void InvokeMultiplayerSelected()
+    {
+        Debug.Log("MultiplayerSelected Invoked");
+        MultiplayerSelected.Invoke();
     }
 }

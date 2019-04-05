@@ -26,6 +26,7 @@ public class MainMenu : MonoBehaviour
     public Stack<GameObject> panelOrder;
 
     public GameObject challengeManager;
+    public EventManager eventManager;
 
     private bool lobbyActivatedOnce;
     private bool matching;
@@ -63,6 +64,7 @@ public class MainMenu : MonoBehaviour
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         challengeManager = GameObject.Find("ChallengeManager");
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         matchmakingButton = GameObject.Find("MatchmakingSearchButton").GetComponent<Button>();
         audioController = GameObject.Find("MusicPlayer").GetComponent<AudioControllerMainMenu>();
     }
@@ -124,6 +126,7 @@ public class MainMenu : MonoBehaviour
 
         // Set session to multiplayer 
         GameSession.GameMode = GameModeEnum.MULTIPLAYER;
+        eventManager.InvokeMultiplayerSelected();
 
         mainMenuPanel.SetActive(false);
         
