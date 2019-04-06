@@ -64,7 +64,8 @@ public class NewGameButton : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("GameBoard");
+            //SceneManager.LoadScene("GameBoard");
+            GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
         }
     }
 
@@ -132,7 +133,8 @@ public class NewGameButton : MonoBehaviour
         UnblockInput();
         Debug.Log("Challenge Started");
         // Switch to GameBoard Scene connected to opponent
-        SceneManager.LoadScene("GameBoard");
+        //SceneManager.LoadScene("GameBoard");
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
         EventManager eventManager = GameObject.Find("EventManger").GetComponent<EventManager>();
         eventManager.InvokeNewGame();
     }

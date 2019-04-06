@@ -34,7 +34,8 @@ public class WinnerScreen : MonoBehaviour
     private void timerEnded()
     {
         // Send player back to main menu
-        SceneManager.LoadScene("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("MainMenu");
     }
 
     private void updateTimerText()

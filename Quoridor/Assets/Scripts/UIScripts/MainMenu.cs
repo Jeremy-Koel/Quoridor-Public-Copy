@@ -229,7 +229,8 @@ public class MainMenu : MonoBehaviour
     public void onHardButtonClick()
     {
         GameSession.Difficulty = DifficultyEnum.HARD;
-        SceneManager.LoadScene("GameBoard");
+        //SceneManager.LoadScene("GameBoard");
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
     }
 
     public void onPlayButtonClick()
@@ -265,7 +266,8 @@ public class MainMenu : MonoBehaviour
         }
 
 
-        SceneManager.LoadScene("GameBoard");
+        // SceneManager.LoadScene("GameBoard");
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
     }
 
     public void onSettingsButtonClick(Button button)
@@ -382,7 +384,8 @@ public class MainMenu : MonoBehaviour
 
         Debug.Log("Challenge Started");
         // Switch to GameBoard Scene connected to opponent
-        SceneManager.LoadScene("GameBoard");
+        // SceneManager.LoadScene("GameBoard");
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
     }
 
     // Login/Registration

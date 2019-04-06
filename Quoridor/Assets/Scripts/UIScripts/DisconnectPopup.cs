@@ -197,7 +197,8 @@ public class DisconnectPopup : MonoBehaviour
             else
             {
                 // Sends back to main menu
-                SceneManager.LoadScene(mainMenuSceneName);
+                //SceneManager.LoadScene(mainMenuSceneName);
+                GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel(mainMenuSceneName);
                 // Send them back to lobby panel
                 //if (SceneManager.GetActiveScene().name == mainMenuSceneName)
                 //{

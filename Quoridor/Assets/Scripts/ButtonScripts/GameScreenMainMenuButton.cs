@@ -37,6 +37,7 @@ public class GameScreenMainMenuButton : MonoBehaviour
         //PlayerTurnPopup playerTurnPopup = GameObject.Find("PlayerTurnBox").GetComponent<PlayerTurnPopup>();
         //playerTurnPopup = new PlayerTurnPopup();
 
-        SceneManager.LoadScene("MainMenu"); 
+        //SceneManager.LoadScene("MainMenu"); 
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("MainMenu");
     }
 }
