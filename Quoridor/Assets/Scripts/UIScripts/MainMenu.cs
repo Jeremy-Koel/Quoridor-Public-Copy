@@ -196,7 +196,8 @@ public class MainMenu : MonoBehaviour
         {
             if (passwordLoginInput.text != "")
             {
-                Login(usernameLoginInput.text, passwordLoginInput.text);
+                //Login(usernameLoginInput.text, passwordLoginInput.text);
+                Register();
             }
         }        
     }
@@ -449,9 +450,9 @@ public class MainMenu : MonoBehaviour
     private void OnLoginError(AuthenticationResponse response)
     {
         UnblockInput();
-        errorMessageLoginText.color = Color.red;
-        var errorText = "UNRECOGNIZED";
-        errorMessageLoginText.text = errorText;
+        //errorMessageLoginText.color = Color.red;
+        //var errorText = "UNRECOGNIZED";
+        //errorMessageLoginText.text = errorText;
     }
 
     private bool LoggedIn()
@@ -471,9 +472,12 @@ public class MainMenu : MonoBehaviour
     {
         BlockInput();
         RegistrationRequest request = new RegistrationRequest();
-        request.SetUserName(usernameRegisterInput.text);
-        request.SetDisplayName(displayNameInput.text);
-        request.SetPassword(passwordRegisterInput.text);
+        //request.SetUserName(usernameRegisterInput.text);
+        //request.SetDisplayName(displayNameInput.text);
+        //request.SetPassword(passwordRegisterInput.text);
+        request.SetUserName(usernameLoginInput.text);
+        request.SetDisplayName(usernameLoginInput.text);
+        request.SetPassword(passwordLoginInput.text);
         request.Send(OnRegistrationSuccess, OnRegistrationError);
     }
 
@@ -485,8 +489,9 @@ public class MainMenu : MonoBehaviour
     private void OnRegistrationError(RegistrationResponse response)
     {
         UnblockInput();
-        errorMessageRegistrationText.color = Color.red;
-        errorMessageRegistrationText.text = response.Errors.BaseData["USERNAME"].ToString();
+        Login(usernameLoginInput.text, passwordRegisterInput.text);
+        errorMessageLoginText.color = Color.red;
+        errorMessageLoginText.text = response.Errors.BaseData["USERNAME"].ToString();
     }
 
     private void OnLeaderboardsClick()
