@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
     public GameObject singlePlayerSetupPanel;
     public GameObject settingsPanel;
     public GameObject loginPanel;
-    public GameObject registrationPanel;
+    //public GameObject registrationPanel;
     public GameObject lobbyPanel;
     public GameObject chatWindowPanel;
     public GameObject leaderboardPanel;
@@ -43,18 +43,18 @@ public class MainMenu : MonoBehaviour
     private InputField passwordLoginInput;
     [SerializeField]
     private InputField displayNameInput;
-    [SerializeField]
-    private InputField usernameRegisterInput;
-    [SerializeField]
-    private InputField passwordRegisterInput;
+    //[SerializeField]
+    //private InputField usernameRegisterInput;
+    //[SerializeField]
+    //private InputField passwordRegisterInput;
     [SerializeField]
     private Button loginButton;
-    [SerializeField]
-    private Button registerButton;
+    //[SerializeField]
+    //private Button registerButton;
     [SerializeField]
     private TMPro.TextMeshProUGUI errorMessageLoginText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI errorMessageRegistrationText;
+    //[SerializeField]
+    //private TMPro.TextMeshProUGUI errorMessageRegistrationText;
     [SerializeField]
     private Button matchmakingButton;
     [SerializeField]
@@ -86,7 +86,7 @@ public class MainMenu : MonoBehaviour
         singlePlayerSetupPanel = GameObject.Find("SinglePlayerSetupPanel");
         settingsPanel = GameObject.Find("SettingsPanel");
         loginPanel = GameObject.Find("LoginPanel");
-        registrationPanel = GameObject.Find("RegistrationPanel");
+        //registrationPanel = GameObject.Find("RegistrationPanel");
         lobbyPanel = GameObject.Find("LobbyPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
         dummyMenuPanel = GameObject.Find("DummyMenuPanel");
@@ -102,7 +102,7 @@ public class MainMenu : MonoBehaviour
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
         loginPanel.SetActive(false);
-        registrationPanel.SetActive(false);
+        //registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
         tutorialPanel.SetActive(false);
         disconnectPanel.SetActive(false);
@@ -202,23 +202,23 @@ public class MainMenu : MonoBehaviour
         }        
     }
 
-    public void onRegistrationSwitchClick()
-    {
-        usernameRegisterInput.text = usernameLoginInput.text;
-        passwordRegisterInput.text = passwordLoginInput.text;
-        loginPanel.SetActive(false);
+    //public void onRegistrationSwitchClick()
+    //{
+    //    usernameRegisterInput.text = usernameLoginInput.text;
+    //    passwordRegisterInput.text = passwordLoginInput.text;
+    //    loginPanel.SetActive(false);
 
-        registrationPanel.SetActive(true);
-        panelOrder.Push(registrationPanel);
-    }
+    //    registrationPanel.SetActive(true);
+    //    panelOrder.Push(registrationPanel);
+    //}
 
-    public void onRegistrationClick()
-    {
-        usernameLoginInput.text = usernameRegisterInput.text;
-        passwordLoginInput.text = passwordRegisterInput.text;
-        // Try to register new user account using displayname, username, and password
-        Register();
-    }
+    //public void onRegistrationClick()
+    //{
+    //    usernameLoginInput.text = usernameRegisterInput.text;
+    //    passwordLoginInput.text = passwordRegisterInput.text;
+    //    // Try to register new user account using displayname, username, and password
+    //    Register();
+    //}
 
     public void onEasyButtonClick()
     {
@@ -299,8 +299,6 @@ public class MainMenu : MonoBehaviour
 
         usernameLoginInput.text = "";
         passwordLoginInput.text = "";
-        usernameRegisterInput.text = "";
-        passwordRegisterInput.text = "";
 
         if (disableScreen.name != "TutorialPanel")
         {
@@ -440,7 +438,7 @@ public class MainMenu : MonoBehaviour
             // Switch to the Lobby Panel
             panelOrder.Push(loginPanel);
             loginPanel.SetActive(false);
-            registrationPanel.SetActive(false);
+            //registrationPanel.SetActive(false);
             panelOrder.Push(lobbyPanel);
             lobbyPanel.SetActive(true);
             OnLeaderboardsClick();
@@ -450,9 +448,9 @@ public class MainMenu : MonoBehaviour
     private void OnLoginError(AuthenticationResponse response)
     {
         UnblockInput();
-        //errorMessageLoginText.color = Color.red;
-        //var errorText = "UNRECOGNIZED";
-        //errorMessageLoginText.text = errorText;
+        errorMessageLoginText.color = Color.red;
+        var errorText = "TAKEN";
+        errorMessageLoginText.text = errorText;
     }
 
     private bool LoggedIn()
@@ -483,15 +481,13 @@ public class MainMenu : MonoBehaviour
 
     private void OnRegistrationSuccess(RegistrationResponse response)
     {
-        Login(usernameRegisterInput.text, passwordRegisterInput.text);
+        Login(usernameLoginInput.text, passwordLoginInput.text);
     }
 
     private void OnRegistrationError(RegistrationResponse response)
     {
         UnblockInput();
-        Login(usernameLoginInput.text, passwordRegisterInput.text);
-        errorMessageLoginText.color = Color.red;
-        errorMessageLoginText.text = response.Errors.BaseData["USERNAME"].ToString();
+        Login(usernameLoginInput.text, passwordLoginInput.text);
     }
 
     private void OnLeaderboardsClick()
@@ -507,7 +503,7 @@ public class MainMenu : MonoBehaviour
         tutorialPanel.SetActive(false);
         settingsPanel.SetActive(false);
         loginPanel.SetActive(false);
-        registrationPanel.SetActive(false);
+        //registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
     }
 
@@ -518,7 +514,7 @@ public class MainMenu : MonoBehaviour
         tutorialPanel.SetActive(true);
         settingsPanel.SetActive(true);
         loginPanel.SetActive(true);
-        registrationPanel.SetActive(true);
+        //registrationPanel.SetActive(true);
         lobbyPanel.SetActive(true);
     }
 
@@ -527,7 +523,7 @@ public class MainMenu : MonoBehaviour
         //userNameInput.interactable = false;
         //passwordInput.interactable = false;
         loginButton.interactable = false;
-        registerButton.interactable = false;
+        //registerButton.interactable = false;
         matchmakingButton.interactable = false;
     }
 
@@ -536,7 +532,7 @@ public class MainMenu : MonoBehaviour
         //userNameInput.interactable = true;
         //passwordInput.interactable = true;
         loginButton.interactable = true;
-        registerButton.interactable = true;
+        //registerButton.interactable = true;
         matchmakingButton.interactable = true;
     }
 
