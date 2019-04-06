@@ -26,12 +26,14 @@ public class MenuButton : MonoBehaviour
             //winScreen.transform.position = new Vector3(winScreen.transform.position.x, winScreen.transform.position.y, 2);
             winScreen.SetActive(false);
             menuScreen.SetActive(true);
+            menuScreen.GetComponentInChildren<MoveBoards>().moveBoard = true;
             returnToGameButton.SetActive(false);
         }
         else if (!winScreen.activeSelf)
         {
             //winScreen.transform.position = new Vector3(winScreen.transform.position.x, winScreen.transform.position.y, 2);
             menuScreen.SetActive(true);
+            menuScreen.GetComponentInChildren<MoveBoards>().moveBoard = true;
             returnToGameButton.SetActive(true);
         }
 

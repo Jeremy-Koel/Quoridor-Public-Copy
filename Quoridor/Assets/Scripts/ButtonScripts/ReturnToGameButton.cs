@@ -20,7 +20,15 @@ public class ReturnToGameButton : MonoBehaviour
 
     public void onClickReturnToGameButton()
     {
-        menuScreen.SetActive(false);
-        helpScreen.SetActive(false);
+        if (menuScreen.activeSelf == true)
+        {
+            //menuScreen.SetActive(false);
+            menuScreen.GetComponentInChildren<MoveBoards>().moveBoard = true;
+        }
+        if (helpScreen.activeSelf == true)
+        {
+           // helpScreen.SetActive(false);
+           helpScreen.GetComponentInChildren<MoveBoards>().moveBoard = true;
+        }
     }
 }

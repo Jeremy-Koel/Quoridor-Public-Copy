@@ -26,12 +26,14 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
     public void OnQuitButtonClick()
     {
         quitPanel.SetActive(true);
+        quitPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
     }
 
     public void OnPointerClick(PointerEventData data)
     {
        // mainMenuPanel.SetActive(false);
         quitPanel.SetActive(true);
+        quitPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
     }
 
 
@@ -43,6 +45,7 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
     public void OnNoButtonClick()
     {
         //mainMenuPanel.SetActive(true);
-        quitPanel.SetActive(false);
+       // quitPanel.SetActive(false);
+       quitPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
     }
 }

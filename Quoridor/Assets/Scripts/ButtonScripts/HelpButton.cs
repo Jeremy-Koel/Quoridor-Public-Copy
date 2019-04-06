@@ -21,5 +21,7 @@ public class HelpButton : MonoBehaviour
     public void onHelpButtonClick()
     {
         helpScreen.SetActive(true);
+        helpScreen.GetComponentInChildren<MoveBoards>().moveBoard = true;
+        
     }
 }
