@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenuPanel;
@@ -145,6 +146,7 @@ public class MainMenu : MonoBehaviour
         if (LoggedIn())
         {
             lobbyPanel.SetActive(true);
+            lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             panelOrder.Push(lobbyPanel);
         }
         else
@@ -307,16 +309,18 @@ public class MainMenu : MonoBehaviour
 
     public void onBackButtonClick()
     {
+        //string name = EventSystem.current.currentSelectedGameObject.name;
         //DeselectCurrentButton();
         GameObject disableScreen = panelOrder.Pop();
         GameObject enableScreen = panelOrder.Peek();
         usernameLoginInput.text = "";
         passwordLoginInput.text = "";
 
-        if (disableScreen.name != "TutorialPanel")
+        if (disableScreen.name != "TutorialPanel" && disableScreen.name != "LobbyPanel")
         {
             disableScreen.SetActive(false);
         }
+
 
         enableScreen.SetActive(true);
     }
@@ -326,6 +330,12 @@ public class MainMenu : MonoBehaviour
         //DeselectCurrentButton();
         tutorialPanel.GetComponent<MoveTutorialBoard>().moveBoard = true;
         dummyMenuPanel.SetActive(false);
+        onBackButtonClick();
+    }
+
+    public void onLobbyBackButtonClick()
+    {
+        lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
         onBackButtonClick();
     }
 
@@ -456,6 +466,7 @@ public class MainMenu : MonoBehaviour
             //registrationPanel.SetActive(false);
             panelOrder.Push(lobbyPanel);
             lobbyPanel.SetActive(true);
+            lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             OnLeaderboardsClick();
         }
     }
