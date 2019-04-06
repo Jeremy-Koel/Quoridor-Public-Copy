@@ -24,7 +24,7 @@ public class ButtonFontTMP : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData data)
     {
-        text.fontStyle = TMPro.FontStyles.Bold;
+        text.fontStyle = TMPro.FontStyles.Bold | TMPro.FontStyles.Underline;
         // Debug.Log("mouseover");
     }
 
@@ -33,10 +33,5 @@ public class ButtonFontTMP : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         text.fontStyle = TMPro.FontStyles.Normal;
         // Debug.Log("mouseExit");
     }
-
-    //public void OnPointerClick(PointerEventData data)
-    //{
-    //    text.fontStyle = FontStyle.Normal;
-    //}
 
 }
