@@ -18,7 +18,7 @@ public class FriendsPanel : MonoBehaviour
     Button addFriendsButton;
     Button searchFriendsButton;
     GameObject addFriendsPanel;
-    GameObject chatWindowPanel;
+    public GameObject chatWindowPanel;
     GameObject chatSelectionPanel;
     RectTransform friendsListContent;
     public VerticalLayoutGroup friendsListLayoutGroup;
@@ -306,28 +306,41 @@ public class FriendsPanel : MonoBehaviour
 
             if (friendPlayerNameBaseData.MoveNext())
             {
-                string teamID = friendPlayerNameBaseData.Current.Value.ToString();
-                friendResultScript.teamID = teamID;
-            }
+                if (friendPlayerNameBaseData.Current.Value == null)
+                {
+                    GameObject.Destroy(friendObject);
+                }
+                else
+                {
+                    string teamID = friendPlayerNameBaseData.Current.Value.ToString();
+                    friendResultScript.teamID = teamID;
+                    // Get text component of button
+                    UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
+                    Text friendNameText = friendObjectTexts[0];
 
-            // Get text component of button
-            UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
-            Text friendNameText = friendObjectTexts[0];
+                    if (playerName.Length >= 20)
+                    {
+                        friendNameText.text = (playerName.Substring(0, 17) + "...");
+                    }
+                    else
+                    {
+                        friendNameText.text = (playerName);
+                    }
 
-            if (playerName.Length >= 20)
-            {
-                friendNameText.text = (playerName.Substring(0, 17) + "...");
+                    friendObject.transform.SetParent(friendsListContent);
+                    friendObject.transform.localScale = new Vector3(1, 1, 1);
+                    friendsListContent.sizeDelta = new Vector2(friendsListContent.sizeDelta.x, (friendsListContent.sizeDelta.y + 30));
+
+                    friendsList.Add(friendObject);
+                }                
             }
             else
             {
-                friendNameText.text = (playerName);
+                // Delete this thing
+                GameObject.Destroy(friendObject);
             }
 
-            friendObject.transform.SetParent(friendsListContent);
-            friendObject.transform.localScale = new Vector3(1, 1, 1);
-            friendsListContent.sizeDelta = new Vector2(friendsListContent.sizeDelta.x, (friendsListContent.sizeDelta.y + 30));
 
-            friendsList.Add(friendObject);
         }
         pending = false;
 

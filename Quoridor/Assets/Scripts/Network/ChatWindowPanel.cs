@@ -456,34 +456,37 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObjectPrefab, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
     {
-        GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
-        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
-        Text playerText = messageTextObjectChildrenText[0];
-        Text messageText = messageTextObjectChildrenText[1];
-
-        if (messageWho.Length >= 20)
+        if (gameObject.activeSelf)
         {
-            playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
-        }
-        else
-        {
-            playerText.text = ("<b>" + messageWho + ":</b>");
-        }
-        messageText.text = messageMessage;
+            GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
+            UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
+            Text playerText = messageTextObjectChildrenText[0];
+            Text messageText = messageTextObjectChildrenText[1];
 
-        Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
-        messageTextObject.transform.SetParent(chatMessagesViewContent);
-        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+            if (messageWho.Length >= 20)
+            {
+                playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
+            }
+            else
+            {
+                playerText.text = ("<b>" + messageWho + ":</b>");
+            }
+            messageText.text = messageMessage;
 
-        chatMessages.Add(messageTextObject);
+            Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+            messageTextObject.transform.SetParent(chatMessagesViewContent);
+            messageTextObject.transform.localScale = new Vector3(1, 1, 1);
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-        
-        //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
-        //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
-        StartCoroutine(ScrollToBottom());
+            chatMessages.Add(messageTextObject);
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);        
+            LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+
+            //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
+            //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
+            StartCoroutine(ScrollToBottom());
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+        }        
     }
 
     IEnumerator ScrollToBottom()
