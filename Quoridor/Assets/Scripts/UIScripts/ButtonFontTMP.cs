@@ -33,5 +33,8 @@ public class ButtonFontTMP : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         text.fontStyle = TMPro.FontStyles.Normal;
         // Debug.Log("mouseExit");
     }
-
+    public void OnPointerClick(PointerEventData data)
+    {
+        text.fontStyle = TMPro.FontStyles.Normal;
+    }
 }

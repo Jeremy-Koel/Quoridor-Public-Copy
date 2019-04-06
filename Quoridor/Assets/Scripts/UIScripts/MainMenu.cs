@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -110,13 +111,19 @@ public class MainMenu : MonoBehaviour
 
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
         matching = false;
-       
+
+    }
+
+    public void DeselectCurrentButton()
+    {
+        var currentButtonText = EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TextMeshProUGUI>();
+        currentButtonText.fontStyle = FontStyles.Normal;
     }
 
     public void onSinglePlayerClick()
     {
-        audioController.PlayChalkWritingSound();
-
+        DeselectCurrentButton();
+        audioController.PlayChalkWritingSound();        
         // Set session to singleplayer 
         GameSession.GameMode = GameModeEnum.SINGLE_PLAYER;
 
@@ -127,8 +134,8 @@ public class MainMenu : MonoBehaviour
 
     public void onMultiplayerClick()
     {
+        DeselectCurrentButton();
         audioController.PlayChalkWritingSound();
-
         // Set session to multiplayer 
         GameSession.GameMode = GameModeEnum.MULTIPLAYER;
         eventManager.InvokeMultiplayerSelected();
@@ -191,6 +198,7 @@ public class MainMenu : MonoBehaviour
 
     public void onLoginClick()
     {
+        DeselectCurrentButton();
         // Try to login using username and password
         if (usernameLoginInput.text != "")
         {
@@ -222,18 +230,21 @@ public class MainMenu : MonoBehaviour
 
     public void onEasyButtonClick()
     {
+        DeselectCurrentButton();
         GameSession.Difficulty = DifficultyEnum.EASY;
         SceneManager.LoadScene("GameBoard");
     }
 
     public void onHardButtonClick()
     {
+        DeselectCurrentButton();
         GameSession.Difficulty = DifficultyEnum.HARD;
         SceneManager.LoadScene("GameBoard");
     }
 
     public void onPlayButtonClick()
     {
+        DeselectCurrentButton();
         audioController.PlayChalkWritingSound();
 
         Toggle hardOption = GameObject.Find("HardOption").GetComponent<Toggle>();
@@ -264,14 +275,13 @@ public class MainMenu : MonoBehaviour
             GameSession.PlayerTurnPref = PlayerTurnEnum.RANDOM;
         }
 
-
         SceneManager.LoadScene("GameBoard");
     }
 
     public void onSettingsButtonClick(Button button)
     {
+        DeselectCurrentButton();
         audioController.PlayChalkWritingSound();
-
         mainMenuPanel.SetActive(false);
         dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
@@ -281,8 +291,8 @@ public class MainMenu : MonoBehaviour
 
     public void onTutorialButtonClick(Button button)
     {
+        DeselectCurrentButton();
         audioController.PlayChalkWritingSound();
-
         mainMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
@@ -294,9 +304,9 @@ public class MainMenu : MonoBehaviour
 
     public void onBackButtonClick()
     {
+        //DeselectCurrentButton();
         GameObject disableScreen = panelOrder.Pop();
         GameObject enableScreen = panelOrder.Peek();
-
         usernameLoginInput.text = "";
         passwordLoginInput.text = "";
 
@@ -310,6 +320,7 @@ public class MainMenu : MonoBehaviour
 
     public void onTutorialBackButtonClick()
     {
+        //DeselectCurrentButton();
         tutorialPanel.GetComponent<MoveTutorialBoard>().moveBoard = true;
         dummyMenuPanel.SetActive(false);
         onBackButtonClick();
