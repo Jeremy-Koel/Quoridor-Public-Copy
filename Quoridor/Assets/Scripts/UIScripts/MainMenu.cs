@@ -145,9 +145,10 @@ public class MainMenu : MonoBehaviour
         
         if (LoggedIn())
         {
+            dummyMenuPanel.SetActive(true);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
-            panelOrder.Push(lobbyPanel);
+            //panelOrder.Push(lobbyPanel);
         }
         else
         {
@@ -335,8 +336,14 @@ public class MainMenu : MonoBehaviour
 
     public void onLobbyBackButtonClick()
     {
+        dummyMenuPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
         lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
-        onBackButtonClick();
+        if(panelOrder.Peek().name == "LoginPanel")
+        {
+            panelOrder.Pop();
+        }
+        //onBackButtonClick();
     }
 
     public void onMatchMakingButtonClick()
@@ -461,10 +468,11 @@ public class MainMenu : MonoBehaviour
             challengeManagerScript.SetupChallengeListeners();
 
             // Switch to the Lobby Panel
-            panelOrder.Push(loginPanel);
+            //panelOrder.Push(loginPanel);
             loginPanel.SetActive(false);
+            dummyMenuPanel.SetActive(true);
             //registrationPanel.SetActive(false);
-            panelOrder.Push(lobbyPanel);
+           // panelOrder.Push(lobbyPanel);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             OnLeaderboardsClick();
