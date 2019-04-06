@@ -194,7 +194,7 @@ public class HostedGameLobbies : MonoBehaviour
         {
             hosting = true;
             // Change button text to represent canceling host
-            UnityEngine.UI.Text[] buttonText = hostGameButton.GetComponentsInChildren<Text>();
+            var buttonText = hostGameButton.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
             buttonText[0].text = "Cancel Host";
         }
         else
@@ -204,7 +204,7 @@ public class HostedGameLobbies : MonoBehaviour
             matchmakingRequest.SetAction("cancel");
             matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
             // Change button text to represent hosting a game
-            UnityEngine.UI.Text[] buttonText = hostGameButton.GetComponentsInChildren<Text>();
+            var buttonText = hostGameButton.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
             buttonText[0].text = "Host Game";
             joinGameButton.interactable = true;
             UnblockMatchmakingButton();

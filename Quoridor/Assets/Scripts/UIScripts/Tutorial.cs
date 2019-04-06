@@ -12,7 +12,7 @@ public class Tutorial : MonoBehaviour
     private GameObject prevButton;
     private GameObject nextButton;
     private string[] instructList;
-    private Text instructTextBox;
+    private TMPro.TextMeshProUGUI instructTextBox;
     private GameObject tutorialImage;
     private GameObject logoImage;
     private int numberOfTutorialSlides = 7;
@@ -27,7 +27,7 @@ public class Tutorial : MonoBehaviour
         tutorialImage.SetActive(false);
         prevButton = GameObject.Find("PreviousSlideButton");
         nextButton = GameObject.Find("NextSlideButton");
-        instructTextBox = GameObject.Find("TutorialText").GetComponent<Text>();
+        instructTextBox = GameObject.Find("TutorialText").GetComponent<TMPro.TextMeshProUGUI>();
         instructList = createInstructList();
         instructTextBox.text = instructList[0];
     }

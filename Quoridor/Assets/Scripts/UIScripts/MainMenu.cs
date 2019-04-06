@@ -4,6 +4,7 @@ using GameSparks.Api.Responses;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -155,10 +156,10 @@ public class MainMenu : MonoBehaviour
         adminLogin = false;
         Login(guestName, "password");
         // Tell them their guest name
-        var textsEnum = guestDetailsPanel.GetComponentsInChildren<Text>().GetEnumerator();
+        var textsEnum = guestDetailsPanel.GetComponentsInChildren<TMPro.TextMeshProUGUI>().GetEnumerator();
         while (textsEnum.MoveNext())
         {
-            var currentText = (Text)textsEnum.Current;
+            var currentText = (TextMeshProUGUI)textsEnum.Current;
             if (currentText.name == "GuestNameText")
             {
                 currentText.text = guestName;
@@ -321,7 +322,7 @@ public class MainMenu : MonoBehaviour
         BlockJoinHostGameButtons();
         if (matching)
         {
-            matchmakingButton.gameObject.GetComponentInChildren<Text>().text = "Find Match";
+            matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Find Match";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
             request.SetAction("cancel");
@@ -334,7 +335,7 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            matchmakingButton.gameObject.GetComponentInChildren<Text>().text = "Stop";
+            matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Stop";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
             request.SetMatchShortCode("DefaultMatch");
