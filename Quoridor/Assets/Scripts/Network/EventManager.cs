@@ -80,6 +80,7 @@ public class EventManager : MonoBehaviour
         DisconnectAIEasy.RemoveAllListeners();
         DisconnectAIHard.RemoveAllListeners();
         MultiplayerSelected.RemoveAllListeners();
+        LostConnection.RemoveAllListeners();
 }
 
     public void ResetEventManager()
