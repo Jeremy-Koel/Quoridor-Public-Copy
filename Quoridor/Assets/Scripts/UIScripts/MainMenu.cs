@@ -52,9 +52,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Button registerButton;
     [SerializeField]
-    private Text errorMessageLoginText;
+    private TMPro.TextMeshProUGUI errorMessageLoginText;
     [SerializeField]
-    private Text errorMessageRegistrationText;
+    private TMPro.TextMeshProUGUI errorMessageRegistrationText;
     [SerializeField]
     private Button matchmakingButton;
     [SerializeField]
@@ -415,6 +415,7 @@ public class MainMenu : MonoBehaviour
     private void OnLoginSuccess(AuthenticationResponse response)
     {
         UnblockInput();
+        errorMessageLoginText.color = new Color(0, 0, 0, 0);
         if (adminLogin)
         {
             Debug.Log("Logged in as admin");
@@ -449,7 +450,8 @@ public class MainMenu : MonoBehaviour
     {
         UnblockInput();
         errorMessageLoginText.color = Color.red;
-        errorMessageLoginText.text = response.Errors.BaseData["DETAILS"].ToString();
+        var errorText = "UNRECOGNIZED";
+        errorMessageLoginText.text = errorText;
     }
 
     private bool LoggedIn()
