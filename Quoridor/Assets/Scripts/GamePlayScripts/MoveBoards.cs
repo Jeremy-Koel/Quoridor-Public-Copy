@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MoveBoards : MonoBehaviour
 {
@@ -13,9 +14,20 @@ public class MoveBoards : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        string sceneName = SceneManager.GetActiveScene().name;
         //moveBoard = false;
         origPos = transform.position;
-        target = new Vector3(12, 13, -3);
+
+        if (sceneName == "MainMenu")
+        {
+            target = new Vector3(0, 0, -3);
+            speed = 10f;
+        }
+        else
+        {
+            target = new Vector3(12, 13, -3);
+        }
+
         activePos = target;
     }
 
