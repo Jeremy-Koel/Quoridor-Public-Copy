@@ -346,7 +346,6 @@ public class InterfaceController : MonoBehaviour
         if (IsGameOver() && !menuPanel.activeSelf)
         {
             winPanel.SetActive(true);
-            winPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
         }
     }
 

@@ -100,13 +100,13 @@ public class LeaderboardPanel : MonoBehaviour
             GameObject playerObject = Instantiate(playerPrefab) as GameObject;
 
             // Get text component of button
-            var playerObjectTexts = playerObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
-            TMPro.TextMeshProUGUI playerText = playerObjectTexts[0];
-            TMPro.TextMeshProUGUI winsText = playerObjectTexts[1];
+            UnityEngine.UI.Text[] playerObjectTexts = playerObject.GetComponentsInChildren<Text>();
+            Text playerText = playerObjectTexts[0];
+            Text winsText = playerObjectTexts[1];
             
             if (playerName.Length >= 20)
             {
-                playerText.text = (playerName.Substring(0, 17) + "...");
+                playerText.text = (playerName.Substring(0, 20));
             }
             else
             {

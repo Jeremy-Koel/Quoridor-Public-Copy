@@ -133,7 +133,6 @@ public class DisconnectPopup : MonoBehaviour
     {
         FindSceneGameObjects();
         disconnectPanel.SetActive(true);
-        disconnectPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
         disconnectionAIDifficultySelectPanel.SetActive(false);
     }
 

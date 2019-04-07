@@ -8,7 +8,6 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
 
     //private GameObject mainMenuPanel;
     private GameObject quitPanel;
-    private EventManager eventManager;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +15,6 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
         //mainMenuPanel = GameObject.Find("MainMenuPanel");
         quitPanel = GameObject.Find("QuitPanel");
         quitPanel.SetActive(false);
-        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
     }
 
     // Update is called once per frame
@@ -41,18 +39,13 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
 
     public void OnYesButtonClick()
     {
-        eventManager.RemoveAllListeners();
         Application.Quit();
     }
 
     public void OnNoButtonClick()
     {
         //mainMenuPanel.SetActive(true);
-        var moveBoardsComponent = quitPanel.GetComponentInChildren<MoveBoards>();
-        if (moveBoardsComponent != null)
-        {
-            moveBoardsComponent.moveBoard = true;
-        }
-      //  quitPanel.SetActive(false);
+       // quitPanel.SetActive(false);
+       quitPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
     }
 }
