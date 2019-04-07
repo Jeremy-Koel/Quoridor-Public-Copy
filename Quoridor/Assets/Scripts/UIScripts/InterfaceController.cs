@@ -115,6 +115,9 @@ public class InterfaceController : MonoBehaviour
         MoveMouse moveMouseScript = opponentMouse.GetComponent<MoveMouse>();
         moveMouseScript.target = new Vector3(clickSquare.transform.position.x, clickSquare.transform.position.y, -1f);
         opponentMouse.transform.localScale = new Vector3(opponentMouse.transform.localScale.x + .001f, opponentMouse.transform.localScale.y + .001f, opponentMouse.transform.localScale.z);
+        //MoveMouse playerMoveMouseScript = GameObject.Find("playerMouse").GetComponent<MoveMouse>();
+        //MoveArms playerMoveArmScript = GameObject.Find("ScientistArmOne").GetComponent<MoveArms>();
+         
         moveMouseScript.moveMouse = true;
         soundEffectController.PlaySqueakSound();
         SwitchTurnIndicatorToLocal();
@@ -130,9 +133,12 @@ public class InterfaceController : MonoBehaviour
 
             //wall.transform.localScale = collider.transform.localScale;
             MoveWallsProgramatically moveWallsProgramatically = wall.GetComponent<MoveWallsProgramatically>();
+            MoveArms moveArms = GameObject.Find("ScientistArmTwo").GetComponent<MoveArms>();
             wall.transform.localScale = moveWallsProgramatically.GetWallSize(collider.transform.localScale);
             moveWallsProgramatically.SetTarget(collider.transform.position, collider.transform.localScale);
+            moveArms.moveArm = true;
             moveWallsProgramatically.moveWall = true;
+            
             moveWallsProgramatically.SetIsOnBoard(true);
             collider.GetComponent<WallPlacement>().SetWallPlacedHere(true);
             
