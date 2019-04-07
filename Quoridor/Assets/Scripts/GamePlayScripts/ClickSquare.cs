@@ -14,15 +14,19 @@ public class ClickSquare : MonoBehaviour
     private Material highlightMat;
     private Material gameSquareMat;
     private List<string> possibleMoves;
-
+    private MoveArms armTwoScript;
+    private MoveMouse opponentMoveMouseScript;
     // Start is called before the first frame update
     void Start()
     {
         playerMouse = GameObject.Find("playerMouse");
         opponentMouse = GameObject.Find("opponentMouse");
 
-       // playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
-       // opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
+        armTwoScript = GameObject.Find("ScientistArmTwo").GetComponent<MoveArms>();
+        opponentMoveMouseScript = GameObject.Find("opponentMouse").GetComponent<MoveMouse>();
+
+        // playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
+        // opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
 
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         highlightMat = Resources.Load("highlightColor", typeof(Material)) as Material;
@@ -32,23 +36,36 @@ public class ClickSquare : MonoBehaviour
 
     void Update()
     {
-        if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
-        {
-            possibleMoves = interfaceController.GetPossibleMoves();
-            foreach (string move in possibleMoves)
+        //if (armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
+        //{
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
-                GameObject square = GameObject.Find(move);
-                square.GetComponent<Renderer>().material = highlightMat;
+            
+                possibleMoves = interfaceController.GetPossibleMoves();
+                foreach (string move in possibleMoves)
+                {
+                    GameObject square = GameObject.Find(move);
+                    square.GetComponent<Renderer>().material = highlightMat;
+                }
             }
-        }
-        else
-        {
-            foreach (string move in possibleMoves)
+            else
             {
-                GameObject square = GameObject.Find(move);
-                square.GetComponent<Renderer>().material = gameSquareMat;
+                foreach (string move in possibleMoves)
+                {
+                    GameObject square = GameObject.Find(move);
+                    square.GetComponent<Renderer>().material = gameSquareMat;
+                }
             }
-        }
+        //}
+        //else
+        //{
+        //    foreach (string move in possibleMoves)
+        //    {
+        //        GameObject square = GameObject.Find(move);
+        //        square.GetComponent<Renderer>().material = gameSquareMat;
+        //    }
+        //}
+
 
     }
     //private void OnMouseEnter()
@@ -80,8 +97,8 @@ public class ClickSquare : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            //if (playerClickMouseScript.mouseSelected)
-           // {
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
+            {
                 MoveMouse moveMouseScript = playerMouse.GetComponent<MoveMouse>();
                 if ((playerMouse.transform.position.x != this.transform.position.x || playerMouse.transform.position.y != this.transform.position.y) && !moveMouseScript.moveMouse)
                 {
@@ -99,6 +116,7 @@ public class ClickSquare : MonoBehaviour
                         // Invalid move
                     }
                 }
+            }
            // }
         }
     }

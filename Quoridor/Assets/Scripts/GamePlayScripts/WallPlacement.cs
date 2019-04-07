@@ -11,6 +11,8 @@ public class WallPlacement : MonoBehaviour
     private InterfaceController interfaceController;
     private bool wallPlacedHere =false;
     private EventManager eventManager;
+    private MoveArms armTwoScript;
+    private MoveMouse opponentMoveMouseScript;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,8 @@ public class WallPlacement : MonoBehaviour
         wallHighlight = this.transform.GetChild(0).gameObject;
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        armTwoScript = GameObject.Find("ScientistArmTwo").GetComponent<MoveArms>();
+        opponentMoveMouseScript = GameObject.Find("opponentMouse").GetComponent<MoveMouse>();
     }
 
     // Update is called once per frame
@@ -38,7 +42,7 @@ public class WallPlacement : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             //Debug.Log("Entered Collider");
-            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
                 wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
             }
@@ -49,7 +53,7 @@ public class WallPlacement : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
                 wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
             }
@@ -65,7 +69,7 @@ public class WallPlacement : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere)
+            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
                 TryToPlaceAWall();
             }

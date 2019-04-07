@@ -16,7 +16,9 @@ public class MoveWallsProgramatically : MonoBehaviour
     private Material verticalWallMat;
     private Material horizontalWallMat;
     private Renderer matRenderer;
-   
+    public MoveMouse playerMoveMouseScript;
+    public MoveArms playerMoveArmScript;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,8 @@ public class MoveWallsProgramatically : MonoBehaviour
         verticalWallMat = Resources.Load("wallColor", typeof(Material)) as Material;
         horizontalWallMat = Resources.Load("horizontalWallColor", typeof(Material)) as Material;
         matRenderer = GetComponent<Renderer>();
+        playerMoveMouseScript = GameObject.Find("playerMouse").GetComponent<MoveMouse>();
+        playerMoveArmScript = GameObject.Find("ScientistArmOne").GetComponent<MoveArms>();
     }
 
     // Update is called once per frame
@@ -36,23 +40,42 @@ public class MoveWallsProgramatically : MonoBehaviour
     {
         if (moveWall)
         {
+
             if (tag == "PlayerOneWall")
             {
                 moveArmsOne.moveArm = true;
 
+                float step = speed * Time.deltaTime; // calculate distance to move
+                transform.position = Vector3.MoveTowards(transform.position, target, step);
+
+                if (transform.position == target)
+                {
+                    moveWall = false;
+                }
+
             }
             else
             {
-                moveArmsTwo.moveArm = true;
+
+                //if (playerMoveMouseScript.moveMouse == false && playerMoveArmScript.moveArm == false)
+                //{
+                    moveArmsTwo.moveArm = true;
+
+                    float step = speed * Time.deltaTime; // calculate distance to move
+                    transform.position = Vector3.MoveTowards(transform.position, target, step);
+
+                    if (transform.position == target)
+                    {
+                        moveWall = false;
+                    }
+               // }
+                //else
+                //{
+                //    moveArmsTwo.moveArm = false;
+                //}
             }
 
-            float step = speed * Time.deltaTime; // calculate distance to move
-            transform.position = Vector3.MoveTowards(transform.position, target, step);
-
-            if (transform.position == target)
-            {
-                moveWall = false;
-            }
+            
         }
 
     }
