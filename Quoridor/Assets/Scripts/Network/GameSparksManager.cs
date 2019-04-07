@@ -13,6 +13,7 @@ public class GameSparksManager : MonoBehaviour
     private ChallengeManager challengeManager;
     private EventManager eventManager;
     public bool connected;
+    private float checkConnectionSpeed = 5.0f;
 
     private void Awake()
     {
@@ -32,7 +33,7 @@ public class GameSparksManager : MonoBehaviour
 
     private void CheckConnectionRepeating()
     {
-        InvokeRepeating("CheckConnection", 10.0f, 10.0f);
+        InvokeRepeating("CheckConnection", checkConnectionSpeed, checkConnectionSpeed);
     }
 
     // Disconnect handling
