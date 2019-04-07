@@ -44,7 +44,7 @@ public class LeaderboardPanel : MonoBehaviour
         
     }
 
-    void GetLeaderboardData()
+    public void GetLeaderboardData()
     {
         RemoveLeaderboardData();
         LeaderboardDataRequest_HighScoreLB leaderboardDataRequest = new LeaderboardDataRequest_HighScoreLB();

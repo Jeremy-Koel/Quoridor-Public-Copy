@@ -154,8 +154,8 @@ public class MainMenu : MonoBehaviour
         {
             loginPanel.SetActive(true);
             panelOrder.Push(loginPanel);
-        }        
-        
+        }
+        leaderboardPanel.GetComponent<LeaderboardPanel>().GetLeaderboardData();
     }
 
     private void OnGuestAccountDetails(ScriptMessage_GuestAccountDetails message)
