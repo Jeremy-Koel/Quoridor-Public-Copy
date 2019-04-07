@@ -14,7 +14,13 @@ public class OpeningSceneController : MonoBehaviour
         videoPlayer.Prepare();
         videoPlayer.Play();
 
-        Invoke("ChangeScene", 13f);
+        Invoke("ChangeScene", 12f);
+    }
+
+    public void OnSkipIntroClick()
+    {
+        videoPlayer.Pause();
+        ChangeScene();
     }
 
     private void ChangeScene()
