@@ -18,6 +18,7 @@ public class HostedGameLobbies : MonoBehaviour
     Button refreshGamesButton;
     public GameObject hostedGamePrefab;
     public List<GameObject> hostedGames;
+    public GameObject noHostedGamesPanel;
 
     public int heightOfHostedGame = 80;
 
@@ -75,16 +76,9 @@ public class HostedGameLobbies : MonoBehaviour
     {
         //Debug.Log("Matches found: " + response.ScriptData.BaseData["matchesFound"]);
         var pendingMatches = response.PendingMatches.GetEnumerator();
-        bool matchesFound = false;
         bool endOfMatches = !pendingMatches.MoveNext();
         while (!endOfMatches)
         {
-            var noHostedGamesPanel = GameObject.Find("NoHostedGamesPanel");
-            if (noHostedGamesPanel != null)
-            {
-                noHostedGamesPanel.SetActive(false);
-            }
-            matchesFound = true;
             // Get match data
             var matchedPlayers = pendingMatches.Current.MatchedPlayers.GetEnumerator();
             matchedPlayers.MoveNext();
@@ -97,13 +91,18 @@ public class HostedGameLobbies : MonoBehaviour
             }
             endOfMatches = !pendingMatches.MoveNext();
         }
-        if (!matchesFound)
+        UnblockRefreshInput();
+
+        if (hostedGames.Count == 0)
         {
             // No pending matches found
             Debug.Log("No Pending Matches found");
-            GameObject.Find("NoHostedGamesPanel").SetActive(true);
+            noHostedGamesPanel.SetActive(true);
         }
-        UnblockRefreshInput();
+        else
+        {
+            noHostedGamesPanel.SetActive(false);
+        }
     }
 
     public void OnFindPendingMatchesRequestError(FindPendingMatchesResponse response)
