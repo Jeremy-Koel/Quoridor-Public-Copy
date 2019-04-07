@@ -17,19 +17,19 @@ public class HostedGameLobbyButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (doubleClickTimer == null)
-        {
-            doubleClickTimer = gameObject.AddComponent<Timer>();
-            doubleClickTimer.timeUp.AddListener(TimeLimitReached);
-            doubleClickTimer.SetTimeDefault(doubleClickTime);
-        }
+        //if (doubleClickTimer == null)
+        //{
+        //    doubleClickTimer = gameObject.AddComponent<Timer>();
+        //    doubleClickTimer.timeUp.AddListener(TimeLimitReached);
+        //    doubleClickTimer.SetTimeDefault(doubleClickTime);
+        //}
     }
 
-    void TimeLimitReached()
-    {
-        withinTimeLimit = false;
-        doubleClickTimer.CancelCountdown();
-    }
+    //void TimeLimitReached()
+    //{
+    //    withinTimeLimit = false;
+    //    doubleClickTimer.CancelCountdown();
+    //}
 
     // Update is called once per frame
     void Update()
@@ -39,27 +39,27 @@ public class HostedGameLobbyButton : MonoBehaviour
 
     public void onClick()
     {
-        if (!doubleClickTimer.countingDown)
-        {
-            doubleClickTimer.StartCountdown();
-            withinTimeLimit = true;
-        }
-        else
-        {
-            if (withinTimeLimit)
-            {
-                HostedGameLobbies hostedGameLobbiesScript = GetComponentInParent<HostedGameLobbies>();
-                hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
+        //if (!doubleClickTimer.countingDown)
+        //{
+        //    doubleClickTimer.StartCountdown();
+        //    withinTimeLimit = true;
+        //}
+        //else
+        //{
+        //    if (withinTimeLimit)
+        //    {
+        HostedGameLobbies hostedGameLobbiesScript = GetComponentInParent<HostedGameLobbies>();
+        hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
 
-                //ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-                JoinPendingMatchRequest joinPendingMatch = new JoinPendingMatchRequest();
-                joinPendingMatch.SetMatchShortCode(matchShortCode);
-                joinPendingMatch.SetPendingMatchId(gameID);
-                joinPendingMatch.Send(OnJoinPendingMatchSuccess, OnJoinPendingMatchError);
+        //ChallengeManager challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+        JoinPendingMatchRequest joinPendingMatch = new JoinPendingMatchRequest();
+        joinPendingMatch.SetMatchShortCode(matchShortCode);
+        joinPendingMatch.SetPendingMatchId(gameID);
+        joinPendingMatch.Send(OnJoinPendingMatchSuccess, OnJoinPendingMatchError);
 
-                RemoveAllHostedGames();
-            }
-        }
+        //        RemoveAllHostedGames();
+        //    }
+        //}
         
     }
 

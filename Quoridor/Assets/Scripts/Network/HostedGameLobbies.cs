@@ -242,11 +242,11 @@ public class HostedGameLobbies : MonoBehaviour
 
         if (hostName.Length >= 10)
         {
-            playerText.text = (hostName.Substring(0, 10) + "'s game");
+            playerText.text = ("Join " + hostName.Substring(0, 10) + "'s game");
         }
         else
         {
-            playerText.text = (hostName + "'s game");
+            playerText.text = ("Join " + hostName + "'s game");
         }
 
         //playerText.text = ("<b>" + messageWho + ":</b>");
