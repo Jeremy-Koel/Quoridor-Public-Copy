@@ -35,7 +35,7 @@ public class LeaderboardPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetLeaderboardData();
     }
 
     // Update is called once per frame
