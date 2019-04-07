@@ -236,17 +236,17 @@ public class HostedGameLobbies : MonoBehaviour
         hostedGameLobby.GetComponent<Button>().onClick.AddListener(hostedGameLobbyScript.onClick);
         
         // Get text component of button
-        UnityEngine.UI.Text[] hostedGameLobbyText = hostedGameLobby.GetComponentsInChildren<Text>();
-        Text playerText = hostedGameLobbyText[0];
+        var hostedGameLobbyText = hostedGameLobby.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
+        TMPro.TextMeshProUGUI playerText = hostedGameLobbyText[0];
         //Text messageText = hostedGameLobbyText[1];
 
         if (hostName.Length >= 10)
         {
-            playerText.text = ("<b>" + hostName.Substring(0, 10) + ":</b>");
+            playerText.text = (hostName.Substring(0, 10) + "'s game");
         }
         else
         {
-            playerText.text = ("<b>" + hostName + ":</b>");
+            playerText.text = (hostName + "'s game");
         }
 
         //playerText.text = ("<b>" + messageWho + ":</b>");
