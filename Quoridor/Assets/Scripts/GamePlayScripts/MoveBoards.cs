@@ -9,7 +9,7 @@ public class MoveBoards : MonoBehaviour
     public Vector3 target;
     public Vector3 origPos;
     public Vector3 activePos;
-    private float speed = 20f;
+    private float speed = 40f;
     // Start is called before the first frame update
     void Start()
     {

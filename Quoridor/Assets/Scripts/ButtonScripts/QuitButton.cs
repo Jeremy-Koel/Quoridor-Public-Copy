@@ -53,6 +53,6 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
         {
             moveBoardsComponent.moveBoard = true;
         }
-        quitPanel.SetActive(false);
+      //  quitPanel.SetActive(false);
     }
 }
