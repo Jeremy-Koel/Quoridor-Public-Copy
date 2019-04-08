@@ -10197,6 +10197,7 @@ GameObject:
   - component: {fileID: 901067478}
   - component: {fileID: 901067480}
   - component: {fileID: 901067479}
+  - component: {fileID: 901067481}
   m_Layer: 5
   m_Name: Chat Box
   m_TagString: Untagged
@@ -10261,6 +10262,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901067477}
   m_CullTransparentMesh: 0
+--- !u!123 &901067481
+LensFlare:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901067477}
+  m_Enabled: 1
+  m_Flare: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Brightness: 1
+  m_FadeSpeed: 0.5
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 6
+  m_Directional: 0
 --- !u!1 &915812355
 GameObject:
   m_ObjectHideFlags: 0
@@ -10813,7 +10830,7 @@ PrefabInstance:
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00007214358
+      value: -0.00006974005
       objectReference: {fileID: 0}
     - target: {fileID: 3650439704015111371, guid: 6bdab04dabc936b41aa3e970cd316db0,
         type: 3}
@@ -16849,6 +16866,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2.1999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500200588938640527, guid: 648b79310315b3240943363ad272b008,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 648b79310315b3240943363ad272b008, type: 3}
