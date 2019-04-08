@@ -11,9 +11,8 @@ public class AudioControllerMainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mixer.SetFloat("MasterVolume", Mathf.Log10(GameSession.MasterVolumePref) * 50);
-        mixer.SetFloat("BackgroundVolume", Mathf.Log10(GameSession.MasterVolumePref) * 50);
-        mixer.SetFloat("EffectsVolume", Mathf.Log10(GameSession.MasterVolumePref) * 50);
+        mixer.SetFloat("BackgroundVolume", Mathf.Log10(GameSession.BackgroundVolumePref) * 50);
+        mixer.SetFloat("EffectsVolume", Mathf.Log10(GameSession.EffectVolumePref) * 50);
 
         chalkWritingSource = GameObject.Find("SoundEffectPlayer").GetComponent<AudioSource>();
     }

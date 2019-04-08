@@ -9,20 +9,11 @@ public class AudioSettingController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Slider masterVolumeSlider = GameObject.Find("MasterVolumeSlider").GetComponent<Slider>();
-        masterVolumeSlider.value = GameSession.MasterVolumePref;
-
         Slider backgroundVolumeSlider = GameObject.Find("BackgroundVolumeSlider").GetComponent<Slider>();
         backgroundVolumeSlider.value = GameSession.BackgroundVolumePref;
 
         Slider effectsVolumeSlider = GameObject.Find("EffectsVolumeSlider").GetComponent<Slider>();
         effectsVolumeSlider.value = GameSession.EffectVolumePref;
-    }
-
-    public void SetMasterLevel(float sliderValue)
-    {
-        mixer.SetFloat("MasterVolume", GetMixerValueFromSliderValue(sliderValue));
-        GameSession.MasterVolumePref = sliderValue;
     }
 
     public void SetBackgroundLevel(float sliderValue)

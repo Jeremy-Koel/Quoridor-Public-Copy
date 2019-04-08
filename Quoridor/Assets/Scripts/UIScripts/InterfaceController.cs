@@ -14,6 +14,8 @@ public class InterfaceController : MonoBehaviour
     private GameObject disconnectPanel;
     private GameObject helpScreen;
     private GameObject playerMouse;
+    private GameObject redLight;
+    private GameObject greenLight;
     private Text playerWallLabel;
     private Text opponentWallLabel;
     private SoundEffectController soundEffectController;
@@ -32,6 +34,9 @@ public class InterfaceController : MonoBehaviour
         playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
         opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
         playerTurnBoxAnimator = GameObject.Find("PlayerTurnBox").GetComponent<Animator>();
+        redLight = GameObject.Find("RedLight");
+        redLight.SetActive(false);
+        greenLight = GameObject.Find("GreenLight");
         
         initAnimatorQueues();
 
@@ -250,6 +255,8 @@ public class InterfaceController : MonoBehaviour
 
     private void SwitchTurnIndicatorToInvalidMove()
     {
+        Invoke("FlipRedLight", 0.5f);
+        FlipRedLight();
         playerTurnBoxAnimator.SetTrigger("InvalidMove");
         ShakeMouse();
         soundEffectController.PlayErrorSound();
@@ -258,11 +265,13 @@ public class InterfaceController : MonoBehaviour
     public void SwitchTurnIndicatorToOpponent()
     {
         playerTurnBoxAnimator.SetTrigger("LocalTurnTaken");
+        FlipGreenLight();
     }
 
     public void SwitchTurnIndicatorToLocal()
     {
         playerTurnBoxAnimator.SetTrigger("OpponentTurnTaken");
+        FlipGreenLight();
     }
     
     public string GetPlayerNameForTurn()
@@ -455,5 +464,15 @@ public class InterfaceController : MonoBehaviour
     {
         isMouseShaking = true;
         StartCoroutine(shakeGameObjectCOR(objectToShake, shakeDuration, decreasePoint));
+    }
+
+    public void FlipGreenLight()
+    {
+        greenLight.SetActive(!greenLight.activeSelf);
+    }
+
+    public void FlipRedLight()
+    {
+        redLight.SetActive(!redLight.activeSelf);
     }
 }
