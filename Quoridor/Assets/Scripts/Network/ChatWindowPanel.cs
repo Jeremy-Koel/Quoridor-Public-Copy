@@ -386,8 +386,8 @@ public class ChatWindowPanel : MonoBehaviour
 
     public void OnChatInputSend()
     {
-         InputField chatInputField = chatInput.GetComponent<InputField>();
-         string message = chatInputField.text;
+        TMPro.TMP_InputField chatInputField = chatInput.GetComponent<TMPro.TMP_InputField>();
+        string message = chatInputField.text;
         chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
         SendChatMessage(message);
     }
