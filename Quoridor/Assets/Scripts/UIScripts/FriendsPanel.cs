@@ -175,6 +175,10 @@ public class FriendsPanel : MonoBehaviour
 
         addFriendsPanel.SetActive(true);
 
+        // Get component and set name
+        string name = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>().myDisplayName;
+        GameObject.Find("AddFriendsYourNameText").GetComponent<TMPro.TextMeshProUGUI>().text = name;
+
         SwitchActiveAddFriendsPanel();
     }
 
