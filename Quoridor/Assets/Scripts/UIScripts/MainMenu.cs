@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour
     public GameObject disconnectPanel;
     public GameObject guestDetailsPanel;
     //  public GameObject quitPanel;
-    public Stack<GameObject> panelOrder;
+  //  public Stack<GameObject> panelOrder;
 
     public GameObject challengeManager;
     public EventManager eventManager;
@@ -96,8 +96,8 @@ public class MainMenu : MonoBehaviour
         guestDetailsPanel = GameObject.Find("GuestDetailsPanel");
         // quitPanel = GameObject.Find("QuitPanel");
 
-        panelOrder = new Stack<GameObject>();
-        panelOrder.Push(mainMenuPanel);
+       // panelOrder = new Stack<GameObject>();
+       // panelOrder.Push(mainMenuPanel);
 
         mainMenuPanel.SetActive(true);
         dummyMenuPanel.SetActive(false);
@@ -130,7 +130,7 @@ public class MainMenu : MonoBehaviour
 
         mainMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(true);
-        panelOrder.Push(singlePlayerSetupPanel);
+      //  panelOrder.Push(singlePlayerSetupPanel);
     }
 
     public void onMultiplayerClick()
@@ -141,19 +141,20 @@ public class MainMenu : MonoBehaviour
         GameSession.GameMode = GameModeEnum.MULTIPLAYER;
         eventManager.InvokeMultiplayerSelected();
 
-        mainMenuPanel.SetActive(false);
+        //mainMenuPanel.SetActive(false);
         
         if (LoggedIn())
         {
-            dummyMenuPanel.SetActive(true);
+            //dummyMenuPanel.SetActive(true);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             //panelOrder.Push(lobbyPanel);
         }
         else
         {
+            mainMenuPanel.SetActive(false);
             loginPanel.SetActive(true);
-            panelOrder.Push(loginPanel);
+           // panelOrder.Push(loginPanel);
         }
         leaderboardPanel.GetComponent<LeaderboardPanel>().GetLeaderboardData();
     }
@@ -292,38 +293,50 @@ public class MainMenu : MonoBehaviour
         dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(true);
-        panelOrder.Push(settingsPanel);
+       // panelOrder.Push(settingsPanel);
     }
 
     public void onTutorialButtonClick(Button button)
     {
         DeselectCurrentButton();
         audioController.PlayChalkWritingSound();
-        mainMenuPanel.SetActive(false);
+       // mainMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
         settingsPanel.SetActive(false);
         dummyMenuPanel.SetActive(true);
         tutorialPanel.SetActive(true);
         tutorialPanel.GetComponent<MoveTutorialBoard>().moveBoard = true;
-        panelOrder.Push(tutorialPanel);
+      //  panelOrder.Push(tutorialPanel);
     }
 
     public void onBackButtonClick()
     {
         //string name = EventSystem.current.currentSelectedGameObject.name;
         //DeselectCurrentButton();
-        GameObject disableScreen = panelOrder.Pop();
-        GameObject enableScreen = panelOrder.Peek();
-        usernameLoginInput.text = "";
-        passwordLoginInput.text = "";
-
-        if (disableScreen.name != "TutorialPanel" && disableScreen.name != "LobbyPanel")
+      //  GameObject disableScreen = panelOrder.Pop();
+       // GameObject enableScreen = panelOrder.Peek();
+       // usernameLoginInput.text = "";
+       // passwordLoginInput.text = "";
+       if(singlePlayerSetupPanel.activeSelf)
         {
-            disableScreen.SetActive(false);
+            singlePlayerSetupPanel.SetActive(false);
         }
+       else if(loginPanel.activeSelf)
+        {
+            loginPanel.SetActive(false);
+        }
+       else if(settingsPanel.activeSelf)
+        {
+            settingsPanel.SetActive(false);
+        }
+        mainMenuPanel.SetActive(true);
+        //if (disableScreen.name != "TutorialPanel" && disableScreen.name != "LobbyPanel")
+        //{
+        //    disableScreen.SetActive(false);
+        //}
 
 
-        enableScreen.SetActive(true);
+        //enableScreen.SetActive(true);
     }
 
     public void onTutorialBackButtonClick()
@@ -339,10 +352,10 @@ public class MainMenu : MonoBehaviour
         dummyMenuPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
         lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
-        if(panelOrder.Peek().name == "LoginPanel")
-        {
-            panelOrder.Pop();
-        }
+        //if(panelOrder.Peek().name == "LoginPanel")
+        //{
+        //    panelOrder.Pop();
+        //}
         //onBackButtonClick();
     }
 
