@@ -258,9 +258,21 @@ public class ChatWindowPanel : MonoBehaviour
     }
 
     //Called when Input changes
-    public void inputSubmitCallBack()
+    private void inputSubmitCallBack()
     {
         if (chatInput.GetComponent<TMPro.TMP_InputField>().text != "" && Input.GetKey(KeyCode.Return))
+        {
+            SendChatMessage(chatInput.GetComponent<TMPro.TMP_InputField>().text);
+            chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
+        }
+        Debug.Log("Input Submitted");
+        //chatInput.GetComponent<InputField>().ActivateInputField(); //Re-focus on the input field
+        chatInput.GetComponent<TMPro.TMP_InputField>().Select();//Re-focus on the input field
+    }
+    
+    public void submitChatButton()
+    {
+        if (chatInput.GetComponent<TMPro.TMP_InputField>().text != "")
         {
             SendChatMessage(chatInput.GetComponent<TMPro.TMP_InputField>().text);
             chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
