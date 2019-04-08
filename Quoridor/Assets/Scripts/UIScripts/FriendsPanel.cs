@@ -279,6 +279,7 @@ public class FriendsPanel : MonoBehaviour
         var friendBaseData = (KeyValuePair<string, object>)friendsListEnumerator.Current;
         var friendActualBaseData = (GameSparks.Core.GSData)friendBaseData.Value;
         var friendPlayerIDBaseData = friendActualBaseData.BaseData.GetEnumerator();
+        bool toDestroy = false;
         while (friendPlayerIDBaseData.MoveNext())
         {
             string playerID = friendPlayerIDBaseData.Current.Key;
@@ -302,45 +303,40 @@ public class FriendsPanel : MonoBehaviour
             {
                 friendObject.GetComponent<Button>().onClick.AddListener(friendResultScript.OnClickOpenTeamChat);
                 friendResultScript.chatWindowPanel = chatWindowPanel.GetComponent<ChatWindowPanel>();
-            }
-
-            if (friendPlayerNameBaseData.MoveNext())
-            {
-                if (friendPlayerNameBaseData.Current.Value == null)
-                {
-                    GameObject.Destroy(friendObject);
-                }
-                else
+                if (friendPlayerNameBaseData.MoveNext())
                 {
                     string teamID = friendPlayerNameBaseData.Current.Value.ToString();
                     friendResultScript.teamID = teamID;
-                    // Get text component of button
-                    UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
-                    Text friendNameText = friendObjectTexts[0];
+                }
+                else
+                {
+                    toDestroy = true;
+                }
+            }
+                    
+            // Get text component of button
+            UnityEngine.UI.Text[] friendObjectTexts = friendObject.GetComponentsInChildren<Text>();
+            Text friendNameText = friendObjectTexts[0];
 
-                    if (playerName.Length >= 20)
-                    {
-                        friendNameText.text = (playerName.Substring(0, 17) + "...");
-                    }
-                    else
-                    {
-                        friendNameText.text = (playerName);
-                    }
-
-                    friendObject.transform.SetParent(friendsListContent);
-                    friendObject.transform.localScale = new Vector3(1, 1, 1);
-                    friendsListContent.sizeDelta = new Vector2(friendsListContent.sizeDelta.x, (friendsListContent.sizeDelta.y + 30));
-
-                    friendsList.Add(friendObject);
-                }                
+            if (playerName.Length >= 20)
+            {
+                friendNameText.text = (playerName.Substring(0, 17) + "...");
             }
             else
             {
-                // Delete this thing
-                GameObject.Destroy(friendObject);
+                friendNameText.text = (playerName);
             }
 
+            friendObject.transform.SetParent(friendsListContent);
+            friendObject.transform.localScale = new Vector3(1, 1, 1);
+            friendsListContent.sizeDelta = new Vector2(friendsListContent.sizeDelta.x, (friendsListContent.sizeDelta.y + 30));
 
+            if (toDestroy)
+            {
+                toDestroy = false;
+                Destroy(friendObject);
+            }
+            friendsList.Add(friendObject);
         }
         pending = false;
 
