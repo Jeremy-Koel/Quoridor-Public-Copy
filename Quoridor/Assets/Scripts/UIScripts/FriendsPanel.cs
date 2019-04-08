@@ -38,6 +38,7 @@ public class FriendsPanel : MonoBehaviour
     private Timer shakeTimer;
     private float shakeDuration = 0.04f;
     private float shakeDefault = 0.04f;
+    private int heightOfFriendsResult = 75;
 
     private void Awake()
     {
@@ -227,7 +228,7 @@ public class FriendsPanel : MonoBehaviour
             playerDataEnumerator.MoveNext();
             playerDataEnumerator.MoveNext();
             string playerID = playerDataEnumerator.Current.Value.ToString();
-            playerName = playerName + "+" + playerID.Substring(20, 4);
+            //playerName = playerName + "+" + playerID.Substring(20, 4);
 
             GameObject friendResultButton = Instantiate(friendResultButtonPrefab) as GameObject;
             FriendResult friendResultScript = friendResultButton.GetComponent<FriendResult>();
@@ -246,6 +247,7 @@ public class FriendsPanel : MonoBehaviour
             friendsSearchResultList.Add(friendResultButton);
 
         }
+        friendsSearchResultListContent.sizeDelta = new Vector2(friendsSearchResultListContent.sizeDelta.x, friendsSearchResultList.Count * heightOfFriendsResult);
         LayoutRebuilder.ForceRebuildLayoutImmediate(friendsSearchResultListContent);
     }
 
