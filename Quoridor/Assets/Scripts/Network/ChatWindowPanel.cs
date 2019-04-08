@@ -15,7 +15,7 @@ public class ChatWindowPanel : MonoBehaviour
     private GSEnumerable<GetMyTeamsResponse._Team> teams = null;
 
     public ChatSelectionPanel chatSelectionPanel;
-    GameObject chatInput;
+    public GameObject chatInput;
     public GameObject globalChatButtonObject;
     private GameObject chatMessagesView;
     public RectTransform chatMessagesViewContent;
@@ -82,7 +82,7 @@ public class ChatWindowPanel : MonoBehaviour
         {
             // block input
             //int caretPosition = chatInput.GetComponent<InputField>().caretPosition;
-            chatInput.GetComponent<InputField>().DeactivateInputField();
+            chatInput.GetComponent<TMPro.TMP_InputField>().DeactivateInputField();
 
             // Notice if V is also pressed
             if (Input.GetAxisRaw("CtrlV") == 1)
@@ -118,17 +118,21 @@ public class ChatWindowPanel : MonoBehaviour
                     //}
                     //chatInput.GetComponent<InputField>().ActivateInputField();
                     //chatInput.GetComponent<InputField>().text = splitText[splitText.Count - 1];
-                    chatInput.GetComponent<InputField>().ActivateInputField();
-                    chatInput.GetComponent<InputField>().text = copiedText.Substring(0, 1000);
-                    chatInput.GetComponent<InputField>().Select();
-                    chatInput.GetComponent<InputField>().MoveTextEnd(false);
+                    chatInput.GetComponent<TMPro.TMP_InputField>().ActivateInputField();
+                    chatInput.GetComponent<TMPro.TMP_InputField>().text = copiedText.Substring(0, 1000);
+                    chatInput.GetComponent<TMPro.TMP_InputField>().Select();
+                    chatInput.GetComponent<TMPro.TMP_InputField>().MoveTextEnd(false);
                 }
                 else
                 {
-                    chatInput.GetComponent<InputField>().ActivateInputField();
-                    chatInput.GetComponent<InputField>().text = chatInput.GetComponent<InputField>().text + copiedText;
-                    chatInput.GetComponent<InputField>().Select();
-                    chatInput.GetComponent<InputField>().MoveTextEnd(false);
+                    chatInput.GetComponent<TMPro.TMP_InputField>().ActivateInputField();
+                    chatInput.GetComponent<TMPro.TMP_InputField>().text = chatInput.GetComponent<TMPro.TMP_InputField>().text + copiedText;
+                    if (chatInput.GetComponent<TMPro.TMP_InputField>().text.Length > 1000)
+                    {
+                        chatInput.GetComponent<TMPro.TMP_InputField>().text = chatInput.GetComponent<TMPro.TMP_InputField>().text.Substring(0, 1000);
+                    }
+                    chatInput.GetComponent<TMPro.TMP_InputField>().Select();
+                    chatInput.GetComponent<TMPro.TMP_InputField>().MoveTextEnd(false);
                 }
                 // unblock input
 
@@ -137,7 +141,7 @@ public class ChatWindowPanel : MonoBehaviour
             // Handle CTRL + C
             if (Input.GetAxisRaw("CtrlC") == 1)
             {
-                ClipboardHelper.clipBoard = chatInput.GetComponent<InputField>().text;
+                ClipboardHelper.clipBoard = chatInput.GetComponent<TMPro.TMP_InputField>().text;
             }
         }
         //}
@@ -254,30 +258,30 @@ public class ChatWindowPanel : MonoBehaviour
     }
 
     //Called when Input changes
-    private void inputSubmitCallBack()
+    public void inputSubmitCallBack()
     {
-        if (chatInput.GetComponent<InputField>().text != "" && Input.GetKey(KeyCode.Return))
+        if (chatInput.GetComponent<TMPro.TMP_InputField>().text != "" && Input.GetKey(KeyCode.Return))
         {
-            SendChatMessage(chatInput.GetComponent<InputField>().text);
-            chatInput.GetComponent<InputField>().text = "";
+            SendChatMessage(chatInput.GetComponent<TMPro.TMP_InputField>().text);
+            chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
         }
         Debug.Log("Input Submitted");
         //chatInput.GetComponent<InputField>().ActivateInputField(); //Re-focus on the input field
-        chatInput.GetComponent<InputField>().Select();//Re-focus on the input field
+        chatInput.GetComponent<TMPro.TMP_InputField>().Select();//Re-focus on the input field
     }
 
     //Called when Input is submitted
     private void inputChangedCallBack()
     {
         Debug.Log("Input Changed");
-        GameObject.Find("ChatCharLimitText").GetComponent<Text>().text = chatInput.GetComponent<InputField>().text.Length.ToString() + "/1000";
+        GameObject.Find("ChatCharLimitText").GetComponent<Text>().text = chatInput.GetComponent<TMPro.TMP_InputField>().text.Length.ToString() + "/1000";
     }
 
     void OnEnable()
     {
         //Register InputField Events
-        chatInput.GetComponent<InputField>().onEndEdit.AddListener(delegate { inputSubmitCallBack(); });
-        chatInput.GetComponent<InputField>().onValueChanged.AddListener(delegate { inputChangedCallBack(); });
+        chatInput.GetComponent<TMPro.TMP_InputField>().onEndEdit.AddListener(delegate { inputSubmitCallBack(); });
+        chatInput.GetComponent<TMPro.TMP_InputField>().onValueChanged.AddListener(delegate { inputChangedCallBack(); });
     }
 
     void OnDisable()
@@ -372,7 +376,7 @@ public class ChatWindowPanel : MonoBehaviour
     {
          InputField chatInputField = chatInput.GetComponent<InputField>();
          string message = chatInputField.text;
-        chatInput.GetComponent<InputField>().text = "";
+        chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
         SendChatMessage(message);
     }
 

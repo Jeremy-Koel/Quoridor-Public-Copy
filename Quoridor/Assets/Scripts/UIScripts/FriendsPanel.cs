@@ -11,7 +11,7 @@ using System;
 
 public class FriendsPanel : MonoBehaviour
 {
-    InputField searchFriendsInput;
+    TMPro.TMP_InputField searchFriendsInput;
     Button onlineFriendsButton;
     Button offlineFriendsButton;
     Button friendRequestsButton;
@@ -42,7 +42,7 @@ public class FriendsPanel : MonoBehaviour
 
     private void Awake()
     {
-        searchFriendsInput = GameObject.Find("SearchFriendsInput").GetComponent<InputField>();
+        searchFriendsInput = GameObject.Find("SearchFriendsInput").GetComponent<TMPro.TMP_InputField>();
         onlineFriendsButton = GameObject.Find("OnlineFriendsButton").GetComponent<Button>();
         //offlineFriendsButton = GameObject.Find("OfflineFriendsButton").GetComponent<Button>();
         friendRequestsButton = GameObject.Find("FriendRequestsButton").GetComponent<Button>();

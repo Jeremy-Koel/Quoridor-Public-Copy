@@ -40,11 +40,11 @@ public class MainMenu : MonoBehaviour
     public AudioControllerMainMenu audioController;
 
     [SerializeField]
-    private InputField usernameLoginInput;
+    private TMPro.TMP_InputField usernameLoginInput;
     [SerializeField]
-    private InputField passwordLoginInput;
+    private TMPro.TMP_InputField passwordLoginInput;
     [SerializeField]
-    private InputField displayNameInput;
+    private TMPro.TMP_InputField displayNameInput;
     //[SerializeField]
     //private InputField usernameRegisterInput;
     //[SerializeField]
