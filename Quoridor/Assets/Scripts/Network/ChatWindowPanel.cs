@@ -286,7 +286,7 @@ public class ChatWindowPanel : MonoBehaviour
     private void inputChangedCallBack()
     {
         Debug.Log("Input Changed");
-        GameObject.Find("ChatCharLimitText").GetComponent<Text>().text = chatInput.GetComponent<TMPro.TMP_InputField>().text.Length.ToString() + "/1000";
+        GameObject.Find("ChatCharLimitText").GetComponent<TMPro.TMP_Text>().text = chatInput.GetComponent<TMPro.TMP_InputField>().text.Length.ToString() + "/1000";
     }
 
     void OnEnable()
