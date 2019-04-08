@@ -148,6 +148,7 @@ public class MainMenu : MonoBehaviour
             //dummyMenuPanel.SetActive(true);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
+            audioController.PlayChalkboardMovingSound();
             //panelOrder.Push(lobbyPanel);
         }
         else
@@ -352,6 +353,7 @@ public class MainMenu : MonoBehaviour
         dummyMenuPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
         lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
+        audioController.PlayChalkboardMovingSound();
         //if(panelOrder.Peek().name == "LoginPanel")
         //{
         //    panelOrder.Pop();
@@ -488,6 +490,7 @@ public class MainMenu : MonoBehaviour
            // panelOrder.Push(lobbyPanel);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
+            audioController.PlayChalkboardMovingSound();
             OnLeaderboardsClick();
         }
     }

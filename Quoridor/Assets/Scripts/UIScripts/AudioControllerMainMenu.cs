@@ -7,6 +7,7 @@ public class AudioControllerMainMenu : MonoBehaviour
 {
     public AudioMixer mixer;
     public AudioSource chalkWritingSource;
+    public AudioSource chalkboardMovingSource;
 
     // Start is called before the first frame update
     void Start()
@@ -15,11 +16,20 @@ public class AudioControllerMainMenu : MonoBehaviour
         mixer.SetFloat("EffectsVolume", Mathf.Log10(GameSession.EffectVolumePref) * 50);
 
         chalkWritingSource = GameObject.Find("SoundEffectPlayer").GetComponent<AudioSource>();
+        chalkboardMovingSource = GameObject.Find("SoundEffectPlayerChalkBoardMoving").GetComponent<AudioSource>();
     }
 
     public void PlayChalkWritingSound()
     {
         chalkWritingSource.Play();
     }
-    
+    public void PlayChalkboardMovingSound()
+    {
+        chalkboardMovingSource.Play();
+    }
+
+    public void StopChalkboardMovingSound()
+    {
+        chalkboardMovingSource.Stop();
+    }
 }
