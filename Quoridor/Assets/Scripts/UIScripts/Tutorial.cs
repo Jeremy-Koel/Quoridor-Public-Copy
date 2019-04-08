@@ -115,7 +115,7 @@ public class Tutorial : MonoBehaviour
     {
         string[] temp = new string[7];
 
-        temp[0] = "Welcome to the Great Gouda Gambit! Our scientists are training our labrats to play Quoridor. Think you can help?";
+        temp[0] = "Welcome to the Great Gouda Gambit! Our scientists are training labrats to play Quoridor. The goal is to get across the board first. Can you help us?";
         temp[1] = "To move your mouse, click one of the green squares.";
         temp[2] = "To place a wall, hover over the spot you want to place it and click.";
         temp[3] = "If your opponent is directly in front of you, and there isn't a wall behind them, you can jump over them.";
