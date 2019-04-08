@@ -45,6 +45,7 @@ public class WinnerScreen : MonoBehaviour
 
     void Start()
     {
+        interfaceController.TurnIndicatorLightsOff();
         winScreenTimerText = GameObject.Find("WinScreenTimerText");
         if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {

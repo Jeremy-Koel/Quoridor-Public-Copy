@@ -5,6 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class GameScreenMainMenuButton : MonoBehaviour
 {
+    private InterfaceController interfaceController;
+
+    private void Awake()
+    {
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +26,8 @@ public class GameScreenMainMenuButton : MonoBehaviour
 
     public void onMainMenuButtonClick()
     {
+        interfaceController.TurnIndicatorLightsOff();
+
         // Get ChallengeManager/EventManager/MessageQueue DontDestroyOnLoad Objects and reset them
         if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {

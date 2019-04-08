@@ -475,4 +475,10 @@ public class InterfaceController : MonoBehaviour
     {
         redLight.SetActive(!redLight.activeSelf);
     }
+
+    public void TurnIndicatorLightsOff()
+    {
+        redLight.SetActive(false);
+        greenLight.SetActive(false);
+    }
 }
