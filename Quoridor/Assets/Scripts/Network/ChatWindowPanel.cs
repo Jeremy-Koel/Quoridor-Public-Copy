@@ -13,25 +13,39 @@ using UnityEngine.SceneManagement;
 public class ChatWindowPanel : MonoBehaviour
 {
     private GSEnumerable<GetMyTeamsResponse._Team> teams = null;
-
+    [SerializeField]
     public ChatSelectionPanel chatSelectionPanel;
+    [SerializeField]
     public GameObject chatInput;
+    [SerializeField]
     public GameObject globalChatButtonObject;
+    [SerializeField]
     private GameObject chatMessagesView;
+    [SerializeField]
     public RectTransform chatMessagesViewContent;
+    [SerializeField]
     public GameObject chatMessagesBox;
+    [SerializeField]
     public VerticalLayoutGroup chatMessagesLayoutGroup;
+    [SerializeField]
     public List<GameObject> chatMessages;
+    [SerializeField]
     public GameObject lobbyMessagePrefab;
+    [SerializeField]
     public GameObject inGameMessagePrefab;
+    [SerializeField]
     public GameObject friendChatMessagesBoxPrefab;
+    [SerializeField]
     public ChallengeManager challengeManager;
 
     // A list of each list of a friend's chat messages
+    [SerializeField]
     private List<List<GameObject>> listOfChatMessages;
     // List of teamIDs for reference (we only need one instance of each teamID)
+    [SerializeField]
     private List<string> teamIDs;
     // List of friendsChatMessagesRectTransforms
+    [SerializeField]
     public List<RectTransform> listOfFriendsMessagesContents;
 
     private string currentTeamID = "0";
@@ -102,29 +116,6 @@ public class ChatWindowPanel : MonoBehaviour
                 // split clipboard into multiple strings?
                 if (copiedText.Length >= 1000)
                 {
-                    //// get divisible length of string 
-                    //double divisibleLength = (double)((float)(copiedText.Length) / 1000f);
-                    //double leftOvers = divisibleLength - Math.Truncate(divisibleLength);
-                    //int leftOversWhole = Convert.ToInt32(leftOvers * 1000);
-                    //int valuesBeforeLeftOvers = (copiedText.Length - leftOversWhole);
-
-                    //// Reaches last index before left over index count is < 1000 (e.g. 12,313 - 313 = 12,000)
-                    //for (int index = 0; index < valuesBeforeLeftOvers; index += 1000)
-                    //{
-                    //    splitText.Add(copiedText.Substring(index, 1000));
-                    //}
-                    //splitText.Add(copiedText.Substring(valuesBeforeLeftOvers));
-
-
-                    //// send as separate messages?
-                    //var splitTextEnumerator = splitText.GetEnumerator();
-                    //while (splitTextEnumerator.MoveNext())
-                    //{
-                    //    SendChatMessage(splitTextEnumerator.Current);
-                    //    Debug.Log(splitTextEnumerator.Current);
-                    //}
-                    //chatInput.GetComponent<InputField>().ActivateInputField();
-                    //chatInput.GetComponent<InputField>().text = splitText[splitText.Count - 1];
                     chatInput.GetComponent<TMPro.TMP_InputField>().ActivateInputField();
                     chatInput.GetComponent<TMPro.TMP_InputField>().text = copiedText.Substring(0, 1000);
                     chatInput.GetComponent<TMPro.TMP_InputField>().Select();
@@ -160,7 +151,8 @@ public class ChatWindowPanel : MonoBehaviour
     {
         SwitchAllFriendChatOff();
         currentTeamID = "0";
-        chatMessagesViewContent.gameObject.SetActive(true);
+        var globalMessagesContent = chatMessagesBox.GetComponentInChildren<GlobalMessagesScript>(true);
+        globalMessagesContent.gameObject.SetActive(true);
         chatSelectionPanel.SetSelectionButtonsInteractive(-1);
     }
 
@@ -257,9 +249,22 @@ public class ChatWindowPanel : MonoBehaviour
         Debug.Log("Message sent by: " + messageWho);
 
         string teamID = "0";
+        if (chatMessagesView == null)
+        {
+            chatMessagesView = GameObject.Find("ChatMessagesView");
+        }
+        if (chatMessagesBox == null)
+        {
+
+            var globalMessages = chatMessagesView.GetComponentsInChildren<GlobalMessagesScript>(true);
+            var globalMessagesEnum = globalMessages.GetEnumerator();
+            globalMessagesEnum.MoveNext();
+            chatMessagesBox = ((GlobalMessagesScript)globalMessagesEnum.Current).gameObject;
+        }
         if (chatMessagesViewContent == null)
         {
-            chatMessagesViewContent = GameObject.Find("GlobalMessages").GetComponent<RectTransform>();
+            //chatMessagesViewContent = GameObject.Find("GlobalMessages").GetComponent<RectTransform>();
+            chatMessagesViewContent = (chatMessagesBox.GetComponentInChildren<GlobalMessagesScript>(true)).gameObject.GetComponent<RectTransform>();
         }
         List<GameObject> friendChatMessages = chatMessages;
         RectTransform friendChatMessagesContent = chatMessagesViewContent;
@@ -270,7 +275,7 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             teamID = message.TeamId;
-            //SwitchActiveChat(teamID, messageWho.ToString());
+            SwitchActiveChat(teamID, messageWho.ToString());
             int teamIDIndex = LookupTeam(teamID, messageWho);
             friendChatMessages = listOfChatMessages[teamIDIndex];
             FindChatMessagesContent();

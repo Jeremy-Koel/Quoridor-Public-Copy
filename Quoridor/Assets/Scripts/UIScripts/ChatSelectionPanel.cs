@@ -5,23 +5,35 @@ using UnityEngine.UI;
 
 public class ChatSelectionPanel : MonoBehaviour
 {
+    [SerializeField]
     public Button chatSelectionLeftButton;
+    [SerializeField]
     public Button chatSelectionRightButton;
+    [SerializeField]
     public GameObject chatSelectionContentObject;
+    [SerializeField]
     public RectTransform chatSelectionContentRectTransform;
+    [SerializeField]
     public RectTransform leftMostBoundaries;
+    [SerializeField]
     public RectTransform rightMostBoundaries;
+    [SerializeField]
     public float widthOfChatButton;
+    [SerializeField]
     private float widthOfAllChatButtons;
+    [SerializeField]
     public GameObject chatSelectionButtonPrefab;
-
+    [SerializeField]
+    public GameObject chatSelectionPanel;
+    [SerializeField]
     public GameObject chatWindowPanel;
-
+    [SerializeField]
     private List<GameObject> chatSelectionButtons;
 
     public void SetSelectionButtonsInteractive(int targetIndex)
     {
         int index = 0;
+        FindChatSelectionButtons();
         var chatSelectionButtonsEnum = chatSelectionButtons.GetEnumerator();
         while (chatSelectionButtonsEnum.MoveNext())
         {
@@ -34,6 +46,18 @@ public class ChatSelectionPanel : MonoBehaviour
                 chatSelectionButtonsEnum.Current.GetComponent<Button>().interactable = true;
             }            
             index++;
+        }
+    }
+
+    public void FindChatSelectionButtons()
+    {         
+        // CLEAR THIS STUFFF
+        chatSelectionButtons.Clear();
+        chatSelectionPanel = GameObject.Find("ChatSelectionPanel");
+        var chatSelectionButtonScripts = chatSelectionPanel.GetComponentsInChildren<ChatSelectionButton>();
+        foreach (var chatSelectionButton in chatSelectionButtonScripts)
+        {
+            chatSelectionButtons.Add(chatSelectionButton.gameObject);
         }
     }
 
