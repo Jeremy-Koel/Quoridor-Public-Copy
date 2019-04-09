@@ -39,6 +39,8 @@ public class EventManager : MonoBehaviour
     private UnityEvent DisconnectAIHard = new UnityEvent();
     private UnityEvent MultiplayerSelected = new UnityEvent();
 
+    private UnityEvent LeavingOpponent = new UnityEvent();
+
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
 
@@ -112,6 +114,18 @@ public class EventManager : MonoBehaviour
         DisconnectAIEasy = new UnityEvent();
         DisconnectAIHard = new UnityEvent();
         MultiplayerSelected = new UnityEvent();
+    }
+
+    public void ListenToLeavingOpponent(UnityAction action)
+    {
+        Debug.Log("LeavingOpponent Listener Added");
+        LeavingOpponent.AddListener(action);
+    }
+
+    public void InvokeLeavingOpponent()
+    {
+        Debug.Log("LeavingOpponent Invoked");
+        LeavingOpponent.Invoke();
     }
 
     public void ListenToDisconnectReconnectionYes(UnityAction action)

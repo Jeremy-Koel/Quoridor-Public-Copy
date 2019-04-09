@@ -23,12 +23,19 @@ public class GameSparksManager : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this);
+        ScriptMessage_GameDisconnected.Listener += GameDisconnectedHandler;
         ScriptMessage_ConnectionLost.Listener += LostConnectionMessageHandler;
         GS.GameSparksAvailable += HandleGameSparksAvailable;
         CheckConnectionRepeating();
         // Listen to events for checking connection
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventManager.ListenToLostConnection(LostConnection);
+    }
+
+    private void GameDisconnectedHandler(ScriptMessage_GameDisconnected message)
+    {
+        Debug.Log("Lost connection message received");
+        eventManager.InvokeLostConnection();
     }
 
     private void CheckConnectionRepeating()

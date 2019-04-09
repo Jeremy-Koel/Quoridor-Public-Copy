@@ -449,8 +449,8 @@ namespace GameSparks.Api.Requests{
 		protected override GSTypedResponse BuildResponse (GSObject response){
 			return new LogEventResponse (response);
 		}
-
-        public LogEventRequest_GetNewGuestUser() : base("LogEventRequest"){
+		
+		public LogEventRequest_GetNewGuestUser() : base("LogEventRequest"){
 			request.AddString("eventKey", "GetNewGuestUser");
 		}
 	}
@@ -469,6 +469,38 @@ namespace GameSparks.Api.Requests{
 		/// The challenge ID instance to target
 		/// </summary>
 		public LogChallengeEventRequest_GetNewGuestUser SetChallengeInstanceId( String challengeInstanceId )
+		{
+			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+	}
+	
+	public class LogEventRequest_LeavingOpponent : GSTypedRequest<LogEventRequest_LeavingOpponent, LogEventResponse>
+	{
+	
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogEventResponse (response);
+		}
+		
+		public LogEventRequest_LeavingOpponent() : base("LogEventRequest"){
+			request.AddString("eventKey", "LeavingOpponent");
+		}
+	}
+	
+	public class LogChallengeEventRequest_LeavingOpponent : GSTypedRequest<LogChallengeEventRequest_LeavingOpponent, LogChallengeEventResponse>
+	{
+		public LogChallengeEventRequest_LeavingOpponent() : base("LogChallengeEventRequest"){
+			request.AddString("eventKey", "LeavingOpponent");
+		}
+		
+		protected override GSTypedResponse BuildResponse (GSObject response){
+			return new LogChallengeEventResponse (response);
+		}
+		
+		/// <summary>
+		/// The challenge ID instance to target
+		/// </summary>
+		public LogChallengeEventRequest_LeavingOpponent SetChallengeInstanceId( String challengeInstanceId )
 		{
 			request.AddString("challengeInstanceId", challengeInstanceId);
 			return this;
@@ -528,6 +560,12 @@ namespace GameSparks.Api.Requests{
 		public LogEventRequest_PlayAgain() : base("LogEventRequest"){
 			request.AddString("eventKey", "PlayAgain");
 		}
+		
+		public LogEventRequest_PlayAgain Set_challengeID( string value )
+		{
+			request.AddString("challengeID", value);
+			return this;
+		}
 	}
 	
 	public class LogChallengeEventRequest_PlayAgain : GSTypedRequest<LogChallengeEventRequest_PlayAgain, LogChallengeEventResponse>
@@ -546,6 +584,11 @@ namespace GameSparks.Api.Requests{
 		public LogChallengeEventRequest_PlayAgain SetChallengeInstanceId( String challengeInstanceId )
 		{
 			request.AddString("challengeInstanceId", challengeInstanceId);
+			return this;
+		}
+		public LogChallengeEventRequest_PlayAgain Set_challengeID( string value )
+		{
+			request.AddString("challengeID", value);
 			return this;
 		}
 	}
@@ -1071,6 +1114,32 @@ namespace GameSparks.Api.Messages {
 			static ScriptMessage_FriendRequest()
 			{
 				handlers.Add (".ScriptMessage_FriendRequest", Create);
+	
+			}
+			
+			override public void NotifyListeners()
+			{
+				if (Listener != null)
+				{
+					Listener (this);
+				}
+			}
+		}
+		public class ScriptMessage_GameDisconnected : ScriptMessage {
+		
+			public new static Action<ScriptMessage_GameDisconnected> Listener;
+	
+			public ScriptMessage_GameDisconnected(GSData data) : base(data){}
+	
+			private static ScriptMessage_GameDisconnected Create(GSData data)
+			{
+				ScriptMessage_GameDisconnected message = new ScriptMessage_GameDisconnected (data);
+				return message;
+			}
+	
+			static ScriptMessage_GameDisconnected()
+			{
+				handlers.Add (".ScriptMessage_GameDisconnected", Create);
 	
 			}
 			
