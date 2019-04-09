@@ -25,6 +25,6 @@ public class OpeningSceneController : MonoBehaviour
 
     private void ChangeScene()
     {
-        SceneManager.LoadScene("MainMenu");
+        GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("MainMenu");
     }
 }
