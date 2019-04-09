@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7195527754050608660}
   - component: {fileID: 2239938663008367932}
   - component: {fileID: 1806329225780934100}
+  - component: {fileID: 7735302292580596545}
   m_Layer: 5
   m_Name: Messages
   m_TagString: Untagged
@@ -104,6 +105,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &7735302292580596545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174666527017371336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99db7c193aec93540b9f384e617ae1ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1270347813843829938
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,7 +451,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8129292744656382745}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999997
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

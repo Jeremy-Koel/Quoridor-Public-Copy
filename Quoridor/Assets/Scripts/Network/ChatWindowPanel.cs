@@ -19,6 +19,7 @@ public class ChatWindowPanel : MonoBehaviour
     public GameObject globalChatButtonObject;
     private GameObject chatMessagesView;
     public RectTransform chatMessagesViewContent;
+    public GameObject chatMessagesBox;
     public VerticalLayoutGroup chatMessagesLayoutGroup;
     public List<GameObject> chatMessages;
     public GameObject lobbyMessagePrefab;
@@ -43,8 +44,12 @@ public class ChatWindowPanel : MonoBehaviour
             globalChatButtonObject.GetComponent<Button>().onClick.AddListener(SwitchToGlobalChat);
             chatInput = GameObject.Find("ChatInput");
             chatMessagesView = GameObject.Find("ChatMessagesView");
-            chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
-            chatMessagesLayoutGroup = GameObject.Find("Messages").GetComponent<VerticalLayoutGroup>();
+            var globalMessages = chatMessagesView.GetComponentsInChildren<GlobalMessagesScript>(true);
+            var globalMessagesEnum = globalMessages.GetEnumerator();
+            globalMessagesEnum.MoveNext();
+            chatMessagesBox = ((GlobalMessagesScript)globalMessagesEnum.Current).gameObject;
+            chatMessagesViewContent = GameObject.Find("GlobalMessages").GetComponent<RectTransform>();
+            chatMessagesLayoutGroup = GameObject.Find("GlobalMessages").GetComponent<VerticalLayoutGroup>();
             TeamChatMessage.Listener += TeamChatMessageRouter;
             ScriptMessage_JoinFriendTeam.Listener += JoinFriendTeam;
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
@@ -68,7 +73,9 @@ public class ChatWindowPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        listOfChatMessages = new List<List<GameObject>>();
+        teamIDs = new List<string>();
+        listOfFriendsMessagesContents = new List<RectTransform>();
     }
 
     // Update is called once per frame
@@ -160,21 +167,29 @@ public class ChatWindowPanel : MonoBehaviour
     public void SwitchActiveChat(string teamID, string playerName)
     {
         chatMessagesViewContent.gameObject.SetActive(false);
-        Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
-        int teamIDIndex = teamIDs.FindIndex(predicate);
-        if (teamIDIndex == -1)
-        {
-            // Create stuff
-            teamIDs.Add(teamID);
-            teamIDIndex = teamIDs.Count - 1;
-            ChatMessagesViewContentCreator();
-            chatSelectionPanel.AddChatSelectionButton(playerName, teamID);
-        }
+        int teamIDIndex = LookupTeam(teamID, playerName);
+        //Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
+        //int teamIDIndex = teamIDs.FindIndex(predicate);
+        //if (teamIDIndex == -1)
+        //{
+        //    // Create stuff
+        //    teamIDs.Add(teamID);
+        //    teamIDIndex = teamIDs.Count - 1;
+        //    ChatMessagesViewContentCreator();
+        //    chatSelectionPanel.AddChatSelectionButton(playerName, teamID);
+        //}
         int index = 0;
         // Set all friends chats to inactive (aside from the one we want)
-        var listOfFriendsMessagesContentsEnum = listOfFriendsMessagesContents.GetEnumerator();
+        var listOfFriendsMessagesContentsEnum = listOfFriendsMessagesContents.GetEnumerator(); // The list has a null item the second time this function is called after changing scenes
+        
+        
         while (listOfFriendsMessagesContentsEnum.MoveNext())
         {
+            // Let's try a wrecking ball
+            if (listOfFriendsMessagesContentsEnum.Current == null) 
+            {
+                FindChatMessagesContent();
+            }
             if (index == teamIDIndex)
             {
                 listOfFriendsMessagesContentsEnum.Current.parent.gameObject.SetActive(true);
@@ -216,6 +231,24 @@ public class ChatWindowPanel : MonoBehaviour
         //listOfFriendsMessagesContents.Add(friendChatMessagesRectTransform);
     }
 
+    private void FindChatMessagesContent()
+    {
+        // We are gonna clear that stuff out
+        listOfFriendsMessagesContents.Clear();
+        chatMessagesView = GameObject.Find("ChatMessagesView");
+        // Every messages object is going to have a messages script
+        var friendsChatMessages = chatMessagesView.GetComponentsInChildren<MessagesScript>(true);
+        // We want the rect transform of the component's gameObject
+        var friendsChatMessagesEnum = friendsChatMessages.GetEnumerator();
+        while (friendsChatMessagesEnum.MoveNext())
+        {
+            var currentFriendsChatMessages = (MessagesScript)friendsChatMessagesEnum.Current;
+            var currentRectTransform = currentFriendsChatMessages.gameObject.GetComponent<RectTransform>();
+            listOfFriendsMessagesContents.Add(currentRectTransform);
+        }
+        
+    }
+
     private void TeamChatMessageRouter(TeamChatMessage message)
     {
         string messageWho = message.Who.ToString();
@@ -226,7 +259,7 @@ public class ChatWindowPanel : MonoBehaviour
         string teamID = "0";
         if (chatMessagesViewContent == null)
         {
-            chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
+            chatMessagesViewContent = GameObject.Find("GlobalMessages").GetComponent<RectTransform>();
         }
         List<GameObject> friendChatMessages = chatMessages;
         RectTransform friendChatMessagesContent = chatMessagesViewContent;
@@ -237,32 +270,35 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             teamID = message.TeamId;
-            Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
-            int teamIDIndex = teamIDs.FindIndex(predicate);
-
-            // If the team ID does not exist in the list
-            if (teamIDIndex == -1)
-            {
-                teamIDs.Add(teamID);
-                teamIDIndex = teamIDs.Count - 1;
-                ChatMessagesViewContentCreator();
-                if (chatSelectionPanel == null)
-                {
-                    chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
-                }
-                // Doesn't work if message was sent by myself ( should be added in a send first )
-                chatSelectionPanel.AddChatSelectionButton(message.Who.ToString(), teamID);
-            }
-            else
-            {
-
-            }
+            //SwitchActiveChat(teamID, messageWho.ToString());
+            int teamIDIndex = LookupTeam(teamID, messageWho);
             friendChatMessages = listOfChatMessages[teamIDIndex];
-            friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];
-            SwitchActiveChat(teamID, messageWho.ToString());
+            FindChatMessagesContent();
+            friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];            
         }
         currentTeamID = teamID;
         BuildChatMessageUI(messageWho, messageMessage, lobbyMessagePrefab, friendChatMessagesContent, friendChatMessages);
+    }
+
+    private int LookupTeam(string teamID, string messageWho)
+    {
+        Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
+        int teamIDIndex = teamIDs.FindIndex(predicate);
+
+        // If the team ID does not exist in the list
+        if (teamIDIndex == -1)
+        {
+            teamIDs.Add(teamID);
+            teamIDIndex = teamIDs.Count - 1;
+            ChatMessagesViewContentCreator();
+            if (chatSelectionPanel == null)
+            {
+                chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
+            }
+            // Doesn't work if message was sent by myself ( should be added in a send first )
+            chatSelectionPanel.AddChatSelectionButton(messageWho, teamID);
+        }
+        return teamIDIndex;
     }
 
     //Called when Input changes
@@ -552,4 +588,28 @@ public class ChatWindowPanel : MonoBehaviour
         trs.offsetMin = new Vector2(left, bottom);
         trs.offsetMax = new Vector2(-right, -top) + trs.offsetMax;
     }
+
+    //public void ClearAllFriendsChats()
+    //{
+    //    teamIDs.Clear();
+
+    //    foreach (var chatMessages in listOfChatMessages)
+    //    {
+    //        foreach (var chatMessage in chatMessages)
+    //        {
+    //            //chatMessage.
+    //            GameObject.Destroy(chatMessage);
+    //        }
+    //        chatMessages.Clear();
+    //    }
+    //    listOfChatMessages.Clear();
+
+    //    chatSelectionPanel.ClearChatSelections();
+
+    //    foreach (var friendsMessages in listOfFriendsMessagesContents)
+    //    {
+    //        GameObject.Destroy(friendsMessages);
+    //    }
+    //    listOfFriendsMessagesContents.Clear();
+    //}
 }

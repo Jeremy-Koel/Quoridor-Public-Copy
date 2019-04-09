@@ -106,4 +106,13 @@ public class ChatSelectionPanel : MonoBehaviour
             }
         }
     }
+
+    public void ClearChatSelections()
+    {
+        foreach (var chatSelection in chatSelectionButtons)
+        {
+            GameObject.Destroy(chatSelection);
+        }
+        chatSelectionButtons.Clear();
+    }
 }

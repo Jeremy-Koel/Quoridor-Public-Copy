@@ -82,6 +82,7 @@ public class MainMenu : MonoBehaviour
     void OnDestroy()
     {
         ChallengeStartedMessage.Listener -= OnChallengeStarted;
+        GameObject.Destroy(lobbyPanel);
     }
 
     // Start is called before the first frame update
@@ -440,6 +441,16 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Challenge Started");
         // Switch to GameBoard Scene connected to opponent
         // SceneManager.LoadScene("GameBoard");
+        if (chatWindowPanel == null)
+        {
+            //chatWindowPanel = GameObject.Find("ChatWindowPanel");
+            var objectsChatWindow = Resources.FindObjectsOfTypeAll(typeof(ChatWindowPanel));
+            var objectsEnumer = objectsChatWindow.GetEnumerator();
+            objectsEnumer.MoveNext();
+            var gameObjectChat = (ChatWindowPanel)objectsEnumer.Current;
+            chatWindowPanel = gameObjectChat.gameObject;
+        }
+        //chatWindowPanel.GetComponent<ChatWindowPanel>().ClearAllFriendsChats();
         GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
     }
 
