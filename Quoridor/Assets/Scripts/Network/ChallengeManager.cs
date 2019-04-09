@@ -1,6 +1,7 @@
 ﻿using GameSparks.Api.Messages;
 using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,10 +63,23 @@ public class ChallengeManager : MonoBehaviour
         messageQueue = GameObject.Find("MessageQueue").GetComponent<MessageQueue>();
         eventManager.ListenToPlayAgain(PlayAgain);
         eventManager.ListenToGameOver(SetupChallengeListeners);
+        eventManager.ListenToLeavingOpponent(SendDisconnectMessage);
     }
 
     // Update is called once per frame
     void Update()
+    {
+
+    }
+
+    private void SendDisconnectMessage()
+    {
+        LogChallengeEventRequest_LeavingOpponent leavingOpponent = new LogChallengeEventRequest_LeavingOpponent();
+        leavingOpponent.SetChallengeInstanceId(ChallengeID);
+        leavingOpponent.Send(sendDisconnectResponse);
+    }
+
+    private void sendDisconnectResponse(LogChallengeEventResponse message)
     {
 
     }

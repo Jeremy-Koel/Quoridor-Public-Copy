@@ -132,7 +132,7 @@ public class MainMenu : MonoBehaviour
             if (loginPanel.activeSelf)
             {
                 Login(usernameLoginInput.text, passwordLoginInput.text);
-            }            
+            }
         }
         if (Input.GetAxisRaw("Tab") == 1)
         {
