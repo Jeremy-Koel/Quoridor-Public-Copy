@@ -64,6 +64,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Button hostGameButton;
 
+    private bool usernameSelected = false;
+    private bool passwordSelected = false;
+
     private void Awake()
     {
         ScriptMessage_GuestAccountDetails.Listener += OnGuestAccountDetails;
@@ -77,6 +80,9 @@ public class MainMenu : MonoBehaviour
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         matchmakingButton = GameObject.Find("MatchmakingSearchButton").GetComponent<Button>();
         audioController = GameObject.Find("MusicPlayer").GetComponent<AudioControllerMainMenu>();
+
+        //usernameLoginInput.OnSelect.//AddListener("onUsernameSelect");
+
     }
 
     void OnDestroy()
@@ -117,6 +123,33 @@ public class MainMenu : MonoBehaviour
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
         matching = false;
 
+    }
+
+    private void Update()
+    {
+        if (Input.GetAxisRaw("Submit") == 1)
+        {
+            if (loginPanel.activeSelf)
+            {
+                Login(usernameLoginInput.text, passwordLoginInput.text);
+            }            
+        }
+        if (Input.GetAxisRaw("Tab") == 1)
+        {
+            if (loginPanel.activeSelf)
+            {
+                if (usernameLoginInput.isFocused)
+                {
+                    passwordLoginInput.Select();
+                }
+            }
+        }
+
+    }
+
+    private void onUsernameSelect()
+    {
+        usernameSelected = true;
     }
 
     public void DeselectCurrentButton()
