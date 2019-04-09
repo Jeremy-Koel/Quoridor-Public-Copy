@@ -15,17 +15,17 @@ public class NewGameButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GameObject.Find("NewGameButton") != null)
-        {
-            newGameMenuButton = GameObject.Find("NewGameButton").GetComponent<Button>();
-            newGameMenuButton.interactable = false;
-            newGameMenuButton.gameObject.SetActive(false);
-            if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
-            {
-                newGameMenuButton.gameObject.SetActive(true);
-                newGameMenuButton.interactable = true;
-            }
-        }
+        //if (GameObject.Find("NewGameButton") != null)
+        //{
+        //    newGameMenuButton = GameObject.Find("NewGameButton").GetComponent<Button>();
+        //    newGameMenuButton.interactable = false;
+        //    //newGameMenuButton.gameObject.SetActive(false);
+        //    if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
+        //    {
+        //        //newGameMenuButton.gameObject.SetActive(true);
+        //        newGameMenuButton.interactable = true;
+        //    }
+        //}
         if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
             if (GameObject.Find("WinScreenNewGameButton") != null)

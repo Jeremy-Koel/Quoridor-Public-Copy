@@ -322,8 +322,8 @@ public class ChallengeManager : MonoBehaviour
         //if (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
         //{
         Debug.Log("Sending playAgain event to GS");
-        LogChallengeEventRequest request = new LogChallengeEventRequest();
-        request.SetChallengeInstanceId(ChallengeID);
+        LogEventRequest request = new LogEventRequest();
+        request.SetEventAttribute("challengeID", ChallengeID);
         request.SetEventKey("PlayAgain");
         request.Send(OnPlayAgainSuccess, OnPlayAgainError);
         //}
@@ -334,8 +334,8 @@ public class ChallengeManager : MonoBehaviour
         if (messageQueue.IsQueueEmpty(MessageQueue.QueueNameEnum.MATCHMAKINGGROUPNUMBER))
         {
             Debug.Log("Sending playAgain event to GS");
-            LogChallengeEventRequest request = new LogChallengeEventRequest();
-            request.SetChallengeInstanceId(ChallengeID);
+            LogEventRequest request = new LogEventRequest();
+            request.SetEventAttribute("challengeID", ChallengeID);
             request.SetEventKey("PlayAgain");
             request.Send(OnPlayAgainSuccess, OnPlayAgainError);
         }
@@ -345,12 +345,12 @@ public class ChallengeManager : MonoBehaviour
         }
     }
 
-    private void OnPlayAgainSuccess(LogChallengeEventResponse response)
+    private void OnPlayAgainSuccess(LogEventResponse response)
     {
         print(response.JSONString);
     }
 
-    private void OnPlayAgainError(LogChallengeEventResponse response)
+    private void OnPlayAgainError(LogEventResponse response)
     {
         print(response.Errors.JSON.ToString());
     }
