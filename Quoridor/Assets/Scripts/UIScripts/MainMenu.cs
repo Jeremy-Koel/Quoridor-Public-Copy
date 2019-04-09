@@ -404,13 +404,13 @@ public class MainMenu : MonoBehaviour
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
     {
-        UnblockInput();
+        UnblockMatchInput();
         Debug.Log("Matchmaking Success");
     }
 
     public void OnMatchmakingError(MatchmakingResponse response)
     {
-        UnblockInput();
+        UnblockMatchInput();
         Debug.Log("Matchmaking Error");
     }
 
@@ -433,7 +433,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnChallengeStarted(ChallengeStartedMessage message)
     {
-        UnblockInput();
+        UnblockMatchInput();
         HostedGameLobbies hostedGameLobbiesScript = GameObject.Find("HostedGameLobbies").GetComponent<HostedGameLobbies>();
         hostedGameLobbiesScript.RemoveRefreshHostedGamesListener();
 
@@ -446,7 +446,7 @@ public class MainMenu : MonoBehaviour
     // Login/Registration
     private void Login(string username, string password)
     {
-        BlockInput();
+        BlockLoginInput();
         AuthenticationRequest request = new AuthenticationRequest();
         request.SetUserName(username);
         request.SetPassword(password);
@@ -456,7 +456,7 @@ public class MainMenu : MonoBehaviour
 
     private void LoginAsAdmin()
     {
-        BlockInput();
+        BlockLoginInput();
         AuthenticationRequest request = new AuthenticationRequest();
         request.SetUserName(adminUsername);
         request.SetPassword(adminPassword);
@@ -465,13 +465,13 @@ public class MainMenu : MonoBehaviour
 
     private void OnAdminLoginSuccess(AuthenticationResponse response)
     {
-        UnblockInput();
+        UnblockLoginInput();
         Debug.Log("logged in as admin");
     }
 
     private void OnLoginSuccess(AuthenticationResponse response)
     {
-        UnblockInput();
+        UnblockLoginInput();
         errorMessageLoginText.color = new Color(0, 0, 0, 0);
         if (adminLogin)
         {
@@ -543,7 +543,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnLoginError(AuthenticationResponse response)
     {
-        UnblockInput();
+        UnblockLoginInput();
         errorMessageLoginText.color = Color.red;
         var errorText = "TAKEN";
         errorMessageLoginText.text = errorText;
@@ -564,7 +564,7 @@ public class MainMenu : MonoBehaviour
 
     private void Register()
     {
-        BlockInput();
+        BlockLoginInput();
         RegistrationRequest request = new RegistrationRequest();
         request.SetUserName(usernameLoginInput.text);
         request.SetDisplayName(usernameLoginInput.text);
@@ -579,7 +579,7 @@ public class MainMenu : MonoBehaviour
 
     private void OnRegistrationError(RegistrationResponse response)
     {
-        UnblockInput();
+        UnblockLoginInput();
         Login(usernameLoginInput.text, passwordLoginInput.text);
     }
 
@@ -609,13 +609,13 @@ public class MainMenu : MonoBehaviour
         lobbyPanel.SetActive(true);
     }
 
-    private void BlockInput()
+    private void BlockLoginInput()
     {
         loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
         loginButton.interactable = false;
     }
 
-    private void UnblockInput()
+    private void UnblockLoginInput()
     {
         loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
         loginButton.interactable = true;

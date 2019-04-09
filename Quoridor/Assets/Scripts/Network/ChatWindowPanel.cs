@@ -224,6 +224,10 @@ public class ChatWindowPanel : MonoBehaviour
         Debug.Log("Message sent by: " + messageWho);
 
         string teamID = "0";
+        if (chatMessagesViewContent == null)
+        {
+            chatMessagesViewContent = GameObject.Find("Messages").GetComponent<RectTransform>();
+        }
         List<GameObject> friendChatMessages = chatMessages;
         RectTransform friendChatMessagesContent = chatMessagesViewContent;
         if (message.TeamType == "GlobalTeam")
@@ -242,6 +246,10 @@ public class ChatWindowPanel : MonoBehaviour
                 teamIDs.Add(teamID);
                 teamIDIndex = teamIDs.Count - 1;
                 ChatMessagesViewContentCreator();
+                if (chatSelectionPanel == null)
+                {
+                    chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
+                }
                 // Doesn't work if message was sent by myself ( should be added in a send first )
                 chatSelectionPanel.AddChatSelectionButton(message.Who.ToString(), teamID);
             }
@@ -472,8 +480,8 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObjectPrefab, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
     {
-        if (gameObject.activeSelf)
-        {
+        //if (gameObject.activeSelf)
+        //{
             GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
             UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
             Text playerText = messageTextObjectChildrenText[0];
@@ -502,7 +510,7 @@ public class ChatWindowPanel : MonoBehaviour
             StartCoroutine(ScrollToBottom());
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-        }        
+        //}        
     }
 
     IEnumerator ScrollToBottom()
