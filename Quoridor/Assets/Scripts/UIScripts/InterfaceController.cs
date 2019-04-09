@@ -459,8 +459,7 @@ public class InterfaceController : MonoBehaviour
         isMouseShaking = false; //So that we can call this function next time
         Debug.Log("Done shaking!");
     }
-
-
+    
     private void shakeGameObject(GameObject objectToShake, float shakeDuration, float decreasePoint)
     {
         isMouseShaking = true;
@@ -482,4 +481,5 @@ public class InterfaceController : MonoBehaviour
         redLight.SetActive(false);
         greenLight.SetActive(false);
     }
+
 }
