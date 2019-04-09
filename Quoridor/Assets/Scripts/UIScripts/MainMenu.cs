@@ -69,7 +69,10 @@ public class MainMenu : MonoBehaviour
         ScriptMessage_GuestAccountDetails.Listener += OnGuestAccountDetails;
         ChallengeStartedMessage.Listener += OnChallengeStarted;
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
-        chatWindowPanel = GameObject.Find("ChatWindowPanel");
+        if (chatWindowPanel == null)
+        {
+            chatWindowPanel = GameObject.Find("ChatWindowPanel");
+        }        
         challengeManager = GameObject.Find("ChallengeManager");
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         matchmakingButton = GameObject.Find("MatchmakingSearchButton").GetComponent<Button>();
@@ -167,6 +170,14 @@ public class MainMenu : MonoBehaviour
         // Log user in
         adminLogin = false;
         Login(guestName, "password");
+        if (guestDetailsPanel == null)
+        {
+            var objectsOfGDP = Resources.FindObjectsOfTypeAll(typeof(GuestDetailsPanel));
+            var objectsEnumer = objectsOfGDP.GetEnumerator();
+            objectsEnumer.MoveNext();
+            var gameObjectC = (GuestDetailsPanel)objectsEnumer.Current;
+            guestDetailsPanel = gameObjectC.gameObject;
+        }
         // Tell them their guest name
         var textsEnum = guestDetailsPanel.GetComponentsInChildren<TMPro.TextMeshProUGUI>().GetEnumerator();
         while (textsEnum.MoveNext())
@@ -281,7 +292,7 @@ public class MainMenu : MonoBehaviour
             GameSession.PlayerTurnPref = PlayerTurnEnum.RANDOM;
         }
 
-
+        //ActivateAllPanels();
         // SceneManager.LoadScene("GameBoard");
         GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel("GameBoard");
     }
@@ -363,7 +374,7 @@ public class MainMenu : MonoBehaviour
 
     public void onMatchMakingButtonClick()
     {
-        BlockInput();
+        BlockMatchInput();
         BlockJoinHostGameButtons();
         if (matching)
         {
@@ -375,7 +386,7 @@ public class MainMenu : MonoBehaviour
             request.SetSkill(0);
             request.Send(OnMatchmakingSuccess, OnMatchmakingError);
             matching = false;
-            UnblockInput();
+            UnblockMatchInput();
             UnblockJoinHostGameButtons();
         }
         else
@@ -387,19 +398,19 @@ public class MainMenu : MonoBehaviour
             request.SetSkill(0);
             request.Send(OnMatchmakingSuccess, OnMatchmakingError);
             matching = true;
-            UnblockInput();
+            UnblockMatchInput();
         }        
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
     {
-        //UnblockInput();
+        UnblockInput();
         Debug.Log("Matchmaking Success");
     }
 
     public void OnMatchmakingError(MatchmakingResponse response)
     {
-        //UnblockInput();
+        UnblockInput();
         Debug.Log("Matchmaking Error");
     }
 
@@ -475,6 +486,15 @@ public class MainMenu : MonoBehaviour
             gameSparksUserIDScript.myUserID = response.UserId;
             gameSparksUserIDScript.myDisplayName = response.DisplayName;
             // Setup ChatWindowPanel
+            if (chatWindowPanel == null)
+            {
+                //chatWindowPanel = GameObject.Find("ChatWindowPanel");
+                var objectsChatWindow = Resources.FindObjectsOfTypeAll(typeof(ChatWindowPanel));
+                var objectsEnumer = objectsChatWindow.GetEnumerator();
+                objectsEnumer.MoveNext();
+                var gameObjectChat = (ChatWindowPanel)objectsEnumer.Current;
+                chatWindowPanel = gameObjectChat.gameObject;
+            }
             ChatWindowPanel chatWindowPanelScript = chatWindowPanel.GetComponent<ChatWindowPanel>();
             chatWindowPanelScript.CheckTeams();
             chatWindowPanel.GetComponent<RectTransform>().ForceUpdateRectTransforms();
@@ -482,12 +502,38 @@ public class MainMenu : MonoBehaviour
             ChallengeManager challengeManagerScript = challengeManager.GetComponent<ChallengeManager>();
             challengeManagerScript.SetupChallengeListeners();
 
+            if (loginPanel == null)
+            {
+                loginPanel = GameObject.Find("LoginPanel");
+            }
+            if (lobbyPanel == null)
+            {
+                var objectsOfMoveMS = Resources.FindObjectsOfTypeAll(typeof(MoveMultiplayerScreen));
+                var objectsEnumer = objectsOfMoveMS.GetEnumerator();
+                objectsEnumer.MoveNext();
+                var gameObjectC = (MoveMultiplayerScreen)objectsEnumer.Current;
+                lobbyPanel = gameObjectC.gameObject;
+            }
+            if (dummyMenuPanel == null)
+            {
+                var objectsOfDMP = Resources.FindObjectsOfTypeAll(typeof(DummyMenuPanel));
+                var objectsEnumer = objectsOfDMP.GetEnumerator();
+                objectsEnumer.MoveNext();
+                var gameObjectC = (DummyMenuPanel)objectsEnumer.Current;
+                dummyMenuPanel = gameObjectC.gameObject;
+            }
+            if (audioController == null)
+            {
+                var objectsOfAC = Resources.FindObjectsOfTypeAll(typeof(AudioControllerMainMenu));
+                var objectsEnumer = objectsOfAC.GetEnumerator();
+                objectsEnumer.MoveNext();
+                audioController = (AudioControllerMainMenu)objectsEnumer.Current;
+                //audioController = gameObjectC.gameObject;
+            }
+
             // Switch to the Lobby Panel
-            //panelOrder.Push(loginPanel);
             loginPanel.SetActive(false);
             dummyMenuPanel.SetActive(true);
-            //registrationPanel.SetActive(false);
-           // panelOrder.Push(lobbyPanel);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             audioController.PlayChalkboardMovingSound();
@@ -520,9 +566,6 @@ public class MainMenu : MonoBehaviour
     {
         BlockInput();
         RegistrationRequest request = new RegistrationRequest();
-        //request.SetUserName(usernameRegisterInput.text);
-        //request.SetDisplayName(displayNameInput.text);
-        //request.SetPassword(passwordRegisterInput.text);
         request.SetUserName(usernameLoginInput.text);
         request.SetDisplayName(usernameLoginInput.text);
         request.SetPassword(passwordLoginInput.text);
@@ -553,7 +596,6 @@ public class MainMenu : MonoBehaviour
         tutorialPanel.SetActive(false);
         settingsPanel.SetActive(false);
         loginPanel.SetActive(false);
-        //registrationPanel.SetActive(false);
         lobbyPanel.SetActive(false);
     }
 
@@ -564,26 +606,19 @@ public class MainMenu : MonoBehaviour
         tutorialPanel.SetActive(true);
         settingsPanel.SetActive(true);
         loginPanel.SetActive(true);
-        //registrationPanel.SetActive(true);
         lobbyPanel.SetActive(true);
     }
 
     private void BlockInput()
     {
-        //userNameInput.interactable = false;
-        //passwordInput.interactable = false;
+        loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
         loginButton.interactable = false;
-        //registerButton.interactable = false;
-        matchmakingButton.interactable = false;
     }
 
     private void UnblockInput()
     {
-        //userNameInput.interactable = true;
-        //passwordInput.interactable = true;
+        loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
         loginButton.interactable = true;
-        //registerButton.interactable = true;
-        matchmakingButton.interactable = true;
     }
 
     private void BlockJoinHostGameButtons()
@@ -595,5 +630,15 @@ public class MainMenu : MonoBehaviour
     {
         joinGameButton.interactable = true;
         hostGameButton.interactable = true;
+    }
+
+    private void BlockMatchInput()
+    {
+        matchmakingButton.interactable = false;
+    }
+
+    private void UnblockMatchInput()
+    {
+        matchmakingButton.interactable = true;
     }
 }
