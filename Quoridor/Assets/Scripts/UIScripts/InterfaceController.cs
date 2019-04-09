@@ -42,6 +42,7 @@ public class InterfaceController : MonoBehaviour
 
         eventManager.ListenToInvalidMove(SwitchTurnIndicatorToInvalidMove);
         eventManager.ListenToDisconnectAIEasy(SwitchToSingleplayer);
+        eventManager.ListenToDisconnectAIHard(SwitchToSingleplayer);
 
         if (GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
         {
