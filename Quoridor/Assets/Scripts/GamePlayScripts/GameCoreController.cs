@@ -132,21 +132,21 @@ public class GameCoreController : MonoBehaviour
 
     public Task<string> GetMoveFromAI()
     {
-        return GetMonteCarloMove();
+        return GetMonteCarloMove(GameSession.Difficulty == DifficultyEnum.HARD);
     }
 
     public Task<string> GetHintForPlayer()
     {
         if (GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
         {
-            return GetMonteCarloMove();
+            return GetMonteCarloMove(false);
         }
         else return null;
     }
 
-    private Task<string> GetMonteCarloMove()
+    private Task<string> GetMonteCarloMove(bool hard)
     {
-        MonteCarlo tree = new MonteCarlo(gameBoard, (GameSession.Difficulty == DifficultyEnum.HARD));
+        MonteCarlo tree = new MonteCarlo(gameBoard, hard);
         return Task.Run(() => tree.MonteCarloTreeSearch());
     }
 
