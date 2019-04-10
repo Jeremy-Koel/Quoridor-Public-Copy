@@ -82,7 +82,10 @@ public class MainMenu : MonoBehaviour
         audioController = GameObject.Find("MusicPlayer").GetComponent<AudioControllerMainMenu>();
 
         //usernameLoginInput.OnSelect.//AddListener("onUsernameSelect");
-
+        if (GameSession.FastAnimations)
+        {
+            GameObject.Find("FastAnimToggle").GetComponent<Toggle>().isOn = true;
+        }
     }
 
     void OnDestroy()
