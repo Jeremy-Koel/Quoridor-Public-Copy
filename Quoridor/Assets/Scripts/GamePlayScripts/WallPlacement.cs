@@ -44,7 +44,11 @@ public class WallPlacement : MonoBehaviour
             //Debug.Log("Entered Collider");
             if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
-                wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
+                SpriteRenderer wallHighlighSpriteRenderer = wallHighlight.GetComponent<SpriteRenderer>();
+                if (wallHighlighSpriteRenderer.color != Color.green)
+                {
+                    wallHighlighSpriteRenderer.color = Color.white;
+                }
             }
         }
     }
@@ -55,14 +59,22 @@ public class WallPlacement : MonoBehaviour
         {
             if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
-                wallHighlight.GetComponent<SpriteRenderer>().color = Color.white;
+                SpriteRenderer wallHighlighSpriteRenderer = wallHighlight.GetComponent<SpriteRenderer>();
+                if (wallHighlighSpriteRenderer.color != Color.green)
+                {
+                    wallHighlighSpriteRenderer.color = Color.white;
+                }
             }
         }
     }
     private void OnMouseExit()
     {
         //Debug.Log("Exited Collider");
-        wallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
+        SpriteRenderer wallHighlighSpriteRenderer = wallHighlight.GetComponent<SpriteRenderer>();
+        if (wallHighlighSpriteRenderer.color != Color.green)
+        {
+            wallHighlighSpriteRenderer.color = Color.clear;
+        }
     }
 
     private void OnMouseUpAsButton()
