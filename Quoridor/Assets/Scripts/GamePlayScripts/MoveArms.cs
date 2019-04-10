@@ -79,12 +79,12 @@ public class MoveArms : MonoBehaviour
     {
         if (name == "ScientistArmOne")
         {
-            Vector3 newTarget = new Vector3(pos.x, pos.y - 23, -2);
+            Vector3 newTarget = new Vector3(pos.x, pos.y - 18, -2);
             target = newTarget;
         }
         else if(name == "ScientistArmTwo")
         {
-            Vector3 newTarget = new Vector3(pos.x, pos.y + 23, -2);
+            Vector3 newTarget = new Vector3(pos.x, pos.y + 18, -2);
             target = newTarget;
         }
     }
