@@ -85,6 +85,12 @@ public class MainMenu : MonoBehaviour
         if (GameSession.FastAnimations)
         {
             GameObject.Find("FastAnimToggle").GetComponent<Toggle>().isOn = true;
+            GameObject.Find("SlowAnimToggle").GetComponent<Toggle>().isOn = false;
+        }
+        else
+        {
+            GameObject.Find("FastAnimToggle").GetComponent<Toggle>().isOn = false;
+            GameObject.Find("SlowAnimToggle").GetComponent<Toggle>().isOn = true;
         }
     }
 
