@@ -37,4 +37,9 @@ public class ButtonFontTMP : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         text.fontStyle = TMPro.FontStyles.Normal;
     }
+
+    public void SetFontToNormal()
+    {
+        text.fontStyle = TMPro.FontStyles.Normal;
+    }
 }

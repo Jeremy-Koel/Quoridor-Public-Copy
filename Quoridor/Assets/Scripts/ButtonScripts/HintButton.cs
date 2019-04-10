@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameCore;
+using UnityEngine.UI;
+
 public class HintButton : MonoBehaviour
 {
-    public InterfaceController interfaceController;
-    public GameCoreController gameCoreController;
-    public HighlightSquares highlightSquaresScript;
+    private HighlightSquares highlightSquaresScript;
+    private InterfaceController interfaceController;
+    private GameCoreController gameCoreController;
+    private Button hintButton;
+    private ButtonFontTMP hintButtonFont;
     private GameObject hintWallHighlight;
+    private bool clicked = false;
+
 
     private void Awake()
     {
@@ -18,7 +24,9 @@ public class HintButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        highlightSquaresScript = GameObject.Find("GameBoard").GetComponent<HighlightSquares>();   
+        highlightSquaresScript = GameObject.Find("GameBoard").GetComponent<HighlightSquares>();
+        hintButton = GameObject.Find("HintButton").GetComponent<Button>();
+        hintButtonFont = hintButton.transform.GetChild(0).gameObject.GetComponent<ButtonFontTMP>();
     }
 
     // Update is called once per frame
@@ -26,22 +34,51 @@ public class HintButton : MonoBehaviour
     {
         if (interfaceController.GetWhoseTurn() != GameBoard.PlayerEnum.ONE)
         {
-            hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
+            if (hintWallHighlight != null)
+            {
+                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
+                hintWallHighlight = null;
+            }
+
+            clicked = false;
+            hintButton.interactable = false;
+            hintButtonFont.SetFontToNormal();
+            hintButtonFont.enabled = false;
+            
+        }
+        else
+        {
+            if (!clicked)
+            {
+                hintButton.interactable = true;
+                hintButtonFont.enabled = true;
+            }
+            else
+            {
+                hintButton.interactable = false;
+                hintButtonFont.SetFontToNormal();
+                hintButtonFont.enabled = false;
+            }
         }
     }
 
     public async void OnHintButtonClick()
     {
-        if (highlightSquaresScript.showHint)
-        {
-            highlightSquaresScript.showHint = false;
-            if (hintWallHighlight != null)
-            {
-                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
-            }
-        }
-        else
-        {
+        //if (highlightSquaresScript.showHint)
+        //{
+        //    highlightSquaresScript.showHint = false;
+        //    if (hintWallHighlight != null)
+        //    {
+        //        hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
+        //    }
+        //}
+        //else
+        //{
+
+        //if (!highlightSquaresScript.showHint && hintWallHighlight == null && interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+        //{
+
+        clicked = true;
 
             string hint = await gameCoreController.GetHintForPlayer();
             Debug.Log(hint);
@@ -58,6 +95,7 @@ public class HintButton : MonoBehaviour
                 hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
             }
         }
-    }
+    
+   // }
     
 }
