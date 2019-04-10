@@ -54,7 +54,8 @@ public class FriendsChatPanel : MonoBehaviour
             }
             else
             {
-                float step = speed * Time.deltaTime; // calculate distance to move
+                //float step = speed * Time.deltaTime; // calculate distance to move
+                float step = FastAnimations.CalculateSpeed(speed);
                 Vector2 transformPosition = new Vector2(friendsChatPanelRectTransform.localPosition.x, friendsChatPanelRectTransform.localPosition.y);
                 friendsChatPanelRectTransform.localPosition = Vector2.MoveTowards(transformPosition, target, step);
                 SetTarget(friendsChatPanelRectTransform.localPosition);

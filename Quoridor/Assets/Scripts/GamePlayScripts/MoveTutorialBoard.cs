@@ -33,7 +33,8 @@ public class MoveTutorialBoard : MonoBehaviour
                 target = origPos;
             }
 
-            float step = speed * Time.deltaTime; // calculate distance to move
+            //float step = speed * Time.deltaTime; // calculate distance to move
+            float step = FastAnimations.CalculateSpeed(speed);
             transform.position = Vector3.MoveTowards(transform.position, target, step);
 
             if (transform.position == target)
