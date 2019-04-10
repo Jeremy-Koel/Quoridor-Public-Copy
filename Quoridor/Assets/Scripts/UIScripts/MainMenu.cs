@@ -643,8 +643,8 @@ public class MainMenu : MonoBehaviour
 
     private void OnLeaderboardsClick()
     {
-        LeaderboardPanel leaderboardPanelScript = GameObject.Find("LeaderboardPanel").GetComponent<LeaderboardPanel>();
-        leaderboardPanelScript.onRefreshLeaderboardButtonClick();
+        //LeaderboardPanel leaderboardPanelScript = GameObject.Find("LeaderboardPanel").GetComponent<LeaderboardPanel>();
+        //leaderboardPanelScript.onRefreshLeaderboardButtonClick();
     }
 
     public void InactivateAllPanels()

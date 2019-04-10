@@ -29,7 +29,7 @@ public class LeaderboardPanel : MonoBehaviour
         playersList = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         refreshLeaderboardButton = GameObject.Find("RefreshLeaderboardListButton").GetComponent<Button>();
-        refreshLeaderboardButton.onClick.AddListener(onRefreshLeaderboardButtonClick);
+        //refreshLeaderboardButton.onClick.AddListener(onRefreshLeaderboardButtonClick);
     }
 
     // Start is called before the first frame update
