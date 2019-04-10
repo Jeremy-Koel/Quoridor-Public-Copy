@@ -260,6 +260,11 @@ public class MainMenu : MonoBehaviour
         }        
     }
 
+    public void onFastAnimClick()
+    {
+        GameSession.FastAnimations = GameObject.Find("FastAnimToggle").GetComponent<Toggle>().isOn;
+    }
+
     //public void onRegistrationSwitchClick()
     //{
     //    usernameRegisterInput.text = usernameLoginInput.text;

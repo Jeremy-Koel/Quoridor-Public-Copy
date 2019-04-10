@@ -16,6 +16,7 @@ public static class GameSession
     public static float EffectVolumePref { get; set; }
     public static int WinCount { get; set; }
     public static bool ForceAiMove { get; set; }
+    public static bool FastAnimations { get; set; }
 
     static GameSession()
     {
@@ -26,6 +27,7 @@ public static class GameSession
         EffectVolumePref = 1.0f;
         WinCount = 0;
         ForceAiMove = false;
+        FastAnimations = false;
     }
 
 

@@ -39,7 +39,8 @@ public class MoveArms : MonoBehaviour
         {
             if (isChatArm)
             {
-                float step = chatSpeed * Time.deltaTime; // calculate distance to move
+                //float step = chatSpeed * Time.deltaTime; // calculate distance to move
+                float step = FastAnimations.CalculateSpeed(chatSpeed);
                 Vector2 transformPosition = new Vector2(chatArmRectTransform.localPosition.x,
                                                 chatArmRectTransform.localPosition.y);
 
