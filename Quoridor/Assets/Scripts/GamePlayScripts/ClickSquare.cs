@@ -11,61 +11,22 @@ public class ClickSquare : MonoBehaviour
     //private ClickMouse playerClickMouseScript;
     // private ClickMouse opponentClickMouseScript;
     private InterfaceController interfaceController;
-    private Material highlightMat;
-    private Material gameSquareMat;
-    private List<string> possibleMoves;
     private MoveArms armTwoScript;
     private MoveMouse opponentMoveMouseScript;
+
     // Start is called before the first frame update
     void Start()
     {
         playerMouse = GameObject.Find("playerMouse");
         opponentMouse = GameObject.Find("opponentMouse");
 
+        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         armTwoScript = GameObject.Find("ScientistArmTwo").GetComponent<MoveArms>();
         opponentMoveMouseScript = GameObject.Find("opponentMouse").GetComponent<MoveMouse>();
-
-        // playerClickMouseScript = playerMouse.GetComponent<ClickMouse>();
-        // opponentClickMouseScript = opponentMouse.GetComponent<ClickMouse>();
-
-        interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
-        highlightMat = Resources.Load("highlightColor", typeof(Material)) as Material;
-        possibleMoves = new List<string>();
-        gameSquareMat = Resources.Load("cubeColor", typeof(Material)) as Material;
     }
 
     void Update()
     {
-        //if (armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
-        //{
-            if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
-            {
-            
-                possibleMoves = interfaceController.GetPossibleMoves();
-                foreach (string move in possibleMoves)
-                {
-                    GameObject square = GameObject.Find(move);
-                    square.GetComponent<Renderer>().material = highlightMat;
-                }
-            }
-            else
-            {
-                foreach (string move in possibleMoves)
-                {
-                    GameObject square = GameObject.Find(move);
-                    square.GetComponent<Renderer>().material = gameSquareMat;
-                }
-            }
-        //}
-        //else
-        //{
-        //    foreach (string move in possibleMoves)
-        //    {
-        //        GameObject square = GameObject.Find(move);
-        //        square.GetComponent<Renderer>().material = gameSquareMat;
-        //    }
-        //}
-
 
     }
     //private void OnMouseEnter()

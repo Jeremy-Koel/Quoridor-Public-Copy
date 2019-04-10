@@ -6,6 +6,8 @@ public class HintButton : MonoBehaviour
 {
     public InterfaceController interfaceController;
     public GameCoreController gameCoreController;
+    public HighlightSquares highlightSquaresScript;
+
 
     private void Awake()
     {
@@ -15,19 +17,32 @@ public class HintButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        highlightSquaresScript = GameObject.Find("GameBoard").GetComponent<HighlightSquares>();   
     }
 
     // Update is called once per frame
     void Update()
     {
         
+
+
     }
 
     public async void OnHintButtonClick()
     {
-        string hint = await gameCoreController.GetHintForPlayer();
-        Debug.Log(hint);
+        if (highlightSquaresScript.showHint)
+        {
+            highlightSquaresScript.showHint = false;
+        }
+        else
+        {
+
+            string hint = await gameCoreController.GetHintForPlayer();
+            //Debug.Log(hint);
+
+            highlightSquaresScript.moveHint = hint;
+            highlightSquaresScript.showHint = true;
+        }
     }
     
 }
