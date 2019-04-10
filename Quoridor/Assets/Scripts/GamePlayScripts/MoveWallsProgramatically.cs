@@ -45,7 +45,8 @@ public class MoveWallsProgramatically : MonoBehaviour
             {
                 moveArmsOne.moveArm = true;
 
-                float step = speed * Time.deltaTime; // calculate distance to move
+                //float step = speed * Time.deltaTime; // calculate distance to move
+                float step = FastAnimations.CalculateSpeed(speed);
                 transform.position = Vector3.MoveTowards(transform.position, target, step);
 
                 if (transform.position == target)
@@ -61,13 +62,14 @@ public class MoveWallsProgramatically : MonoBehaviour
                 //{
                     moveArmsTwo.moveArm = true;
 
-                    float step = speed * Time.deltaTime; // calculate distance to move
-                    transform.position = Vector3.MoveTowards(transform.position, target, step);
+                //float step = speed * Time.deltaTime; // calculate distance to move
+                float step = FastAnimations.CalculateSpeed(speed);
+                transform.position = Vector3.MoveTowards(transform.position, target, step);
 
-                    if (transform.position == target)
-                    {
-                        moveWall = false;
-                    }
+                if (transform.position == target)
+                {
+                    moveWall = false;
+                }
                // }
                 //else
                 //{

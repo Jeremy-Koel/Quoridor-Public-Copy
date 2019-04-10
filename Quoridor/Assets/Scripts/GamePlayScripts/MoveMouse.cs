@@ -30,15 +30,16 @@ public class MoveMouse : MonoBehaviour
             //if((name == "playerMouse") || (name == "opponentMouse" && playerMoveMouseScript.moveMouse == false && playerMoveArmScript.moveArm == false))
             //{
 
-                float step = speed * Time.deltaTime; // calculate distance to move
-                transform.position = Vector3.MoveTowards(transform.position, target, step);
+            //float step = speed * Time.deltaTime; // calculate distance to move
+            float step = FastAnimations.CalculateSpeed(speed);
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
 
-                if (transform.position == target)
-                {
-                    moveMouse = false;
-                    transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
-                    transform.localScale = new Vector3(.05f, .05f, transform.localScale.z);
-                }
+            if (transform.position == target)
+            {
+                moveMouse = false;
+                transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
+                transform.localScale = new Vector3(.05f, .05f, transform.localScale.z);
+            }
             //}
         }
     }
