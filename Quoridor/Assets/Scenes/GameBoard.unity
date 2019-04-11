@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8751,7 +8751,7 @@ MonoBehaviour:
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 1385438536}
-  - {fileID: 0}
+  - {fileID: 1625666819}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -10999,10 +10999,10 @@ MonoBehaviour:
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 84149848}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 564403832}
+  - {fileID: 254877176}
+  - {fileID: 2096070199}
+  - {fileID: 2069190811}
   - {fileID: 0}
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
@@ -21776,10 +21776,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 2145340560}
   - {fileID: 1281668219}
-  - {fileID: 0}
-  - {fileID: 2145340560}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1421817511}
+  - {fileID: 1213674006}
+  - {fileID: 1564352950}
+  - {fileID: 796469137}
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
