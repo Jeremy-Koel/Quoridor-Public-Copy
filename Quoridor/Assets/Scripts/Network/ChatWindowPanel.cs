@@ -92,7 +92,6 @@ public class ChatWindowPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(BuyTime(counter));
         listOfChatMessages = new List<List<GameObject>>();
         teamIDs = new List<string>();
         listOfFriendsMessagesContents = new List<RectTransform>();
@@ -485,8 +484,7 @@ public class ChatWindowPanel : MonoBehaviour
                 BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
                 //make time
                 pdaFlash.SetActive(true);
-                BuyTime(counter);
-                pdaFlash.SetActive(false);
+                StartCoroutine(BuyTime(counter));
             }
         }
     }
@@ -533,10 +531,10 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             // flash
-            pdaFlash.SetActive(true);
+            // pdaFlash.SetActive(true);
             // make time
-            BuyTime(counter);
-            pdaFlash.SetActive(false);
+            StartCoroutine(BuyTime(counter));
+            // pdaFlash.SetActive(false);
         }
         BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
@@ -642,7 +640,8 @@ public class ChatWindowPanel : MonoBehaviour
 
     IEnumerator BuyTime (Transform counter)
     {
-        yield return new WaitForSeconds(3f);
-
+        pdaFlash.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        pdaFlash.SetActive(false);
     }
 }
