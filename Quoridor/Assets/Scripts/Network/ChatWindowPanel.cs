@@ -546,9 +546,9 @@ public class ChatWindowPanel : MonoBehaviour
         //if (gameObject.activeSelf)
         //{
             GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
-            UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
-            Text playerText = messageTextObjectChildrenText[0];
-            Text messageText = messageTextObjectChildrenText[1];
+            var messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
+            TMPro.TextMeshProUGUI playerText = messageTextObjectChildrenText[0];
+            TMPro.TextMeshProUGUI messageText = messageTextObjectChildrenText[1];
 
             if (messageWho.Length >= 20)
             {
@@ -588,9 +588,9 @@ public class ChatWindowPanel : MonoBehaviour
     private void AddSpacingMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages, GameObject chatMessageObjectPrefab) 
     {
         GameObject messageTextObject = Instantiate(chatMessageObjectPrefab) as GameObject;
-        UnityEngine.UI.Text[] messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<Text>();
-        Text playerText = messageTextObjectChildrenText[0];
-        Text messageText = messageTextObjectChildrenText[1];
+        var messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
+        TMPro.TextMeshProUGUI playerText = messageTextObjectChildrenText[0];
+        TMPro.TextMeshProUGUI messageText = messageTextObjectChildrenText[1];
         playerText.text = "____________________";
         messageText.text = "";
 
