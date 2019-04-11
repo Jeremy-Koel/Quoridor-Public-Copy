@@ -9,6 +9,7 @@ public class HintButton : MonoBehaviour
     private HighlightSquares highlightSquaresScript;
     private InterfaceController interfaceController;
     private GameCoreController gameCoreController;
+    private EventManager eventManager;
     private Button hintButton;
     private ButtonFontTMP hintButtonFont;
     private GameObject hintWallHighlight;
@@ -19,6 +20,7 @@ public class HintButton : MonoBehaviour
     {
         gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
     }
 
     // Start is called before the first frame update
@@ -64,6 +66,7 @@ public class HintButton : MonoBehaviour
 
     public async void OnHintButtonClick()
     {
+        eventManager.InvokeHintCalcStart();
         //if (highlightSquaresScript.showHint)
         //{
         //    highlightSquaresScript.showHint = false;
@@ -80,20 +83,21 @@ public class HintButton : MonoBehaviour
 
         clicked = true;
 
-            string hint = await gameCoreController.GetHintForPlayer();
-            Debug.Log(hint);
+        string hint = await gameCoreController.GetHintForPlayer();
+        eventManager.InvokeHintCalcEnd();
+        Debug.Log(hint);
 
-            if (hint.Length < 3)
-            {
+        if (hint.Length < 3)
+        {
 
-                highlightSquaresScript.moveHint = hint;
-                highlightSquaresScript.showHint = true;
-            }
-            else
-            {
-                hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
-                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
-            }
+            highlightSquaresScript.moveHint = hint;
+            highlightSquaresScript.showHint = true;
+        }
+        else
+        {
+            hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
+            hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
+        }
         }
     
    // }

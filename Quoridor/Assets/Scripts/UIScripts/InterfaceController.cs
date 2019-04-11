@@ -228,6 +228,9 @@ public class InterfaceController : MonoBehaviour
                 challengeManagerScript.Move(move);
             }
 
+            // Put away hint calc if it's still up
+            eventManager.InvokeHintCalcEnd();
+
             // Switch turn indicator 
             SwitchTurnIndicatorToOpponent();
 

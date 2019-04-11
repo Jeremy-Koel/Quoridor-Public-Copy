@@ -41,6 +41,9 @@ public class EventManager : MonoBehaviour
 
     private UnityEvent LeavingOpponent = new UnityEvent();
 
+    private UnityEvent HintCalcStart = new UnityEvent();
+    private UnityEvent HintCalcEnd = new UnityEvent();
+
     // For AI Game
     private UnityEvent TurnTaken = new UnityEvent();
 
@@ -402,5 +405,29 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("MultiplayerSelected Invoked");
         MultiplayerSelected.Invoke();
+    }
+
+    public void ListenToHintCalcStart(UnityAction action)
+    {
+        Debug.Log("HintCalcStart Listener Added");
+        HintCalcStart.AddListener(action);
+    }
+
+    public void InvokeHintCalcStart()
+    {
+        Debug.Log("HintCalcStart Invoked");
+        HintCalcStart.Invoke();
+    }
+
+    public void ListenToHintCalcEnd(UnityAction action)
+    {
+        Debug.Log("HintCalcEnd Listener Added");
+        HintCalcEnd.AddListener(action);
+    }
+
+    public void InvokeHintCalcEnd()
+    {
+        Debug.Log("HintCalcEnd Invoked");
+        HintCalcEnd.Invoke();
     }
 }

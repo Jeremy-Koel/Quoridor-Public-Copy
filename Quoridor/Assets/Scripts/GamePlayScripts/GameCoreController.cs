@@ -158,7 +158,10 @@ public class GameCoreController : MonoBehaviour
         {
             return GetMonteCarloMove(false);
         }
-        else return null;
+        else
+        {
+            return null;
+        }
     }
 
     private Task<string> GetMonteCarloMove(bool hard)
