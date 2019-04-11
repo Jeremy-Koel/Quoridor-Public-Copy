@@ -9,14 +9,20 @@ public class AudioControllerMainMenu : MonoBehaviour
     public AudioSource chalkWritingSource;
     public AudioSource chalkboardMovingSource;
 
+    private void Awake()
+    {
+        chalkWritingSource = GameObject.Find("SoundEffectPlayer").GetComponent<AudioSource>();
+        chalkboardMovingSource = GameObject.Find("SoundEffectPlayerChalkBoardMoving").GetComponent<AudioSource>();
+
+        chalkboardMovingSource.pitch = 1.35f;
+        chalkboardMovingSource.Play();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         mixer.SetFloat("BackgroundVolume", Mathf.Log10(GameSession.BackgroundVolumePref) * 50);
         mixer.SetFloat("EffectsVolume", Mathf.Log10(GameSession.EffectVolumePref) * 50);
-
-        chalkWritingSource = GameObject.Find("SoundEffectPlayer").GetComponent<AudioSource>();
-        chalkboardMovingSource = GameObject.Find("SoundEffectPlayerChalkBoardMoving").GetComponent<AudioSource>();
     }
 
     public void PlayChalkWritingSound()
@@ -25,6 +31,10 @@ public class AudioControllerMainMenu : MonoBehaviour
     }
     public void PlayChalkboardMovingSound()
     {
+        if (chalkboardMovingSource.pitch != 1f)
+        {
+            chalkboardMovingSource.pitch = 1f;
+        }
         chalkboardMovingSource.Play();
     }
 
