@@ -9,6 +9,7 @@ public class GameCoreController : MonoBehaviour
     private GameBoard gameBoard;
     private Dictionary<string, PlayerCoordinate> spaceCoordMap;
     private Dictionary<string, WallCoordinate> wallCoordMap;
+    private HashSet<string> possibleWalls;
     private EventManager eventManager;
     private InterfaceController interfaceController;
 
@@ -51,6 +52,8 @@ public class GameCoreController : MonoBehaviour
             eventManager.InvokeLocalPlayerMoved();
             interfaceController.SwitchTurnIndicatorToOpponent();
         }
+
+        RefreshPossibleWalls();
     }
 
     public void AddToSpaceMap(string name)
@@ -61,6 +64,16 @@ public class GameCoreController : MonoBehaviour
     public void AddToWallMap(string name)
     {
         wallCoordMap.Add(name, new WallCoordinate(name));
+    }
+
+    private void RefreshPossibleWalls()
+    {
+        possibleWalls = new HashSet<string>(gameBoard.GetPossibleWalls());
+    }
+
+    public HashSet<string> GetPossibleWalls()
+    {
+        return possibleWalls;
     }
 
     public void ResetGameBoard()
@@ -120,6 +133,10 @@ public class GameCoreController : MonoBehaviour
         else if (moveString.Length == 3)
         {
             returnValue = gameBoard.PlaceWall(player, new WallCoordinate(moveString));
+            if (returnValue)
+            {
+                RefreshPossibleWalls();
+            }
         }
 
         if (returnValue && GameSession.GameMode == GameModeEnum.SINGLE_PLAYER)
