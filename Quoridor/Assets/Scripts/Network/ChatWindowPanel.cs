@@ -37,7 +37,9 @@ public class ChatWindowPanel : MonoBehaviour
     public GameObject friendChatMessagesBoxPrefab;
     [SerializeField]
     public ChallengeManager challengeManager;
-
+    [SerializeField]
+    public GameObject pdaFlash;
+    public Transform counter;
     // A list of each list of a friend's chat messages
     [SerializeField]
     private List<List<GameObject>> listOfChatMessages;
@@ -52,6 +54,7 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void Awake()
     {
+        
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             globalChatButtonObject = GameObject.Find("GlobalChatButton");
@@ -74,6 +77,8 @@ public class ChatWindowPanel : MonoBehaviour
         }
         else
         {
+            pdaFlash = GameObject.Find("PDA Flash");
+            pdaFlash.SetActive(false);
             challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
             chatInput = GameObject.Find("InGameChatInput");
             chatMessagesView = GameObject.Find("InGameChatMessagesView");
@@ -87,6 +92,7 @@ public class ChatWindowPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(BuyTime(counter));
         listOfChatMessages = new List<List<GameObject>>();
         teamIDs = new List<string>();
         listOfFriendsMessagesContents = new List<RectTransform>();
@@ -477,6 +483,10 @@ public class ChatWindowPanel : MonoBehaviour
                     aiMessage = AIChat.GetHardAIMessage();
                 }
                 BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
+                //make time
+                pdaFlash.SetActive(true);
+                BuyTime(counter);
+                pdaFlash.SetActive(false);
             }
         }
     }
@@ -515,7 +525,19 @@ public class ChatWindowPanel : MonoBehaviour
         }        
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
-        
+        //GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>()
+        if (challengeManager.CurrentPlayerInfo.PlayerDisplayName == messageWho)
+        {
+
+        }
+        else
+        {
+            // flash
+            pdaFlash.SetActive(true);
+            // make time
+            BuyTime(counter);
+            pdaFlash.SetActive(false);
+        }
         BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
 
@@ -617,4 +639,10 @@ public class ChatWindowPanel : MonoBehaviour
     //    }
     //    listOfFriendsMessagesContents.Clear();
     //}
+
+    IEnumerator BuyTime (Transform counter)
+    {
+        yield return new WaitForSeconds(3f);
+
+    }
 }

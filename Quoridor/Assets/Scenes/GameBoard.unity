@@ -8338,6 +8338,7 @@ RectTransform:
   m_LocalScale: {x: 1.9333332, y: 1.8043938, z: 1.7184999}
   m_Children:
   - {fileID: 1132438617}
+  - {fileID: 1592150042}
   m_Father: {fileID: 408964008}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14326,6 +14327,8 @@ MonoBehaviour:
     type: 3}
   friendChatMessagesBoxPrefab: {fileID: 0}
   challengeManager: {fileID: 0}
+  pdaFlash: {fileID: 0}
+  counter: {fileID: 0}
   teamIDs: []
   listOfFriendsMessagesContents: []
 --- !u!222 &1132438619
@@ -18126,6 +18129,109 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1570884251}
+  m_CullTransparentMesh: 0
+--- !u!1 &1592150041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1592150042}
+  - component: {fileID: 1592150045}
+  - component: {fileID: 1592150044}
+  - component: {fileID: 1592150043}
+  m_Layer: 5
+  m_Name: PDA Flash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1592150042
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592150041}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.99999994}
+  m_LocalScale: {x: 0.12264891, y: 0.118565805, z: 1}
+  m_Children: []
+  m_Father: {fileID: 337433098}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.64902115, y: 17.432997}
+  m_SizeDelta: {x: 950, y: 1025}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1592150043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592150041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69856e80f85612c4eae5419cc680ab1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatSelectionPanel: {fileID: 0}
+  chatInput: {fileID: 0}
+  globalChatButtonObject: {fileID: 0}
+  chatMessagesView: {fileID: 0}
+  chatMessagesViewContent: {fileID: 0}
+  chatMessagesBox: {fileID: 0}
+  chatMessagesLayoutGroup: {fileID: 0}
+  chatMessages: []
+  lobbyMessagePrefab: {fileID: 0}
+  inGameMessagePrefab: {fileID: 0}
+  friendChatMessagesBoxPrefab: {fileID: 0}
+  challengeManager: {fileID: 0}
+  pdaFlash: {fileID: 0}
+  counter: {fileID: 0}
+  teamIDs: []
+  listOfFriendsMessagesContents: []
+--- !u!114 &1592150044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592150041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.9133985, g: 1, b: 0.4009434, a: 0.3019608}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: b492f80b79d16ac4a885288c886ce658, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!222 &1592150045
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592150041}
   m_CullTransparentMesh: 0
 --- !u!1 &1593204937
 GameObject:
