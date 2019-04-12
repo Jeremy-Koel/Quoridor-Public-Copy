@@ -54,7 +54,8 @@ public class ChatWindowPanel : MonoBehaviour
 
     private void Awake()
     {
-        
+        pdaFlash = GameObject.Find("PDA Flash");
+        pdaFlash.SetActive(false);
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             globalChatButtonObject = GameObject.Find("GlobalChatButton");
@@ -76,9 +77,7 @@ public class ChatWindowPanel : MonoBehaviour
             chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
         }
         else
-        {
-            pdaFlash = GameObject.Find("PDA Flash");
-            pdaFlash.SetActive(false);
+        {  
             challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
             chatInput = GameObject.Find("InGameChatInput");
             chatMessagesView = GameObject.Find("InGameChatMessagesView");
@@ -481,10 +480,9 @@ public class ChatWindowPanel : MonoBehaviour
                 {
                     aiMessage = AIChat.GetHardAIMessage();
                 }
-                BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
                 //make time
-                pdaFlash.SetActive(true);
-                StartCoroutine(BuyTime(counter));
+                StartCoroutine(WaitForAI(counter, aiMessage));
+                pdaFlash.SetActive(true); 
             }
         }
     }
@@ -530,11 +528,8 @@ public class ChatWindowPanel : MonoBehaviour
         }
         else
         {
-            // flash
-            // pdaFlash.SetActive(true);
             // make time
             StartCoroutine(BuyTime(counter));
-            // pdaFlash.SetActive(false);
         }
         BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
@@ -641,7 +636,14 @@ public class ChatWindowPanel : MonoBehaviour
     IEnumerator BuyTime (Transform counter)
     {
         pdaFlash.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.375f);
         pdaFlash.SetActive(false);
+    }
+
+    IEnumerator WaitForAI(Transform counter, string aiMessage)
+    {
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(BuyTime(counter));
+        BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
 }
