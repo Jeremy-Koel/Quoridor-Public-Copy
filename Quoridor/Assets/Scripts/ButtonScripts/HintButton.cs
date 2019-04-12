@@ -87,19 +87,36 @@ public class HintButton : MonoBehaviour
         eventManager.InvokeHintCalcEnd();
         Debug.Log(hint);
 
-        if (hint.Length < 3)
-        {
+            if (hint.Length < 3)
+            {
 
-            highlightSquaresScript.moveHint = hint;
-            highlightSquaresScript.showHint = true;
+                highlightSquaresScript.moveHint = hint;
+                highlightSquaresScript.showHint = true;
+                Invoke("flashHighlight", .30f);
+                Invoke("flashHighlight", .30f);
+            Invoke("flashHighlight", .30f);
+
+
         }
-        else
-        {
-            hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
-            hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
-        }
+            else
+            {
+                hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
+                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
+            }
         }
     
    // }
     
+    private void flashHighlight()
+    {
+        if(highlightSquaresScript.showHint)
+        {
+            highlightSquaresScript.showHint = false;
+            Invoke("flashHighlight", .30f);
+        }
+        else
+        {
+            highlightSquaresScript.showHint = true;
+        }
+    }
 }
