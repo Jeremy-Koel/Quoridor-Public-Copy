@@ -4939,7 +4939,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.36862746, g: 0.4666667, b: 0.41176474, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4956,19 +4956,19 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 282881585}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1708218897}
+      - m_Target: {fileID: 1460298482}
         m_MethodName: MoveContentPane
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 50
+          m_FloatArgument: 225
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -6519,7 +6519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000018266073}
+  m_AnchoredPosition: {x: 0, y: 0.00002621132}
   m_SizeDelta: {x: 0, y: 900}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &380757528
@@ -12003,7 +12003,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.36862746, g: 0.4666667, b: 0.41176474, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -12020,19 +12020,19 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 713800642}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1708218897}
+      - m_Target: {fileID: 1460298482}
         m_MethodName: MoveContentPane
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: -50
+          m_FloatArgument: -225
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -19720,7 +19720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -120, y: -0.000086284475}
+  m_AnchoredPosition: {x: -120, y: -0.000093189046}
   m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1332391970
@@ -20840,6 +20840,12 @@ MonoBehaviour:
     type: 3}
   challengeManager: {fileID: 7541792501291966052}
   heightOfLeaderboardPlayer: 75
+  upperBoundary: {fileID: 0}
+  lowerBoundary: {fileID: 0}
+  scrollUpButton: {fileID: 713800641}
+  scrollDownButton: {fileID: 282881584}
+  heightOfAllPlayers: 0
+  scrollbar: {fileID: 0}
   refreshLeaderboardButton: {fileID: 121575449}
 --- !u!114 &1460298483
 MonoBehaviour:

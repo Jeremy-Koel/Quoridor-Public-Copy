@@ -18,11 +18,21 @@ public class LeaderboardPanel : MonoBehaviour
     public GameObject playerPrefab;
     public ChallengeManager challengeManager;
     public int heightOfLeaderboardPlayer = 75;
-
+    [SerializeField]
+    public RectTransform upperBoundary;
+    [SerializeField]
+    public RectTransform lowerBoundary;
+    [SerializeField]
+    public Button scrollUpButton;
+    [SerializeField]
+    public Button scrollDownButton;
+    public float heightOfAllPlayers;
+    public ScrollRect scrollbar;
     public Button refreshLeaderboardButton;
 
     private void Awake()
     {
+
         leaderboardView = GameObject.Find("LeaderboardListViewport");
         leaderboardContent = GameObject.Find("LeaderboardListContent").GetComponent<RectTransform>();
         playersListLayoutGroup = GameObject.Find("LeaderboardListContent").GetComponent<VerticalLayoutGroup>();
@@ -30,6 +40,21 @@ public class LeaderboardPanel : MonoBehaviour
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         refreshLeaderboardButton = GameObject.Find("RefreshLeaderboardListButton").GetComponent<Button>();
         //refreshLeaderboardButton.onClick.AddListener(onRefreshLeaderboardButtonClick);
+        scrollUpButton = GameObject.Find("LeaderboardScrollUp").GetComponent<Button>();
+        //scrollUpButton.onClick.AddListener(MoveContentPane);
+        scrollDownButton = GameObject.Find("LeaderboardScrollDown").GetComponent<Button>();
+        //scrollDownButton.onClick.AddListener(MoveContentPane);
+        scrollbar = GameObject.Find("LeaderboardList").GetComponent<ScrollRect>();
+
+        GameObject upMostBoundsObject = new GameObject("upMostBoundariesObject", typeof(RectTransform));
+        upperBoundary = upMostBoundsObject.GetComponent<RectTransform>();
+        upperBoundary.localPosition = new Vector2(leaderboardContent.localPosition.x,
+                                                leaderboardContent.localPosition.y);
+
+        GameObject lowMostBoundsObject = new GameObject("lowMostBoundariesObject", typeof(RectTransform));
+        lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
+        lowerBoundary.localPosition = new Vector2((leaderboardContent.localPosition.x),
+                                                leaderboardContent.localPosition.y + heightOfLeaderboardPlayer);
     }
 
     // Start is called before the first frame update
@@ -86,6 +111,32 @@ public class LeaderboardPanel : MonoBehaviour
         }
     }
 
+    public void MoveContentPane(float value)
+    {
+        // Adjust dimensions of rightMostBoundaries
+        heightOfAllPlayers = (leaderboardContent.GetComponentsInChildren<Button>().Length * heightOfLeaderboardPlayer);
+        if (heightOfAllPlayers > 480)
+        {
+            lowerBoundary.localPosition = new Vector2((upperBoundary.localPosition.x),
+                                upperBoundary.localPosition.y + (heightOfAllPlayers));
+
+            leaderboardContent.localPosition = new Vector2(leaderboardContent.localPosition.x,
+                                                            leaderboardContent.localPosition.y + value);
+
+            if (leaderboardContent.localPosition.y <= upperBoundary.localPosition.y)
+            {
+                leaderboardContent.localPosition = upperBoundary.localPosition;
+                // scrollDownButton.gameObject.SetActive(false);
+                scrollUpButton.gameObject.SetActive(true);
+            }
+            if (leaderboardContent.localPosition.y >= lowerBoundary.localPosition.y)
+            {
+                leaderboardContent.localPosition = lowerBoundary.localPosition;
+                //  scrollUpButton.gameObject.SetActive(false);
+                scrollDownButton.gameObject.SetActive(true);
+            }
+        }
+    }
 
     // Add leaderboard data to leaderboard list in UI
     void AddLeaderboardData(LeaderboardDataResponse_HighScoreLB response)
