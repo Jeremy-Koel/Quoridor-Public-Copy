@@ -19,6 +19,7 @@ public class HostedGameLobbies : MonoBehaviour
     public GameObject hostedGamePrefab;
     public List<GameObject> hostedGames;
     public GameObject noHostedGamesPanel;
+    public GameSparksUserID gameSparksUserID;
 
     public int heightOfHostedGame = 80;
 
@@ -75,6 +76,13 @@ public class HostedGameLobbies : MonoBehaviour
     public void OnFindPendingMatchesRequestSuccess(FindPendingMatchesResponse response)
     {
         //Debug.Log("Matches found: " + response.ScriptData.BaseData["matchesFound"]);
+        if (hosting)
+        {
+            string hostDisplayName = gameSparksUserID.myDisplayName;
+            string matchID = "";
+            string matchShortCode = "";
+            AddHostedGameToLobbies(hostDisplayName, matchID, matchShortCode);
+        }
         var pendingMatches = response.PendingMatches.GetEnumerator();
         bool endOfMatches = !pendingMatches.MoveNext();
         while (!endOfMatches)
@@ -206,6 +214,7 @@ public class HostedGameLobbies : MonoBehaviour
             var buttonText = hostGameButton.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
             buttonText[0].text = "Host Game";
             joinGameButton.interactable = true;
+            onRefreshGamesButtonClick();
             UnblockMatchmakingButton();
         }
 
@@ -237,18 +246,33 @@ public class HostedGameLobbies : MonoBehaviour
         
         // Get text component of button
         var hostedGameLobbyText = hostedGameLobby.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
-        TMPro.TextMeshProUGUI playerText = hostedGameLobbyText[0];
+        TMPro.TextMeshProUGUI joinText = hostedGameLobbyText[0];
+        TMPro.TextMeshProUGUI playerText = hostedGameLobbyText[1];
         //Text messageText = hostedGameLobbyText[1];
-
-        if (hostName.Length >= 10)
+        if (hostName == gameSparksUserID.myDisplayName)
         {
-            playerText.text = ("Join " + hostName.Substring(0, 10) + "'s game");
+            if (hostName.Length >= 10)
+            {
+                playerText.text = (hostName.Substring(0, 10) + ("(You)"));
+            }
+            else
+            {
+                playerText.text = (hostName) + ("(You)");
+            }
+            Destroy(hostedGameLobby.GetComponent<WholeButtonFontTMP>());
+            Destroy(hostedGameLobby.GetComponent<HostedGameLobbyButton>());
         }
         else
         {
-            playerText.text = ("Join " + hostName + "'s game");
+            if (hostName.Length >= 10)
+            {
+                playerText.text = (hostName.Substring(0, 10));
+            }
+            else
+            {
+                playerText.text = (hostName);
+            }
         }
-
         //playerText.text = ("<b>" + messageWho + ":</b>");
         //messageText.text = (messageMessage);
 
