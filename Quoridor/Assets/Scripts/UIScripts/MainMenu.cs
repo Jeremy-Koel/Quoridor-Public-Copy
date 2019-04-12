@@ -76,6 +76,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("This is the current timescale: " + Time.timeScale);
         ScriptMessage_GuestAccountDetails.Listener += OnGuestAccountDetails;
         ChallengeStartedMessage.Listener += OnChallengeStarted;
         ChallengeIssuedMessage.Listener += OnChallengeIssued;
