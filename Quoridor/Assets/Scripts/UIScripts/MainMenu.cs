@@ -64,6 +64,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Button hostGameButton;
 
+    public Button singlePlayerButton;
+    public Button multiPlayerButton;
+    public Button tutorialButton;
+    public Button settingsButton;
+
     public TMPro.TextMeshProUGUI findingMatchText; 
 
     private bool usernameSelected = false;
@@ -194,6 +199,9 @@ public class MainMenu : MonoBehaviour
         if (LoggedIn())
         {
             //dummyMenuPanel.SetActive(true);
+            mainMenuPanel.SetActive(true);
+            SetMainMenuButtonsInactive();
+            dummyMenuPanel.SetActive(true);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             audioController.PlayChalkboardMovingSound();
@@ -416,6 +424,7 @@ public class MainMenu : MonoBehaviour
         CancelMatchmaking();
         dummyMenuPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
+        SetMainMenuButtonsActive();
         lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
         audioController.PlayChalkboardMovingSound();
         //if(panelOrder.Peek().name == "LoginPanel")
@@ -616,12 +625,29 @@ public class MainMenu : MonoBehaviour
 
             // Switch to the Lobby Panel
             loginPanel.SetActive(false);
+            mainMenuPanel.SetActive(true);
+            SetMainMenuButtonsInactive();
             dummyMenuPanel.SetActive(true);
             lobbyPanel.SetActive(true);
             lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
             audioController.PlayChalkboardMovingSound();
             OnLeaderboardsClick();
         }
+    }
+
+    private void SetMainMenuButtonsInactive()
+    {
+        singlePlayerButton.interactable = false;
+        multiPlayerButton.interactable = false;
+        tutorialButton.interactable = false;
+        settingsButton.interactable = false;
+    }
+    private void SetMainMenuButtonsActive()
+    {
+        singlePlayerButton.interactable = true;
+        multiPlayerButton.interactable = true;
+        tutorialButton.interactable = true;
+        settingsButton.interactable = true;
     }
 
     private void OnLoginError(AuthenticationResponse response)
