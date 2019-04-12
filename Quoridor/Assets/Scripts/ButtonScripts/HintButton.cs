@@ -18,6 +18,7 @@ public class HintButton : MonoBehaviour
     private Material hintMat;
     private Material highlightMat;
     private int count = 0;
+    private string hint = "";
     public bool flash;
     private void Awake()
     {
@@ -89,7 +90,7 @@ public class HintButton : MonoBehaviour
 
         clicked = true;
 
-        string hint = await gameCoreController.GetHintForPlayer();
+        hint = await gameCoreController.GetHintForPlayer();
         eventManager.InvokeHintCalcEnd();
         Debug.Log(hint);
 
@@ -111,6 +112,11 @@ public class HintButton : MonoBehaviour
         else
         {
             hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
+            Invoke("flashHighlight", .25f);
+            Invoke("flashHighlight", .5f);
+            Invoke("flashHighlight", .75f);
+            Invoke("flashHighlight", 1f);
+            Invoke("flashHighlight", 1.25f);
             hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
         }
     }
@@ -123,19 +129,41 @@ public class HintButton : MonoBehaviour
 
         if(count%2 != 0)
         {
-            //highlightSquaresScript.showHint = false;
-            hintSquare.GetComponent<Renderer>().material = hintMat;
-            //Invoke("flashHighlight", .50f);
+            if (hint.Length < 3)
+            {
+                //highlightSquaresScript.showHint = false;
+                hintSquare.GetComponent<Renderer>().material = hintMat;
+                //Invoke("flashHighlight", .50f);
+            }
+            else
+            {
+                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
+            }
         }
         else
         {
-            //highlightSquaresScript.showHint = true;
-            hintSquare.GetComponent<Renderer>().material = highlightMat;
+            if (hint.Length < 3)
+            {
+                //highlightSquaresScript.showHint = true;
+                hintSquare.GetComponent<Renderer>().material = highlightMat;
+            }
+            else
+            {
+                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
+            }
         }
 
         if (count == 5)
         {
-            highlightSquaresScript.showHint = true;
+            if (hint.Length < 3)
+            {
+                highlightSquaresScript.showHint = true;
+            }
+            else
+            {
+                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+
             flash = false;
             count = 0;
         }
