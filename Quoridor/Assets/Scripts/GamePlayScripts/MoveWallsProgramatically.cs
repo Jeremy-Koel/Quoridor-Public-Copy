@@ -7,7 +7,7 @@ public class MoveWallsProgramatically : MonoBehaviour
 {
     public bool moveWall;
     public Vector3 target;
-    public float speed = 20.0f;
+    public float speed = 35.0f;
     private bool isOnBoard = false;
     private GameObject scientistArmOne;
     private GameObject scientistArmTwo;

@@ -7,7 +7,7 @@ public class MoveMultiplayerScreen : MonoBehaviour
     // Start is called before the first frame update
     public bool moveBoard = false;
     public Vector3 target;
-    public float speed = 14f;
+    public float speed = 28f;
     private Vector3 onScreenTarget;
     private Vector3 offScreenTarget;
     // Start is called before the first frame update

@@ -7,7 +7,7 @@ public class MoveArms : MonoBehaviour
 {
     public bool moveArm;
     public Vector3 target;
-    private float speed = 20.0f;
+    private float speed = 35.0f;
     public float chatSpeed = 2000.0f;
     private Vector3 origPos;
     public Vector2 chatTarget;
