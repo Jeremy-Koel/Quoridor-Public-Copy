@@ -15,6 +15,7 @@ public class HighlightSquares : MonoBehaviour
     private MoveArms armTwoScript;
     private MoveMouse opponentMoveMouseScript;
     private InterfaceController interfaceController;
+    private HintButton hintButtonScript;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class HighlightSquares : MonoBehaviour
         hintMat = Resources.Load("hintColor", typeof(Material)) as Material;
         possibleMoves = new List<string>();
         gameSquareMat = Resources.Load("cubeColor", typeof(Material)) as Material;
+        hintButtonScript = GameObject.Find("HintButton").GetComponent<HintButton>();
     }
 
     // Update is called once per frame
@@ -44,7 +46,10 @@ public class HighlightSquares : MonoBehaviour
             foreach (string move in possibleMoves)
             {
                 GameObject square = GameObject.Find(move);
-                square.GetComponent<Renderer>().material = highlightMat;
+                if (hintButtonScript.flash != true && square.name != moveHint)
+                {
+                    square.GetComponent<Renderer>().material = highlightMat;
+                }
             }
 
             if (showHint)

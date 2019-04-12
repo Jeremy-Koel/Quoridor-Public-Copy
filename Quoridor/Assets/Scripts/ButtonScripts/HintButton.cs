@@ -13,14 +13,18 @@ public class HintButton : MonoBehaviour
     private Button hintButton;
     private ButtonFontTMP hintButtonFont;
     private GameObject hintWallHighlight;
+    private GameObject hintSquare;
     private bool clicked = false;
-
-
+    private Material hintMat;
+    private Material highlightMat;
+    private int count = 0;
+    public bool flash;
     private void Awake()
     {
         gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+
     }
 
     // Start is called before the first frame update
@@ -29,6 +33,8 @@ public class HintButton : MonoBehaviour
         highlightSquaresScript = GameObject.Find("GameBoard").GetComponent<HighlightSquares>();
         hintButton = GameObject.Find("HintButton").GetComponent<Button>();
         hintButtonFont = hintButton.transform.GetChild(0).gameObject.GetComponent<ButtonFontTMP>();
+        hintMat = Resources.Load("hintColor", typeof(Material)) as Material;
+        highlightMat = Resources.Load("highlightColor", typeof(Material)) as Material;
     }
 
     // Update is called once per frame
@@ -87,36 +93,53 @@ public class HintButton : MonoBehaviour
         eventManager.InvokeHintCalcEnd();
         Debug.Log(hint);
 
-            if (hint.Length < 3)
-            {
+        if (hint.Length < 3)
+        {
 
-                highlightSquaresScript.moveHint = hint;
-                highlightSquaresScript.showHint = true;
-                Invoke("flashHighlight", .30f);
-                Invoke("flashHighlight", .30f);
-            Invoke("flashHighlight", .30f);
-
+            highlightSquaresScript.moveHint = hint;
+            hintSquare = GameObject.Find(hint);
+            flash = true;
+            Invoke("flashHighlight", .25f);
+            Invoke("flashHighlight", .5f);
+            Invoke("flashHighlight", .75f);
+            Invoke("flashHighlight", 1f);
+            Invoke("flashHighlight", 1.25f);
+            //Invoke("flashHighlight", .30f);
+            //highlightSquaresScript.showHint = true;
 
         }
-            else
-            {
-                hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
-                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
-            }
+        else
+        {
+            hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
+            hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
         }
+    }
     
    // }
     
     private void flashHighlight()
     {
-        if(highlightSquaresScript.showHint)
+        count++;
+
+        if(count%2 != 0)
         {
-            highlightSquaresScript.showHint = false;
-            Invoke("flashHighlight", .30f);
+            //highlightSquaresScript.showHint = false;
+            hintSquare.GetComponent<Renderer>().material = hintMat;
+            //Invoke("flashHighlight", .50f);
         }
         else
         {
-            highlightSquaresScript.showHint = true;
+            //highlightSquaresScript.showHint = true;
+            hintSquare.GetComponent<Renderer>().material = highlightMat;
         }
+
+        if (count == 5)
+        {
+            highlightSquaresScript.showHint = true;
+            flash = false;
+            count = 0;
+        }
+
+
     }
 }
