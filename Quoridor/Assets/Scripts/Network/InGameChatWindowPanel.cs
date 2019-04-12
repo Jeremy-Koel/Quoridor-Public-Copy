@@ -36,7 +36,13 @@ public class InGameChatWindowPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+        pdaFlash.SetActive(false);
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+            gameSparksUserIDScript = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+        }
+        
         chatInput = GameObject.Find("InGameChatInput");
         chatMessagesView = GameObject.Find("InGameChatMessagesView");
         chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();

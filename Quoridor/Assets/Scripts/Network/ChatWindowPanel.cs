@@ -52,7 +52,8 @@ public class ChatWindowPanel : MonoBehaviour
     public GameSparksUserID gameSparksUserIDScript;
 
     private string currentTeamID = "0";
-
+    
+    private Timer flashTimer;
 
     private void Awake()
     {
@@ -78,16 +79,10 @@ public class ChatWindowPanel : MonoBehaviour
             listOfFriendsMessagesContents = new List<RectTransform>();
             chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
         }
-        //else
-        //{  
-        //    challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-        //    chatInput = GameObject.Find("InGameChatInput");
-        //    chatMessagesView = GameObject.Find("InGameChatMessagesView");
-        //    chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();
-        //    chatMessagesLayoutGroup = GameObject.Find("InGameMessages").GetComponent<VerticalLayoutGroup>();
-        //    ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
-        //    Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
-        //}
+        flashTimer = gameObject.AddComponent<Timer>();
+        flashTimer.SetTimeDefault(0.375f);
+        flashTimer.ResetTimer();
+        flashTimer.timeUp.AddListener(pdaFlashOff);
         pdaFlash.SetActive(false);
     }
 
@@ -557,14 +552,19 @@ public class ChatWindowPanel : MonoBehaviour
             playerText.text = ("<b>" + messageWho + ":</b>");
         }
         messageText.text = messageMessage;
-            
-        if (SceneManager.GetActiveScene().name == "MainMenu")
+
+        if (messageWho != gameSparksUserIDScript.myDisplayName)
         {
-            if (messageWho != gameSparksUserIDScript.myDisplayName)
-            {
-                StartCoroutine(nameof(BuyTime));
-            }
-        }
+            pdaFlashOn();
+            flashTimer.StartCountdown();
+        }   
+        //if (SceneManager.GetActiveScene().name == "MainMenu")
+        //{
+        //    if (messageWho != gameSparksUserIDScript.myDisplayName)
+        //    {
+        //        StartCoroutine(nameof(BuyTime));
+        //    }
+        //}
             
 
         Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
@@ -654,6 +654,17 @@ public class ChatWindowPanel : MonoBehaviour
         pdaFlash.SetActive(false);
     }
 
+    public void pdaFlashOn()
+    {
+        pdaFlash.SetActive(true);
+    }
+
+    public void pdaFlashOff()
+    {
+        pdaFlash.SetActive(false);
+        flashTimer.CancelCountdown();        
+    }
+
     //IEnumerator WaitForAI()
     //{
     //    yield return new WaitForSeconds(2f);
@@ -669,4 +680,26 @@ public class ChatWindowPanel : MonoBehaviour
     //    BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     //    StartCoroutine(BuyTime());
     //}
+
+    private void OnDestroy()
+    {
+        SetAllActive();
+    }
+
+    public void SetAllActive()
+    {
+        var childrenComponents = new List<RectTransform>(gameObject.GetComponentsInChildren<RectTransform>());
+        var childrenObjects = new List<GameObject>();
+        foreach (var childComponent in childrenComponents)
+        {
+            childrenObjects.Add(childComponent.gameObject);
+        }
+        foreach (var childObject in childrenObjects)
+        {
+            if (childObject != null)
+            {
+                childObject.SetActive(true);
+            }
+        }
+    }
 }
