@@ -485,7 +485,8 @@ public class ChatWindowPanel : MonoBehaviour
                     aiMessage = AIChat.GetHardAIMessage();
                 }
                 //make time
-                StartCoroutine(WaitForAI(counter, aiMessage));
+                //Invoke("WaitForAI", 0f);
+                StartCoroutine("WaitForAI");
                 pdaFlash.SetActive(true); 
             }
         }
@@ -560,8 +561,7 @@ public class ChatWindowPanel : MonoBehaviour
             
             if (messageWho != gameSparksUserIDScript.myDisplayName)
             {
-
-                StartCoroutine(BuyTime(counter));
+                StartCoroutine(nameof(BuyTime), 0f);
             }
 
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
@@ -644,17 +644,26 @@ public class ChatWindowPanel : MonoBehaviour
     //    listOfFriendsMessagesContents.Clear();
     //}
 
-    IEnumerator BuyTime (Transform counter)
+    IEnumerator BuyTime()
     {
         pdaFlash.SetActive(true);
         yield return new WaitForSeconds(0.375f);
         pdaFlash.SetActive(false);
     }
 
-    IEnumerator WaitForAI(Transform counter, string aiMessage)
+    IEnumerator WaitForAI()
     {
         yield return new WaitForSeconds(2f);
-        StartCoroutine(BuyTime(counter));
+        StartCoroutine(BuyTime());
+        string aiMessage;
+        if (GameSession.Difficulty == DifficultyEnum.EASY)
+        {
+            aiMessage = AIChat.GetEasyAIMessage();
+        }
+        else
+        {
+            aiMessage = AIChat.GetHardAIMessage();
+        }
         BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
 }
