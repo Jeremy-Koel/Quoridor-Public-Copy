@@ -12,6 +12,7 @@ public class GameCoreController : MonoBehaviour
     private HashSet<string> possibleWalls;
     private EventManager eventManager;
     private InterfaceController interfaceController;
+    private int hintCount;
 
     private void Awake()
     {
@@ -47,6 +48,8 @@ public class GameCoreController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hintCount = 3;
+
         if (gameBoard.GetWhoseTurn() == 2)
         {
             eventManager.InvokeLocalPlayerMoved();
@@ -154,8 +157,9 @@ public class GameCoreController : MonoBehaviour
 
     public Task<string> GetHintForPlayer()
     {
-        if (GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
+        if (GetWhoseTurn() == GameBoard.PlayerEnum.ONE/* && hintCount > 0*/)
         {
+            --hintCount;
             return GetMonteCarloMove(true);
         }
         else
@@ -168,6 +172,11 @@ public class GameCoreController : MonoBehaviour
     {
         MonteCarlo tree = new MonteCarlo(gameBoard, hard);
         return Task.Run(() => tree.MonteCarloTreeSearch());
+    }
+
+    public int GetHintsRemaining()
+    {
+        return hintCount;
     }
 
     public void SetupMultiplayerGame(int playerNumber)
