@@ -21,6 +21,8 @@ public class HostedGameLobbies : MonoBehaviour
     public GameObject noHostedGamesPanel;
     public GameSparksUserID gameSparksUserID;
 
+    public TMPro.TextMeshProUGUI findingMatchText;
+
     public int heightOfHostedGame = 80;
 
     public ChallengeManager challengeManager;
@@ -166,6 +168,7 @@ public class HostedGameLobbies : MonoBehaviour
     private void BlockMatchmakingButton()
     {
         matchmakingButton.interactable = false;
+        findingMatchText.color = new Color(0, 0, 0, 0);
         Destroy(matchmakingButton.GetComponentInChildren<ButtonFontTMP>());
     }
     private void UnblockMatchmakingButton()

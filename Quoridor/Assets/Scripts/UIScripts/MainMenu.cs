@@ -64,6 +64,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Button hostGameButton;
 
+    public TMPro.TextMeshProUGUI findingMatchText; 
+
     private bool usernameSelected = false;
     private bool passwordSelected = false;
 
@@ -115,9 +117,9 @@ public class MainMenu : MonoBehaviour
         guestDetailsPanel = GameObject.Find("GuestDetailsPanel");
         // quitPanel = GameObject.Find("QuitPanel");
 
-       // panelOrder = new Stack<GameObject>();
-       // panelOrder.Push(mainMenuPanel);
-
+        // panelOrder = new Stack<GameObject>();
+        // panelOrder.Push(mainMenuPanel);
+        findingMatchText.color = new Color(0, 0, 0, 0);
         mainMenuPanel.SetActive(true);
         dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
@@ -427,6 +429,7 @@ public class MainMenu : MonoBehaviour
     {
         if (matching)
         {
+            findingMatchText.color = new Color(0, 0, 0, 0);
             matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Find Match";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
@@ -446,6 +449,7 @@ public class MainMenu : MonoBehaviour
         BlockJoinHostGameButtons();
         if (matching)
         {
+            findingMatchText.color = new Color(0, 0, 0, 0);
             matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Find Match";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
@@ -459,6 +463,7 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
+            findingMatchText.color = Color.white;
             matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Stop";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
