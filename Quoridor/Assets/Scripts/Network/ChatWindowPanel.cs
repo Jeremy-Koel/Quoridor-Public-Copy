@@ -50,12 +50,15 @@ public class ChatWindowPanel : MonoBehaviour
     [SerializeField]
     public List<RectTransform> listOfFriendsMessagesContents;
 
+    public GameSparksUserID gameSparksUserIDScript;
+
     private string currentTeamID = "0";
+
 
     private void Awake()
     {
-        pdaFlash = GameObject.Find("PDA Flash");
-        pdaFlash.SetActive(false);
+        //pdaFlash = GameObject.Find("PDA Flash");
+        
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             globalChatButtonObject = GameObject.Find("GlobalChatButton");
@@ -86,6 +89,7 @@ public class ChatWindowPanel : MonoBehaviour
             ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
         }
+        pdaFlash.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -522,15 +526,16 @@ public class ChatWindowPanel : MonoBehaviour
         Debug.Log("Team chat message recieved: " + messageMessage);
         Debug.Log("Message sent by: " + messageWho);
         //GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>()
-        if (challengeManager.CurrentPlayerInfo.PlayerDisplayName == messageWho)
+        if (gameSparksUserIDScript.myDisplayName != messageWho)
         {
+            pdaFlash.SetActive(true);
+            //    // make time
+            //    StartCoroutine(BuyTime(counter));
+        }
+        //else
+        //{
 
-        }
-        else
-        {
-            // make time
-            StartCoroutine(BuyTime(counter));
-        }
+        //}
         BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
     }
 
@@ -552,6 +557,12 @@ public class ChatWindowPanel : MonoBehaviour
                 playerText.text = ("<b>" + messageWho + ":</b>");
             }
             messageText.text = messageMessage;
+            
+            if (messageWho != gameSparksUserIDScript.myDisplayName)
+            {
+
+                StartCoroutine(BuyTime(counter));
+            }
 
             Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
             messageTextObject.transform.SetParent(chatMessagesViewContent);
