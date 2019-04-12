@@ -409,6 +409,9 @@ public class MainMenu : MonoBehaviour
 
     public void onLobbyBackButtonClick()
     {
+        // cancel any current matchmaking going on
+        lobbyPanel.GetComponentInChildren<HostedGameLobbies>().CancelHosting();
+        CancelMatchmaking();
         dummyMenuPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
         lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
@@ -418,6 +421,23 @@ public class MainMenu : MonoBehaviour
         //    panelOrder.Pop();
         //}
         //onBackButtonClick();
+    }
+
+    public void CancelMatchmaking()
+    {
+        if (matching)
+        {
+            matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Find Match";
+            Debug.Log("Making/sending matchmaking request");
+            MatchmakingRequest request = new MatchmakingRequest();
+            request.SetAction("cancel");
+            request.SetMatchShortCode("DefaultMatch");
+            request.SetSkill(0);
+            request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            matching = false;
+            UnblockMatchInput();
+            UnblockJoinHostGameButtons();
+        }
     }
 
     public void onMatchMakingButtonClick()
@@ -683,11 +703,13 @@ public class MainMenu : MonoBehaviour
     {
         joinGameButton.interactable = false;
         hostGameButton.interactable = false;
+        Destroy(hostGameButton.GetComponentInChildren<ButtonFontTMP>());
     }
     private void UnblockJoinHostGameButtons()
     {
         joinGameButton.interactable = true;
         hostGameButton.interactable = true;
+        hostGameButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().gameObject.AddComponent<ButtonFontTMP>();
     }
 
     private void BlockMatchInput()

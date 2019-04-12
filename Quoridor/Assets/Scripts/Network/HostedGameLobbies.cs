@@ -166,10 +166,12 @@ public class HostedGameLobbies : MonoBehaviour
     private void BlockMatchmakingButton()
     {
         matchmakingButton.interactable = false;
+        Destroy(matchmakingButton.GetComponentInChildren<ButtonFontTMP>());
     }
     private void UnblockMatchmakingButton()
     {
         matchmakingButton.interactable = true;
+        matchmakingButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().gameObject.AddComponent<ButtonFontTMP>();
     }
 
     private void OnJoinGameButtonClick()
@@ -219,6 +221,32 @@ public class HostedGameLobbies : MonoBehaviour
         }
 
         matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+    }
+
+    public void CancelHosting()
+    {
+        if (hosting)
+        {
+            MatchmakingRequest matchmakingRequest = new MatchmakingRequest();
+            matchmakingRequest.SetMatchShortCode("HostedMatch");
+
+            GameSparks.Core.GSRequestData participantData = new GameSparks.Core.GSRequestData();
+            participantData.AddString("displayName", gameSparksUserID.myDisplayName);
+            participantData.AddBoolean("hosting", true);
+            matchmakingRequest.SetParticipantData(participantData);
+            matchmakingRequest.SetMatchData(participantData);
+            matchmakingRequest.SetSkill(0);
+            // Cancel host
+            hosting = false;
+            matchmakingRequest.SetAction("cancel");
+            matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            // Change button text to represent hosting a game
+            var buttonText = hostGameButton.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
+            buttonText[0].text = "Host Game";
+            joinGameButton.interactable = true;
+            onRefreshGamesButtonClick();
+            UnblockMatchmakingButton();
+        }
     }
 
     public void OnMatchmakingSuccess(MatchmakingResponse response)
