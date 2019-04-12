@@ -9,6 +9,7 @@ public class WallPlacement : MonoBehaviour
 
     private GameObject wallHighlight;
     private InterfaceController interfaceController;
+    private GameCoreController gameCoreController;
     private bool wallPlacedHere =false;
     private EventManager eventManager;
     private MoveArms armTwoScript;
@@ -19,6 +20,7 @@ public class WallPlacement : MonoBehaviour
     {
         wallHighlight = this.transform.GetChild(0).gameObject;
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
+        gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         armTwoScript = GameObject.Find("ScientistArmTwo").GetComponent<MoveArms>();
         opponentMoveMouseScript = GameObject.Find("opponentMouse").GetComponent<MoveMouse>();
@@ -44,8 +46,9 @@ public class WallPlacement : MonoBehaviour
             //Debug.Log("Entered Collider");
             if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
+                HashSet<string> possibleWalls = gameCoreController.GetPossibleWalls();
                 SpriteRenderer wallHighlighSpriteRenderer = wallHighlight.GetComponent<SpriteRenderer>();
-                if (wallHighlighSpriteRenderer.color != Color.green)
+                if (wallHighlighSpriteRenderer.color != Color.green && possibleWalls.Contains(name))
                 {
                     wallHighlighSpriteRenderer.color = Color.white;
                 }
@@ -59,8 +62,9 @@ public class WallPlacement : MonoBehaviour
         {
             if (interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE && !wallPlacedHere && armTwoScript.moveArm == false && opponentMoveMouseScript.moveMouse == false)
             {
+                HashSet<string> possibleWalls = gameCoreController.GetPossibleWalls();
                 SpriteRenderer wallHighlighSpriteRenderer = wallHighlight.GetComponent<SpriteRenderer>();
-                if (wallHighlighSpriteRenderer.color != Color.green)
+                if (wallHighlighSpriteRenderer.color != Color.green && possibleWalls.Contains(name))
                 {
                     wallHighlighSpriteRenderer.color = Color.white;
                 }
