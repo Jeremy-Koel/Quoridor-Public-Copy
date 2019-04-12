@@ -39,7 +39,6 @@ public class ChatWindowPanel : MonoBehaviour
     public ChallengeManager challengeManager;
     [SerializeField]
     public GameObject pdaFlash;
-    public Transform counter;
     // A list of each list of a friend's chat messages
     [SerializeField]
     private List<List<GameObject>> listOfChatMessages;
@@ -79,16 +78,16 @@ public class ChatWindowPanel : MonoBehaviour
             listOfFriendsMessagesContents = new List<RectTransform>();
             chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
         }
-        else
-        {  
-            challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
-            chatInput = GameObject.Find("InGameChatInput");
-            chatMessagesView = GameObject.Find("InGameChatMessagesView");
-            chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();
-            chatMessagesLayoutGroup = GameObject.Find("InGameMessages").GetComponent<VerticalLayoutGroup>();
-            ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
-            Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
-        }
+        //else
+        //{  
+        //    challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+        //    chatInput = GameObject.Find("InGameChatInput");
+        //    chatMessagesView = GameObject.Find("InGameChatMessagesView");
+        //    chatMessagesViewContent = GameObject.Find("InGameMessages").GetComponent<RectTransform>();
+        //    chatMessagesLayoutGroup = GameObject.Find("InGameMessages").GetComponent<VerticalLayoutGroup>();
+        //    ChallengeChatMessage.Listener += ChallengeChatMessageReceived;
+        //    Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+        //}
         pdaFlash.SetActive(false);
     }
 
@@ -460,36 +459,36 @@ public class ChatWindowPanel : MonoBehaviour
             teamChatMessageRequest.SetTeamId(currentTeamID);
             teamChatMessageRequest.Send(ChatMessageResponse);
         }
-        else
-        {
-            if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
-            {
-                Debug.Log("Sending message: " + message);
-                ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
-                challengeChatMessageRequest.SetMessage(message);
-                challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
-                challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
-            }
-            else
-            {
-                // Send player's message
-                BuildChatMessageUI("Player", message, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
-                // Use AI chat
-                string aiMessage;
-                if (GameSession.Difficulty == DifficultyEnum.EASY)
-                {
-                    aiMessage = AIChat.GetEasyAIMessage();
-                }
-                else
-                {
-                    aiMessage = AIChat.GetHardAIMessage();
-                }
-                //make time
-                //Invoke("WaitForAI", 0f);
-                StartCoroutine("WaitForAI");
-                pdaFlash.SetActive(true); 
-            }
-        }
+        //else
+        //{
+        //    if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+        //    {
+        //        Debug.Log("Sending message: " + message);
+        //        ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
+        //        challengeChatMessageRequest.SetMessage(message);
+        //        challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
+        //        challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
+        //    }
+        //    //else
+        //    //{
+        //    //    // Send player's message
+        //    //    BuildChatMessageUI("Player", message, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
+        //    //    // Use AI chat
+        //    //    string aiMessage;
+        //    //    if (GameSession.Difficulty == DifficultyEnum.EASY)
+        //    //    {
+        //    //        aiMessage = AIChat.GetEasyAIMessage();
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        aiMessage = AIChat.GetHardAIMessage();
+        //    //    }
+        //    //    //make time
+        //    //    //Invoke("WaitForAI", 0f);
+        //    //    StartCoroutine("WaitForAI");
+        //    //    //pdaFlash.SetActive(true); 
+        //    //}
+        //}
     }
 
     void ChatMessageResponse(SendTeamChatMessageResponse response)
@@ -504,79 +503,83 @@ public class ChatWindowPanel : MonoBehaviour
         }
     }
 
-    void ChallengeChatMessageResponse(ChatOnChallengeResponse response)
-    {
-        if (response.HasErrors)
-        {
-            Debug.Log("Chat message not sent");
-        }
-        else
-        {
-            Debug.Log("Chat message sent");
-        }
-    }
+    //void ChallengeChatMessageResponse(ChatOnChallengeResponse response)
+    //{
+    //    if (response.HasErrors)
+    //    {
+    //        Debug.Log("Chat message not sent");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Chat message sent");
+    //    }
+    //}
 
-    private void ChallengeChatMessageReceived(ChallengeChatMessage message)
-    {
-        string messageWho = message.Who.ToString();
-        string messageMessage = message.Message.ToString();
-        if (messageMessage.Length > 1000)
-        {
-            messageMessage = messageMessage.Substring(0, 1000);
-        }        
-        Debug.Log("Team chat message recieved: " + messageMessage);
-        Debug.Log("Message sent by: " + messageWho);
-        //GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>()
-        if (gameSparksUserIDScript.myDisplayName != messageWho)
-        {
-            pdaFlash.SetActive(true);
-            //    // make time
-            //    StartCoroutine(BuyTime(counter));
-        }
-        //else
-        //{
+    //private void ChallengeChatMessageReceived(ChallengeChatMessage message)
+    //{
+    //    string messageWho = message.Who.ToString();
+    //    string messageMessage = message.Message.ToString();
+    //    if (messageMessage.Length > 1000)
+    //    {
+    //        messageMessage = messageMessage.Substring(0, 1000);
+    //    }        
+    //    Debug.Log("Team chat message recieved: " + messageMessage);
+    //    Debug.Log("Message sent by: " + messageWho);
+    //    //GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>()
+    //    if (gameSparksUserIDScript.myDisplayName != messageWho)
+    //    {
+    //        //pdaFlash.SetActive(true);
+    //        //    // make time
+    //        //    StartCoroutine(BuyTime(counter));
+    //    }
+    //    //else
+    //    //{
 
-        //}
-        BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
-    }
+    //    //}
+    //    BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
+    //}
 
     private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObjectPrefab, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
     {
         //if (gameObject.activeSelf)
         //{
-            GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
-            var messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
-            TMPro.TextMeshProUGUI playerText = messageTextObjectChildrenText[0];
-            TMPro.TextMeshProUGUI messageText = messageTextObjectChildrenText[1];
+        GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
+        var messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
+        TMPro.TextMeshProUGUI playerText = messageTextObjectChildrenText[0];
+        TMPro.TextMeshProUGUI messageText = messageTextObjectChildrenText[1];
 
-            if (messageWho.Length >= 20)
-            {
-                playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
-            }
-            else
-            {
-                playerText.text = ("<b>" + messageWho + ":</b>");
-            }
-            messageText.text = messageMessage;
+        if (messageWho.Length >= 20)
+        {
+            playerText.text = ("<b>" + messageWho.Substring(0, 17) + "..." + ":</b>");
+        }
+        else
+        {
+            playerText.text = ("<b>" + messageWho + ":</b>");
+        }
+        messageText.text = messageMessage;
             
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
             if (messageWho != gameSparksUserIDScript.myDisplayName)
             {
-                StartCoroutine(nameof(BuyTime), 0f);
+                StartCoroutine(nameof(BuyTime));
             }
+        }
+            
 
-            Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
-            messageTextObject.transform.SetParent(chatMessagesViewContent);
-            messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+        Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
+        messageTextObject.transform.SetParent(chatMessagesViewContent);
+        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
 
-            chatMessages.Add(messageTextObject);
+        chatMessages.Add(messageTextObject);
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
-            //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
-            //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
-            StartCoroutine(ScrollToBottom());
+        //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
+        //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
+        StartCoroutine(ScrollToBottom());
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
         //}        
     }
 
@@ -651,19 +654,19 @@ public class ChatWindowPanel : MonoBehaviour
         pdaFlash.SetActive(false);
     }
 
-    IEnumerator WaitForAI()
-    {
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(BuyTime());
-        string aiMessage;
-        if (GameSession.Difficulty == DifficultyEnum.EASY)
-        {
-            aiMessage = AIChat.GetEasyAIMessage();
-        }
-        else
-        {
-            aiMessage = AIChat.GetHardAIMessage();
-        }
-        BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
-    }
+    //IEnumerator WaitForAI()
+    //{
+    //    yield return new WaitForSeconds(2f);
+    //    string aiMessage;
+    //    if (GameSession.Difficulty == DifficultyEnum.EASY)
+    //    {
+    //        aiMessage = AIChat.GetEasyAIMessage();
+    //    }
+    //    else
+    //    {
+    //        aiMessage = AIChat.GetHardAIMessage();
+    //    }
+    //    BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
+    //    StartCoroutine(BuyTime());
+    //}
 }
