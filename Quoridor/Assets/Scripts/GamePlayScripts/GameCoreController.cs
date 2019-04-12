@@ -156,7 +156,7 @@ public class GameCoreController : MonoBehaviour
     {
         if (GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
         {
-            return GetMonteCarloMove(false);
+            return GetMonteCarloMove(true);
         }
         else
         {
