@@ -50,7 +50,7 @@ public class CreateBoard : MonoBehaviour
 
                 gameBoard[row, col] = piece;
 
-                piece.transform.position = new Vector3((col * 4.8f) - 7.85f, (row * -4.8f) + 31.2f, -0.2f);
+                piece.transform.position = new Vector3((col * 4.9f) - 8.2f, (row * -4.9f) + 31.65f, -0.2f);
 
                 piece.name = GetSpaceStringName(row, col);
 
