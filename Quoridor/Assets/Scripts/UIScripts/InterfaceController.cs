@@ -26,6 +26,13 @@ public class InterfaceController : MonoBehaviour
     private Animator playerTurnBoxAnimator;
     private bool isMouseShaking = false;
 
+    private void OnDestroy()
+    {
+        challengeManagerScript = null;
+        eventManager = null;
+        messageQueue = null;
+    }
+
     private void Awake()
     {
         disconnectPanel = GameObject.Find("DisconnectPanel");

@@ -105,6 +105,8 @@ public class MainMenu : MonoBehaviour
     void OnDestroy()
     {
         ChallengeStartedMessage.Listener -= OnChallengeStarted;
+        eventManager = null;
+        challengeManager = null;
         GameObject.Destroy(lobbyPanel);
     }
 

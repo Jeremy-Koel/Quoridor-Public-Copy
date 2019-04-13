@@ -20,6 +20,11 @@ public class WinnerScreen : MonoBehaviour
     private EventManager eventManager;
     private GameObject winScreenTimerText;
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();

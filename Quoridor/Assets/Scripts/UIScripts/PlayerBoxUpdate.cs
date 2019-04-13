@@ -23,4 +23,9 @@ public class PlayerBoxUpdate : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
 }

@@ -30,6 +30,11 @@ public class LeaderboardPanel : MonoBehaviour
     public ScrollRect scrollbar;
     public Button refreshLeaderboardButton;
 
+    private void OnDestroy()
+    {
+        challengeManager = null;
+    }
+
     private void Awake()
     {
 

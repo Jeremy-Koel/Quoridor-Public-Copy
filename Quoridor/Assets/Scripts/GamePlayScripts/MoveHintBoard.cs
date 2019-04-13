@@ -15,6 +15,11 @@ public class MoveHintBoard : MonoBehaviour
     private EventManager eventManager;
     private float speed = 40f;
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();

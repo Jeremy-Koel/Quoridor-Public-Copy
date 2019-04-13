@@ -307,5 +307,6 @@ public class InGameChatWindowPanel : MonoBehaviour
     private void OnDestroy()
     {
         ChallengeChatMessage.Listener -= ChallengeChatMessageReceived;
+        gameSparksUserIDScript = null;
     }
 }

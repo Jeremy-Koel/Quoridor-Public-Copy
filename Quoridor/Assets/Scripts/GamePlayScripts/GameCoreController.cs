@@ -14,6 +14,11 @@ public class GameCoreController : MonoBehaviour
     private InterfaceController interfaceController;
     private int hintCount;
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
     private void Awake()
     {
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();

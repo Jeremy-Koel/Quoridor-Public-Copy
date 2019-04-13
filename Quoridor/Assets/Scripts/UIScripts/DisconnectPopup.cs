@@ -18,6 +18,11 @@ public class DisconnectPopup : MonoBehaviour
 
     private InterfaceController interfaceController;
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
     private void Awake()
     {
         int numberOfActiveThises = FindObjectsOfType<DisconnectPopup>().Length;

@@ -12,6 +12,13 @@ public class NetworkGameController : MonoBehaviour
     private GameCoreController gameCoreController;
     private SoundEffectController soundEffectController;
 
+    private void OnDestroy()
+    {
+        challengeManagerScript = null;
+        eventManager = null;
+        messageQueue = null;
+    }
+
     private void Awake()
     {
         Debug.Log("Awake network controller");

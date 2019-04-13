@@ -628,7 +628,8 @@ public class ChatWindowPanel : MonoBehaviour
         //SetAllActive();
         TeamChatMessage.Listener -= TeamChatMessageRouter;
         ScriptMessage_JoinFriendTeam.Listener -= JoinFriendTeam;
-        gameSparksUserIDScript = new GameSparksUserID();
+        gameSparksUserIDScript = null;
+        challengeManager = null;
     }
 
     public void SetAllActive()

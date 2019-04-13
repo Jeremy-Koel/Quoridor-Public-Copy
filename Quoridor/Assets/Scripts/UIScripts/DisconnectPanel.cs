@@ -14,7 +14,11 @@ public class DisconnectPanel : MonoBehaviour
     public GameObject disconnectPanel;
     public GameObject disconnectionAIDifficultySelectPanel;
     private bool disconnectionAIDiffPanelFound = false;
-    
+
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
 
     private void Awake()
     {

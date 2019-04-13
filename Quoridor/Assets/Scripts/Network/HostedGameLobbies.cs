@@ -55,6 +55,13 @@ public class HostedGameLobbies : MonoBehaviour
         
     }
 
+    private void OnDestroy()
+    {
+        ScriptMessage.Listener -= RefreshHostedGames;
+        gameSparksUserID = null;
+        challengeManager = null;
+    }
+
     public void RemoveRefreshHostedGamesListener()
     {
         ScriptMessage.Listener -= RefreshHostedGames;

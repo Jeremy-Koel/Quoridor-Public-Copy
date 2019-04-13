@@ -15,6 +15,11 @@ public class WallPlacement : MonoBehaviour
     private MoveArms armTwoScript;
     private MoveMouse opponentMoveMouseScript;
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

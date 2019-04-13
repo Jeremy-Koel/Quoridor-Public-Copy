@@ -19,6 +19,11 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
     }
 
+    private void OnDestroy()
+    {
+        eventManager = null;
+    }
+
     // Update is called once per frame
     void Update()
     {
