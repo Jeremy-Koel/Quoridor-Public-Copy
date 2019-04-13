@@ -78,6 +78,7 @@ public class ChatWindowPanel : MonoBehaviour
             teamIDs = new List<string>();
             listOfFriendsMessagesContents = new List<RectTransform>();
             chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
+            gameSparksUserIDScript = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
         }
         flashTimer = gameObject.AddComponent<Timer>();
         flashTimer.SetTimeDefault(0.375f);
@@ -180,7 +181,7 @@ public class ChatWindowPanel : MonoBehaviour
         while (listOfFriendsMessagesContentsEnum.MoveNext())
         {
             // Let's try a wrecking ball
-            if (listOfFriendsMessagesContentsEnum.Current == null) 
+            if (listOfFriendsMessagesContentsEnum.Current == null)
             {
                 FindChatMessagesContent();
             }
@@ -240,7 +241,6 @@ public class ChatWindowPanel : MonoBehaviour
             var currentRectTransform = currentFriendsChatMessages.gameObject.GetComponent<RectTransform>();
             listOfFriendsMessagesContents.Add(currentRectTransform);
         }
-        
     }
 
     private void TeamChatMessageRouter(TeamChatMessage message)
@@ -277,10 +277,27 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             teamID = message.TeamId;
-            SwitchActiveChat(teamID, messageWho.ToString());
+            //Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
+            //int teamIDIndex = teamIDs.FindIndex(predicate);
+
+            //// If the team ID does not exist in the list
+            //if (teamIDIndex == -1)
+            //{
+            //    teamIDs.Add(teamID);
+            //    teamIDIndex = teamIDs.Count - 1;
+            //    ChatMessagesViewContentCreator();
+            //    if (chatSelectionPanel == null)
+            //    {
+            //        chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
+            //    }
+            //    // Doesn't work if message was sent by myself ( should be added in a send first )
+            //    chatSelectionPanel.AddChatSelectionButton(message.Who.ToString(), teamID);
+            //}
             int teamIDIndex = LookupTeam(teamID, messageWho);
+            SwitchActiveChat(teamID, messageWho.ToString());
+            //int teamIDIndex = LookupTeam(teamID, messageWho);
             friendChatMessages = listOfChatMessages[teamIDIndex];
-            FindChatMessagesContent();
+            //FindChatMessagesContent();
             friendChatMessagesContent = listOfFriendsMessagesContents[teamIDIndex];            
         }
         currentTeamID = teamID;
@@ -454,36 +471,6 @@ public class ChatWindowPanel : MonoBehaviour
             teamChatMessageRequest.SetTeamId(currentTeamID);
             teamChatMessageRequest.Send(ChatMessageResponse);
         }
-        //else
-        //{
-        //    if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
-        //    {
-        //        Debug.Log("Sending message: " + message);
-        //        ChatOnChallengeRequest challengeChatMessageRequest = new ChatOnChallengeRequest();
-        //        challengeChatMessageRequest.SetMessage(message);
-        //        challengeChatMessageRequest.SetChallengeInstanceId(challengeManager.ChallengeID);
-        //        challengeChatMessageRequest.Send(ChallengeChatMessageResponse);
-        //    }
-        //    //else
-        //    //{
-        //    //    // Send player's message
-        //    //    BuildChatMessageUI("Player", message, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
-        //    //    // Use AI chat
-        //    //    string aiMessage;
-        //    //    if (GameSession.Difficulty == DifficultyEnum.EASY)
-        //    //    {
-        //    //        aiMessage = AIChat.GetEasyAIMessage();
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        aiMessage = AIChat.GetHardAIMessage();
-        //    //    }
-        //    //    //make time
-        //    //    //Invoke("WaitForAI", 0f);
-        //    //    StartCoroutine("WaitForAI");
-        //    //    //pdaFlash.SetActive(true); 
-        //    //}
-        //}
     }
 
     void ChatMessageResponse(SendTeamChatMessageResponse response)
@@ -498,46 +485,8 @@ public class ChatWindowPanel : MonoBehaviour
         }
     }
 
-    //void ChallengeChatMessageResponse(ChatOnChallengeResponse response)
-    //{
-    //    if (response.HasErrors)
-    //    {
-    //        Debug.Log("Chat message not sent");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Chat message sent");
-    //    }
-    //}
-
-    //private void ChallengeChatMessageReceived(ChallengeChatMessage message)
-    //{
-    //    string messageWho = message.Who.ToString();
-    //    string messageMessage = message.Message.ToString();
-    //    if (messageMessage.Length > 1000)
-    //    {
-    //        messageMessage = messageMessage.Substring(0, 1000);
-    //    }        
-    //    Debug.Log("Team chat message recieved: " + messageMessage);
-    //    Debug.Log("Message sent by: " + messageWho);
-    //    //GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>()
-    //    if (gameSparksUserIDScript.myDisplayName != messageWho)
-    //    {
-    //        //pdaFlash.SetActive(true);
-    //        //    // make time
-    //        //    StartCoroutine(BuyTime(counter));
-    //    }
-    //    //else
-    //    //{
-
-    //    //}
-    //    BuildChatMessageUI(messageWho, messageMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
-    //}
-
     private void BuildChatMessageUI(string messageWho, string messageMessage, GameObject messageTextObjectPrefab, RectTransform chatMessagesViewContent, List<GameObject> chatMessages)
     {
-        //if (gameObject.activeSelf)
-        //{
         GameObject messageTextObject = Instantiate(messageTextObjectPrefab) as GameObject;
         var messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
         TMPro.TextMeshProUGUI playerText = messageTextObjectChildrenText[0];
@@ -557,14 +506,7 @@ public class ChatWindowPanel : MonoBehaviour
         {
             pdaFlashOn();
             flashTimer.StartCountdown();
-        }   
-        //if (SceneManager.GetActiveScene().name == "MainMenu")
-        //{
-        //    if (messageWho != gameSparksUserIDScript.myDisplayName)
-        //    {
-        //        StartCoroutine(nameof(BuyTime));
-        //    }
-        //}
+        } 
             
 
         Debug.Log("Name Of ChatMessagesViewContent: " + chatMessagesViewContent.name);
@@ -575,12 +517,9 @@ public class ChatWindowPanel : MonoBehaviour
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
 
-        //AddSpacingMessage(chatMessagesViewContent, chatMessages, messageTextObjectPrefab);
-        //chatMessagesViewContent.parent.gameObject.GetComponentInChildren<Scrollbar>().value = 0;
         StartCoroutine(ScrollToBottom());
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(chatMessagesViewContent);
-        //}        
     }
 
     IEnumerator ScrollToBottom()
@@ -665,25 +604,12 @@ public class ChatWindowPanel : MonoBehaviour
         flashTimer.CancelCountdown();        
     }
 
-    //IEnumerator WaitForAI()
-    //{
-    //    yield return new WaitForSeconds(2f);
-    //    string aiMessage;
-    //    if (GameSession.Difficulty == DifficultyEnum.EASY)
-    //    {
-    //        aiMessage = AIChat.GetEasyAIMessage();
-    //    }
-    //    else
-    //    {
-    //        aiMessage = AIChat.GetHardAIMessage();
-    //    }
-    //    BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
-    //    StartCoroutine(BuyTime());
-    //}
-
     private void OnDestroy()
     {
-        SetAllActive();
+        //SetAllActive();
+        TeamChatMessage.Listener -= TeamChatMessageRouter;
+        ScriptMessage_JoinFriendTeam.Listener -= JoinFriendTeam;
+        gameSparksUserIDScript = new GameSparksUserID();
     }
 
     public void SetAllActive()

@@ -303,4 +303,9 @@ public class InGameChatWindowPanel : MonoBehaviour
         BuildChatMessageUI("Computer", aiMessage, inGameMessagePrefab, chatMessagesViewContent, chatMessages);
         StartCoroutine(BuyTime());
     }
+
+    private void OnDestroy()
+    {
+        ChallengeChatMessage.Listener -= ChallengeChatMessageReceived;
+    }
 }

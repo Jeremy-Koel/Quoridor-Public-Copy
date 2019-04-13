@@ -81,6 +81,16 @@ public class FriendsPanel : MonoBehaviour
         SwitchFriendsListToOnline();
     }
 
+    private void OnDestroy()
+    {
+        onlineFriendsButton.onClick.RemoveAllListeners();
+        //offlineFriendsButton.onClick.AddListener(SwitchFriendsListToOffline);
+        friendRequestsButton.onClick.RemoveAllListeners();
+        addFriendsButton.onClick.RemoveAllListeners();
+        searchFriendsButton.onClick.RemoveAllListeners();
+        // Call starting point function
+    }
+
     // Update is called once per frame
     void Update()
     {
