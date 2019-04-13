@@ -188,6 +188,10 @@ public class ChatWindowPanel : MonoBehaviour
             if (index == teamIDIndex)
             {
                 listOfFriendsMessagesContentsEnum.Current.parent.gameObject.SetActive(true);
+                if (listOfFriendsMessagesContentsEnum.Current.GetComponentsInChildren<TMPro.TextMeshProUGUI>().Length == 0)
+                {
+                    AddFriendIntroMessage(listOfFriendsMessagesContentsEnum.Current, chatMessages, lobbyMessagePrefab);
+                }
             }
             else
             {
@@ -545,7 +549,22 @@ public class ChatWindowPanel : MonoBehaviour
 
         chatMessages.Add(messageTextObject);
     }
-    
+
+    private void AddFriendIntroMessage(RectTransform chatMessagesViewContent, List<GameObject> chatMessages, GameObject chatMessageObjectPrefab)
+    {
+        GameObject messageTextObject = Instantiate(chatMessageObjectPrefab) as GameObject;
+        var messageTextObjectChildrenText = messageTextObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
+        TMPro.TextMeshProUGUI playerText = messageTextObjectChildrenText[0];
+        TMPro.TextMeshProUGUI messageText = messageTextObjectChildrenText[1];
+        playerText.text = "Type in a message and say hi!";
+        messageText.text = "";
+
+        messageTextObject.transform.SetParent(chatMessagesViewContent);
+        messageTextObject.transform.localScale = new Vector3(1, 1, 1);
+
+        chatMessages.Add(messageTextObject);
+    }
+
 
     private void ChatMessagesFull()
     {
