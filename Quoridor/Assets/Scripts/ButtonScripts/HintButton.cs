@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameCore;
 using UnityEngine.UI;
+using TMPro;
 
 public class HintButton : MonoBehaviour
 {
@@ -12,20 +13,21 @@ public class HintButton : MonoBehaviour
     private EventManager eventManager;
     private Button hintButton;
     private ButtonFontTMP hintButtonFont;
+    private TextMeshProUGUI hintButtonTextMesh;
     private GameObject hintWallHighlight;
     private GameObject hintSquare;
     private bool clicked = false;
     private Material hintMat;
     private Material highlightMat;
     private int count = 0;
-    private string hint = "";
+    private string hintString = "";
     public bool flash;
+
     private void Awake()
     {
         gameCoreController = GameObject.Find("GameController").GetComponent<GameCoreController>();
         interfaceController = GameObject.Find("GameController").GetComponent<InterfaceController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-
     }
 
     private void OnDestroy()
@@ -41,12 +43,14 @@ public class HintButton : MonoBehaviour
         hintButtonFont = hintButton.transform.GetChild(0).gameObject.GetComponent<ButtonFontTMP>();
         hintMat = Resources.Load("hintColor", typeof(Material)) as Material;
         highlightMat = Resources.Load("highlightColor", typeof(Material)) as Material;
+        hintButtonTextMesh = GameObject.Find("HintButton").GetComponentInChildren<TextMeshProUGUI>();
+        hintButtonTextMesh.text = "Hint (3)";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (interfaceController.GetWhoseTurn() != GameBoard.PlayerEnum.ONE)
+        if (interfaceController.GetWhoseTurn() != GameBoard.PlayerEnum.ONE || gameCoreController.GetHintsRemaining() < 1)
         {
             if (hintWallHighlight != null)
             {
@@ -76,57 +80,56 @@ public class HintButton : MonoBehaviour
         }
     }
 
+    private void UpdateHintButtonText()
+    {
+        hintButtonTextMesh.text = "Hint (" + gameCoreController.GetHintsRemaining() + ")";
+    }
+
     public async void OnHintButtonClick()
     {
-        eventManager.InvokeHintCalcStart();
-        //if (highlightSquaresScript.showHint)
-        //{
-        //    highlightSquaresScript.showHint = false;
-        //    if (hintWallHighlight != null)
-        //    {
-        //        hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.clear;
-        //    }
-        //}
-        //else
-        //{
-
-        //if (!highlightSquaresScript.showHint && hintWallHighlight == null && interfaceController.GetWhoseTurn() == GameBoard.PlayerEnum.ONE)
-        //{
-
-        clicked = true;
-
-        hint = await gameCoreController.GetHintForPlayer();
-        eventManager.InvokeHintCalcEnd();
-        Debug.Log(hint);
-
-        if (hint.Length < 3)
+        if (gameCoreController.GetHintsRemaining() > 0)
         {
+            // Show popup
+            eventManager.InvokeHintCalcStart();
 
-            highlightSquaresScript.moveHint = hint;
-            hintSquare = GameObject.Find(hint);
-            flash = true;
-            Invoke("flashHighlight", .25f);
-            Invoke("flashHighlight", .5f);
-            Invoke("flashHighlight", .75f);
-            Invoke("flashHighlight", 1f);
-            Invoke("flashHighlight", 1.25f);
-            //Invoke("flashHighlight", .30f);
-            //highlightSquaresScript.showHint = true;
+            // Flag used in Update() 
+            clicked = true;
 
-        }
-        else
-        {
-            hintWallHighlight = GameObject.Find(hint).transform.GetChild(0).gameObject;
-            Invoke("flashHighlight", .25f);
-            Invoke("flashHighlight", .5f);
-            Invoke("flashHighlight", .75f);
-            Invoke("flashHighlight", 1f);
-            Invoke("flashHighlight", 1.25f);
-            hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
+            // Grap hint from game core 
+            hintString = await gameCoreController.GetHintForPlayer();
+            Debug.Log(hintString);
+
+            // Hide popup 
+            eventManager.InvokeHintCalcEnd();
+
+            // Change text of button to reflect how many hints are left 
+            UpdateHintButtonText();
+
+            if (hintString.Length < 3)
+            {
+
+                highlightSquaresScript.moveHint = hintString;
+                hintSquare = GameObject.Find(hintString);
+                flash = true;
+                Invoke("flashHighlight", .25f);
+                Invoke("flashHighlight", .5f);
+                Invoke("flashHighlight", .75f);
+                Invoke("flashHighlight", 1f);
+                Invoke("flashHighlight", 1.25f);
+
+            }
+            else
+            {
+                hintWallHighlight = GameObject.Find(hintString).transform.GetChild(0).gameObject;
+                Invoke("flashHighlight", .25f);
+                Invoke("flashHighlight", .5f);
+                Invoke("flashHighlight", .75f);
+                Invoke("flashHighlight", 1f);
+                Invoke("flashHighlight", 1.25f);
+                hintWallHighlight.GetComponent<SpriteRenderer>().color = Color.green;
+            }
         }
     }
-    
-   // }
     
     private void flashHighlight()
     {
@@ -134,7 +137,7 @@ public class HintButton : MonoBehaviour
 
         if(count%2 != 0)
         {
-            if (hint.Length < 3)
+            if (hintString.Length < 3)
             {
                 //highlightSquaresScript.showHint = false;
                 hintSquare.GetComponent<Renderer>().material = hintMat;
@@ -147,7 +150,7 @@ public class HintButton : MonoBehaviour
         }
         else
         {
-            if (hint.Length < 3)
+            if (hintString.Length < 3)
             {
                 //highlightSquaresScript.showHint = true;
                 hintSquare.GetComponent<Renderer>().material = highlightMat;
@@ -160,7 +163,7 @@ public class HintButton : MonoBehaviour
 
         if (count == 5)
         {
-            if (hint.Length < 3)
+            if (hintString.Length < 3)
             {
                 highlightSquaresScript.showHint = true;
             }
