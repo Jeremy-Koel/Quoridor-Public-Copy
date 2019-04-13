@@ -26,7 +26,17 @@ public class HostedGameLobbies : MonoBehaviour
     public int heightOfHostedGame = 80;
 
     public ChallengeManager challengeManager;
-    
+
+    [SerializeField]
+    public RectTransform upperBoundary;
+    [SerializeField]
+    public RectTransform lowerBoundary;
+    [SerializeField]
+    public Button scrollUpButton;
+    [SerializeField]
+    public Button scrollDownButton;
+    public float heightOfAllGames;
+
     private bool hosting = false;
 
     private void Awake()
@@ -40,6 +50,16 @@ public class HostedGameLobbies : MonoBehaviour
         refreshGamesButton.onClick.AddListener(onRefreshGamesButtonClick);
         hostedGames = new List<GameObject>();
         challengeManager = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
+
+        GameObject upMostBoundsObject = new GameObject("upMostBoundariesObject", typeof(RectTransform));
+        upperBoundary = upMostBoundsObject.GetComponent<RectTransform>();
+        upperBoundary.localPosition = new Vector2((hostedGameLobbiesRectTransform.localPosition.x),
+                                               (hostedGameLobbiesRectTransform.localPosition.y));
+
+        GameObject lowMostBoundsObject = new GameObject("lowMostBoundariesObject", typeof(RectTransform));
+        lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
+        lowerBoundary.localPosition = new Vector2((hostedGameLobbiesRectTransform.localPosition.x),
+                                               (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
     }
 
     // Start is called before the first frame update
@@ -322,6 +342,39 @@ public class HostedGameLobbies : MonoBehaviour
         hostedGameLobbiesRectTransform.sizeDelta = new Vector2(hostedGameLobbiesRectTransform.sizeDelta.x, hostedGames.Count * heightOfHostedGame);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(hostedGameLobbiesRectTransform);
+    }
+
+    public void MoveContentPane(float value)
+    {
+        // Adjust dimensions of rightMostBoundaries
+        heightOfAllGames = (hostedGameLobbiesRectTransform.GetComponentsInChildren<Button>().Length * heightOfHostedGame);
+        if (heightOfAllGames > 300)
+        {
+            lowerBoundary.localPosition = new Vector2((upperBoundary.localPosition.x),
+                                upperBoundary.localPosition.y + (heightOfAllGames - 1200));
+
+            hostedGameLobbiesRectTransform.localPosition = new Vector2(hostedGameLobbiesRectTransform.localPosition.x,
+                                                            hostedGameLobbiesRectTransform.localPosition.y + value);
+
+            if (hostedGameLobbiesRectTransform.localPosition.y <= upperBoundary.localPosition.y)
+            {
+                hostedGameLobbiesRectTransform.localPosition = upperBoundary.localPosition;
+
+                scrollUpButton.gameObject.SetActive(false);
+                scrollDownButton.gameObject.SetActive(true);
+            }
+            else if (hostedGameLobbiesRectTransform.localPosition.y >= lowerBoundary.localPosition.y)
+            {
+                hostedGameLobbiesRectTransform.localPosition = lowerBoundary.localPosition;
+                scrollDownButton.gameObject.SetActive(false);
+                scrollUpButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                scrollDownButton.gameObject.SetActive(true);
+                scrollUpButton.gameObject.SetActive(true);
+            }
+        }
     }
 
     void RemoveAllHostedGames()

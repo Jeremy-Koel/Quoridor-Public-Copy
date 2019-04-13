@@ -53,13 +53,13 @@ public class LeaderboardPanel : MonoBehaviour
 
         GameObject upMostBoundsObject = new GameObject("upMostBoundariesObject", typeof(RectTransform));
         upperBoundary = upMostBoundsObject.GetComponent<RectTransform>();
-        upperBoundary.localPosition = new Vector2(leaderboardContent.localPosition.x,
-                                                leaderboardContent.localPosition.y);
+        upperBoundary.localPosition = new Vector2((leaderboardContent.localPosition.x),
+                                               (leaderboardContent.localPosition.y));
 
         GameObject lowMostBoundsObject = new GameObject("lowMostBoundariesObject", typeof(RectTransform));
         lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
         lowerBoundary.localPosition = new Vector2((leaderboardContent.localPosition.x),
-                                                leaderboardContent.localPosition.y + heightOfLeaderboardPlayer);
+                                               ( leaderboardContent.localPosition.y + heightOfLeaderboardPlayer));
     }
 
     // Start is called before the first frame update
@@ -123,7 +123,7 @@ public class LeaderboardPanel : MonoBehaviour
         if (heightOfAllPlayers > 480)
         {
             lowerBoundary.localPosition = new Vector2((upperBoundary.localPosition.x),
-                                upperBoundary.localPosition.y + (heightOfAllPlayers));
+                                upperBoundary.localPosition.y + (heightOfAllPlayers - 1200));
 
             leaderboardContent.localPosition = new Vector2(leaderboardContent.localPosition.x,
                                                             leaderboardContent.localPosition.y + value);
@@ -131,14 +131,20 @@ public class LeaderboardPanel : MonoBehaviour
             if (leaderboardContent.localPosition.y <= upperBoundary.localPosition.y)
             {
                 leaderboardContent.localPosition = upperBoundary.localPosition;
-                // scrollDownButton.gameObject.SetActive(false);
-                scrollUpButton.gameObject.SetActive(true);
+                
+                scrollUpButton.gameObject.SetActive(false);
+                scrollDownButton.gameObject.SetActive(true);
             }
-            if (leaderboardContent.localPosition.y >= lowerBoundary.localPosition.y)
+            else if (leaderboardContent.localPosition.y >= lowerBoundary.localPosition.y)
             {
                 leaderboardContent.localPosition = lowerBoundary.localPosition;
-                //  scrollUpButton.gameObject.SetActive(false);
+                scrollDownButton.gameObject.SetActive(false);
+                scrollUpButton.gameObject.SetActive(true);
+            }
+            else
+            {
                 scrollDownButton.gameObject.SetActive(true);
+                scrollUpButton.gameObject.SetActive(true);
             }
         }
     }
