@@ -21,7 +21,7 @@ TagManager:
   - 
   - PostProcessing
   - Walls
-  - 
+  - Shadow
   - 
   - 
   - 
@@ -46,4 +46,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Shadow
+    uniqueID: 4274883587
     locked: 0

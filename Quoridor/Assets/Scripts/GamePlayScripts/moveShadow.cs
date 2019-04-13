@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveMainMenuBoard : MonoBehaviour
+public class MoveShadow : MonoBehaviour
 {
     // Start is called before the first frame update
-    public bool moveBoard =false;
+    public bool moveBoard = false;
     public Vector3 target;
     public float speed = 20f;
     // Start is called before the first frame update
     void Start()
     {
-       // moveBoard = false;
-        
+        // moveBoard = false;
+
         target = new Vector3(-5.3f, 0, 0);
     }
 
@@ -28,7 +28,6 @@ public class MoveMainMenuBoard : MonoBehaviour
             if (transform.position == target)
             {
                 moveBoard = false;
-
             }
         }
     }
