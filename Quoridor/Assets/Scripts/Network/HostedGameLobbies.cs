@@ -41,6 +41,8 @@ public class HostedGameLobbies : MonoBehaviour
     private bool refreshingLock = false;
     private Timer refreshTimer;
 
+    private GameSparks.Core.GSEnumerable<FindPendingMatchesResponse._PendingMatch> lastBatchOfMatches;
+
     private void Awake()
     {
         hostedGameLobbiesRectTransform = GameObject.Find("HostedGameLobbies").GetComponent<RectTransform>();
@@ -113,7 +115,7 @@ public class HostedGameLobbies : MonoBehaviour
         if (!refreshingLock)
         {
             refreshingLock = true;
-            RemoveAllHostedGames();
+            //RemoveAllHostedGames();
             FindPendingMatchesRequest findPendingMatchesRequest = new FindPendingMatchesRequest();
             findPendingMatchesRequest.SetMatchShortCode("HostedMatch");
             findPendingMatchesRequest.SetMaxMatchesToFind(100);
@@ -124,6 +126,25 @@ public class HostedGameLobbies : MonoBehaviour
 
     public void OnFindPendingMatchesRequestSuccess(FindPendingMatchesResponse response)
     {
+        if (lastBatchOfMatches == null)
+        {
+            lastBatchOfMatches = response.PendingMatches;
+            RemoveAllHostedGames();
+        }
+        else
+        {
+            if (lastBatchOfMatches == response.PendingMatches)
+            {
+                lastBatchOfMatches = response.PendingMatches;
+                return;
+            }
+            else
+            {
+                RemoveAllHostedGames();
+                lastBatchOfMatches = response.PendingMatches;
+            }
+
+        }
         //Debug.Log("Matches found: " + response.ScriptData.BaseData["matchesFound"]);
         if (hosting)
         {
