@@ -64,7 +64,7 @@ public class HostedGameLobbies : MonoBehaviour
                                                (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
         
         refreshTimer = gameObject.AddComponent<Timer>();
-        refreshTimer.SetTimeDefault(5f);
+        refreshTimer.SetTimeDefault(10f);
         refreshTimer.ResetTimer();
         refreshTimer.timeUp.AddListener(RefreshTime);
         refreshTimer.StartCountdown();

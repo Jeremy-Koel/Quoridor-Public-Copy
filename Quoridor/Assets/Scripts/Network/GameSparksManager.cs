@@ -14,6 +14,7 @@ public class GameSparksManager : MonoBehaviour
     private EventManager eventManager;
     public bool connected;
     private float checkConnectionSpeed = 5.0f;
+    public bool oppDisconnected = false;
 
     private void Awake()
     {
@@ -35,6 +36,16 @@ public class GameSparksManager : MonoBehaviour
     private void GameDisconnectedHandler(ScriptMessage_GameDisconnected message)
     {
         Debug.Log("Lost connection message received");
+        string playerId = message.BaseData.GetString("playerWhoDisconnected");
+        var gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+        if (playerId != gameSparksUserID.myUserID)
+        {
+            oppDisconnected = true;
+        }
+        else
+        {
+            oppDisconnected = false;
+        }
         eventManager.InvokeLostConnection();
     }
 
@@ -53,7 +64,12 @@ public class GameSparksManager : MonoBehaviour
     private void LostConnection()
     {
         Debug.Log("Lost connection");
-        connected = false;
+        //connected = false;
+        //if (oppDisconnected)
+        //{
+        //    connected = true;
+        //    oppDisconnected = false;
+        //}
     }
 
     private void CheckConnection()
