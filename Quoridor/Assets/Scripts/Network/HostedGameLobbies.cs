@@ -38,6 +38,8 @@ public class HostedGameLobbies : MonoBehaviour
     public float heightOfAllGames;
 
     private bool hosting = false;
+    private bool refreshingLock = false;
+    private Timer refreshTimer;
 
     private void Awake()
     {
@@ -60,6 +62,12 @@ public class HostedGameLobbies : MonoBehaviour
         lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
         lowerBoundary.localPosition = new Vector2((hostedGameLobbiesRectTransform.localPosition.x),
                                                (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
+        
+        refreshTimer = gameObject.AddComponent<Timer>();
+        refreshTimer.SetTimeDefault(5f);
+        refreshTimer.ResetTimer();
+        refreshTimer.timeUp.AddListener(RefreshTime);
+        refreshTimer.StartCountdown();
     }
 
     // Start is called before the first frame update
@@ -87,6 +95,13 @@ public class HostedGameLobbies : MonoBehaviour
         ScriptMessage.Listener -= RefreshHostedGames;
     }
 
+    private void RefreshTime()
+    {
+        refreshTimer.ResetTimer();
+        refreshTimer.StartCountdown();
+        FindGameLobbies();
+    }
+
     private void RefreshHostedGames(ScriptMessage message)
     {
         onRefreshGamesButtonClick();
@@ -95,11 +110,16 @@ public class HostedGameLobbies : MonoBehaviour
 
     void FindGameLobbies()
     {
-        RemoveAllHostedGames();
-        FindPendingMatchesRequest findPendingMatchesRequest = new FindPendingMatchesRequest();
-        findPendingMatchesRequest.SetMatchShortCode("HostedMatch");
-        findPendingMatchesRequest.SetMaxMatchesToFind(100);
-        findPendingMatchesRequest.Send(OnFindPendingMatchesRequestSuccess, OnFindPendingMatchesRequestError);
+        if (!refreshingLock)
+        {
+            refreshingLock = true;
+            RemoveAllHostedGames();
+            FindPendingMatchesRequest findPendingMatchesRequest = new FindPendingMatchesRequest();
+            findPendingMatchesRequest.SetMatchShortCode("HostedMatch");
+            findPendingMatchesRequest.SetMaxMatchesToFind(100);
+            findPendingMatchesRequest.Send(OnFindPendingMatchesRequestSuccess, OnFindPendingMatchesRequestError);
+        }
+        
     }
 
     public void OnFindPendingMatchesRequestSuccess(FindPendingMatchesResponse response)
@@ -140,12 +160,14 @@ public class HostedGameLobbies : MonoBehaviour
         {
             noHostedGamesPanel.SetActive(false);
         }
+        refreshingLock = false;
     }
 
     public void OnFindPendingMatchesRequestError(FindPendingMatchesResponse response)
     {
         Debug.Log("Find Matches Error: " + response.Errors.JSON);
         UnblockRefreshInput();
+        refreshingLock = false;
     }
 
 
