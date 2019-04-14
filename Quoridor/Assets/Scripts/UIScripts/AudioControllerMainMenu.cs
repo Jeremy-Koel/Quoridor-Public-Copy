@@ -15,6 +15,7 @@ public class AudioControllerMainMenu : MonoBehaviour
         chalkboardMovingSource = GameObject.Find("SoundEffectPlayerChalkBoardMoving").GetComponent<AudioSource>();
 
         chalkboardMovingSource.pitch = 1.35f;
+        chalkboardMovingSource.volume = 0.25f;
         chalkboardMovingSource.Play();
     }
 
@@ -34,6 +35,10 @@ public class AudioControllerMainMenu : MonoBehaviour
         if (chalkboardMovingSource.pitch != 1f)
         {
             chalkboardMovingSource.pitch = 1f;
+        }
+        if (chalkboardMovingSource.volume != 1f)
+        {
+            chalkboardMovingSource.volume = 1f;
         }
         chalkboardMovingSource.Play();
     }
