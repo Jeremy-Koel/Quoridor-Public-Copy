@@ -11,6 +11,7 @@ public class FriendsChatPanel : MonoBehaviour
     private GameObject friendsChatPanel;
     private GameObject openChatGameObject;
     private GameObject minimizeChat;
+    private List<GameObject> minimizeChatButtons = new List<GameObject>();
     private GameObject friendsPanel;
     private GameObject chatSelectionPanel;
     private GameObject chatWindowPanel;
@@ -42,6 +43,12 @@ public class FriendsChatPanel : MonoBehaviour
         friendsChatPanel = GameObject.Find("FriendsChatPanel");
         friendsChatPanelRectTransform = friendsChatPanel.GetComponent<RectTransform>();
         minimizeChat = GameObject.Find("MinimizeChatButton");
+        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButton"));
+        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopLeft"));
+        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopRight"));
+        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopBottom"));
+        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopTop"));
+        //minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonBottom"));
         friendsPanel = GameObject.Find("FriendsPanel");
         chatSelectionPanel = GameObject.Find("ChatSelectionPanel");
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
@@ -154,7 +161,11 @@ public class FriendsChatPanel : MonoBehaviour
     private void ToggleChatElements()
     {
         // For these elements, we want them to show if the chat is active (open and showing)
-        minimizeChat.SetActive(chatActive);
+        //minimizeChat.SetActive(chatActive);
+        foreach (var minButton in minimizeChatButtons)
+        {
+            minButton.SetActive(chatActive);
+        }
         friendsPanel.SetActive(chatActive);
         chatSelectionPanel.SetActive(chatActive);
         chatWindowPanel.SetActive(chatActive);
