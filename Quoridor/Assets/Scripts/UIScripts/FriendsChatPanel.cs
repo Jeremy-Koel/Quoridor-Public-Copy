@@ -116,6 +116,7 @@ public class FriendsChatPanel : MonoBehaviour
                 if (friendsChatPanelRectTransform.localPosition.Equals(inactivePosition))
                 {
                     movePDA = false;
+                    openChatGameObject.SetActive(true);
                 }
             }
         }
@@ -153,7 +154,11 @@ public class FriendsChatPanel : MonoBehaviour
         chatActive = !chatActive;
 
         // If the chat is active, then we don't want the open button to be interactable 
-        openChatGameObject.SetActive(!chatActive);
+        if (chatActive)
+        {
+            openChatGameObject.SetActive(false);
+        }
+        //openChatGameObject.SetActive(true);
 
         ToggleChatElements();
     }
