@@ -17,6 +17,7 @@ public class Tutorial : MonoBehaviour
     private GameObject logoImage;
     private int numberOfTutorialSlides = 5;
     private GameObject boldText;
+    private GameObject goalText;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +31,8 @@ public class Tutorial : MonoBehaviour
         nextButton = GameObject.Find("NextSlideButton");
         instructTextBox = GameObject.Find("TutorialText").GetComponent<TMPro.TextMeshProUGUI>();
         boldText = GameObject.Find("BoldText");
-        
+        goalText = GameObject.Find("GoalText");
+        goalText.SetActive(false);
         instructList = createInstructList();
         instructTextBox.text = instructList[0];
     }
@@ -73,6 +75,11 @@ public class Tutorial : MonoBehaviour
     {
         index -= 1;
 
+        if(!instructTextBox.IsActive())
+        {
+            instructTextBox.gameObject.SetActive(true);
+        }
+
         if (index > -2)
         {
             if (index == -1)
@@ -80,6 +87,7 @@ public class Tutorial : MonoBehaviour
                 logoImage.SetActive(true);
                 boldText.SetActive(true);
                 tutorialImage.SetActive(false);
+                goalText.SetActive(false);
                 instructTextBox.text = instructList[index + 1];
                 
             }
@@ -88,7 +96,7 @@ public class Tutorial : MonoBehaviour
                 logoImage.SetActive(false);
                 boldText.SetActive(false);
                 tutorialImage.SetActive(true);
-
+                goalText.SetActive(false);
                 tutorialVideoPlayer.clip = tutorialClips[index];
                 instructTextBox.text = instructList[index + 1];
             }
@@ -107,14 +115,18 @@ public class Tutorial : MonoBehaviour
         {
             if (index == numberOfTutorialSlides - 2)
             {
-                logoImage.SetActive(true);
+                //logoImage.SetActive(true);
+                goalText.SetActive(true);
+                
                 tutorialImage.SetActive(false);
-                instructTextBox.text = instructList[index + 1];
+                //instructTextBox.text = instructList[index + 1];
+                instructTextBox.gameObject.SetActive(false);
             }
             else
             {
                 logoImage.SetActive(false);
                 boldText.SetActive(false);
+                goalText.SetActive(false);
                 tutorialImage.SetActive(true);
                 tutorialVideoPlayer.clip = tutorialClips[index];
 
