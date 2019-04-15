@@ -25,7 +25,7 @@ public class MoveBoards : MonoBehaviour
         }
         else
         {
-            target = new Vector3(12, 13, -3);
+            target = new Vector3(13, 13, -3);
         }
 
         activePos = target;
