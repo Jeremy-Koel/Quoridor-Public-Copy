@@ -43,6 +43,9 @@ public class HostedGameLobbies : MonoBehaviour
 
     private GameSparks.Core.GSEnumerable<FindPendingMatchesResponse._PendingMatch> lastBatchOfMatches;
 
+    private FindPendingMatchesRequest lastFindMatchRequest;
+    private MatchmakingRequest lastMatchmakingRequest;
+
     private void Awake()
     {
         hostedGameLobbiesRectTransform = GameObject.Find("HostedGameLobbies").GetComponent<RectTransform>();
@@ -64,7 +67,7 @@ public class HostedGameLobbies : MonoBehaviour
         lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
         lowerBoundary.localPosition = new Vector2((hostedGameLobbiesRectTransform.localPosition.x),
                                                (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
-        
+
         refreshTimer = gameObject.AddComponent<Timer>();
         refreshTimer.SetTimeDefault(10f);
         refreshTimer.ResetTimer();
@@ -82,7 +85,7 @@ public class HostedGameLobbies : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnDestroy()
@@ -119,9 +122,12 @@ public class HostedGameLobbies : MonoBehaviour
             FindPendingMatchesRequest findPendingMatchesRequest = new FindPendingMatchesRequest();
             findPendingMatchesRequest.SetMatchShortCode("HostedMatch");
             findPendingMatchesRequest.SetMaxMatchesToFind(100);
+            // Store this request incase we get a throttled message
+            lastFindMatchRequest = findPendingMatchesRequest;
+
             findPendingMatchesRequest.Send(OnFindPendingMatchesRequestSuccess, OnFindPendingMatchesRequestError);
         }
-        
+
     }
 
     public void OnFindPendingMatchesRequestSuccess(FindPendingMatchesResponse response)
@@ -189,6 +195,20 @@ public class HostedGameLobbies : MonoBehaviour
         Debug.Log("Find Matches Error: " + response.Errors.JSON);
         UnblockRefreshInput();
         refreshingLock = false;
+        if (IsRequestThrottled(response.Errors.JSON))
+        {
+            FindPendingMatchesRequest findPendingMatchesRequest = lastFindMatchRequest;
+            findPendingMatchesRequest.Send(OnFindPendingMatchesRequestSuccess, OnFindPendingMatchesRequestError);
+        }
+    }
+
+    public bool IsRequestThrottled(string jsonString)
+    {
+        if (jsonString.Contains("Throttled") || jsonString.Contains("THROTTLED") || jsonString.Contains("throttled"))
+        {
+            return true;
+        }
+        return false;
     }
 
 
@@ -209,6 +229,8 @@ public class HostedGameLobbies : MonoBehaviour
             matchmakingRequest.SetParticipantData(participantData);
             matchmakingRequest.SetMatchData(participantData);
             matchmakingRequest.SetSkill(0);
+            // Store this request incase we get a throttled message
+            lastMatchmakingRequest = matchmakingRequest;
 
             matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
             FindGameLobbies();
@@ -332,6 +354,11 @@ public class HostedGameLobbies : MonoBehaviour
     {
         //UnblockInput();
         Debug.Log("Matchmaking Error");
+        if (IsRequestThrottled(response.Errors.JSON))
+        {
+            var matchmakingRequest = lastMatchmakingRequest;
+            matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+        }
     }
 
     // Add game data to lobbies in UI
