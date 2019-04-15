@@ -18,6 +18,7 @@ public class Tutorial : MonoBehaviour
     private int numberOfTutorialSlides = 5;
     private GameObject boldText;
     private GameObject goalText;
+    private GameObject cheeseImage;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +33,8 @@ public class Tutorial : MonoBehaviour
         instructTextBox = GameObject.Find("TutorialText").GetComponent<TMPro.TextMeshProUGUI>();
         boldText = GameObject.Find("BoldText");
         goalText = GameObject.Find("GoalText");
+        cheeseImage = GameObject.Find("CheeseImage");
+        cheeseImage.SetActive(false);
         goalText.SetActive(false);
         instructList = createInstructList();
         instructTextBox.text = instructList[0];
@@ -88,6 +91,7 @@ public class Tutorial : MonoBehaviour
                 boldText.SetActive(true);
                 tutorialImage.SetActive(false);
                 goalText.SetActive(false);
+                cheeseImage.SetActive(false);
                 instructTextBox.text = instructList[index + 1];
                 
             }
@@ -97,6 +101,7 @@ public class Tutorial : MonoBehaviour
                 boldText.SetActive(false);
                 tutorialImage.SetActive(true);
                 goalText.SetActive(false);
+                cheeseImage.SetActive(false);
                 tutorialVideoPlayer.clip = tutorialClips[index];
                 instructTextBox.text = instructList[index + 1];
             }
@@ -117,7 +122,7 @@ public class Tutorial : MonoBehaviour
             {
                 //logoImage.SetActive(true);
                 goalText.SetActive(true);
-                
+                cheeseImage.SetActive(true);
                 tutorialImage.SetActive(false);
                 //instructTextBox.text = instructList[index + 1];
                 instructTextBox.gameObject.SetActive(false);
@@ -127,6 +132,7 @@ public class Tutorial : MonoBehaviour
                 logoImage.SetActive(false);
                 boldText.SetActive(false);
                 goalText.SetActive(false);
+                cheeseImage.SetActive(false);
                 tutorialImage.SetActive(true);
                 tutorialVideoPlayer.clip = tutorialClips[index];
 
