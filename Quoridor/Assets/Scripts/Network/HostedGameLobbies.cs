@@ -375,31 +375,31 @@ public class HostedGameLobbies : MonoBehaviour
         
         // Get text component of button
         var hostedGameLobbyText = hostedGameLobby.GetComponentsInChildren<TMPro.TextMeshProUGUI>();
-        TMPro.TextMeshProUGUI joinText = hostedGameLobbyText[0];
-        TMPro.TextMeshProUGUI playerText = hostedGameLobbyText[1];
+        TMPro.TextMeshProUGUI playerText = hostedGameLobbyText[0];
         //Text messageText = hostedGameLobbyText[1];
         if (hostName == gameSparksUserID.myDisplayName)
         {
-            if (hostName.Length >= 10)
+            if (hostName.Length >= 16)
             {
-                playerText.text = (hostName.Substring(0, 10) + ("(You)"));
+                playerText.text = (hostName.Substring(0, 10) + ("...'s Game (You) "));
             }
             else
             {
-                playerText.text = (hostName) + ("(You)");
+                playerText.text = (hostName) + ("'s Game (You) ");
             }
             Destroy(hostedGameLobby.GetComponent<WholeButtonFontTMP>());
             Destroy(hostedGameLobby.GetComponent<HostedGameLobbyButton>());
         }
         else
         {
-            if (hostName.Length >= 10)
+            playerText.text = "Join ";
+            if (hostName.Length >= 16)
             {
-                playerText.text = (hostName.Substring(0, 10));
+                playerText.text = (hostName.Substring(0, 10) + "...'s Game");
             }
             else
             {
-                playerText.text = (hostName);
+                playerText.text = (hostName + "'s Game");
             }
         }
         //playerText.text = ("<b>" + messageWho + ":</b>");

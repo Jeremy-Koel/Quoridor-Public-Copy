@@ -53,7 +53,7 @@ public class FriendsChatPanel : MonoBehaviour
         chatSelectionPanel = GameObject.Find("ChatSelectionPanel");
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         activePosition = new Vector3(814f, 35f, 0f);
-        inactivePosition = new Vector3(814f, -499f, 0f);
+        inactivePosition = new Vector3(814f, -525f, 0f);
         hoverOverPosition = new Vector3(814f, -450f, 0f);
         
     }

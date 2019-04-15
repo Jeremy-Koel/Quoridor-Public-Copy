@@ -66,6 +66,7 @@ public class LeaderboardPanel : MonoBehaviour
     void Start()
     {
         GetLeaderboardData();
+        scrollDownButton.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
