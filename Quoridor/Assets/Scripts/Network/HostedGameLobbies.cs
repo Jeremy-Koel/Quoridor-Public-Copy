@@ -195,22 +195,18 @@ public class HostedGameLobbies : MonoBehaviour
         Debug.Log("Find Matches Error: " + response.Errors.JSON);
         UnblockRefreshInput();
         refreshingLock = false;
-        if (IsRequestThrottled(response.Errors.JSON))
+        if (ThrottleHandler.IsRequestThrottled(response.Errors.JSON))
         {
-            FindPendingMatchesRequest findPendingMatchesRequest = lastFindMatchRequest;
-            findPendingMatchesRequest.Send(OnFindPendingMatchesRequestSuccess, OnFindPendingMatchesRequestError);
+            Invoke("AttemptSendFindRequest", ThrottleHandler.GetRandomTime());
         }
     }
 
-    public bool IsRequestThrottled(string jsonString)
+
+    public void AttemptSendFindRequest()
     {
-        if (jsonString.Contains("Throttled") || jsonString.Contains("THROTTLED") || jsonString.Contains("throttled"))
-        {
-            return true;
-        }
-        return false;
+        FindPendingMatchesRequest findPendingMatchesRequest = lastFindMatchRequest;
+        findPendingMatchesRequest.Send(OnFindPendingMatchesRequestSuccess, OnFindPendingMatchesRequestError);
     }
-
 
     private void onRefreshGamesButtonClick()
     {
@@ -354,11 +350,16 @@ public class HostedGameLobbies : MonoBehaviour
     {
         //UnblockInput();
         Debug.Log("Matchmaking Error");
-        if (IsRequestThrottled(response.Errors.JSON))
+        if (ThrottleHandler.IsRequestThrottled(response.Errors.JSON))
         {
-            var matchmakingRequest = lastMatchmakingRequest;
-            matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            Invoke("AttemptSendMatchRequest", ThrottleHandler.GetRandomTime());
         }
+    }
+
+    public void AttemptSendMatchRequest()
+    {
+        var matchmakingRequest = lastMatchmakingRequest;
+        matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
     }
 
     // Add game data to lobbies in UI
