@@ -58,14 +58,26 @@ public class NetworkGameController : MonoBehaviour
     public void SetupMultiplayerGame()
     {
         Debug.Log("Setting up multiplayer game in network controller");
-        PlayerInfo playerInfo = GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
+        PlayerInfo myPlayerInfo = challengeManagerScript.CurrentPlayerInfo;//GetPlayerInfo(challengeManagerScript.CurrentPlayerInfo.PlayerNumber);
         
         // Set appropriate turn in game core 
-        gameCoreController.SetupMultiplayerGame(playerInfo.PlayerNumber);
+        gameCoreController.SetupMultiplayerGame(myPlayerInfo.PlayerNumber);
+
+        string myPlayerName = challengeManagerScript.CurrentPlayerInfo.PlayerDisplayName;
+        if (myPlayerName.Length > 20)
+        {
+            myPlayerName = myPlayerName.Substring(0, 17) + "...";
+        }
+        string opponentPlayerName = challengeManagerScript.GetOpponentPlayerInfo().PlayerDisplayName;
+        if (opponentPlayerName.Length > 20)
+        {
+            opponentPlayerName = opponentPlayerName.Substring(0, 17) + "...";
+        }
 
         // Set player names in GUI
-        //interfaceController.SetPlayerOneText(challengeManagerScript.FirstPlayerInfo.PlayerDisplayName);
-        //interfaceController.SetPlayerTwoText(challengeManagerScript.SecondPlayerInfo.PlayerDisplayName);
+        interfaceController.SetPlayerWallLabelText(myPlayerName);
+
+        interfaceController.SetOpponentWallLabelText(opponentPlayerName);
     }
 
     private PlayerInfo GetPlayerInfo(int playerNumber = 0)

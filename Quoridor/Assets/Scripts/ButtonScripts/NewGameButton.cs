@@ -12,6 +12,9 @@ public class NewGameButton : MonoBehaviour
     private Button newGameWinButton;
     private Button newGameMenuButton;
 
+    private MatchmakingRequest lastMatchmakingRequest;
+    private AcceptChallengeRequest lastAcceptChallengeRequest;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +52,8 @@ public class NewGameButton : MonoBehaviour
 
     void OnDestroy()
     {
-
+        ChallengeStartedMessage.Listener -= OnChallengeStarted;
+        ChallengeIssuedMessage.Listener -= OnChallengeIssued;
     }
 
     public void onNewGameButtonClick()
@@ -81,6 +85,9 @@ public class NewGameButton : MonoBehaviour
         request.SetMatchShortCode("DefaultMatch");
         request.SetSkill(0);
         request.SetMatchGroup(matchGroupNumber);
+        // Store last request incase we get a throttled response
+        lastMatchmakingRequest = request;
+
         request.Send(OnMatchmakingSuccess, OnMatchmakingError);
         
     }
@@ -109,6 +116,11 @@ public class NewGameButton : MonoBehaviour
     {
         //UnblockInput();
         Debug.Log("Matchmaking Error");
+        if (ThrottleHandler.IsRequestThrottled(response.Errors.JSON))
+        {
+            var request = lastMatchmakingRequest;
+            request.Send(OnMatchmakingSuccess, OnMatchmakingError);
+        }
     }
 
     private void OnChallengeIssued(ChallengeIssuedMessage message)
@@ -118,13 +130,18 @@ public class NewGameButton : MonoBehaviour
         Debug.Log("This challenge ID: " + challengeInstaceId);
         if (challengeInstaceId != null)
         {
-            new AcceptChallengeRequest()
-                .SetChallengeInstanceId(challengeInstaceId)
-                //.SetMessage(message)
-                .Send((response) => {
-                    //string challengeInstanceId = response.ChallengeInstanceId;
-                    //GSData scriptData = response.ScriptData;
-                });
+            var acc = new AcceptChallengeRequest();
+            acc.SetChallengeInstanceId(challengeInstaceId);
+            acc.Send(OnChallengeIssuedSuccess);
+        }
+    }
+
+    private void OnChallengeIssuedSuccess(AcceptChallengeResponse response)
+    {
+        if (ThrottleHandler.IsRequestThrottled(response.Errors.JSON))
+        {
+            var request = lastAcceptChallengeRequest;
+            request.Send(OnChallengeIssuedSuccess);
         }
     }
 

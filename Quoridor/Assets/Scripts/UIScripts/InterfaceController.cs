@@ -16,8 +16,8 @@ public class InterfaceController : MonoBehaviour
     private GameObject playerMouse;
     private GameObject redLight;
     private GameObject greenLight;
-    private Text playerWallLabel;
-    private Text opponentWallLabel;
+    private TMPro.TextMeshProUGUI playerWallLabel;
+    private TMPro.TextMeshProUGUI opponentWallLabel;
     private SoundEffectController soundEffectController;
     private NetworkGameController networkGameController;
     private GameCoreController gameCoreController;
@@ -38,8 +38,8 @@ public class InterfaceController : MonoBehaviour
         disconnectPanel = GameObject.Find("DisconnectPanel");
         challengeManagerScript = GameObject.Find("ChallengeManager").GetComponent<ChallengeManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
-        playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<Text>();
-        opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<Text>();
+        playerWallLabel = GameObject.Find("PlayerWallLabel").GetComponent<TMPro.TextMeshProUGUI>();
+        opponentWallLabel = GameObject.Find("OpponentWallLabel").GetComponent<TMPro.TextMeshProUGUI>();
         playerTurnBoxAnimator = GameObject.Find("PlayerTurnBox").GetComponent<Animator>();
         redLight = GameObject.Find("RedLight");
         redLight.SetActive(false);

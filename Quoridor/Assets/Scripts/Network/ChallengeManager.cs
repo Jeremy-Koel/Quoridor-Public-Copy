@@ -393,6 +393,20 @@ public class ChallengeManager : MonoBehaviour
         return playerNumber; 
     }
 
+    public PlayerInfo GetOpponentPlayerInfo()
+    {
+        PlayerInfo playerInfo = CurrentPlayerInfo;
+        if (CurrentPlayerInfo.PlayerID == FirstPlayerInfo.PlayerID)
+        {
+            playerInfo = SecondPlayerInfo;
+        }
+        else
+        {
+            playerInfo = FirstPlayerInfo;
+        }
+        return playerInfo;
+    }
+
     public PlayerInfo GetPlayerInfo(int playerNumber = 0)
     {
         PlayerInfo playerInfo = CurrentPlayerInfo;
