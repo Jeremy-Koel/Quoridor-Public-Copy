@@ -13,6 +13,7 @@ public class ButtonFontTMP : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void Start()
     {
         text = GetComponentInParent<TextMeshProUGUI>();
+        text.fontStyle = TMPro.FontStyles.Normal;
         // Debug.Log(text.text);
     }
 
