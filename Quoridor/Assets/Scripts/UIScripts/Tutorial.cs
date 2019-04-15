@@ -108,7 +108,6 @@ public class Tutorial : MonoBehaviour
             if (index == numberOfTutorialSlides - 2)
             {
                 logoImage.SetActive(true);
-                boldText.SetActive(true);
                 tutorialImage.SetActive(false);
                 instructTextBox.text = instructList[index + 1];
             }
