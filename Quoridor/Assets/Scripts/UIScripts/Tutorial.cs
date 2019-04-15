@@ -30,7 +30,7 @@ public class Tutorial : MonoBehaviour
         nextButton = GameObject.Find("NextSlideButton");
         instructTextBox = GameObject.Find("TutorialText").GetComponent<TMPro.TextMeshProUGUI>();
         boldText = GameObject.Find("BoldText");
-
+        
         instructList = createInstructList();
         instructTextBox.text = instructList[0];
     }
@@ -78,6 +78,7 @@ public class Tutorial : MonoBehaviour
             if (index == -1)
             {
                 logoImage.SetActive(true);
+                boldText.SetActive(true);
                 tutorialImage.SetActive(false);
                 instructTextBox.text = instructList[index + 1];
                 
@@ -85,6 +86,7 @@ public class Tutorial : MonoBehaviour
             else if (index > -1)
             {
                 logoImage.SetActive(false);
+                boldText.SetActive(false);
                 tutorialImage.SetActive(true);
 
                 tutorialVideoPlayer.clip = tutorialClips[index];
@@ -106,12 +108,14 @@ public class Tutorial : MonoBehaviour
             if (index == numberOfTutorialSlides - 2)
             {
                 logoImage.SetActive(true);
+                boldText.SetActive(true);
                 tutorialImage.SetActive(false);
                 instructTextBox.text = instructList[index + 1];
             }
             else
             {
                 logoImage.SetActive(false);
+                boldText.SetActive(false);
                 tutorialImage.SetActive(true);
                 tutorialVideoPlayer.clip = tutorialClips[index];
 
@@ -129,7 +133,7 @@ public class Tutorial : MonoBehaviour
     {
         string[] temp = new string[numberOfTutorialSlides];
 
-        temp[0] = "Welcome to the Great Gouda Gambit! Our scientists are training labrats to play Quoridor. Can you help us? The goal is to get across the board first.";
+        temp[0] = "Welcome to the Great Gouda Gambit! Our scientists are training labrats to play Quoridor. Can you help us?";
         temp[1] = "To move your mouse, click one of the blue squares.";
         temp[2] = "To place a wall, hover over the spot you want to place it and click.";
        // temp[3] = "If your opponent is directly in front of you, and there isn't a wall behind them, you can jump over them.";
