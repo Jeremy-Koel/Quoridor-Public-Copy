@@ -16,7 +16,6 @@ public class Tutorial : MonoBehaviour
     private GameObject tutorialImage;
     private GameObject logoImage;
     private int numberOfTutorialSlides = 5;
-    private GameObject boldText;
     private GameObject goalText;
     private GameObject cheeseImage;
     // Start is called before the first frame update
@@ -31,7 +30,6 @@ public class Tutorial : MonoBehaviour
         prevButton = GameObject.Find("PreviousSlideButton");
         nextButton = GameObject.Find("NextSlideButton");
         instructTextBox = GameObject.Find("TutorialText").GetComponent<TMPro.TextMeshProUGUI>();
-        boldText = GameObject.Find("BoldText");
         goalText = GameObject.Find("GoalText");
         cheeseImage = GameObject.Find("CheeseImage");
         cheeseImage.SetActive(false);
@@ -88,7 +86,6 @@ public class Tutorial : MonoBehaviour
             if (index == -1)
             {
                 logoImage.SetActive(true);
-                boldText.SetActive(true);
                 tutorialImage.SetActive(false);
                 goalText.SetActive(false);
                 cheeseImage.SetActive(false);
@@ -98,7 +95,6 @@ public class Tutorial : MonoBehaviour
             else if (index > -1)
             {
                 logoImage.SetActive(false);
-                boldText.SetActive(false);
                 tutorialImage.SetActive(true);
                 goalText.SetActive(false);
                 cheeseImage.SetActive(false);
@@ -130,7 +126,6 @@ public class Tutorial : MonoBehaviour
             else
             {
                 logoImage.SetActive(false);
-                boldText.SetActive(false);
                 goalText.SetActive(false);
                 cheeseImage.SetActive(false);
                 tutorialImage.SetActive(true);
@@ -150,14 +145,15 @@ public class Tutorial : MonoBehaviour
     {
         string[] temp = new string[numberOfTutorialSlides];
 
-        temp[0] = "Welcome to the Great Gouda Gambit! Our scientists are training labrats to play Quoridor. Can you help us?";
-        temp[1] = "To move your mouse, click one of the blue squares.";
-        temp[2] = "To place a wall, hover over the spot you want to place it and click.";
+        temp[0] = "Welcome to the Great Gouda Gambit! Can you help our scientists train their lab rats?";
+        temp[1] = "To move your mouse, click one of the blue squares. If your mouse reaches the top row of the board, you win!";
+        temp[2] = "To place a wall, just hover over the area between two squares and click! You only have 10 walls, so use them wisely!";
        // temp[3] = "If your opponent is directly in front of you, and there isn't a wall behind them, you can jump over them.";
        // temp[4] = "If your opponent is directly in front of you, and there is a wall behind them, you can move diagonally to a space on either side of them.";
-        temp[3] = "When placing walls, you can place them anywhere, UNLESS placing the wall blocks you or your opponent from reaching their goal.";
+        //temp[3] = "When placing walls, you can place them anywhere, UNLESS placing the wall blocks you or your opponent from reaching their goal.";
+        temp[3] = "You can slow down your opponent with walls, but you can't completely block them! You must leave them at least one path to the goal!";
         // temp[6] = "Walls also cannot overlap.";
-        temp[4] = "Remember: Your goal is to get to the opposite side of the board.";
+        temp[4] = "If your mouse is the first to reach the other side, then it wins cheese! Good luck!";
 
         return temp;
     }
