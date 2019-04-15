@@ -40,6 +40,9 @@ public class FriendsPanel : MonoBehaviour
     private float shakeDefault = 0.04f;
     private int heightOfFriendsResult = 75;
 
+    private bool searchLock = false;
+    private Timer searchLockTimer;
+
     private void Awake()
     {
         searchFriendsInput = GameObject.Find("SearchFriendsInput").GetComponent<TMPro.TMP_InputField>();
@@ -63,6 +66,12 @@ public class FriendsPanel : MonoBehaviour
         friendsSearchResultListView = GameObject.Find("AddFriendsView");
         //friendsSearchResultListViewPort = GameObject.Find("");
         pending = false;
+
+        searchLockTimer = gameObject.AddComponent<Timer>();
+        searchLockTimer.SetTimeDefault(0.5f);
+        searchLockTimer.ResetTimer();
+        searchLockTimer.timeUp.AddListener(ClearSearchLock);
+        searchLockTimer.StartCountdown();
 
         // We don't want the addFriendsPanel active at the start
         addFriendsPanel.SetActive(false);
@@ -94,8 +103,22 @@ public class FriendsPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetAxisRaw("Submit") == 1)
+        {
+            if (searchFriendsInput.gameObject.activeSelf)
+            {
+                SearchForFriendsToAdd();
+            }
+        }
     }
+
+    private void ClearSearchLock()
+    {
+        searchLock = false;
+        searchLockTimer.ResetTimer();
+        searchLockTimer.StartCountdown();
+    }
+
 
     private void SwitchActiveAddFriendsPanel()
     {
@@ -203,9 +226,13 @@ public class FriendsPanel : MonoBehaviour
 
     private void SearchForFriendsToAdd()
     {
-        LogEventRequest_FindPlayers findPlayersRequest = new LogEventRequest_FindPlayers();
-        findPlayersRequest.Set_displayName(searchFriendsInput.text);
-        findPlayersRequest.Send(SearchForFriendsResponse);
+        if (!searchLock)
+        {
+            searchLock = true;
+            LogEventRequest_FindPlayers findPlayersRequest = new LogEventRequest_FindPlayers();
+            findPlayersRequest.Set_displayName(searchFriendsInput.text);
+            findPlayersRequest.Send(SearchForFriendsResponse);
+        }
     }
 
     private void SearchForFriendsResponse(LogEventResponse response)
@@ -259,6 +286,7 @@ public class FriendsPanel : MonoBehaviour
         }
         friendsSearchResultListContent.sizeDelta = new Vector2(friendsSearchResultListContent.sizeDelta.x, friendsSearchResultList.Count * heightOfFriendsResult);
         LayoutRebuilder.ForceRebuildLayoutImmediate(friendsSearchResultListContent);
+        searchLock = false;
     }
 
     // Get player's pending friend requests

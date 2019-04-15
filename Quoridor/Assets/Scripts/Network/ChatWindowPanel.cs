@@ -145,8 +145,18 @@ public class ChatWindowPanel : MonoBehaviour
                 ClipboardHelper.clipBoard = chatInput.GetComponent<TMPro.TMP_InputField>().text;
             }
         }
+        //if (Input.GetAxisRaw("Submit") == 1)
+        //{
+        //    if (chatInput.activeSelf)
+        //    {
+        //        SendChatMessage(chatInput.GetComponent<TMPro.TMP_InputField>().text);
+        //        chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
+        //        chatInput.GetComponent<TMPro.TMP_InputField>().Select();//Re-focus on the input field
+        //    }
+        //    if ()
         //}
- 
+        //}
+
     }
 
 
