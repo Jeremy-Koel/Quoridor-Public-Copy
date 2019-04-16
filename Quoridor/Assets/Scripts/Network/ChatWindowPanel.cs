@@ -145,18 +145,6 @@ public class ChatWindowPanel : MonoBehaviour
                 ClipboardHelper.clipBoard = chatInput.GetComponent<TMPro.TMP_InputField>().text;
             }
         }
-        //if (Input.GetAxisRaw("Submit") == 1)
-        //{
-        //    if (chatInput.activeSelf)
-        //    {
-        //        SendChatMessage(chatInput.GetComponent<TMPro.TMP_InputField>().text);
-        //        chatInput.GetComponent<TMPro.TMP_InputField>().text = "";
-        //        chatInput.GetComponent<TMPro.TMP_InputField>().Select();//Re-focus on the input field
-        //    }
-        //    if ()
-        //}
-        //}
-
     }
 
 
@@ -173,16 +161,6 @@ public class ChatWindowPanel : MonoBehaviour
     {
         chatMessagesViewContent.gameObject.SetActive(false);
         int teamIDIndex = LookupTeam(teamID, playerName);
-        //Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
-        //int teamIDIndex = teamIDs.FindIndex(predicate);
-        //if (teamIDIndex == -1)
-        //{
-        //    // Create stuff
-        //    teamIDs.Add(teamID);
-        //    teamIDIndex = teamIDs.Count - 1;
-        //    ChatMessagesViewContentCreator();
-        //    chatSelectionPanel.AddChatSelectionButton(playerName, teamID);
-        //}
         int index = 0;
         // Set all friends chats to inactive (aside from the one we want)
         var listOfFriendsMessagesContentsEnum = listOfFriendsMessagesContents.GetEnumerator(); // The list has a null item the second time this function is called after changing scenes
@@ -291,22 +269,6 @@ public class ChatWindowPanel : MonoBehaviour
         else
         {
             teamID = message.TeamId;
-            //Predicate<string> predicate = delegate (string toCompare) { return toCompare == teamID; };
-            //int teamIDIndex = teamIDs.FindIndex(predicate);
-
-            //// If the team ID does not exist in the list
-            //if (teamIDIndex == -1)
-            //{
-            //    teamIDs.Add(teamID);
-            //    teamIDIndex = teamIDs.Count - 1;
-            //    ChatMessagesViewContentCreator();
-            //    if (chatSelectionPanel == null)
-            //    {
-            //        chatSelectionPanel = GameObject.Find("ChatSelectionPanel").GetComponent<ChatSelectionPanel>();
-            //    }
-            //    // Doesn't work if message was sent by myself ( should be added in a send first )
-            //    chatSelectionPanel.AddChatSelectionButton(message.Who.ToString(), teamID);
-            //}
             int teamIDIndex = LookupTeam(teamID, messageWho);
             SwitchActiveChat(teamID, messageWho.ToString());
             //int teamIDIndex = LookupTeam(teamID, messageWho);
@@ -590,30 +552,6 @@ public class ChatWindowPanel : MonoBehaviour
         trs.offsetMin = new Vector2(left, bottom);
         trs.offsetMax = new Vector2(-right, -top) + trs.offsetMax;
     }
-
-    //public void ClearAllFriendsChats()
-    //{
-    //    teamIDs.Clear();
-
-    //    foreach (var chatMessages in listOfChatMessages)
-    //    {
-    //        foreach (var chatMessage in chatMessages)
-    //        {
-    //            //chatMessage.
-    //            GameObject.Destroy(chatMessage);
-    //        }
-    //        chatMessages.Clear();
-    //    }
-    //    listOfChatMessages.Clear();
-
-    //    chatSelectionPanel.ClearChatSelections();
-
-    //    foreach (var friendsMessages in listOfFriendsMessagesContents)
-    //    {
-    //        GameObject.Destroy(friendsMessages);
-    //    }
-    //    listOfFriendsMessagesContents.Clear();
-    //}
 
     IEnumerator BuyTime()
     {

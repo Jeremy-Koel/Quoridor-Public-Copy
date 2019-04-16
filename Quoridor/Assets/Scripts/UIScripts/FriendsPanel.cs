@@ -40,6 +40,11 @@ public class FriendsPanel : MonoBehaviour
     private float shakeDefault = 0.04f;
     private int heightOfFriendsResult = 75;
 
+    private string currentActiveFriendsPanel = "";
+    private const string friendRequestsPanelString = "friendRequestsPanel";
+    private const string onlineFriendsPanelString = "onlineFriendsPanel";
+    private const string addFriendsPanelString = "addFriendsPanel";
+
     private bool searchLock = false;
     private Timer searchLockTimer;
 
@@ -75,6 +80,29 @@ public class FriendsPanel : MonoBehaviour
 
         // We don't want the addFriendsPanel active at the start
         addFriendsPanel.SetActive(false);
+
+        ScriptMessage_FriendRequest.Listener += GotAFriendRequest;
+        ScriptMessage_AcceptedFriendRequest.Listener += GotANewFriend;
+    }
+
+    private void GotANewFriend(ScriptMessage_AcceptedFriendRequest message)
+    {
+        // If we're looking at our current friends list
+        if (currentActiveFriendsPanel == onlineFriendsPanelString)
+        {
+            // Refresh friend requests list
+            GetFriendsList("all");
+        }
+    }
+
+    private void GotAFriendRequest(ScriptMessage_FriendRequest message)
+    {
+        // If we're looking at our current friend requests
+        if (currentActiveFriendsPanel == friendRequestsPanelString)
+        {
+            // Refresh friend requests list
+            GetPendingFriendsList();
+        }
     }
 
     // Start is called before the first frame update
@@ -124,6 +152,8 @@ public class FriendsPanel : MonoBehaviour
     {
         if (addFriendsPanel.activeSelf)
         {
+            currentActiveFriendsPanel = addFriendsPanelString;
+
             // Make friends list panel invisible
             friendsPanelUIObjectImage.enabled = false;
             friendsListView.SetActive(false);
@@ -163,6 +193,7 @@ public class FriendsPanel : MonoBehaviour
     {
         // Switch all other buttons to interactable
         SwitchFriendsPanelButtons();
+        currentActiveFriendsPanel = onlineFriendsPanelString;
 
         onlineFriendsButton.interactable = false;
 
@@ -191,6 +222,7 @@ public class FriendsPanel : MonoBehaviour
     {
         // Switch all other buttons to interactable
         SwitchFriendsPanelButtons();
+        currentActiveFriendsPanel = friendRequestsPanelString;
 
         friendRequestsButton.interactable = false;
 
