@@ -11,7 +11,6 @@ public class FriendsChatPanel : MonoBehaviour
     private GameObject friendsChatPanel;
     private GameObject openChatGameObject;
     private GameObject minimizeChat;
-    private List<GameObject> minimizeChatButtons = new List<GameObject>();
     private GameObject friendsPanel;
     private GameObject chatSelectionPanel;
     private GameObject chatWindowPanel;
@@ -38,63 +37,28 @@ public class FriendsChatPanel : MonoBehaviour
     {
         openChatGameObject = GameObject.Find("OpenChatButton");
         openChatButton = openChatGameObject.GetComponent<Button>();
-        //scientistArmOne = GameObject.Find("ScientistArmOne");
-        //moveArmsOne = scientistArmOne.GetComponent<MoveArms>();
         friendsChatPanel = GameObject.Find("FriendsChatPanel");
         friendsChatPanelRectTransform = friendsChatPanel.GetComponent<RectTransform>();
         minimizeChat = GameObject.Find("MinimizeChatButton");
-        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButton"));
-        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopLeft"));
-        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopRight"));
-        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopBottom"));
-        minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonTopTop"));
-        //minimizeChatButtons.Add(GameObject.Find("MinimizeChatButtonBottom"));
         friendsPanel = GameObject.Find("FriendsPanel");
         chatSelectionPanel = GameObject.Find("ChatSelectionPanel");
         chatWindowPanel = GameObject.Find("ChatWindowPanel");
         activePosition = new Vector3(814f, 35f, 0f);
         inactivePosition = new Vector3(814f, -525f, 0f);
         hoverOverPosition = new Vector3(814f, -450f, 0f);
-        
     }
 
     // Start is called before the first frame update
     void Start()
     {
         ToggleChatElements();
+        minimizeChat.SetActive(false);
         step = FastAnimations.CalculateSpeed(speed);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (movePDA)
-        //{
-        //    if (moveHand)
-        //    {
-        //        if ((scientistArmOne.GetComponent<RectTransform>().localPosition.x == scientistArmOne.GetComponent<MoveArms>().chatTarget.x &&
-        //                scientistArmOne.GetComponent<RectTransform>().localPosition.y == scientistArmOne.GetComponent<MoveArms>().chatTarget.y))
-        //        {
-        //            moveHand = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //float step = speed * Time.deltaTime; // calculate distance to move
-        //        float step = FastAnimations.CalculateSpeed(speed);
-        //        Vector2 transformPosition = new Vector2(friendsChatPanelRectTransform.localPosition.x, friendsChatPanelRectTransform.localPosition.y);
-        //        friendsChatPanelRectTransform.localPosition = Vector2.MoveTowards(transformPosition, target, step);
-        //        SetTarget(friendsChatPanelRectTransform.localPosition);
-
-        //        if (friendsChatPanelRectTransform.localPosition.x == target.x &&
-        //                friendsChatPanelRectTransform.localPosition.y == target.y)
-        //        {
-        //            movePDA = false;
-        //            SetTarget(inactiveAnchorForChatPosition);
-        //        }
-        //    }
-        //}
-
         if (movePDA)
         {
 
@@ -106,6 +70,7 @@ public class FriendsChatPanel : MonoBehaviour
                 if (friendsChatPanelRectTransform.localPosition.Equals(activePosition))
                 {
                     movePDA = false;
+                    minimizeChat.SetActive(true);
                 }
             }
             else // Hiding PDA 
@@ -158,7 +123,10 @@ public class FriendsChatPanel : MonoBehaviour
         {
             openChatGameObject.SetActive(false);
         }
-        //openChatGameObject.SetActive(true);
+        else
+        {
+            minimizeChat.SetActive(false);
+        }
 
         ToggleChatElements();
     }
@@ -166,11 +134,6 @@ public class FriendsChatPanel : MonoBehaviour
     private void ToggleChatElements()
     {
         // For these elements, we want them to show if the chat is active (open and showing)
-        //minimizeChat.SetActive(chatActive);
-        foreach (var minButton in minimizeChatButtons)
-        {
-            minButton.SetActive(chatActive);
-        }
         friendsPanel.SetActive(chatActive);
         chatSelectionPanel.SetActive(chatActive);
         chatWindowPanel.SetActive(chatActive);
@@ -184,14 +147,6 @@ public class FriendsChatPanel : MonoBehaviour
     public void HoverDown()
     {
         pointerOut = true;
-    }
-
-    public void SetTarget(Vector2 pos)
-    {
-        //pos.x = pos.x - 120;
-        //pos.y = pos.y - 1508;
-
-        //moveArmsOne.SetTargetChat(pos);
     }
 
 }
