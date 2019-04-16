@@ -1,0 +1,5 @@
+This game uses the following sounds from freesound:
+"writing-chalk-oneshot-01.wav" by newagesoup (https://freesound.org/people/newagesoup/) Licensed under Creative Commons: By Attribution 3.0 http://creativecommons.org/licenses/by/3.0/
+"error sound by KorGround (https://freesound.org/people/KorGround/) Licensed under Creative Commons: By Attribution 3.0 http://creativecommons.org/licenses/by/3.0/
+"Squeak FX.wav" by MotionS (https://freesound.org/people/Motion_S/) Licensed under Creative Commons: By Attribution 3.0 http://creativecommons.org/licenses/by/3.0/
+"March of the Spoons", "Thinking Music" Kevin MacLeod (incompetech.com) Licensed under Creative Commons: By Attribution 3.0 http://creativecommons.org/licenses/by/3.0/
