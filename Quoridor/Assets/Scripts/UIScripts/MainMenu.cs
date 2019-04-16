@@ -145,7 +145,15 @@ public class MainMenu : MonoBehaviour
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
         matching = false;
 
+        if (challengeManager.GetComponent<ChallengeManager>().ChallengeID != null)
+        {
+            challengeManager.GetComponent<ChallengeManager>().ChallengeGameLost();
+        }
+        
+        //CancelMatchmaking();
+
         var disconnectPopup = GameObject.Find("DisconnectPopup").GetComponent<DisconnectPopup>();
+        disconnectPopup.showPopup = true;
         disconnectPopup.disconnectLock = false;
         if (disconnectPopup.ScheduledReconnect())
         {

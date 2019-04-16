@@ -30,6 +30,7 @@ public class GameScreenMainMenuButton : MonoBehaviour
         
         if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
         {
+            GameObject.Find("DisconnectPopup").GetComponent<DisconnectPopup>().showPopup = false;
             EventManager eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
             eventManager.InvokeLeavingOpponent();
         }

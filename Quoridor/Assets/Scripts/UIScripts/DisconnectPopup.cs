@@ -24,6 +24,9 @@ public class DisconnectPopup : MonoBehaviour
 
     public bool scheduledReconnect = false;
 
+    public bool showPopup = true;
+    public int showPopupCount = 0;
+
     private void OnDestroy()
     {
         eventManager = null;
@@ -146,11 +149,14 @@ public class DisconnectPopup : MonoBehaviour
     {
         if (!disconnectLock)
         {
-            disconnectLock = true;
-            FindSceneGameObjects();
-            disconnectPanel.SetActive(true);
-            disconnectPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
-            disconnectionAIDifficultySelectPanel.SetActive(false);
+            if (showPopup)
+            {
+                disconnectLock = true;
+                FindSceneGameObjects();
+                disconnectPanel.SetActive(true);
+                disconnectPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
+                disconnectionAIDifficultySelectPanel.SetActive(false);
+            }
         }
     }
 

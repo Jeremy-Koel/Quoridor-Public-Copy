@@ -47,6 +47,7 @@ public class QuitButton : MonoBehaviour, IPointerClickHandler
     public void OnYesButtonClick()
     {
         eventManager.RemoveAllListeners();
+        GameObject.Find("DisconnectPopup").GetComponent<DisconnectPopup>().showPopup = false;
         Application.Quit();
     }
 
