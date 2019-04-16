@@ -72,7 +72,7 @@ public class HostedGameLobbies : MonoBehaviour
         lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
         lowerBoundary.localPosition = new Vector2((hostedGameLobbiesRectTransform.localPosition.x),
                                                (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
-        scrollbar = GameObject.Find("HostedGameLobbies").GetComponent<ScrollRect>();
+        scrollbar = GameObject.Find("HostedLobbiesPanel").GetComponent<ScrollRect>();
         scrollbar.onValueChanged.AddListener(OnValueChange);
         refreshTimer = gameObject.AddComponent<Timer>();
         refreshTimer.SetTimeDefault(3f);
@@ -85,9 +85,6 @@ public class HostedGameLobbies : MonoBehaviour
         hostingCheckTimer.ResetTimer();
         hostingCheckTimer.timeUp.AddListener(CheckHosting);
         hostingCheckTimer.StartCountdown();
-
-        scrollDownButton.gameObject.SetActive(false);
-        scrollUpButton.gameObject.SetActive(false);
     }
 
     void OnValueChange (Vector2 position)
@@ -123,6 +120,9 @@ public class HostedGameLobbies : MonoBehaviour
     {
         ScriptMessage.Listener += RefreshHostedGames;
         onRefreshGamesButtonClick();
+
+        scrollDownButton.gameObject.SetActive(false);
+        scrollUpButton.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
