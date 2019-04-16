@@ -125,6 +125,8 @@ public class MainMenu : MonoBehaviour
         guestDetailsPanel = GameObject.Find("GuestDetailsPanel");
         // quitPanel = GameObject.Find("QuitPanel");
 
+        
+
         // panelOrder = new Stack<GameObject>();
         // panelOrder.Push(mainMenuPanel);
         findingMatchText.color = new Color(0, 0, 0, 0);
@@ -141,6 +143,15 @@ public class MainMenu : MonoBehaviour
 
         mainMenuPanel.GetComponent<MoveMainMenuBoard>().moveBoard = true;
         matching = false;
+
+        var disconnectPopup = GameObject.Find("DisconnectPopup").GetComponent<DisconnectPopup>();
+        disconnectPopup.disconnectLock = false;
+        if (disconnectPopup.ScheduledReconnect())
+        {
+            onMultiplayerClick();
+            //Login(GameSparksUserID.currentUsername, GameSparksUserID.currentPassword);
+            //disconnectPopup.scheduledReconnect = false;
+        }
 
     }
 
@@ -173,8 +184,11 @@ public class MainMenu : MonoBehaviour
 
     public void DeselectCurrentButton()
     {
-        var currentButtonText = EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TextMeshProUGUI>();
-        currentButtonText.fontStyle = FontStyles.Normal;
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            var currentButtonText = EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TextMeshProUGUI>();
+            currentButtonText.fontStyle = FontStyles.Normal;
+        }
     }
 
     public void onSinglePlayerClick()
@@ -215,6 +229,12 @@ public class MainMenu : MonoBehaviour
             mainMenuPanel.SetActive(false);
             loginPanel.SetActive(true);
            // panelOrder.Push(loginPanel);
+        }
+        var disconnectPopup = GameObject.Find("DisconnectPopup").GetComponent<DisconnectPopup>();
+        if (disconnectPopup.ScheduledReconnect())
+        {
+            disconnectPopup.scheduledReconnect = false;
+            Login(GameSparksUserID.currentUsername, GameSparksUserID.currentPassword);
         }
         leaderboardPanel.GetComponent<LeaderboardPanel>().GetLeaderboardData();
     }
@@ -539,14 +559,34 @@ public class MainMenu : MonoBehaviour
     }
 
     // Login/Registration
-    private void Login(string username, string password)
+    public void Login(string username, string password)
     {
         BlockLoginInput();
+        GameSparksUserID.currentUsername = username;
+        GameSparksUserID.currentPassword = password;
         AuthenticationRequest request = new AuthenticationRequest();
         request.SetUserName(username);
         request.SetPassword(password);
         request.Send(OnLoginSuccess, OnLoginError);
 
+    }
+
+    public void LoginFromReconnect()
+    {
+        AuthenticationRequest request = new AuthenticationRequest();
+        request.SetUserName(GameSparksUserID.currentUsername);
+        request.SetPassword(GameSparksUserID.currentPassword);
+        request.Send(OnLoginReconnectSuccess, OnLoginReconnectError);
+    }
+
+    private void OnLoginReconnectSuccess(AuthenticationResponse response)
+    {
+        // do we need to do anything?
+    }
+
+    private void OnLoginReconnectError(AuthenticationResponse response)
+    {
+        // update disconnect error text
     }
 
     private void LoginAsAdmin()
@@ -723,14 +763,26 @@ public class MainMenu : MonoBehaviour
 
     private void BlockLoginInput()
     {
-        loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
-        loginButton.interactable = false;
+        if (GameObject.Find("LoginButton") != null)
+        {
+            loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
+            if (loginButton != null)
+            {
+                loginButton.interactable = false;
+            }
+        }     
     }
 
     private void UnblockLoginInput()
     {
-        loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
-        loginButton.interactable = true;
+        if (GameObject.Find("LoginButton") != null)
+        {
+            loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
+            if (loginButton != null)
+            {
+                loginButton.interactable = true;
+            }
+        }
     }
 
     private void BlockJoinHostGameButtons()

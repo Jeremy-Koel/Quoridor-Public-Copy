@@ -6,6 +6,8 @@ public class GameSparksUserID : MonoBehaviour
 {
     public string myUserID;
     public string myDisplayName;
+    public static string currentUsername;
+    public static string currentPassword;
 
     private void Awake()
     {

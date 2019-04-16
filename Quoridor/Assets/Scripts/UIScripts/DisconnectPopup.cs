@@ -18,6 +18,10 @@ public class DisconnectPopup : MonoBehaviour
 
     private InterfaceController interfaceController;
 
+    public bool disconnectLock = false;
+
+    public bool scheduledReconnect = false;
+
     private void OnDestroy()
     {
         eventManager = null;
@@ -136,10 +140,14 @@ public class DisconnectPopup : MonoBehaviour
 
     private void ActivateDisconnectPanel()
     {
-        FindSceneGameObjects();
-        disconnectPanel.SetActive(true);
-        disconnectPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
-        disconnectionAIDifficultySelectPanel.SetActive(false);
+        if (!disconnectLock)
+        {
+            disconnectLock = true;
+            FindSceneGameObjects();
+            disconnectPanel.SetActive(true);
+            disconnectPanel.GetComponentInChildren<MoveBoards>().moveBoard = true;
+            disconnectionAIDifficultySelectPanel.SetActive(false);
+        }
     }
 
     private void ActivateDisconnectionAiSelectPanel()
@@ -154,11 +162,13 @@ public class DisconnectPopup : MonoBehaviour
     {
         GameSession.Difficulty = DifficultyEnum.EASY;
         StartSingleplayer();
+        disconnectLock = false;
     }
     private void AiSelectHard()
     {
         GameSession.Difficulty = DifficultyEnum.HARD;
         StartSingleplayer();
+        disconnectLock = false;
     }
 
     private void StartSingleplayer()
@@ -177,19 +187,38 @@ public class DisconnectPopup : MonoBehaviour
         // make panels inactive
         disconnectionAIDifficultySelectPanel.SetActive(false);
         disconnectPanel.SetActive(false);
+        inLobby = false;
+        inGameBoard = false;
+        disconnectLock = false;
     }
 
     private void ReconnectYes()
     {
         // handle reconnection UI logic
         // SWITCH TO AI GAME
-        SearchForDisconnectPanel();
-        ActivateDisconnectionAiSelectPanel();
-
+        //SearchForDisconnectPanel();
+        FindSceneGameObjects();
+        if (inGameBoard)
+        {
+            ActivateDisconnectionAiSelectPanel();
+        }
+        else if (inLobby)
+        {
+            MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+            GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel(mainMenuSceneName);
+            //mainMenu.Login(GameSparksUserID.currentUsername, GameSparksUserID.currentPassword);
+            scheduledReconnect = true;
+            //mainMenu.LoginFromReconnect();
+            disconnectPanel.SetActive(false);
+        }
+        inLobby = false;
+        inGameBoard = false;
+        disconnectLock = false;
     }
 
     private void ReconnectNo()
     {
+        FindSceneGameObjects();
         if (inLobby || inGameBoard)
         {
             // handle disconnect UI logic
@@ -197,8 +226,11 @@ public class DisconnectPopup : MonoBehaviour
             {
                 // Go to main menu
                 MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
-                mainMenu.InactivateAllPanels();
-                mainMenu.mainMenuPanel.SetActive(true);
+                GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+                gsm.connected = false;
+                mainMenu.onLobbyBackButtonClick();
+                //mainMenu.InactivateAllPanels();
+                //mainMenu.mainMenuPanel.SetActive(true);
             }
             else
             {
@@ -215,5 +247,13 @@ public class DisconnectPopup : MonoBehaviour
             }
             disconnectPanel.SetActive(false);
         }
+        inLobby = false;
+        inGameBoard = false;
+        disconnectLock = false;
+    }
+
+    public bool ScheduledReconnect()
+    {
+        return scheduledReconnect;
     }
 }

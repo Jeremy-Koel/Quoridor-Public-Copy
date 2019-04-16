@@ -41,6 +41,10 @@ public class HostedGameLobbies : MonoBehaviour
     private bool refreshingLock = false;
     private Timer refreshTimer;
 
+    private int refreshLockCheck = 0;
+
+    private Timer hostingCheckTimer;
+
     private GameSparks.Core.GSEnumerable<FindPendingMatchesResponse._PendingMatch> lastBatchOfMatches;
 
     private FindPendingMatchesRequest lastFindMatchRequest;
@@ -69,10 +73,39 @@ public class HostedGameLobbies : MonoBehaviour
                                                (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
 
         refreshTimer = gameObject.AddComponent<Timer>();
-        refreshTimer.SetTimeDefault(10f);
+        refreshTimer.SetTimeDefault(3f);
         refreshTimer.ResetTimer();
         refreshTimer.timeUp.AddListener(RefreshTime);
         refreshTimer.StartCountdown();
+
+        hostingCheckTimer = gameObject.AddComponent<Timer>();
+        hostingCheckTimer.SetTimeDefault(3f);
+        hostingCheckTimer.ResetTimer();
+        hostingCheckTimer.timeUp.AddListener(CheckHosting);
+        hostingCheckTimer.StartCountdown();
+    }
+
+    public void CheckHosting()
+    {
+        if (hosting)
+        {
+            MatchmakingRequest matchmakingRequest = new MatchmakingRequest();
+            matchmakingRequest.SetMatchShortCode("HostedMatch");
+
+            GameSparks.Core.GSRequestData participantData = new GameSparks.Core.GSRequestData();
+            participantData.AddString("displayName", gameSparksUserID.myDisplayName);
+            participantData.AddBoolean("hosting", true);
+            matchmakingRequest.SetParticipantData(participantData);
+            matchmakingRequest.SetMatchData(participantData);
+            matchmakingRequest.SetSkill(0);
+            // Store this request incase we get a throttled message
+            lastMatchmakingRequest = matchmakingRequest;
+
+            matchmakingRequest.Send(OnMatchmakingSuccess, OnMatchmakingError);
+            FindGameLobbies();
+        }
+        hostingCheckTimer.ResetTimer();
+        hostingCheckTimer.StartCountdown();
     }
 
     // Start is called before the first frame update
@@ -104,6 +137,12 @@ public class HostedGameLobbies : MonoBehaviour
     {
         refreshTimer.ResetTimer();
         refreshTimer.StartCountdown();
+        refreshLockCheck++;
+        if (refreshLockCheck > 2)
+        {
+            refreshLockCheck = 0;
+            refreshingLock = false;
+        }
         FindGameLobbies();
     }
 
@@ -277,13 +316,13 @@ public class HostedGameLobbies : MonoBehaviour
         joinGameButton.interactable = false;
         EventSystem.current.SetSelectedGameObject(null);
 
-        GameSparksUserID gameSparksUserIDScript = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
+        gameSparksUserID = GameObject.Find("GameSparksUserID").GetComponent<GameSparksUserID>();
 
         MatchmakingRequest matchmakingRequest = new MatchmakingRequest();
         matchmakingRequest.SetMatchShortCode("HostedMatch");
 
         GameSparks.Core.GSRequestData participantData = new GameSparks.Core.GSRequestData();
-        participantData.AddString("displayName", gameSparksUserIDScript.myDisplayName);
+        participantData.AddString("displayName", gameSparksUserID.myDisplayName);
         participantData.AddBoolean("hosting", true);
         matchmakingRequest.SetParticipantData(participantData);
         matchmakingRequest.SetMatchData(participantData);
@@ -392,18 +431,22 @@ public class HostedGameLobbies : MonoBehaviour
         }
         else
         {
-            playerText.text = "Join ";
             if (hostName.Length >= 16)
             {
-                playerText.text = (hostName.Substring(0, 10) + "...'s Game");
+                playerText.text = "Join " + (hostName.Substring(0, 10) + "...'s Game");
             }
             else
             {
-                playerText.text = (hostName + "'s Game");
+                playerText.text = "Join " + (hostName + "'s Game");
             }
         }
         //playerText.text = ("<b>" + messageWho + ":</b>");
         //messageText.text = (messageMessage);
+
+        if (hostedGameLobbiesRectTransform == null)
+        {
+            hostedGameLobbiesRectTransform = GameObject.Find("HostedGameLobbies").GetComponent<RectTransform>();
+        }
 
         hostedGameLobby.transform.SetParent(hostedGameLobbiesRectTransform);
         hostedGameLobby.transform.localScale = new Vector3(1, 1, 1);

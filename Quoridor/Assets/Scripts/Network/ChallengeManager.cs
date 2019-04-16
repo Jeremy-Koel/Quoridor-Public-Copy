@@ -74,9 +74,12 @@ public class ChallengeManager : MonoBehaviour
 
     private void SendDisconnectMessage()
     {
-        LogChallengeEventRequest_LeavingOpponent leavingOpponent = new LogChallengeEventRequest_LeavingOpponent();
-        leavingOpponent.SetChallengeInstanceId(ChallengeID);
-        leavingOpponent.Send(sendDisconnectResponse);
+        if (GameSession.GameMode == GameModeEnum.MULTIPLAYER)
+        {
+            LogChallengeEventRequest_LeavingOpponent leavingOpponent = new LogChallengeEventRequest_LeavingOpponent();
+            leavingOpponent.SetChallengeInstanceId(ChallengeID);
+            leavingOpponent.Send(sendDisconnectResponse);
+        }
     }
 
     private void sendDisconnectResponse(LogChallengeEventResponse message)
