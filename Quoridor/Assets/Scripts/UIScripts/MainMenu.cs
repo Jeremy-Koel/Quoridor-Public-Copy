@@ -719,13 +719,13 @@ public class MainMenu : MonoBehaviour
     private void OnLoginNoConnection()
     {
         if (!GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>().connected) {
-            errorMessageLoginText.color = Color.red;
+            errorMessageLoginText.color = ColorPalette.maroonRed;
             var errorText = "No connection...";
             errorMessageLoginText.text = errorText;
         }
         else
         {
-            errorMessageLoginText.color = ColorPalette.maroonRed;
+            errorMessageLoginText.color = ColorPalette.invisible;
         }
     }
 
