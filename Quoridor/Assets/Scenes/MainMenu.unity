@@ -13223,7 +13223,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000038338014, y: -0.000044629338}
+  m_AnchoredPosition: {x: -0.000038338014, y: -0.00006612241}
   m_SizeDelta: {x: 0, y: 130}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &741632497
@@ -15010,7 +15010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -234, y: -287}
+  m_AnchoredPosition: {x: -231, y: -287}
   m_SizeDelta: {x: 450, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878091683
@@ -15914,6 +15914,7 @@ MonoBehaviour:
   scrollUpButton: {fileID: 1661795118}
   scrollDownButton: {fileID: 1827210752}
   heightOfAllGames: 0
+  scrollbar: {fileID: 0}
 --- !u!114 &925914963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16045,6 +16046,8 @@ MonoBehaviour:
   disconnectionAIDifficultySelectPanel: {fileID: 0}
   disconnectLock: 0
   scheduledReconnect: 0
+  showPopup: 1
+  showPopupCount: 0
 --- !u!4 &968885595
 Transform:
   m_ObjectHideFlags: 0

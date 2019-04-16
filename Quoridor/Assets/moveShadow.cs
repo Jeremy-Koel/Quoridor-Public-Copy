@@ -13,7 +13,7 @@ public class moveShadow : MonoBehaviour
     {
         // moveBoard = false;
 
-        target = new Vector3(-5.425f, -3.85f, 0);
+        target = new Vector3(-5.275f, -3.85f, 0);
     }
 
     // Update is called once per frame

@@ -432,6 +432,7 @@ public class HostedGameLobbies : MonoBehaviour
         //Text messageText = hostedGameLobbyText[1];
         if (hostName == gameSparksUserID.myDisplayName)
         {
+            playerText.color = ColorPalette.offWhite;
             //change text color
             if (hostName.Length >= 16)
             {
