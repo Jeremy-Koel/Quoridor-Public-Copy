@@ -266,8 +266,8 @@ public class InterfaceController : MonoBehaviour
 
     private void SwitchTurnIndicatorToInvalidMove()
     {
-        Invoke("FlipRedLight", 0.5f);
-        FlipRedLight();
+        //Invoke("FlipRedLight", 0.5f);
+        //FlipRedLight();
         playerTurnBoxAnimator.SetTrigger("InvalidMove");
         ShakeMouse();
         soundEffectController.PlayErrorSound();
@@ -277,12 +277,14 @@ public class InterfaceController : MonoBehaviour
     {
         playerTurnBoxAnimator.SetTrigger("LocalTurnTaken");
         FlipGreenLight();
+        FlipRedLight();
     }
 
     public void SwitchTurnIndicatorToLocal()
     {
         playerTurnBoxAnimator.SetTrigger("OpponentTurnTaken");
         FlipGreenLight();
+        FlipRedLight();
     }
     
     public string GetPlayerNameForTurn()
