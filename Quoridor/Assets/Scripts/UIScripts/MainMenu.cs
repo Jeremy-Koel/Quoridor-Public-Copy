@@ -125,7 +125,8 @@ public class MainMenu : MonoBehaviour
         guestDetailsPanel = GameObject.Find("GuestDetailsPanel");
         // quitPanel = GameObject.Find("QuitPanel");
 
-        
+        GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+        gsm.connectedValueChanged.AddListener(OnLoginNoConnection);
 
         // panelOrder = new Stack<GameObject>();
         // panelOrder.Push(mainMenuPanel);
@@ -210,9 +211,8 @@ public class MainMenu : MonoBehaviour
         // Set session to multiplayer 
         GameSession.GameMode = GameModeEnum.MULTIPLAYER;
         eventManager.InvokeMultiplayerSelected();
-
         //mainMenuPanel.SetActive(false);
-        
+
         if (LoggedIn())
         {
             //dummyMenuPanel.SetActive(true);
@@ -562,13 +562,15 @@ public class MainMenu : MonoBehaviour
     public void Login(string username, string password)
     {
         BlockLoginInput();
+        GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+        gsm.CheckInternetConnection();
+
         GameSparksUserID.currentUsername = username;
         GameSparksUserID.currentPassword = password;
         AuthenticationRequest request = new AuthenticationRequest();
         request.SetUserName(username);
         request.SetPassword(password);
         request.Send(OnLoginSuccess, OnLoginError);
-
     }
 
     public void LoginFromReconnect()
@@ -607,6 +609,8 @@ public class MainMenu : MonoBehaviour
     private void OnLoginSuccess(AuthenticationResponse response)
     {
         UnblockLoginInput();
+        GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+        gsm.loggedInOnce = true;
         errorMessageLoginText.color = new Color(0, 0, 0, 0);
         if (adminLogin)
         {
@@ -696,9 +700,25 @@ public class MainMenu : MonoBehaviour
     private void OnLoginError(AuthenticationResponse response)
     {
         UnblockLoginInput();
-        errorMessageLoginText.color = Color.red;
-        var errorText = "TAKEN";
-        errorMessageLoginText.text = errorText;
+        if (GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>().connected)
+        {
+            errorMessageLoginText.color = Color.red;
+            var errorText = "TAKEN";
+            errorMessageLoginText.text = errorText;
+        }
+    }
+
+    private void OnLoginNoConnection()
+    {
+        if (!GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>().connected) {
+            errorMessageLoginText.color = Color.red;
+            var errorText = "No connection...";
+            errorMessageLoginText.text = errorText;
+        }
+        else
+        {
+            errorMessageLoginText.color = new Color(0, 0, 0, 0);
+        }
     }
 
     private bool LoggedIn()

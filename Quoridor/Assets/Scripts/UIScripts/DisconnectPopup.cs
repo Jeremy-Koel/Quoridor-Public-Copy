@@ -13,8 +13,10 @@ public class DisconnectPopup : MonoBehaviour
     private bool disconnectionAIDiffPanelFound;
     private bool isCurrentSceneMainMenu;
     private EventManager eventManager;
-    private bool inLobby;
-    private bool inGameBoard;
+    private bool inLobby = false;
+    private bool inGameBoard = false;
+
+    private bool attemptingReconnect = false;
 
     private InterfaceController interfaceController;
 
@@ -59,6 +61,8 @@ public class DisconnectPopup : MonoBehaviour
             eventManager.ListenToDisconnectReconnectionNo(ReconnectNo);
             eventManager.ListenToDisconnectAIEasy(AiSelectEasy);
             eventManager.ListenToDisconnectAIHard(AiSelectHard);
+            GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+            gsm.connectedValueChanged.AddListener(AttemptReconnect);
             FindSceneGameObjects();
         }
     }
@@ -204,16 +208,46 @@ public class DisconnectPopup : MonoBehaviour
         }
         else if (inLobby)
         {
-            MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
-            GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel(mainMenuSceneName);
-            //mainMenu.Login(GameSparksUserID.currentUsername, GameSparksUserID.currentPassword);
-            scheduledReconnect = true;
-            //mainMenu.LoginFromReconnect();
-            disconnectPanel.SetActive(false);
+            attemptingReconnect = true;
+            GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+            gsm.CheckInternetConnection();
         }
         inLobby = false;
         inGameBoard = false;
         disconnectLock = false;
+    }
+
+    private void AttemptReconnect()
+    {
+        if (attemptingReconnect)
+        {
+            GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
+            if (!gsm.connected)
+            {
+                if (disconnectPanel.activeSelf)
+                {
+                    var texts = new List<TMPro.TextMeshProUGUI>(disconnectPanel.GetComponentsInChildren<TMPro.TextMeshProUGUI>());
+                    foreach (var text in texts)
+                    {
+                        if (text.gameObject.name == "DisconnectErrorText")
+                        {
+                            text.color = new Color(255f, 0f, 0f, 1);
+                            text.gameObject.SetActive(true);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MainMenu mainMenu = GameObject.Find("Main Camera").GetComponent<MainMenu>();
+                GameObject.Find("LevelChanger").GetComponent<LevelChanger>().FadeToLevel(mainMenuSceneName);
+                //mainMenu.Login(GameSparksUserID.currentUsername, GameSparksUserID.currentPassword);
+                scheduledReconnect = true;
+                //mainMenu.LoginFromReconnect();
+                disconnectPanel.SetActive(false);
+            }
+        }
+        attemptingReconnect = false;
     }
 
     private void ReconnectNo()

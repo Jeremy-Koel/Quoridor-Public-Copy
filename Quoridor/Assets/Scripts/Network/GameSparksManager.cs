@@ -7,6 +7,8 @@ using GameSparks.Api.Requests;
 using GameSparks.Api.Responses;
 using GameSparks.Core;
 using System;
+using UnityEngine.Networking;
+using UnityEngine.Events;
 
 public class GameSparksManager : MonoBehaviour
 {
@@ -15,6 +17,10 @@ public class GameSparksManager : MonoBehaviour
     public bool connected;
     private float checkConnectionSpeed = 5.0f;
     public bool oppDisconnected = false;
+
+    public bool loggedInOnce = false;
+
+    public UnityEvent connectedValueChanged = new UnityEvent();
 
     private void Awake()
     {
@@ -88,16 +94,38 @@ public class GameSparksManager : MonoBehaviour
     // Triggered when gamesparks available value is modified
     private void HandleGameSparksAvailable(bool value)
     {
-        Debug.Log("HandleGameSparksAvailable value: " + value.ToString());
-        if (!value)
+        if (loggedInOnce)
         {
-            //LostConnection();
-            eventManager.InvokeLostConnection();
-            connected = false;
+            Debug.Log("HandleGameSparksAvailable value: " + value.ToString());
+            if (!value)
+            {
+                //LostConnection();
+                eventManager.InvokeLostConnection();
+                connected = false;
+            }
+            else
+            {
+                connected = true;
+            }
+        }        
+    }
+
+    public void CheckInternetConnection()
+    {
+        try
+        {
+            using (var client = new System.Net.WebClient())
+            using (client.OpenRead("https://www.google.com/"))
+            {
+                connected = true;
+                connectedValueChanged.Invoke();
+            }
         }
-        else
+        catch
         {
-            connected = true;
+            connected = false;
+            connectedValueChanged.Invoke();
         }
     }
+    
 }

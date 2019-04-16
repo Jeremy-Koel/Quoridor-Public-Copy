@@ -493,6 +493,11 @@ public class HostedGameLobbies : MonoBehaviour
 
     void RemoveAllHostedGames()
     {
+        if (hostedGameLobbiesRectTransform == null)
+        {
+            hostedGameLobbiesRectTransform = GameObject.Find("HostedGameLobbies").GetComponent<RectTransform>();
+        }
+
         foreach (RectTransform child in hostedGameLobbiesRectTransform)
         {
             GameObject.Destroy(child.gameObject);
