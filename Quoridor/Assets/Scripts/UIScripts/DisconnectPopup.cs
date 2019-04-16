@@ -237,7 +237,7 @@ public class DisconnectPopup : MonoBehaviour
                     {
                         if (text.gameObject.name == "DisconnectErrorText")
                         {
-                            text.color = new Color(255f, 0f, 0f, 1);
+                            text.color = ColorPalette.maroonRed;
                             text.gameObject.SetActive(true);
                         }
                     }

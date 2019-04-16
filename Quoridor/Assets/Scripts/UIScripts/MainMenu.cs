@@ -130,7 +130,7 @@ public class MainMenu : MonoBehaviour
 
         // panelOrder = new Stack<GameObject>();
         // panelOrder.Push(mainMenuPanel);
-        findingMatchText.color = new Color(0, 0, 0, 0);
+        findingMatchText.color = ColorPalette.invisible;
         mainMenuPanel.SetActive(true);
         dummyMenuPanel.SetActive(false);
         singlePlayerSetupPanel.SetActive(false);
@@ -469,7 +469,7 @@ public class MainMenu : MonoBehaviour
     {
         if (matching)
         {
-            findingMatchText.color = new Color(0, 0, 0, 0);
+            findingMatchText.color = ColorPalette.invisible;
             matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Find Match";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
@@ -489,7 +489,7 @@ public class MainMenu : MonoBehaviour
         BlockJoinHostGameButtons();
         if (matching)
         {
-            findingMatchText.color = new Color(0, 0, 0, 0);
+            findingMatchText.color = ColorPalette.invisible;
             matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Find Match";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
@@ -503,7 +503,7 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            findingMatchText.color = Color.white;
+            findingMatchText.color = ColorPalette.white;
             matchmakingButton.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Stop";
             Debug.Log("Making/sending matchmaking request");
             MatchmakingRequest request = new MatchmakingRequest();
@@ -619,7 +619,7 @@ public class MainMenu : MonoBehaviour
         UnblockLoginInput();
         GameSparksManager gsm = GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>();
         gsm.loggedInOnce = true;
-        errorMessageLoginText.color = new Color(0, 0, 0, 0);
+        errorMessageLoginText.color = ColorPalette.invisible;
         if (adminLogin)
         {
             Debug.Log("Logged in as admin");
@@ -710,7 +710,7 @@ public class MainMenu : MonoBehaviour
         UnblockLoginInput();
         if (GameObject.Find("GameSparksManager").GetComponent<GameSparksManager>().connected)
         {
-            errorMessageLoginText.color = Color.red;
+            errorMessageLoginText.color = ColorPalette.maroonRed;
             var errorText = "TAKEN";
             errorMessageLoginText.text = errorText;
         }
@@ -725,7 +725,7 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            errorMessageLoginText.color = new Color(0, 0, 0, 0);
+            errorMessageLoginText.color = ColorPalette.maroonRed;
         }
     }
 

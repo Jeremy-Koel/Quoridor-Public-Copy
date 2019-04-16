@@ -428,6 +428,7 @@ public class HostedGameLobbies : MonoBehaviour
         //Text messageText = hostedGameLobbyText[1];
         if (hostName == gameSparksUserID.myDisplayName)
         {
+            //change text color
             if (hostName.Length >= 16)
             {
                 playerText.text = (hostName.Substring(0, 10) + ("...'s Game (You) "));
