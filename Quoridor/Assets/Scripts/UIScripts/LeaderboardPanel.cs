@@ -50,6 +50,7 @@ public class LeaderboardPanel : MonoBehaviour
         scrollDownButton = GameObject.Find("LeaderboardScrollDown").GetComponent<Button>();
         //scrollDownButton.onClick.AddListener(MoveContentPane);
         scrollbar = GameObject.Find("LeaderboardList").GetComponent<ScrollRect>();
+        scrollbar.onValueChanged.AddListener(OnValueChange);
 
         GameObject upMostBoundsObject = new GameObject("upMostBoundariesObject", typeof(RectTransform));
         upperBoundary = upMostBoundsObject.GetComponent<RectTransform>();
@@ -66,7 +67,13 @@ public class LeaderboardPanel : MonoBehaviour
     void Start()
     {
         GetLeaderboardData();
+        scrollUpButton.gameObject.SetActive(false);
         scrollDownButton.gameObject.SetActive(false);
+    }
+
+    void OnValueChange(Vector2 position)
+    {
+        MoveContentPane(0f);
     }
 
     // Update is called once per frame
@@ -129,14 +136,14 @@ public class LeaderboardPanel : MonoBehaviour
             leaderboardContent.localPosition = new Vector2(leaderboardContent.localPosition.x,
                                                             leaderboardContent.localPosition.y + value);
 
-            if (leaderboardContent.localPosition.y <= upperBoundary.localPosition.y)
+            if (leaderboardContent.localPosition.y <= upperBoundary.localPosition.y + 10)
             {
                 leaderboardContent.localPosition = upperBoundary.localPosition;
                 
                 scrollUpButton.gameObject.SetActive(false);
                 scrollDownButton.gameObject.SetActive(true);
             }
-            else if (leaderboardContent.localPosition.y >= lowerBoundary.localPosition.y)
+            else if (leaderboardContent.localPosition.y >= lowerBoundary.localPosition.y - 10)
             {
                 leaderboardContent.localPosition = lowerBoundary.localPosition;
                 scrollDownButton.gameObject.SetActive(false);

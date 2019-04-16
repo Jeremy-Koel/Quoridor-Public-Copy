@@ -36,6 +36,7 @@ public class HostedGameLobbies : MonoBehaviour
     [SerializeField]
     public Button scrollDownButton;
     public float heightOfAllGames;
+    public ScrollRect scrollbar;
 
     private bool hosting = false;
     private bool refreshingLock = false;
@@ -71,7 +72,8 @@ public class HostedGameLobbies : MonoBehaviour
         lowerBoundary = lowMostBoundsObject.GetComponent<RectTransform>();
         lowerBoundary.localPosition = new Vector2((hostedGameLobbiesRectTransform.localPosition.x),
                                                (hostedGameLobbiesRectTransform.localPosition.y + heightOfHostedGame));
-
+        scrollbar = GameObject.Find("HostedLobbiesPanel").GetComponent<ScrollRect>();
+        scrollbar.onValueChanged.AddListener(OnValueChange);
         refreshTimer = gameObject.AddComponent<Timer>();
         refreshTimer.SetTimeDefault(3f);
         refreshTimer.ResetTimer();
@@ -83,6 +85,11 @@ public class HostedGameLobbies : MonoBehaviour
         hostingCheckTimer.ResetTimer();
         hostingCheckTimer.timeUp.AddListener(CheckHosting);
         hostingCheckTimer.StartCountdown();
+    }
+
+    void OnValueChange (Vector2 position)
+    {
+        MoveContentPane(0f);
     }
 
     public void CheckHosting()
@@ -113,6 +120,9 @@ public class HostedGameLobbies : MonoBehaviour
     {
         ScriptMessage.Listener += RefreshHostedGames;
         onRefreshGamesButtonClick();
+
+        scrollDownButton.gameObject.SetActive(false);
+        scrollUpButton.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -418,6 +428,7 @@ public class HostedGameLobbies : MonoBehaviour
         //Text messageText = hostedGameLobbyText[1];
         if (hostName == gameSparksUserID.myDisplayName)
         {
+            //change text color
             if (hostName.Length >= 16)
             {
                 playerText.text = (hostName.Substring(0, 10) + ("...'s Game (You) "));
@@ -462,22 +473,22 @@ public class HostedGameLobbies : MonoBehaviour
     {
         // Adjust dimensions of rightMostBoundaries
         heightOfAllGames = (hostedGameLobbiesRectTransform.GetComponentsInChildren<Button>().Length * heightOfHostedGame);
-        if (heightOfAllGames > 300)
+        if (heightOfAllGames > 400)
         {
             lowerBoundary.localPosition = new Vector2((upperBoundary.localPosition.x),
-                                upperBoundary.localPosition.y + (heightOfAllGames - 1200));
+                                upperBoundary.localPosition.y + (heightOfAllGames - 440));
 
             hostedGameLobbiesRectTransform.localPosition = new Vector2(hostedGameLobbiesRectTransform.localPosition.x,
                                                             hostedGameLobbiesRectTransform.localPosition.y + value);
 
-            if (hostedGameLobbiesRectTransform.localPosition.y <= upperBoundary.localPosition.y)
+            if (hostedGameLobbiesRectTransform.localPosition.y <= upperBoundary.localPosition.y + 10)
             {
                 hostedGameLobbiesRectTransform.localPosition = upperBoundary.localPosition;
 
                 scrollUpButton.gameObject.SetActive(false);
                 scrollDownButton.gameObject.SetActive(true);
             }
-            else if (hostedGameLobbiesRectTransform.localPosition.y >= lowerBoundary.localPosition.y)
+            else if (hostedGameLobbiesRectTransform.localPosition.y >= lowerBoundary.localPosition.y - 10)
             {
                 hostedGameLobbiesRectTransform.localPosition = lowerBoundary.localPosition;
                 scrollDownButton.gameObject.SetActive(false);
