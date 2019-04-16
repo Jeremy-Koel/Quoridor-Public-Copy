@@ -128,7 +128,11 @@ public class HostedGameLobbies : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(hostedGameLobbiesRectTransform.GetComponentsInChildren<Button>().Length <= 5)
+        {
+            scrollDownButton.gameObject.SetActive(false);
+            scrollUpButton.gameObject.SetActive(false);
+        }
     }
 
     private void OnDestroy()
