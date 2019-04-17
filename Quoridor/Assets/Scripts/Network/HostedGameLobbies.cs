@@ -436,11 +436,11 @@ public class HostedGameLobbies : MonoBehaviour
             //change text color
             if (hostName.Length >= 16)
             {
-                playerText.text = (hostName.Substring(0, 10) + ("...'s Game (You) "));
+                playerText.text = (hostName.Substring(0, 10) + ("...'s Game"));
             }
             else
             {
-                playerText.text = (hostName) + ("'s Game (You) ");
+                playerText.text = (hostName) + ("'s Game");
             }
             Destroy(hostedGameLobby.GetComponent<WholeButtonFontTMP>());
             Destroy(hostedGameLobby.GetComponent<HostedGameLobbyButton>());

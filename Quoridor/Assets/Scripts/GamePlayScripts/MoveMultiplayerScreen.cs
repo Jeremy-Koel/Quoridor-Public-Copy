@@ -10,6 +10,9 @@ public class MoveMultiplayerScreen : MonoBehaviour
     public float speed = 28f;
     private Vector3 onScreenTarget;
     private Vector3 offScreenTarget;
+    private GameObject mainMenuPanel;
+    private GameObject dummyMenuPanel;
+    private MainMenu mainMenuScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,9 @@ public class MoveMultiplayerScreen : MonoBehaviour
         offScreenTarget = transform.position;
         // moveBoard = false;
         target = onScreenTarget;
+        mainMenuPanel = GameObject.Find("MainButtonPanel");
+        dummyMenuPanel = GameObject.Find("DummyMenuPanel");
+        mainMenuScript = GameObject.Find("Main Camera").GetComponent<MainMenu>();
     }
 
     // Update is called once per frame
@@ -38,6 +44,9 @@ public class MoveMultiplayerScreen : MonoBehaviour
                 else if(transform.position == offScreenTarget)
                 {
                     target = onScreenTarget;
+                    mainMenuScript.SetMainMenuButtonsActive();
+                    dummyMenuPanel.SetActive(false);
+                    mainMenuPanel.SetActive(true);
                 }
 
                 moveBoard = false;
@@ -45,4 +54,6 @@ public class MoveMultiplayerScreen : MonoBehaviour
             }
         }
     }
+
+
 }

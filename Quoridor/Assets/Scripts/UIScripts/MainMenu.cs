@@ -120,6 +120,7 @@ public class MainMenu : MonoBehaviour
         //registrationPanel = GameObject.Find("RegistrationPanel");
         lobbyPanel = GameObject.Find("LobbyPanel");
         tutorialPanel = GameObject.Find("TutorialPanel");
+        
         dummyMenuPanel = GameObject.Find("DummyMenuPanel");
         disconnectPanel = GameObject.Find("DisconnectPanel");
         guestDetailsPanel = GameObject.Find("GuestDetailsPanel");
@@ -451,12 +452,11 @@ public class MainMenu : MonoBehaviour
     public void onLobbyBackButtonClick()
     {
         // cancel any current matchmaking going on
+        lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
+       
         lobbyPanel.GetComponentInChildren<HostedGameLobbies>().CancelHosting();
         CancelMatchmaking();
-        dummyMenuPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
-        SetMainMenuButtonsActive();
-        lobbyPanel.GetComponent<MoveMultiplayerScreen>().moveBoard = true;
+        
         audioController.PlayChalkboardMovingSound();
         //if(panelOrder.Peek().name == "LoginPanel")
         //{
@@ -697,7 +697,7 @@ public class MainMenu : MonoBehaviour
         tutorialButton.interactable = false;
         settingsButton.interactable = false;
     }
-    private void SetMainMenuButtonsActive()
+    public void SetMainMenuButtonsActive()
     {
         singlePlayerButton.interactable = true;
         multiPlayerButton.interactable = true;
