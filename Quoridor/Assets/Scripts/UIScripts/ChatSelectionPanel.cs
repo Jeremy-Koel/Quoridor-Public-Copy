@@ -78,6 +78,9 @@ public class ChatSelectionPanel : MonoBehaviour
         rightMostBoundaries = rightMostBoundsObject.GetComponent<RectTransform>();
         rightMostBoundaries.localPosition = new Vector2((chatSelectionContentRectTransform.localPosition.x - widthOfChatButton),
                                                 chatSelectionContentRectTransform.localPosition.y);
+
+        chatSelectionRightButton.interactable = false;
+        chatSelectionLeftButton.interactable = false;
     }
 
     // Start is called before the first frame update
@@ -89,7 +92,7 @@ public class ChatSelectionPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AddChatSelectionButton(string name, string teamID)
@@ -107,7 +110,13 @@ public class ChatSelectionPanel : MonoBehaviour
         chatSelectionButton.onClick.AddListener(chatSelectionButtonScript.OnClickOpenTeamChat);
         Text chatButtonName = chatSelectionButtonObject.GetComponentInChildren<Text>();
         chatButtonName.text = name;
-        chatSelectionButtons.Add(chatSelectionButtonObject);        
+        chatSelectionButtons.Add(chatSelectionButtonObject);
+
+        if (chatSelectionContentObject.GetComponentsInChildren<Button>().Length > 3)
+        {
+            chatSelectionRightButton.interactable = true;
+            chatSelectionLeftButton.interactable = true;
+        }
     }
 
     public void MoveContentPane(float value)
@@ -121,15 +130,26 @@ public class ChatSelectionPanel : MonoBehaviour
 
             chatSelectionContentRectTransform.localPosition = new Vector2(chatSelectionContentRectTransform.localPosition.x + value,
                                                             chatSelectionContentRectTransform.localPosition.y);
+            
 
             if (chatSelectionContentRectTransform.localPosition.x <= rightMostBoundaries.localPosition.x)
             {
                 chatSelectionContentRectTransform.localPosition = rightMostBoundaries.localPosition;
+                chatSelectionRightButton.interactable = false;
+                chatSelectionLeftButton.interactable = true;
             }
-            if (chatSelectionContentRectTransform.localPosition.x >= leftMostBoundaries.localPosition.x)
+            else if (chatSelectionContentRectTransform.localPosition.x >= leftMostBoundaries.localPosition.x)
             {
                 chatSelectionContentRectTransform.localPosition = leftMostBoundaries.localPosition;
+                chatSelectionLeftButton.interactable = false;
+                chatSelectionRightButton.interactable = true;
             }
+            else
+            {
+                chatSelectionRightButton.interactable = true;
+                chatSelectionLeftButton.interactable = true;
+            }
+
         }
     }
 

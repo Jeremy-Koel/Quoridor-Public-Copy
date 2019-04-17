@@ -151,6 +151,7 @@ public class ChatWindowPanel : MonoBehaviour
     public void SwitchToGlobalChat()
     {
         SwitchAllFriendChatOff();
+        globalChatButtonObject.GetComponent<Button>().interactable = false;
         currentTeamID = "0";
         var globalMessagesContent = chatMessagesBox.GetComponentInChildren<GlobalMessagesScript>(true);
         globalMessagesContent.gameObject.SetActive(true);
@@ -160,6 +161,7 @@ public class ChatWindowPanel : MonoBehaviour
     public void SwitchActiveChat(string teamID, string playerName)
     {
         chatMessagesViewContent.gameObject.SetActive(false);
+        
         int teamIDIndex = LookupTeam(teamID, playerName);
         int index = 0;
         // Set all friends chats to inactive (aside from the one we want)
@@ -187,6 +189,7 @@ public class ChatWindowPanel : MonoBehaviour
             }
             index++;
         }
+        globalChatButtonObject.GetComponent<Button>().interactable = true;
         chatSelectionPanel.SetSelectionButtonsInteractive(teamIDIndex);
         currentTeamID = teamID;
     }
